@@ -95,7 +95,7 @@ const CookingCompanion: React.FC = () => {
             </g>
         </svg>
       </div>
-      <h2 className="text-2xl font-serif font-bold text-orange-300 mb-2">Your Culinary Butler is on the Job</h2>
+      <h2 className="text-2xl font-serif font-bold text-orange-300 mb-2">Your Culinary Butler is on the Job (just few seconds, and recipe would be ready)</h2>
       <p className="text-lg text-stone-300 transition-opacity duration-500 min-h-[28px]">{message}</p>
       <style>{`
         @keyframes gentle-sway {

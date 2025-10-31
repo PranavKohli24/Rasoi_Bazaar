@@ -84,7 +84,7 @@ const App: React.FC = () => {
         <div className="relative z-10 w-full flex flex-col items-center">
             <div className="animate-fade-in-up">
                 <h1 className="font-serif text-4xl sm:text-6xl md:text-8xl font-black text-white drop-shadow-2xl  mt-8 sm:mt-10">
-  RasoiBazaar
+  Rasoi Bazaar
 </h1>
 <p className="mt-3 text-base sm:text-lg md:text-xl text-orange-200/90 max-w-xl sm:max-w-2xl mx-auto px-2">
   Your personal guide to home-style Indian cooking. <br />

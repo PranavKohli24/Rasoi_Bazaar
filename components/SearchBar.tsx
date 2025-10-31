@@ -35,7 +35,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
           onKeyDown={handleKeyDown}
           placeholder="What masterpiece will you create today?"
           disabled={isLoading}
-          className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-2.5 sm:py-3 
+          className="w-full pl-12 sm:pl-14 pr-4 sm:pr-5 py-2.5 sm:py-3 text-sm sm:text-lg
   text-base sm:text-lg bg-stone-900 text-stone-100 placeholder-stone-500 
   border-2 border-orange-700 rounded-lg focus:outline-none 
   focus:ring-2 focus:ring-orange-500 focus:border-orange-500 
@@ -48,7 +48,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
       <button
         onClick={onSearch}
         disabled={isLoading}
-        className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 disabled:bg-stone-700 disabled:cursor-not-allowed flex items-center justify-center"
+        className="w-full sm:w-auto bg-orange-500 hover:bg-orange-300 hover:text-black text-white font-medium py-3 px-8 rounded-lg transition-colors duration-200 disabled:bg-stone-700 disabled:cursor-not-allowed flex items-center justify-center"
       >
         {isLoading ? (
           <svg
