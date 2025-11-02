@@ -79,7 +79,7 @@ const App: React.FC = () => {
       >
         <div 
             className="absolute inset-0 bg-cover bg-center bg-fixed"
-            style={{backgroundImage: "url('https://img.freepik.com/free-photo/top-view-cropped-hands-senior-cook-unrecognizable-cutting-carrot-cooking-vegetable-stew_1098-20510.jpg?q=80&w=2187&auto=format&fit=crop')", 
+            style={{backgroundImage: "url('https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop')", 
               opacity: isHero ? 0.15 : 0, transition: 'opacity 1s ease-in-out'}}
         >
         </div>
