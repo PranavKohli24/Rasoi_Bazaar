@@ -67,6 +67,8 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // const img='https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+
 
   return (
     <div className="min-h-screen text-stone-200 font-sans transition-all duration-500">
@@ -77,7 +79,8 @@ const App: React.FC = () => {
       >
         <div 
             className="absolute inset-0 bg-cover bg-center bg-fixed"
-            style={{backgroundImage: "url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=2187&auto=format&fit=crop')", opacity: isHero ? 0.15 : 0, transition: 'opacity 1s ease-in-out'}}
+            style={{backgroundImage: "url('https://img.freepik.com/free-photo/top-view-cropped-hands-senior-cook-unrecognizable-cutting-carrot-cooking-vegetable-stew_1098-20510.jpg?q=80&w=2187&auto=format&fit=crop')", 
+              opacity: isHero ? 0.15 : 0, transition: 'opacity 1s ease-in-out'}}
         >
         </div>
 

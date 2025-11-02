@@ -76,6 +76,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   return (
     <div className="w-full max-w-7xl mx-auto animate-fade-in-up">
       <div className="grid grid-cols-1 lg:grid-cols-5 lg:gap-12">
+        {/* Mobile dish header */}
+          <div className="lg:hidden mb-8 text-center">
+            <h1 className="font-serif text-4xl font-black text-white mb-2">{recipe.dishName}</h1>
+            {/* <p className="text-lg text-orange-200/90 italic">“{recipe.description}”</p> */}
+          </div>
+
         
         {/* --- Left Sticky Column --- */}
         <aside className="lg:col-span-2 lg:sticky lg:top-12 lg:self-start">
