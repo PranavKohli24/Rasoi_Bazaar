@@ -21,7 +21,7 @@ The goal: make Indian cooking accessible, simple, and genuinely fun to do at hom
 
 ---
 ## 💡 Motivation  
-<img src="chef_photo.png" height="280px" width="280px"/>
+<img src="public/chef_photo.png" height="280px" width="280px"/>
 
 <p>
 Built this because most Indian recipes online skip steps assuming you already know them. or are too distracting.
