@@ -1,14 +1,14 @@
 {
   "name": "Indian Kitchen Guide",
-  "description": "An application that provides authentic, step-by-step Indian recipes tailored for a typical home kitchen. It offers simple alternatives for specialized equipment and uses common Indian cooking terminology and measurements, making it perfect for beginners.",
+  "description": "Authentic Indian recipes made for everyday home kitchens. Clear steps, real measurements, and practical alternatives.",
   "requestFramePermissions": [],
-  openGraph: {
-    images: [
+  "openGraph": {
+    "images": [
       {
-        url: "/chef_photo.png",
-        width: 1200,
-        height: 630,
-        alt: "Project thumbnail"
+        "url": "/chef_photo.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Project thumbnail"
       }
     ]
   }
