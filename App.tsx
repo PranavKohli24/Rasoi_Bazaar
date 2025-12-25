@@ -142,7 +142,7 @@ const App: React.FC = () => {
 
             {/* Branding / Portfolio Link */}
             <p>
-              Designed & Built by{' '}
+              Built by{' '}
               
                 Pranav Kohli
               
@@ -150,7 +150,8 @@ const App: React.FC = () => {
 
             {/* Contact Info */}
             <p className="text-xs text-stone-600 mt-2">
-              © {new Date().getFullYear()} Rasoi Bazaar •{' '}
+              © {new Date().getFullYear()} Rasoi Bazaar
+              <p>For any queries, mail me(Pranav) at: {' '}</p>
               <a href="mailto:hey@pranavkohli.me" className="hover:text-stone-400 transition-colors">
                 hey@pranavkohli.me
               </a>
