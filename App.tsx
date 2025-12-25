@@ -9,6 +9,8 @@ import RecipeSuggestionChips from './components/RecipeSuggestionChips';
 import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
 
+const BACKGROUND_IMG = "https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop";
+
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [recipe, setRecipe] = useState<Recipe | null>(null);
@@ -27,9 +29,10 @@ const App: React.FC = () => {
     setError(null);
     setRecipe(null);
 
+    // Small delay to allow the layout transition to start before scrolling
     setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 300);
+    }, 400);
 
     try {
       const fetchedRecipe = await fetchRecipe(dish);
@@ -45,18 +48,14 @@ const App: React.FC = () => {
     }
   }, [isLoading]);
 
-  const handleSearch = () => {
-    performSearch(searchTerm);
-  };
+  const handleSearch = () => performSearch(searchTerm);
   
   const handleSuggestionSelect = (dish: string) => {
     setSearchTerm(dish);
     performSearch(dish);
   };
 
-  const handleFinishCooking = () => {
-    setShowCelebration(true);
-  };
+  const handleFinishCooking = () => setShowCelebration(true);
 
   const handleReset = () => {
     setShowCelebration(false);
@@ -67,36 +66,42 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // const img='https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-
-
   return (
-    <div className="min-h-screen text-stone-200 font-sans transition-all duration-500">
+    // Added bg-stone-950 to ensure dark mode works everywhere
+    <div className="min-h-screen bg-stone-950 text-stone-200 font-sans transition-colors duration-500 selection:bg-orange-500/30">
       
+      {/* --- Global Background Image (Fixed Position for better Mobile Performance) --- */}
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage: `url('${BACKGROUND_IMG}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: isHero ? 0.15 : 0.05, // Dim the background when reading recipe
+          transition: 'opacity 1s ease-in-out'
+        }}
+      />
+
       {/* --- Hero Section --- */}
       <section 
-        className={`relative w-full flex flex-col justify-center items-center px-4 text-center transition-all duration-700 ease-in-out ${isHero ? 'min-h-screen' : 'pt-24 pb-12'}`}
+        className={`relative z-10 w-full flex flex-col justify-center items-center px-4 text-center transition-all duration-700 ease-in-out ${isHero ? 'min-h-[90vh]' : 'pt-24 pb-12'}`}
       >
-        <div 
-            className="absolute inset-0 bg-cover bg-center bg-fixed"
-            style={{backgroundImage: "url('https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop')", 
-              opacity: isHero ? 0.15 : 0, transition: 'opacity 1s ease-in-out'}}
-        >
-        </div>
-
-        <div className="relative z-10 w-full flex flex-col items-center">
-            <div className="animate-fade-in-up">
-                <h1 className="font-serif text-4xl sm:text-6xl md:text-8xl font-black text-white drop-shadow-2xl  mt-8 sm:mt-10">
-  Rasoi Bazaar
-</h1>
-<p className="mt-3 text-base sm:text-lg md:text-xl text-orange-200/90 max-w-xl sm:max-w-2xl mx-auto px-2">
-  Your personal guide to home-style Indian cooking. <br />
-  What delicious journey will you make today?
-</p>
-
+        <div className="w-full flex flex-col items-center max-w-4xl">
+            <div className={`transition-all duration-700 ${isHero ? 'opacity-100 translate-y-0' : 'opacity-100 scale-90'}`}>
+                <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 drop-shadow-lg mt-8 sm:mt-10 tracking-tight">
+                  Rasoi Bazaar
+                </h1>
+                
+                {/* Hide description when not in hero mode to save space */}
+                <div className={`overflow-hidden transition-all duration-500 ${isHero ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+                  <p className="text-base sm:text-lg md:text-xl text-stone-400 max-w-xl sm:max-w-2xl mx-auto px-2 leading-relaxed">
+                    Your personal guide to home-style Indian cooking. <br className="hidden sm:block"/>
+                    <span className="text-orange-200/90 font-medium">What delicious dish will you make today?</span>
+                  </p>
+                </div>
             </div>
 
-            <div className="w-full max-w-2xl my-8 z-10">
+            <div className="w-full max-w-2xl my-8 z-20">
                 <SearchBar 
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -105,28 +110,38 @@ const App: React.FC = () => {
                 />
             </div>
             
-            {isHero && !isLoading && !recipe && (
-              <div className="w-full max-w-3xl">
-                <CategoryBrowser onSelect={handleSuggestionSelect} />
-                <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
-              </div>
-            )}
+            {/* Suggestion Chips - Only show in Hero */}
+            <div className={`w-full max-w-4xl transition-all duration-500 ${isHero && !isLoading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none absolute'}`}>
+               <CategoryBrowser onSelect={handleSuggestionSelect} />
+               <div className="mt-6">
+                 <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
+               </div>
+            </div>
         </div>
       </section>
 
       {/* --- Results Section --- */}
-      <main ref={resultsRef} className="container mx-auto px-4 pb-20">
-        <div className="w-full max-w-7xl mx-auto">
+      <main ref={resultsRef} className="relative z-10 container mx-auto px-4 pb-20 min-h-[40vh]">
+        <div className="w-full max-w-6xl mx-auto">
             {isLoading && <CookingCompanion />}
             {error && <ErrorMessage message={error} />}
-            {recipe && !isLoading && <RecipeDisplay recipe={recipe} onFinishCooking={handleFinishCooking} />}
+            {recipe && !isLoading && (
+              <div className="animate-fade-in-up">
+                <RecipeDisplay recipe={recipe} onFinishCooking={handleFinishCooking} />
+              </div>
+            )}
         </div>
       </main>
 
-      <footer className="text-center py-6 mt-auto text-stone-500 text-sm bg-stone-900/50 border-t border-stone-800">
-        <p>Happy Cooking!</p>
-        <p>For any queries, 
-          contact at: hey@pranavkohli.me</p>
+      {/* --- Footer --- */}
+      <footer className="relative z-10 text-center py-8 mt-auto text-stone-500 text-sm bg-stone-950/80 backdrop-blur-md border-t border-stone-800/50">
+        <p className="font-serif italic text-stone-400 mb-2">Happy Cooking!</p>
+        <p>
+          For any queries, contact at: {' '}
+          <a href="mailto:hey@pranavkohli.me" className="text-orange-300/80 hover:text-orange-300 hover:underline transition-colors">
+            hey@pranavkohli.me
+          </a>
+        </p>
       </footer>
       
       {showCelebration && <CelebrationPopup onReset={handleReset} />}
