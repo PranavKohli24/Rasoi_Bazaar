@@ -20,7 +20,17 @@ Each recipe comes with the full ingredient list, tools needed, and clear instruc
 The goal: make Indian cooking accessible, simple, and genuinely fun to do at home.
 
 ---
+## 💡 Motivation  
+<p>
+Built this because most Indian recipes online skip steps assuming you already know them. or are too distracting.
+</p>
+<p>
+This keeps it clear. No guessing. Just cooking.
+</p>
 
+<img src="chef_photo.png" height="280px" width="280px"/>
+
+---
 ## 🧠 Features
 
 - 🔎 **Explore Authentic Recipes** — Browse Indian dishes across regions and categories.  
