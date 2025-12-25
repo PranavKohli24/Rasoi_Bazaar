@@ -21,6 +21,8 @@ The goal: make Indian cooking accessible, simple, and genuinely fun to do at hom
 
 ---
 ## 💡 Motivation  
+<img src="chef_photo.png" height="280px" width="280px"/>
+
 <p>
 Built this because most Indian recipes online skip steps assuming you already know them. or are too distracting.
 </p>
@@ -28,10 +30,10 @@ Built this because most Indian recipes online skip steps assuming you already kn
 This keeps it clear. No guessing. Just cooking.
 </p>
 
-<img src="chef_photo.png" height="280px" width="280px"/>
 
 ---
 ## 🧠 Features
+<img src="demo.png" alt="app demo"/>
 
 - 🔎 **Explore Authentic Recipes** — Browse Indian dishes across regions and categories.  
 - 🧾 **Step-by-Step Cooking Guide** — Follow clear, easy-to-understand instructions.  
@@ -128,13 +130,20 @@ To get started:
 ## 📬 Contact
 
 **Pranav Kohli**
-📧 [[hey@pranavkohli.me](mailto:hey@pranavkohli.me)]
+<p>
+  Email me at
+  <a href="mailto:hey@pranavkohli.me">
+      hey@pranavkohli.me
+  </a>
+</p>
+
+
 ---
 
 ## 🧡 Credits
 
 Built with love for Indian food and web development.
-Every recipe, every line of code — made to bring the flavors of India to your kitchen.
+Every recipe, every line of code - made to bring the flavors of India to your kitchen.
 
 ---
 
