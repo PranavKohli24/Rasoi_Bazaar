@@ -143,9 +143,14 @@ const App: React.FC = () => {
             {/* Branding / Portfolio Link */}
             <p className="hover:text-stone-400 transition-colors">
               Built by{' '}
-              
+              <a 
+                href="linkedin.com/in/pranav-kohli-987aa5226/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-orange-200 hover:text-orange-400 font-medium transition-colors duration-300"
+              >
                 Pranav Kohli
-              
+              </a>
             </p>
 
             {/* Contact Info */}
