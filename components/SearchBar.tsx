@@ -15,19 +15,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
-      {/* Explicit Label for Clarity */}
+    <div className="w-full max-w-2xl mx-auto px-1 sm:px-0">
+      {/* Label - Aligned with input start */}
       <label 
         htmlFor="recipe-search" 
         className="block text-left text-orange-200/80 text-sm font-medium mb-2 ml-1"
       >
-        Enter a dish name (e.g. "Butter Chicken")
+        Enter a dish name <span className="text-stone-500 font-normal">(e.g. "Rajma Chawal")</span>
       </label>
 
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
-        <div className="relative w-full sm:flex-grow group">
-          {/* Search Icon */}
-          <div className="absolute inset-y-0 left-0 pl-4 sm:pl-5 flex items-center pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500">
+        <div className="relative w-full flex-grow group">
+          {/* Search Icon - Vertically Centered */}
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500">
             <svg
               className="h-5 w-5 text-stone-400"
               xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
             </svg>
           </div>
           
-          {/* Input Field - High Contrast Style */}
+          {/* Input Field - Enforced Height (h-12 mobile, h-14 desktop) */}
           <input
             id="recipe-search"
             type="text"
@@ -48,7 +48,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
             onKeyDown={handleKeyDown}
             placeholder="What masterpiece will you create today?"
             disabled={isLoading}
-            className="w-full pl-11 sm:pl-14 pr-4 py-3 text-base sm:text-lg 
+            className="w-full h-12 sm:h-14 pl-11 sm:pl-12 pr-4 
+              text-base sm:text-lg 
               bg-stone-900 text-stone-100 placeholder-stone-500 
               border-2 border-orange-700 rounded-xl 
               focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 
@@ -57,11 +58,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
           />
         </div>
 
-        {/* Button */}
+        {/* Button - Enforced Height & Border Match */}
         <button
           onClick={onSearch}
           disabled={isLoading}
-          className="w-full sm:w-auto min-w-[160px] bg-orange-600 hover:bg-orange-500 active:scale-95 text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed disabled:active:scale-100 shadow-lg shadow-orange-900/20 flex items-center justify-center border border-transparent hover:border-orange-400/30"
+          className="w-full sm:w-auto min-w-[160px] h-12 sm:h-14 
+            bg-orange-600 hover:bg-orange-500 active:scale-95 
+            text-white font-medium rounded-xl 
+            transition-all duration-200 
+            disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed disabled:active:scale-100 
+            shadow-lg shadow-orange-900/20 
+            flex items-center justify-center 
+            border-2 border-transparent hover:border-orange-400/30"
         >
           {isLoading ? (
             <div className="flex items-center gap-2">
