@@ -16,7 +16,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
 
   return (
     <div className="w-full max-w-2xl mx-auto px-1 sm:px-0">
-      {/* Label - Aligned with input start */}
+      {/* Label */}
       <label 
         htmlFor="recipe-search" 
         className="block text-left text-orange-200/80 text-sm font-medium mb-2 ml-1"
@@ -26,7 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
 
       <div className="flex flex-col sm:flex-row items-stretch gap-3 sm:gap-4">
         <div className="relative w-full flex-grow group">
-          {/* Search Icon - Vertically Centered */}
+          {/* Search Icon */}
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500">
             <svg
               className="h-5 w-5 text-stone-400"
@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
             </svg>
           </div>
           
-          {/* Input Field - Enforced Height (h-12 mobile, h-14 desktop) */}
+          {/* Input Field - Fixed Font Size for Mobile */}
           <input
             id="recipe-search"
             type="text"
@@ -49,7 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
             placeholder="What masterpiece will you create today?"
             disabled={isLoading}
             className="w-full h-12 sm:h-14 pl-11 sm:pl-12 pr-4 
-              text-base sm:text-lg 
+              text-sm sm:text-lg 
               bg-stone-900 text-stone-100 placeholder-stone-500 
               border-2 border-orange-700 rounded-xl 
               focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 
@@ -58,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, onSear
           />
         </div>
 
-        {/* Button - Enforced Height & Border Match */}
+        {/* Button */}
         <button
           onClick={onSearch}
           disabled={isLoading}
