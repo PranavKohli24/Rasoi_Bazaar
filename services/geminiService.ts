@@ -1,12 +1,15 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from '../types';
 
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set");
+// 1. Setup Keys: Check for MAIN_API_KEY, fallback to API_KEY if needed.
+const MAIN_API_KEY = process.env.MAIN_API_KEY || process.env.API_KEY;
+const BACKUP_API_KEY = process.env.BACKUP_API_KEY;
+
+if (!MAIN_API_KEY) {
+  throw new Error("MAIN_API_KEY (or API_KEY) environment variable not set");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+// 2. Define Schema
 const recipeSchema = {
   type: Type.OBJECT,
   properties: {
@@ -68,9 +71,8 @@ const recipeSchema = {
   required: ["dishName", "description", "prepTime", "equipment", "ingredients", "method", "notes"]
 };
 
-
-export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
-  const systemInstruction = `You are a passionate and knowledgeable Indian home cook, guiding a beginner in their kitchen. Your tone should be warm, encouraging, and detailed, like sharing a secret family recipe.
+// 3. Define System Instruction
+const SYSTEM_INSTRUCTION = `You are a passionate and knowledgeable Indian home cook, guiding a beginner in their kitchen. Your tone should be warm, encouraging, and detailed, like sharing a secret family recipe.
 
 Your most important job is to make the recipe extremely simple and easy to follow. Do not overcomplicate it. Write for someone who has never cooked before. Break down each step into a single, small, manageable action. For example, instead of 'sauté onions until translucent, then add ginger-garlic paste and spices', break it into separate steps: '1. Add the chopped onions to the hot oil.', '2. Cook them, stirring often, until they look soft and see-through.', '3. Now, stir in the ginger-garlic paste.', '4. Add all the spice powders and stir for one minute.' Avoid technical culinary terms. The goal is clarity and simplicity above all else.
 
@@ -86,32 +88,59 @@ If a dish has significant regional variations (e.g., Sambar), mention them in th
 You must provide an estimated total preparation and cooking time.
 You must return the recipe in the requested JSON format.`;
 
+// 4. Helper Function: Handles the actual API call logic
+const generateRecipeWithKey = async (apiKey: string, dishName: string): Promise<Recipe> => {
+  const ai = new GoogleGenAI({ apiKey });
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: `Generate a step-by-step recipe for ${dishName}.`,
+    config: {
+      systemInstruction: SYSTEM_INSTRUCTION,
+      responseMimeType: "application/json",
+      responseSchema: recipeSchema,
+      temperature: 0.7,
+    },
+  });
+
+  const jsonText = response.text?.trim();
+  if (!jsonText) {
+    throw new Error("API returned an empty response.");
+  }
+
+  // Strip markdown code blocks if present
+  const cleanedJsonText = jsonText.replace(/^```json\s*|```$/g, '');
+  const recipeData = JSON.parse(cleanedJsonText);
+
+  return recipeData as Recipe;
+};
+
+// 5. Main Exported Function: Handles the fallback logic
+export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: `Generate a step-by-step recipe for ${dishName}.`,
-      config: {
-        systemInstruction: systemInstruction,
-        responseMimeType: "application/json",
-        responseSchema: recipeSchema,
-        temperature: 0.7,
-      },
-    });
-
-    const jsonText = response.text.trim();
-    if (!jsonText) {
-      throw new Error("API returned an empty response.");
-    }
-    
-    // Sometimes the response might be wrapped in markdown, so we strip it.
-    const cleanedJsonText = jsonText.replace(/^```json\s*|```$/g, '');
-    const recipeData = JSON.parse(cleanedJsonText);
-
-    return recipeData as Recipe;
+    // Attempt 1: Use Main Key
+    return await generateRecipeWithKey(MAIN_API_KEY, dishName);
   } catch (error) {
-    console.error("Error fetching recipe from Gemini API:", error);
+    console.error("Primary API Key failed. Error:", error);
+
+    // Attempt 2: Use Backup Key (if it exists)
+    if (BACKUP_API_KEY) {
+      console.log("Switching to Backup API Key...");
+      try {
+        return await generateRecipeWithKey(BACKUP_API_KEY, dishName);
+      } catch (backupError) {
+        console.error("Backup API Key also failed:", backupError);
+        // Throw a combined error message or the last error
+        if (backupError instanceof Error) {
+           throw new Error(`Failed to fetch recipe with both keys. Backup error: ${backupError.message}`);
+        }
+        throw new Error("Failed to fetch recipe with both keys.");
+      }
+    }
+
+    // If no backup key exists, rethrow the original error
     if (error instanceof Error) {
-        throw new Error(`Failed to fetch recipe: ${error.message}`);
+      throw new Error(`Failed to fetch recipe: ${error.message}`);
     }
     throw new Error("An unknown error occurred while fetching the recipe.");
   }
