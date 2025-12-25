@@ -1,6 +1,9 @@
 
 # 🍲 Rasoi Bazaar  
 
+<img src="Thumbnail.png" alt="thumnail"/>
+
+
 **Rasoi Bazaar** is a full-stack web app that helps you cook Indian dishes right at home.  
 Pick any Indian cuisine you want — Rasoi Bazaar gives you everything you need: ingredients, basic equipment, and step-by-step instructions to follow along.  
 
