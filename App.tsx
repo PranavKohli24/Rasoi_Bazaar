@@ -9,6 +9,7 @@ import RecipeSuggestionChips from './components/RecipeSuggestionChips';
 import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
 
+// High-quality background image
 const BACKGROUND_IMG = "https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop";
 
 const App: React.FC = () => {
@@ -29,7 +30,7 @@ const App: React.FC = () => {
     setError(null);
     setRecipe(null);
 
-    // Small delay to allow the layout transition to start before scrolling
+    // Small delay to allow layout transition to start before scrolling
     setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 400);
@@ -67,17 +68,16 @@ const App: React.FC = () => {
   };
 
   return (
-    // Added bg-stone-950 to ensure dark mode works everywhere
     <div className="min-h-screen bg-stone-950 text-stone-200 font-sans transition-colors duration-500 selection:bg-orange-500/30">
       
-      {/* --- Global Background Image (Fixed Position for better Mobile Performance) --- */}
+      {/* --- Global Background Layer (Fixed for better mobile performance) --- */}
       <div 
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
           backgroundImage: `url('${BACKGROUND_IMG}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: isHero ? 0.15 : 0.05, // Dim the background when reading recipe
+          opacity: isHero ? 0.15 : 0.05, // Dims background when reading recipe
           transition: 'opacity 1s ease-in-out'
         }}
       />
@@ -92,7 +92,7 @@ const App: React.FC = () => {
                   Rasoi Bazaar
                 </h1>
                 
-                {/* Hide description when not in hero mode to save space */}
+                {/* Description collapses when not in hero mode */}
                 <div className={`overflow-hidden transition-all duration-500 ${isHero ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
                   <p className="text-base sm:text-lg md:text-xl text-stone-400 max-w-xl sm:max-w-2xl mx-auto px-2 leading-relaxed">
                     Your personal guide to home-style Indian cooking. <br className="hidden sm:block"/>
@@ -110,7 +110,7 @@ const App: React.FC = () => {
                 />
             </div>
             
-            {/* Suggestion Chips - Only show in Hero */}
+            {/* Suggestions - Only visible in Hero mode */}
             <div className={`w-full max-w-4xl transition-all duration-500 ${isHero && !isLoading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none absolute'}`}>
                <CategoryBrowser onSelect={handleSuggestionSelect} />
                <div className="mt-6">
@@ -135,15 +135,30 @@ const App: React.FC = () => {
 
       {/* --- Footer --- */}
       <footer className="relative z-10 text-center py-8 mt-auto text-stone-500 text-sm bg-stone-950/80 backdrop-blur-md border-t border-stone-800/50">
-        <p className="font-serif italic text-stone-400 mb-2">Happy Cooking!</p>
-        <p>
-          For any queries, contact at: {' '}
-          <a href="mailto:hey@pranavkohli.me" className="text-orange-300/80 hover:text-orange-300 hover:underline transition-colors">
-            hey@pranavkohli.me
-          </a>
-        </p>
+        <div className="flex flex-col items-center gap-2">
+            <p className="font-serif italic text-stone-400">
+              Happy Cooking!
+            </p>
+
+            {/* Branding / Portfolio Link */}
+            <p>
+              Designed & Built by{' '}
+              
+                Pranav Kohli
+              
+            </p>
+
+            {/* Contact Info */}
+            <p className="text-xs text-stone-600 mt-2">
+              © {new Date().getFullYear()} Rasoi Bazaar •{' '}
+              <a href="mailto:hey@pranavkohli.me" className="hover:text-stone-400 transition-colors">
+                hey@pranavkohli.me
+              </a>
+            </p>
+        </div>
       </footer>
       
+      {/* --- Modals --- */}
       {showCelebration && <CelebrationPopup onReset={handleReset} />}
     </div>
   );
