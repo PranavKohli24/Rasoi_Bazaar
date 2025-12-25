@@ -1,5 +1,15 @@
 {
   "name": "Indian Kitchen Guide",
   "description": "Authentic Indian recipes made for everyday home kitchens. Clear steps, real measurements, and practical alternatives.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "openGraph": {
+    "images": [
+      {
+        "url": "/chef_photo.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Project thumbnail"
+      }
+    ]
+  }
 }
