@@ -8,6 +8,8 @@ import ErrorMessage from './components/ErrorMessage';
 import RecipeSuggestionChips from './components/RecipeSuggestionChips';
 import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
+import chefPhoto from './chef_photo.png';
+import chefPhoto from './chef_photo.png';
 
 // High-quality background image
 const BACKGROUND_IMG = "https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop";
