@@ -141,10 +141,10 @@ const App: React.FC = () => {
             </p>
 
             {/* Branding / Portfolio Link */}
-            <p className="hover:text-stone-400 transition-colors">
-              Built by{' '}
+            <p>
+              Designed & Built by{' '}
               <a 
-                href="linkedin.com/in/pranav-kohli-987aa5226/" 
+                href="https://www.linkedin.com/in/pranav-kohli-987aa5226/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-orange-200 hover:text-orange-400 font-medium transition-colors duration-300"
@@ -154,13 +154,15 @@ const App: React.FC = () => {
             </p>
 
             {/* Contact Info */}
-            <p className="text-xs text-stone-600 mt-2">
+            <div className="text-xs text-stone-600 mt-2">
               <p>© {new Date().getFullYear()} Rasoi Bazaar</p>
-              For any queries, mail me(Pranav) at: {' '}
-              <a href="mailto:hey@pranavkohli.me" className="hover:text-stone-400 transition-colors">
-                hey@pranavkohli.me
-              </a>
-            </p>
+              <p className="mt-1">
+                For any queries, mail me(Pranav) at: {' '}
+                <a href="mailto:hey@pranavkohli.me" className="hover:text-stone-400 transition-colors">
+                  hey@pranavkohli.me
+                </a>
+              </p>
+            </div>
         </div>
       </footer>
       
