@@ -10,7 +10,7 @@ import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
 
 // High-quality background image
-const BACKGROUND_IMG = "https://images.pexels.com/photos/2284166/pexels-photo-2284166.jpeg?cs=srgb&dl=pexels-mvdheuvel-2284166.jpg&fm=jpg?q=80&w=2187&auto=format&fit=crop";
+const BACKGROUND_IMG = "/background.jpeg";
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -77,7 +77,7 @@ const App: React.FC = () => {
           backgroundImage: `url('${BACKGROUND_IMG}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: isHero ? 0.15 : 0.05, // Dims background when reading recipe
+          opacity: isHero ? 0.40 : 0.09, // Dims background when reading recipe
           transition: 'opacity 1s ease-in-out'
         }}
       />

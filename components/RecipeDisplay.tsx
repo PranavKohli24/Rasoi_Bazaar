@@ -6,7 +6,7 @@ interface RecipeDisplayProps {
   onFinishCooking: () => void;
 }
 
-const SectionTitle: React.FC<{ title: string; icon: JSX.Element; }> = ({ title, icon }) => (
+const SectionTitle: React.FC<{ title: string; icon: React.ReactNode; }> = ({ title, icon }) => (
     <div className="flex items-center mb-6 border-b-2 border-orange-800/50 pb-3">
       <span className="text-orange-400 mr-4">{icon}</span>
       <h2 className="text-3xl font-bold font-serif text-orange-100">{title}</h2>
@@ -124,8 +124,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
                 {/* --- Equipment --- */}
                 <div className="mb-12">
-                    <SectionTitle title="Equipment" 
-                     />
+                    <SectionTitle
+                      title="Equipment"
+                      icon={
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M8.25 2a.75.75 0 01.75.75V4h2V2.75a.75.75 0 011.5 0V4h.75A1.75 1.75 0 0115 5.75v9.5A1.75 1.75 0 0113.25 17H6.75A1.75 1.75 0 015 15.25v-9.5A1.75 1.75 0 016.75 4h.75V2.75A.75.75 0 018.25 2zM7 7.5A.5.5 0 007.5 8h5a.5.5 0 000-1h-5a.5.5 0 000 1zM7 10a.5.5 0 007 10h5a.5.5 0 000-1h-5a.5.5 0 000 1z" clipRule="evenodd" />
+                        </svg>
+                      }
+                    />
                     <ul className="space-y-3 text-stone-300">
                         {recipe.equipment.map((tool, index) => (
                         <li key={index} className="pl-1 text-lg">

@@ -1,11 +1,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from '../types';
 
-if (!process.env.API_KEY) {
-  throw new Error("API_KEY environment variable not set");
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!apiKey) {
+  throw new Error("API_KEY environment variable not set");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey });
 
 const recipeSchema = {
   type: Type.OBJECT,
@@ -88,7 +90,7 @@ You must return the recipe in the requested JSON format.`;
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: `Generate a step-by-step recipe for ${dishName}.`,
       config: {
         systemInstruction: systemInstruction,
@@ -98,7 +100,7 @@ You must return the recipe in the requested JSON format.`;
       },
     });
 
-    const jsonText = response.text.trim();
+    const jsonText = response.text?.trim();
     if (!jsonText) {
       throw new Error("API returned an empty response.");
     }
@@ -109,10 +111,22 @@ You must return the recipe in the requested JSON format.`;
 
     return recipeData as Recipe;
   } catch (error) {
-    console.error("Error fetching recipe from Gemini API:", error);
-    if (error instanceof Error) {
-        throw new Error(`Failed to fetch recipe: ${error.message}`);
-    }
-    throw new Error("An unknown error occurred while fetching the recipe.");
-  }
+  console.error("Error fetching recipe from Gemini API:", error);
+
+  const errorMessage = error instanceof Error ? error.message : String(error);
+
+  if (
+    errorMessage.includes('"code":503') ||
+    errorMessage.includes("UNAVAILABLE") ||
+    errorMessage.includes("high demand")
+  ) {
+    throw new Error(
+      "Our kitchen is a little busy right now. Please try again in a moment."
+    );
+  }
+
+  throw new Error(
+    "Something went wrong while preparing your recipe. Please try again."
+  );
+}
 };
