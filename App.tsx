@@ -30,6 +30,16 @@ const ignoreNextPopRef = useRef(false);
 const restoringHistoryRef = useRef(false);
 const activeRequestIdRef = useRef(0);
 
+useEffect(() => {
+  const previousScrollRestoration = history.scrollRestoration;
+
+  history.scrollRestoration = 'manual';
+
+  return () => {
+    history.scrollRestoration = previousScrollRestoration;
+  };
+}, []);
+
   useEffect(() => {
   if (!isHero && !recipeHistoryActiveRef.current) {
     history.pushState({ recipeScreen: true }, '', window.location.href);
@@ -72,6 +82,7 @@ useEffect(() => {
       setSearchTerm('');
       setError(null);
       setIsHero(true);
+      setIsLoading(false);
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
