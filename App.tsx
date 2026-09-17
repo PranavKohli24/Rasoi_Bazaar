@@ -94,7 +94,7 @@ const App: React.FC = () => {
       <section 
         className={`relative z-10 w-full flex flex-col justify-center items-center px-4 text-center transition-all duration-700 ease-in-out ${isHero ? 'min-h-[90vh]' : 'pt-24 pb-12'}`}
       >
-        <div className="w-full flex flex-col items-center max-w-4xl">
+        <div className="w-full flex flex-col items-center max-w-6xl">
             <div className={`transition-all duration-700 ${isHero ? 'opacity-100 translate-y-0' : 'opacity-100 scale-90'}`}>
                 <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 drop-shadow-lg mt-8 sm:mt-10 tracking-tight">
                   Rasoi Bazaar
@@ -119,11 +119,26 @@ const App: React.FC = () => {
             </div>
             
             {/* Suggestions - Only visible in Hero mode */}
-            <div className={`w-full max-w-4xl transition-all duration-500 ${isHero && !isLoading ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none absolute'}`}>
-               <CategoryBrowser onSelect={handleSuggestionSelect} />
-               <div className="mt-6">
-                 <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
-               </div>
+            <div
+              className={`w-full max-w-6xl transition-all duration-500 ${
+                isHero && !isLoading
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4 pointer-events-none absolute'
+              }`}
+            >
+              <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8">
+                
+                {/* Categories */}
+                <div className="w-full lg:w-2/3">
+                  <CategoryBrowser onSelect={handleSuggestionSelect} />
+                </div>
+
+                {/* Suggestions */}
+                <div className="w-full lg:w-1/3 mt-6 lg:mt-8">
+                  <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
+                </div>
+
+              </div>
             </div>
         </div>
       </section>

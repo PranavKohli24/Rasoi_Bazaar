@@ -8,8 +8,11 @@ const suggestions = ["Paneer Butter Masala", "Chicken Biryani", "Masala Dosa", "
 
 const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({ onSelect }) => {
     return (
-        <div className="flex flex-wrap justify-center gap-3 mt-8 animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-            <p className="w-full text-center text-stone-400 mb-2">Or you can try one of these:</p>
+        <div
+        className="flex flex-wrap justify-center lg:justify-start gap-3 mt-8 lg:mt-0 animate-fade-in-up"
+        style={{ animationDelay: '0.5s' }}
+        >
+            <p className="w-full text-center lg:text-left text-stone-400 mb-2">Or you can try one of these:</p>
             {suggestions.map((dish, index) => (
                 <button 
                     key={index}
