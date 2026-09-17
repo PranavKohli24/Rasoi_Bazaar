@@ -160,8 +160,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className={`w-full
                 ${
                   compact
-                    ? 'h-11 pl-11 pr-4 text-xs rounded-full border-stone-700'
-                    : 'h-12 sm:h-14 pl-11 sm:pl-12 pr-4 text-sm sm:text-lg rounded-xl border-orange-700'
+                    ? 'h-11 pl-9 pr-4 text-xs rounded-full border-stone-700'
+                    : 'h-12 sm:h-14 pl-9 sm:pl-12 pr-4 text-sm sm:text-lg rounded-xl border-orange-700'
                 }
                 bg-stone-900 text-stone-100 placeholder-stone-500
                 border-2
