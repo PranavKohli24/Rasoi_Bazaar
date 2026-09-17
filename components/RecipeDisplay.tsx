@@ -719,24 +719,24 @@ const [
                 “{recipe.description}”
               </p>
 
-              <div className="mt-6 inline-flex items-center justify-center bg-orange-900/40 text-orange-200 px-4 py-2 rounded-full border border-orange-700/60">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.414L11 10.586V6z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+              <div className="mt-6 flex items-center gap-2 text-stone-300">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 text-orange-400"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+    >
+        <path
+            fillRule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.414L11 10.586V6z"
+            clipRule="evenodd"
+        />
+    </svg>
 
-                <span className="font-semibold">
-                  {recipe.prepTime}
-                </span>
-              </div>
+    <span className="text-sm font-medium">
+        {recipe.prepTime}
+    </span>
+</div>
 
               <div className="mt-4">
                 <button
