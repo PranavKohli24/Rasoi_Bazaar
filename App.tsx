@@ -21,6 +21,8 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isHero, setIsHero] = useState<boolean>(true);
   const [showCelebration, setShowCelebration] = useState<boolean>(false);
+  const [backgroundLoaded, setBackgroundLoaded] = useState(false);
+
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -183,14 +185,17 @@ useEffect(() => {
   />
 
   <img
-    src={BACKGROUND_DESKTOP}
-    alt=""
-    className="w-full h-full object-cover object-center"
-    style={{
-      opacity: isHero ? 0.35 : 0.09,
-      transition: 'opacity 1s ease-in-out'
-    }}
-  />
+  src={BACKGROUND_DESKTOP}
+  alt=""
+  loading="eager"
+  fetchPriority="high"
+  onLoad={() => setBackgroundLoaded(true)}
+  className="w-full h-full object-cover object-center"
+  style={{
+    opacity: backgroundLoaded ? (isHero ? 0.35 : 0.09) : 0,
+    transition: 'opacity 0.8s ease-in-out'
+  }}
+/>
 </picture>
 
       {/* --- Hero Section --- */}
