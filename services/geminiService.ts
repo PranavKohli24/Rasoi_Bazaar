@@ -1,5 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from '../types';
+import { predefinedRecipes } from "../data/predefinedRecipes";
 
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -72,6 +73,16 @@ const recipeSchema = {
 
 
 export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
+  const key = dishName
+  .trim()
+  .toLowerCase();
+
+const predefinedRecipe =
+  predefinedRecipes[key];
+
+if (predefinedRecipe) {
+  return predefinedRecipe;
+}
   const systemInstruction = `You are a passionate and knowledgeable Indian home cook, guiding a beginner in their kitchen. Your tone should be warm, encouraging, and detailed, like sharing a secret family recipe.
 
 Your most important job is to make the recipe extremely simple and easy to follow. Do not overcomplicate it. Write for someone who has never cooked before. Break down each step into a single, small, manageable action. For example, instead of 'sauté onions until translucent, then add ginger-garlic paste and spices', break it into separate steps: '1. Add the chopped onions to the hot oil.', '2. Cook them, stirring often, until they look soft and see-through.', '3. Now, stir in the ginger-garlic paste.', '4. Add all the spice powders and stir for one minute.' Avoid technical culinary terms. The goal is clarity and simplicity above all else.

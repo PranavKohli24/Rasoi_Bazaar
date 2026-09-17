@@ -144,7 +144,7 @@ const App: React.FC = () => {
             <p>
               Designed & Built by{' '}
               <a 
-                href="https://www.linkedin.com/in/pranav-kohli-987aa5226/" 
+                href="https://www.linkedin.com/in/pranavkohli24/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-orange-200 hover:text-orange-400 font-medium transition-colors duration-300"

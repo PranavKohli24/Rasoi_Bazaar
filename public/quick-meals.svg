@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="40 105 390 455" role="img" aria-labelledby="title desc">
+  <title id="title">Quick Meals stopwatch</title>
+  <desc id="desc">A clean vector illustration of a red stopwatch showing a short meal time.</desc>
+  <defs>
+    <radialGradient id="face" cx="42%" cy="36%" r="75%">
+      <stop offset="0" stop-color="#fffaf1"/>
+      <stop offset="1" stop-color="#f4ead9"/>
+    </radialGradient>
+    <linearGradient id="case" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e82d6b"/>
+      <stop offset="1" stop-color="#d80d35"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4b72d"/>
+      <stop offset="1" stop-color="#d88c09"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <!-- soft ground shadow -->
+  <ellipse cx="235" cy="540" rx="125" ry="12" fill="#000" opacity=".10" filter="url(#shadow)"/>
+
+  <!-- angled side button -->
+  <g transform="rotate(-4 93 218)">
+    <path d="M61 210 L82 187 L108 211 L87 236 Z" fill="#cf1039"/>
+    <path d="M61 210 L82 187 L94 198 L73 221 Z" fill="#e52a61"/>
+  </g>
+
+  <!-- top crown -->
+  <rect x="218" y="108" width="35" height="17" rx="2" fill="#d80d35"/>
+  <rect x="218" y="125" width="35" height="16" fill="#df1848"/>
+  <rect x="225" y="141" width="21" height="23" rx="3" fill="#d20e38"/>
+
+  <!-- stopwatch body -->
+  <circle cx="235" cy="355" r="177" fill="url(#case)"/>
+  <circle cx="235" cy="355" r="145" fill="url(#gold)" opacity=".95"/>
+  <circle cx="235" cy="355" r="141" fill="url(#face)"/>
+
+  <!-- subtle face highlight -->
+  <path d="M130 292 C153 235 208 214 258 218 C206 224 160 251 137 302 Z" fill="#fff" opacity=".18"/>
+
+  <!-- hour markers -->
+  <g fill="#e21d4b">
+    <rect x="231" y="230" width="7" height="16" rx="3.5"/>
+    <rect x="231" y="464" width="7" height="16" rx="3.5"/>
+    <rect x="111" y="351.5" width="16" height="7" rx="3.5"/>
+    <rect x="343" y="351.5" width="16" height="7" rx="3.5"/>
+    <g transform="rotate(45 235 355)"><rect x="231" y="230" width="7" height="16" rx="3.5"/></g>
+    <g transform="rotate(135 235 355)"><rect x="231" y="230" width="7" height="16" rx="3.5"/></g>
+    <g transform="rotate(225 235 355)"><rect x="231" y="230" width="7" height="16" rx="3.5"/></g>
+    <g transform="rotate(315 235 355)"><rect x="231" y="230" width="7" height="16" rx="3.5"/></g>
+  </g>
+
+  <!-- hands: 12:37-ish -->
+  <path d="M235 355 L235 258 L239 355 Z" fill="#e21d4b"/>
+  <path d="M235 355 L181 410 L228 347 Z" fill="#c9143d"/>
+  <circle cx="235" cy="355" r="13" fill="#d61b48"/>
+  <circle cx="231" cy="351" r="4" fill="#ee4770" opacity=".55"/>
+</svg>

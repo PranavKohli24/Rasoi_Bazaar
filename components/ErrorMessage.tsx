@@ -1,19 +1,48 @@
-import React from 'react';
+import React from "react";
 
 interface ErrorMessageProps {
   message: string;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
+const ErrorMessage: React.FC<ErrorMessageProps> = ({
+  message,
+}) => {
   return (
-    <div className="bg-red-900/50 border-l-4 border-red-500 text-red-100 p-6 rounded-lg shadow-2xl animate-fade-in-up" role="alert">
-      <div className="flex">
-        <div className="py-1">
-          <svg className="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zM11.414 10l2.829-2.828-1.414-1.414L10 8.586 7.172 5.757 5.758 7.172 8.586 10l-2.828 2.828 1.414 1.414L10 11.414l2.828 2.828 1.414-1.414L11.414 10z"/></svg>
+    <div
+      role="alert"
+      className="mt-6 w-full rounded-2xl border border-orange-500/25 bg-stone-900/70 backdrop-blur-md shadow-xl shadow-black/20 animate-fade-in-up"
+    >
+      <div className="flex items-start gap-4 p-5 sm:p-6">
+
+        {/* Icon */}
+        <div className="shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 border border-orange-500/20">
+            <svg
+              className="h-5 w-5 text-orange-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+              <path d="M10.3 3.8L2.6 17.2A1.8 1.8 0 004.15 20h15.7a1.8 1.8 0 001.55-2.8L13.7 3.8a2 2 0 00-3.4 0z" />
+            </svg>
+          </div>
         </div>
-        <div>
-          <p className="font-bold text-lg">A Kitchen Mishap!</p>
-          <p className="text-md">{message}</p>
+
+        {/* Content */}
+        <div className="min-w-0 pt-0.5">
+          <p className="text-sm font-semibold tracking-wide text-orange-300">
+            A little kitchen hiccup
+          </p>
+
+          <p className="mt-1 text-sm sm:text-base leading-relaxed text-stone-300">
+            {message}
+          </p>
         </div>
       </div>
     </div>
