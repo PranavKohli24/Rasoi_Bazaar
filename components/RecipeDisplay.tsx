@@ -889,7 +889,7 @@ const [
                   </div>
 
                   {/* Navigation */}
-                  <div className="flex justify-between items-center mt-8">
+                  <div className="flex justify-between items-center gap-3 mt-8">
                     <button
                       onClick={
                         handlePrevStep
@@ -945,7 +945,7 @@ const [
                         onClick={
                           onFinishCooking
                         }
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-200"
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200"
                       >
                         I’m Done Cooking
                       </button>
