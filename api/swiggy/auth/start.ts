@@ -2,8 +2,15 @@ import crypto from "node:crypto";
 
 const SWIGGY_BASE_URL = "https://mcp.swiggy.com";
 
-const REDIRECT_URI =
-  "http://localhost:3000/api/swiggy/auth/callback";
+function getRedirectUri(): string {
+  const redirectUri = process.env.SWIGGY_REDIRECT_URI;
+
+  if (!redirectUri) {
+    throw new Error("SWIGGY_REDIRECT_URI is not configured");
+  }
+
+  return redirectUri;
+}
 
 function base64Url(buffer: Buffer) {
   return buffer
@@ -32,6 +39,9 @@ function createPkce() {
 }
 
 export async function GET(): Promise<Response> {
+
+  const REDIRECT_URI = getRedirectUri();
+
   const {
     verifier,
     challenge,
