@@ -10,7 +10,9 @@ import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
 
 // High-quality background image
-const BACKGROUND_IMG = "/background.png";
+// Responsive background images
+const BACKGROUND_DESKTOP = "/background.png";
+const BACKGROUND_MOBILE = "/background_mobile.png";
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -70,17 +72,23 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-stone-950 text-stone-200 font-sans transition-colors duration-500 selection:bg-orange-500/30">
       
-      {/* --- Global Background Layer (Fixed for better mobile performance) --- */}
-      <div 
-        className="fixed inset-0 z-0 pointer-events-none"
-        style={{
-          backgroundImage: `url('${BACKGROUND_IMG}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: isHero ? 0.40 : 0.09, // Dims background when reading recipe
-          transition: 'opacity 1s ease-in-out'
-        }}
-      />
+      {/* --- Responsive Global Background Layer --- */}
+<picture className="fixed inset-0 z-0 pointer-events-none block">
+  <source
+    media="(max-width: 767px)"
+    srcSet={BACKGROUND_MOBILE}
+  />
+
+  <img
+    src={BACKGROUND_DESKTOP}
+    alt=""
+    className="w-full h-full object-cover object-center"
+    style={{
+      opacity: isHero ? 0.35 : 0.09,
+      transition: 'opacity 1s ease-in-out'
+    }}
+  />
+</picture>
 
       {/* --- Hero Section --- */}
       <section 
