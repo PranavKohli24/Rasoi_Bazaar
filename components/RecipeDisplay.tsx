@@ -47,7 +47,7 @@ const TipCallout: React.FC<{
         onClick={() =>
           setIsOpen(!isOpen)
         }
-        className="flex items-center text-sm text-orange-400 hover:text-orange-300 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50 rounded"
+        className="inline-flex items-center max-w-full text-sm text-orange-400 hover:text-orange-300 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50 rounded"
         aria-expanded={isOpen}
         aria-controls={`tip-${tip.title.replace(
           /\s+/g,
@@ -69,7 +69,9 @@ const TipCallout: React.FC<{
           <path d="M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.9-1.5-2.5Z" />
         </svg>
 
-        {isOpen ? "Hide Tip" : tip.title}
+        <span className="truncate max-w-[240px]">
+          {isOpen ? "Hide Tip" : tip.title}
+        </span>
       </button>
 
       {isOpen && (
@@ -881,19 +883,12 @@ const [
                       }
                     </p>
 
-                    {
-                      recipe.method[
-                        currentStepIndex
-                      ].tip && (
+                    {recipe.method[currentStepIndex].tip?.title?.trim() &&
+                      recipe.method[currentStepIndex].tip?.content?.trim() && (
                         <TipCallout
-                          tip={
-                            recipe.method[
-                              currentStepIndex
-                            ].tip!
-                          }
+                          tip={recipe.method[currentStepIndex].tip!}
                         />
-                      )
-                    }
+                      )}
                   </div>
 
                   {/* Navigation */}
