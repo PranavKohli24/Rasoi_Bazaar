@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Recipe } from './types';
 import { fetchRecipe } from './services/geminiService';
 import SearchBar from './components/SearchBar';
@@ -24,30 +24,111 @@ const App: React.FC = () => {
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  const backPressTimeRef = useRef<number | null>(null);
+const recipeHistoryActiveRef = useRef(false);
+const ignoreNextPopRef = useRef(false);
+const restoringHistoryRef = useRef(false);
+const activeRequestIdRef = useRef(0);
+
+  useEffect(() => {
+  if (!isHero && !recipeHistoryActiveRef.current) {
+    history.pushState({ recipeScreen: true }, '', window.location.href);
+    recipeHistoryActiveRef.current = true;
+  }
+}, [isHero]);
+
+
+useEffect(() => {
+  const handlePopState = () => {
+    // Ignore the popstate caused by our own reset navigation.
+    if (ignoreNextPopRef.current) {
+      ignoreNextPopRef.current = false;
+      return;
+    }
+
+    // Ignore the popstate caused by history.forward()
+    // when handling the first back press.
+    if (restoringHistoryRef.current) {
+      restoringHistoryRef.current = false;
+      return;
+    }
+
+    if (!recipeHistoryActiveRef.current) {
+      return;
+    }
+
+    const now = Date.now();
+    const lastBack = backPressTimeRef.current;
+
+    // Second back within 10 seconds → stay on the current
+    // Home history entry and reset the app.
+    if (lastBack && now - lastBack <= 10000) {
+      backPressTimeRef.current = null;
+      recipeHistoryActiveRef.current = false;
+      activeRequestIdRef.current++;
+
+      setShowCelebration(false);
+      setRecipe(null);
+      setSearchTerm('');
+      setError(null);
+      setIsHero(true);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // First back → temporarily go to Home, then immediately
+    // restore the recipe history entry.
+    backPressTimeRef.current = now;
+    restoringHistoryRef.current = true;
+    history.forward();
+
+    // After 10 seconds, forget the first back.
+    window.setTimeout(() => {
+      if (
+        backPressTimeRef.current &&
+        Date.now() - backPressTimeRef.current >= 10000
+      ) {
+        backPressTimeRef.current = null;
+      }
+    }, 10000);
+  };
+
+  window.addEventListener('popstate', handlePopState);
+
+  return () => {
+    window.removeEventListener('popstate', handlePopState);
+  };
+}, []);
+
+
   const performSearch = useCallback(async (dish: string) => {
     if (!dish.trim() || isLoading) return;
+
+    const requestId = ++activeRequestIdRef.current;   // NEW: tag this search
 
     setIsHero(false);
     setIsLoading(true);
     setError(null);
     setRecipe(null);
 
-    // Small delay to allow layout transition to start before scrolling
     setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 400);
 
     try {
       const fetchedRecipe = await fetchRecipe(dish);
+      if (activeRequestIdRef.current !== requestId) return;   // NEW: abandoned, ignore
       setRecipe(fetchedRecipe);
     } catch (err) {
+        if (activeRequestIdRef.current !== requestId) return;   // NEW: abandoned, ignore
         if (err instanceof Error) {
             setError(err.message);
         } else {
             setError('An unexpected error occurred.');
         }
     } finally {
-      setIsLoading(false);
+      if (activeRequestIdRef.current === requestId) setIsLoading(false);   // CHANGED
     }
   }, [isLoading]);
 
@@ -60,14 +141,24 @@ const App: React.FC = () => {
 
   const handleFinishCooking = () => setShowCelebration(true);
 
-  const handleReset = () => {
-    setShowCelebration(false);
-    setRecipe(null);
-    setSearchTerm('');
-    setError(null);
-    setIsHero(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+ const handleReset = () => {
+  setShowCelebration(false);
+  setRecipe(null);
+  setSearchTerm('');
+  setError(null);
+  setIsHero(true);
+  setIsLoading(false);
+  backPressTimeRef.current = null;
+  activeRequestIdRef.current++;
+
+  if (recipeHistoryActiveRef.current) {
+    recipeHistoryActiveRef.current = false;
+    ignoreNextPopRef.current = true;
+    history.back();
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
   return (
     <div className="min-h-screen bg-stone-950 text-stone-200 font-sans transition-colors duration-500 selection:bg-orange-500/30">
