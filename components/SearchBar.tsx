@@ -153,7 +153,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               autoFocus={compact && isExpanded}
               placeholder={
                 compact
-                  ? 'Planning to cook another masterpiece?'
+                  ? 'cook another masterpiece?'
                   : 'What masterpiece will you create today?'
               }
               disabled={isLoading}
