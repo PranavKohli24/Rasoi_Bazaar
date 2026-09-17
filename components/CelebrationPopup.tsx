@@ -64,7 +64,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({ onReset }) => {
                     Woohoo, Chef!
                 </h2>
                 <p className="text-xl text-orange-200/90 max-w-2xl mx-auto mb-10">
-                    You've successfully created a masterpiece. Time for the best part - enjoying it!
+                    You've successfully created a masterpiece. Time for the best part - eating it!
                 </p>
                 <button
                     onClick={onReset}
