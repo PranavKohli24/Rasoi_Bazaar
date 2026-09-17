@@ -14,6 +14,7 @@ const categories = [
                 src="/quick-meals.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
@@ -26,6 +27,7 @@ const categories = [
                 src="/healthy-light.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
@@ -39,6 +41,7 @@ const categories = [
                 src="/dessert-classics.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
@@ -52,6 +55,7 @@ const categories = [
                 src="/vegetarian-mains.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
@@ -64,6 +68,7 @@ const categories = [
                 src="/chicken-classics.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
@@ -77,6 +82,7 @@ const categories = [
                 src="/rice-classics.svg"
                 alt=""
                 className="h-10 w-10 mb-3 object-contain"
+                draggable={false}
             />
         )
     },
