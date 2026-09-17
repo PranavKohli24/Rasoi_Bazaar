@@ -129,8 +129,9 @@ useEffect(() => {
 
     try {
       const fetchedRecipe = await fetchRecipe(dish);
-      if (activeRequestIdRef.current !== requestId) return;   // NEW: abandoned, ignore
+      if (activeRequestIdRef.current !== requestId) return;
       setRecipe(fetchedRecipe);
+      setSearchTerm('');
     } catch (err) {
         if (activeRequestIdRef.current !== requestId) return;   // NEW: abandoned, ignore
         if (err instanceof Error) {
@@ -197,27 +198,44 @@ useEffect(() => {
         className={`relative z-10 w-full flex flex-col justify-center items-center px-4 text-center transition-all duration-700 ease-in-out ${isHero ? 'min-h-[90vh]' : 'pt-24 pb-12'}`}
       >
         <div className="w-full flex flex-col items-center max-w-6xl">
-            <div className={`transition-all duration-700 ${isHero ? 'opacity-100 translate-y-0' : 'opacity-100 scale-90'}`}>
-                <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 drop-shadow-lg mt-8 sm:mt-10 tracking-tight">
-                  Rasoi Bazaar
-                </h1>
-                
-                {/* Description collapses when not in hero mode */}
-                <div className={`overflow-hidden transition-all duration-500 ${isHero ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
-                  <p className="text-base sm:text-lg md:text-xl text-stone-400 max-w-xl sm:max-w-2xl mx-auto px-2 leading-relaxed">
-                    Your personal guide to home-style Indian cooking. <br className="hidden sm:block"/>
-                    <span className="text-orange-200/90 font-medium">What delicious dish will you make today?</span>
-                  </p>
-                </div>
-            </div>
+            {!isHero && (
+  <h1 className="absolute top-4 left-4 sm:top-6 sm:left-8 z-50 font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 drop-shadow-lg tracking-tight">
+    Rasoi Bazaar
+  </h1>
+)}
 
-            <div className="w-full max-w-2xl my-8 z-20">
-                <SearchBar 
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    onSearch={handleSearch}
-                    isLoading={isLoading}
-                />
+<div className={`transition-all duration-700 ${isHero ? 'opacity-100 translate-y-0' : 'opacity-100 scale-90'}`}>
+  {isHero && (
+    <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 drop-shadow-lg mt-8 sm:mt-10 tracking-tight">
+      Rasoi Bazaar
+    </h1>
+  )}
+
+  {/* Description collapses when not in hero mode */}
+  <div className={`overflow-hidden transition-all duration-500 ${isHero ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
+    <p className="text-base sm:text-lg md:text-xl text-stone-400 max-w-xl sm:max-w-2xl mx-auto px-2 leading-relaxed">
+      Your personal guide to home-style Indian cooking.{" "}
+      <br className="hidden sm:block" />
+      <span className="text-orange-200/90 font-medium">
+        What delicious dish will you make today?
+      </span>
+    </p>
+  </div>
+</div>
+            <div
+              className={
+                isHero
+                  ? "w-full max-w-2xl my-8 z-20"
+                  : "absolute top-[55px] right-6 z-30 w-[min(90vw,720px)]"
+              }
+            >
+              <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                onSearch={handleSearch}
+                isLoading={isLoading}
+                compact={!isHero}
+              />
             </div>
             
             {/* Suggestions - Only visible in Hero mode */}
