@@ -11,7 +11,7 @@ import {
 interface SwiggyActionModalProps {
   type: "instamart" | "swiggy" | null;
   isLoading: boolean;
-  loadingStage?: "addresses" | "restaurants" | "ingredients" | null;
+  loadingStage?: "addresses" | "restaurants" | "ingredients" | "cart" | null;
   restaurants?: SwiggyRestaurant[];
   addresses?: SwiggyAddress[];
   selectedAddressId?: string | null;
@@ -263,14 +263,16 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
             </div>
           )}
 
-          {isLoading ? (
+            {isLoading ? (
   <div className="text-center py-14">
     <div className="text-3xl mb-3 opacity-80 animate-pulse">
       {loadingStage === "addresses"
         ? "📍"
         : loadingStage === "ingredients"
           ? "🛒"
-          : "🍽️"}
+          : loadingStage === "cart"
+            ? "✅"
+            : "🍽️"}
     </div>
 
     <p className="text-stone-300 text-sm">
@@ -278,7 +280,9 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
         ? "Loading your addresses..."
         : loadingStage === "ingredients"
           ? "Checking Instamart..."
-          : "Finding restaurants nearby..."}
+          : loadingStage === "cart"
+            ? "Adding to your cart..."
+            : "Finding restaurants nearby..."}
     </p>
   </div>
           ) : type === "instamart" ? (

@@ -127,7 +127,7 @@ const [
   loadingStage,
   setLoadingStage,
 ] = useState<
-  "addresses" | "restaurants" | "ingredients" | null
+  "addresses" | "restaurants" | "ingredients" | "cart" | null
 >(null);
 
   /*
@@ -506,7 +506,8 @@ const [
         return;
       }
 
-      setIsModalLoading(true);
+            setIsModalLoading(true);
+      setLoadingStage("cart");
       setSwiggyError(null);
 
       try {
@@ -537,6 +538,7 @@ const [
         );
       } finally {
         setIsModalLoading(false);
+        setLoadingStage(null);
       }
     };
 
