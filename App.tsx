@@ -226,7 +226,7 @@ useEffect(() => {
               className={
                 isHero
                   ? "w-full max-w-2xl my-8 z-20"
-                  : "absolute top-[55px] right-6 z-30 w-[min(90vw,720px)]"
+                  : "absolute top-[55px] right-6 z-30 w-[min(92vw,760px)]"
               }
             >
               <SearchBar
