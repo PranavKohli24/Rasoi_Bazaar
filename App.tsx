@@ -193,7 +193,7 @@ useEffect(() => {
   className="w-full h-full object-cover object-center"
   style={{
     opacity: backgroundLoaded ? (isHero ? 0.35 : 0.09) : 0,
-    transition: 'opacity 0.8s ease-in-out'
+    transition: 'opacity 0.5s ease-in-out'
   }}
 />
 </picture>
