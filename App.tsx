@@ -10,7 +10,7 @@ import CategoryBrowser from './components/CategoryBrowser';
 import CelebrationPopup from './components/CelebrationPopup';
 
 // High-quality background image
-const BACKGROUND_IMG = "/background.jpeg";
+const BACKGROUND_IMG = "/background.png";
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
