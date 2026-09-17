@@ -177,7 +177,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             disabled={isLoading}
             className={`${
               compact
-                ? 'px-3 sm:px-5 h-11 rounded-full text-xs sm:text-sm whitespace-nowrap'
+                ? 'px-3 h-11 rounded-full text-sm'
                 : 'w-full sm:w-auto min-w-[160px] h-12 sm:h-14 rounded-xl'
             }
             bg-orange-600 hover:bg-orange-500 active:scale-95
