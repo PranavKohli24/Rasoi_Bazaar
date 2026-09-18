@@ -235,12 +235,12 @@ useEffect(() => {
   {/* Description collapses when not in hero mode */}
   <div className={`overflow-hidden transition-all duration-500 ${isHero ? 'max-h-40 opacity-100 mt-3' : 'max-h-0 opacity-0'}`}>
     <p className="text-base sm:text-lg md:text-xl text-stone-400 max-w-xl sm:max-w-2xl mx-auto px-2 leading-relaxed">
-      Your personal guide to home-style Indian cooking.{" "}
-      <br className="hidden sm:block" />
-      <span className="text-orange-200/90 font-medium">
-        What delicious dish will you make today?
-      </span>
-    </p>
+  Your personal guide to home-style Indian cooking.{" "}
+  <br className="hidden sm:block" />
+  <span className="text-stone-300 font-medium">
+    What delicious dish will you make today?
+  </span>
+</p>
   </div>
 </div>
             <div
