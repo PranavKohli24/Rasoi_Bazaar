@@ -631,7 +631,7 @@ const [
 
   return (
     <div className="w-full max-w-7xl mx-auto animate-fade-in-up">
-      <div className="grid grid-cols-1 lg:grid-cols-5 lg:gap-12">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-12">
         {/* Mobile dish header */}
         <div className="lg:hidden mb-8 text-center">
           <h1 className="font-serif text-4xl font-black text-white mb-2">
@@ -773,7 +773,7 @@ const [
             </div>
 
             {/* Equipment */}
-            <div className="mb-12">
+            <div className="mb-12 pt-10 border-t border-stone-700/40">
               <SectionTitle
                 title="Equipment"
                 icon={
@@ -830,7 +830,7 @@ const [
             </div>
 
             {/* Method */}
-            <div className="mb-12">
+            <div className="mb-12 pt-10 border-t border-stone-700/40">
               <SectionTitle
                 title="Method"
                 icon={
@@ -980,7 +980,7 @@ const [
             {recipe.notes &&
               recipe.notes.length >
                 0 && (
-                <div className="mb-12">
+                <div className="mb-12 pt-10 border-t border-stone-700/40">
                   <SectionTitle
                     title="Notes & Tips"
                     icon={
