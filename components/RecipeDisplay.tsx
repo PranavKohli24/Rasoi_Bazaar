@@ -94,13 +94,15 @@ const RecipeDisplay: React.FC<
   onFinishCooking,
 }) => {
   const [
-    checkedIngredients,
-    setCheckedIngredients,
-  ] = useState<boolean[]>(
-    new Array(
-      recipe.ingredients.length
-    ).fill(false)
-  );
+  checkedIngredients,
+  setCheckedIngredients,
+] = useState<boolean[]>(
+  new Array(
+    recipe.ingredients.length
+  ).fill(false)
+);
+
+const [flashIndex, setFlashIndex] = useState<number | null>(null);
 
   const [isCooking, setIsCooking] =
     useState(false);
@@ -206,19 +208,28 @@ const [
    */
 
   const handleIngredientToggle = (
-    index: number
-  ) => {
-    const newCheckedState = [
-      ...checkedIngredients,
-    ];
+  index: number
+) => {
+  const newCheckedState = [
+    ...checkedIngredients,
+  ];
 
-    newCheckedState[index] =
-      !newCheckedState[index];
+  const isNowChecked = !newCheckedState[index];
+  newCheckedState[index] = isNowChecked;
 
-    setCheckedIngredients(
-      newCheckedState
-    );
-  };
+  setCheckedIngredients(
+    newCheckedState
+  );
+
+  if (isNowChecked) {
+    setFlashIndex(index);
+    window.setTimeout(() => {
+      setFlashIndex((current) =>
+        current === index ? null : current
+      );
+    }, 500);
+  }
+};
 
   const handleStartCooking = () => {
     setIsCooking(true);
@@ -655,41 +666,57 @@ const [
               {recipe.ingredients.map(
                 (ing, index) => (
                   <li key={index}>
-                    <label className="flex items-center cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={
-                          checkedIngredients[
-                            index
-                          ]
-                        }
-                        onChange={() =>
-                          handleIngredientToggle(
-                            index
-                          )
-                        }
-                        className="h-6 w-6 mr-4 bg-stone-700 border-stone-500 rounded text-orange-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-stone-800 focus:ring-orange-500 transition-colors duration-200"
-                      />
+  <label
+    className={`flex items-center gap-4 cursor-pointer group rounded-xl px-3 -mx-3 py-2.5 transition-colors duration-300 ${
+      flashIndex === index ? "bg-orange-500/15" : ""
+    }`}
+  >
+    <input
+      type="checkbox"
+      checked={checkedIngredients[index]}
+      onChange={() => handleIngredientToggle(index)}
+      className="sr-only peer"
+    />
 
-                      <span
-                        className={`flex-1 text-stone-300 group-hover:text-white transition-colors duration-200 ${
-                          checkedIngredients[
-                            index
-                          ]
-                            ? "line-through text-stone-500"
-                            : ""
-                        }`}
-                      >
-                        <span className="font-semibold text-white">
-                          {ing.amount}
-                        </span>{" "}
-                        {ing.commonName}{" "}
-                        (
-                        {ing.englishName}
-                        )
-                      </span>
-                    </label>
-                  </li>
+    <span
+      className={`relative shrink-0 h-6 w-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
+        checkedIngredients[index]
+          ? "bg-orange-500 border-orange-500"
+          : "bg-stone-700 border-stone-500 group-hover:border-stone-400"
+      } peer-focus-visible:ring-2 peer-focus-visible:ring-orange-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-stone-800`}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="white"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={`h-3.5 w-3.5 transition-all duration-200 ${
+          checkedIngredients[index]
+            ? "scale-100 opacity-100"
+            : "scale-0 opacity-0"
+        }`}
+      >
+        <path d="M4 10l4 4 8-8" />
+      </svg>
+    </span>
+
+    <span
+      className={`flex-1 text-stone-300 group-hover:text-white transition-colors duration-300 ${
+        checkedIngredients[index]
+          ? "line-through text-stone-500"
+          : ""
+      }`}
+    >
+      <span className="font-semibold text-white">
+        {ing.amount}
+      </span>{" "}
+      {ing.commonName} ({ing.englishName})
+    </span>
+  </label>
+</li>
                 )
               )}
             </ul>
