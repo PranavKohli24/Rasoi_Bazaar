@@ -5,7 +5,7 @@
 
 
 **Rasoi Bazaar** is a full-stack web app that helps you cook Indian dishes right at home.  
-Pick any Indian cuisine you want — Rasoi Bazaar gives you everything you need: ingredients, basic equipment, and step-by-step instructions to follow along.  
+Pick any Indian cuisine you want - Rasoi Bazaar gives you everything you need: ingredients, basic equipment, and step-by-step instructions to follow along.  
 
 👉 **Live Demo:** [rasoi-bazaar.vercel.app](http://rasoi-bazaar.vercel.app/)
 
@@ -14,7 +14,7 @@ Pick any Indian cuisine you want — Rasoi Bazaar gives you everything you need:
 ## 🧩 Overview
 
 Rasoi Bazaar is your digital kitchen companion for exploring Indian cuisine.  
-It guides you through the entire cooking process — from finding a recipe to plating your dish.  
+It guides you through the entire cooking process - from finding a recipe to plating your dish.  
 Each recipe comes with the full ingredient list, tools needed, and clear instructions anyone can follow.
 
 The goal: make Indian cooking accessible, simple, and genuinely fun to do at home.
@@ -35,12 +35,12 @@ This keeps it clear. No guessing. Just cooking.
 ## 🧠 Features
 <img src="demo.png" alt="app demo"/>
 
-- 🔎 **Explore Authentic Recipes** — Browse Indian dishes across regions and categories.  
-- 🧾 **Step-by-Step Cooking Guide** — Follow clear, easy-to-understand instructions.  
-- 🥣 **Ingredient Breakdown** — See what you need and in what quantity.  
-- 🧰 **Equipment List** — Know the tools you'll need before you start.  
-- 📱 **Responsive Design** — Works smoothly on desktop, tablet, and mobile.  
-- 🌶️ **Real Indian Flavors** — Recipes curated for authenticity and taste.  
+- 🔎 **Explore Authentic Recipes** - Browse Indian dishes across regions and categories.  
+- 🧾 **Step-by-Step Cooking Guide** - Follow clear, easy-to-understand instructions.  
+- 🥣 **Ingredient Breakdown** - See what you need and in what quantity.  
+- 🧰 **Equipment List** - Know the tools you'll need before you start.  
+- 📱 **Responsive Design** - Works smoothly on desktop, tablet, and mobile.  
+- 🌶️ **Real Indian Flavors** - Recipes curated for authenticity and taste.  
 
 ---
 

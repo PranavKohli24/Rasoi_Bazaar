@@ -309,7 +309,7 @@ const [
 
     // Already have products from before: check if the ingredient
     // checkboxes changed since that search. If so, silently
-    // re-search — same address, no extra taps needed.
+    // re-search - same address, no extra taps needed.
     const hasExistingProducts =
       Object.keys(ingredientProducts).length > 0;
 
@@ -353,7 +353,7 @@ const [
   const handleSelectAddress = (
     addressId: string
   ) => {
-    // Just record the choice — whether to refetch
+    // Just record the choice - whether to refetch
     // is decided when the user confirms.
     setSelectedAddressId(addressId);
   };

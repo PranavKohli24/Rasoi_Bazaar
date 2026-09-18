@@ -208,7 +208,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "vegetable upma": {
     dishName: "Vegetable Upma",
     description:
-      "A warm, savory semolina porridge studded with vegetables and tempered spices — quick and filling.",
+      "A warm, savory semolina porridge studded with vegetables and tempered spices - quick and filling.",
     prepTime: "Approx. 20 minutes",
     equipment: [
       { item: "Pan", isSpecialized: false, alternative: null },
@@ -324,7 +324,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "egg bhurji (anda bhurji)": {
     dishName: "Egg Bhurji (Anda Bhurji)",
     description:
-      "Spicy scrambled eggs cooked with onions, tomatoes and chillies — a protein-packed 15-minute favorite.",
+      "Spicy scrambled eggs cooked with onions, tomatoes and chillies - a protein-packed 15-minute favorite.",
     prepTime: "Approx. 15 minutes",
     equipment: [
       { item: "Pan", isSpecialized: false, alternative: null },
@@ -601,7 +601,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "vegetable dalia (broken wheat porridge)": {
     dishName: "Vegetable Dalia (Broken Wheat Porridge)",
     description:
-      "A light, fiber-rich savory porridge made from broken wheat and vegetables — wholesome and easy to digest.",
+      "A light, fiber-rich savory porridge made from broken wheat and vegetables - wholesome and easy to digest.",
     prepTime: "Approx. 30 minutes",
     equipment: [
       { item: "Pan", isSpecialized: false, alternative: null },
@@ -700,7 +700,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "curd rice (thayir sadam)": {
     dishName: "Curd Rice (Thayir Sadam)",
     description:
-      "Cool, comforting rice mixed with yogurt and a light tempering — a soothing South Indian classic.",
+      "Cool, comforting rice mixed with yogurt and a light tempering - a soothing South Indian classic.",
     prepTime: "Approx. 15 minutes (plus cooked rice)",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -804,7 +804,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "sprouts chaat": {
     dishName: "Sprouts Chaat",
     description:
-      "A crunchy, protein-rich salad of sprouted moong beans tossed with vegetables, lemon and spices — no cooking needed.",
+      "A crunchy, protein-rich salad of sprouted moong beans tossed with vegetables, lemon and spices - no cooking needed.",
     prepTime: "Approx. 15 minutes (plus sprouting time)",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -902,7 +902,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "lauki chana dal (bottle gourd with split chickpea lentils)": {
     dishName: "Lauki Chana Dal",
     description:
-      "A light, nutritious dal-vegetable combo of bottle gourd simmered with chana dal — mild and easy on the stomach.",
+      "A light, nutritious dal-vegetable combo of bottle gourd simmered with chana dal - mild and easy on the stomach.",
     prepTime: "Approx. 40 minutes",
     equipment: [
       { item: "Pressure cooker", isSpecialized: false, alternative: null },
@@ -1127,7 +1127,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "gajar halwa (carrot halwa)": {
     dishName: "Gajar Halwa (Carrot Halwa)",
     description:
-      "Sweet grated carrots slow-cooked in milk and ghee until rich and fudgy, finished with nuts — a winter classic.",
+      "Sweet grated carrots slow-cooked in milk and ghee until rich and fudgy, finished with nuts - a winter classic.",
     prepTime: "Approx. 50 minutes",
     equipment: [
       { item: "Heavy-bottomed pan", isSpecialized: false, alternative: null },
@@ -1224,7 +1224,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "besan ladoo": {
     dishName: "Besan Ladoo",
     description:
-      "Nutty, melt-in-the-mouth sweet balls made from roasted gram flour, ghee and sugar — no frying needed.",
+      "Nutty, melt-in-the-mouth sweet balls made from roasted gram flour, ghee and sugar - no frying needed.",
     prepTime: "Approx. 35 minutes",
     equipment: [
       { item: "Heavy pan", isSpecialized: false, alternative: null },
@@ -1647,7 +1647,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chana masala": {
     dishName: "Chana Masala",
     description:
-      "Spiced chickpeas simmered in a tangy onion-tomato gravy — a hearty, protein-rich staple.",
+      "Spiced chickpeas simmered in a tangy onion-tomato gravy - a hearty, protein-rich staple.",
     prepTime: "Approx. 40 minutes (using boiled/canned chickpeas)",
     equipment: [
       { item: "Pan", isSpecialized: false, alternative: null },
@@ -1752,7 +1752,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "rajma (red kidney bean curry)": {
     dishName: "Rajma",
     description:
-      "Red kidney beans simmered in a thick, spiced onion-tomato gravy — the classic pair to steamed rice.",
+      "Red kidney beans simmered in a thick, spiced onion-tomato gravy - the classic pair to steamed rice.",
     prepTime: "Approx. 50 minutes (plus overnight soaking)",
     equipment: [
       { item: "Pressure cooker", isSpecialized: false, alternative: null },
@@ -1867,7 +1867,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bhindi masala (okra stir-fry)": {
     dishName: "Bhindi Masala",
     description:
-      "Crisp-tender okra sautéed with onions and spices — a simple, everyday dry sabzi.",
+      "Crisp-tender okra sautéed with onions and spices - a simple, everyday dry sabzi.",
     prepTime: "Approx. 25 minutes",
     equipment: [
       { item: "Wide pan", isSpecialized: false, alternative: null },
@@ -1962,7 +1962,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "baingan bharta (smoky roasted eggplant mash)": {
     dishName: "Baingan Bharta",
     description:
-      "Fire-roasted eggplant mashed and cooked with onions, tomatoes and spices — smoky and rustic.",
+      "Fire-roasted eggplant mashed and cooked with onions, tomatoes and spices - smoky and rustic.",
     prepTime: "Approx. 40 minutes",
     equipment: [
       { item: "Gas flame or pan", isSpecialized: false, alternative: "Covered stovetop pan" },
@@ -2082,7 +2082,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "classic chicken korma": {
     dishName: "Chicken Korma",
     description:
-      "A rich, mildly spiced chicken curry made creamy with cashews and browned onions — comfort food at its finest.",
+      "A rich, mildly spiced chicken curry made creamy with cashews and browned onions - comfort food at its finest.",
     prepTime: "Approx. 50 minutes",
     equipment: [
       { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
@@ -2211,7 +2211,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "butter chicken (murgh makhani)": {
     dishName: "Butter Chicken (Murgh Makhani)",
     description:
-      "Tender chicken in a velvety, buttery tomato-cashew gravy — India's most beloved chicken curry.",
+      "Tender chicken in a velvety, buttery tomato-cashew gravy - India's most beloved chicken curry.",
     prepTime: "Approx. 50 minutes (plus 30 min marination)",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -2338,7 +2338,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "home-style chicken curry": {
     dishName: "Home-style Chicken Curry",
     description:
-      "A comforting everyday chicken curry with a spiced onion-tomato gravy — simple, no fancy ingredients needed.",
+      "A comforting everyday chicken curry with a spiced onion-tomato gravy - simple, no fancy ingredients needed.",
     prepTime: "Approx. 45 minutes",
     equipment: [
       { item: "Pot", isSpecialized: false, alternative: "Deep pan" },
@@ -2459,7 +2459,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chicken tikka masala (stovetop)": {
     dishName: "Chicken Tikka Masala (Stovetop)",
     description:
-      "Charred spiced chicken chunks simmered in a creamy tomato gravy — done entirely on the stovetop, no tandoor needed.",
+      "Charred spiced chicken chunks simmered in a creamy tomato gravy - done entirely on the stovetop, no tandoor needed.",
     prepTime: "Approx. 1 hour (plus 30 min marination)",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -2583,7 +2583,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chicken 65": {
     dishName: "Chicken 65",
     description:
-      "Crispy, spicy deep-fried chicken bites with a tangy curry-leaf tempering — a popular South Indian starter.",
+      "Crispy, spicy deep-fried chicken bites with a tangy curry-leaf tempering - a popular South Indian starter.",
     prepTime: "Approx. 40 minutes (plus 30 min marination)",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -2704,7 +2704,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "garlic naan on tawa": {
     dishName: "Garlic Naan",
     description:
-      "Soft, pillowy homemade naan bubbled with garlic butter — made entirely on a tawa, no tandoor needed.",
+      "Soft, pillowy homemade naan bubbled with garlic butter - made entirely on a tawa, no tandoor needed.",
     prepTime: "Approx. 2.5 hours (mostly resting time)",
     equipment: [
       {
@@ -2822,7 +2822,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "jeera rice": {
     dishName: "Jeera Rice",
     description:
-      "Fragrant basmati rice tempered with roasted cumin seeds — the simplest, most comforting rice side dish.",
+      "Fragrant basmati rice tempered with roasted cumin seeds - the simplest, most comforting rice side dish.",
     prepTime: "Approx. 25 minutes",
     equipment: [
       { item: "Pot with lid", isSpecialized: false, alternative: null },
@@ -3025,7 +3025,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "laccha paratha (multi-layered flatbread)": {
     dishName: "Laccha Paratha",
     description:
-      "A flaky, multi-layered whole wheat flatbread with crisp folds — cooked entirely on a tawa.",
+      "A flaky, multi-layered whole wheat flatbread with crisp folds - cooked entirely on a tawa.",
     prepTime: "Approx. 40 minutes",
     equipment: [
       { item: "Mixing bowl", isSpecialized: false, alternative: null },
@@ -3107,7 +3107,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "lemon rice (chitranna)": {
     dishName: "Lemon Rice (Chitranna)",
     description:
-      "Tangy, lightly spiced rice tempered with peanuts, curry leaves and fresh lemon juice — perfect for lunchboxes.",
+      "Tangy, lightly spiced rice tempered with peanuts, curry leaves and fresh lemon juice - perfect for lunchboxes.",
     prepTime: "Approx. 20 minutes (using pre-cooked rice)",
     equipment: [
       { item: "Pan", isSpecialized: false, alternative: null },
@@ -3232,7 +3232,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "paneer butter masala": {
     dishName: "Paneer Butter Masala",
     description:
-      "Soft paneer cubes in a luxuriously creamy, buttery tomato gravy — a restaurant favourite made simple at home.",
+      "Soft paneer cubes in a luxuriously creamy, buttery tomato gravy - a restaurant favourite made simple at home.",
     prepTime: "Approx. 35 minutes",
     equipment: [
       { item: "Mixer grinder", isSpecialized: false, alternative: null },
@@ -3343,7 +3343,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chicken biryani": {
     dishName: "Chicken Biryani",
     description:
-      "Fragrant basmati rice layered with spiced, marinated chicken and slow-cooked to perfection — a true celebration dish.",
+      "Fragrant basmati rice layered with spiced, marinated chicken and slow-cooked to perfection - a true celebration dish.",
     prepTime: "Approx. 1.5 hours (plus 30 mins marination)",
     equipment: [
       {
@@ -3487,7 +3487,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "masala dosa": {
     dishName: "Masala Dosa",
     description:
-      "A crisp, golden fermented rice-and-lentil crepe, filled with a lightly spiced potato masala — a South Indian classic.",
+      "A crisp, golden fermented rice-and-lentil crepe, filled with a lightly spiced potato masala - a South Indian classic.",
     prepTime: "Approx. 45 minutes (plus 8–12 hours fermentation)",
     equipment: [
       { item: "Mixer grinder", isSpecialized: false, alternative: null },
@@ -3728,7 +3728,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dal makhani": {
     dishName: "Dal Makhani",
     description:
-      "Slow-cooked black lentils in a rich, buttery, creamy gravy — deeply comforting and full of flavour.",
+      "Slow-cooked black lentils in a rich, buttery, creamy gravy - deeply comforting and full of flavour.",
     prepTime: "Approx. 1 hour (plus overnight soaking)",
     equipment: [
       {
@@ -3852,7 +3852,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "samosa": {
     dishName: "Samosa",
     description:
-      "Crispy, golden pastry triangles stuffed with a spiced potato and pea filling — the ultimate Indian tea-time snack.",
+      "Crispy, golden pastry triangles stuffed with a spiced potato and pea filling - the ultimate Indian tea-time snack.",
     prepTime: "Approx. 1 hour",
     equipment: [
       {
