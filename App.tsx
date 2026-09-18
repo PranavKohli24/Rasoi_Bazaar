@@ -194,25 +194,27 @@ useEffect(() => {
     <div className="min-h-screen bg-stone-950 text-stone-200 font-sans transition-colors duration-500 selection:bg-orange-500/30">
       
       {/* --- Responsive Global Background Layer --- */}
-<picture className="fixed inset-0 z-0 pointer-events-none block">
-  <source
-    media="(max-width: 767px)"
-    srcSet={BACKGROUND_MOBILE}
-  />
+<div className="fixed inset-x-0 top-0 z-0 pointer-events-none overflow-hidden h-[100svh]">
+  <picture className="absolute inset-0 block">
+    <source
+      media="(max-width: 767px)"
+      srcSet={BACKGROUND_MOBILE}
+    />
 
-  <img
-  src={BACKGROUND_DESKTOP}
-  alt=""
-  loading="eager"
-  fetchPriority="high"
-  onLoad={() => setBackgroundLoaded(true)}
-  className="w-full h-full object-cover object-center"
-  style={{
-    opacity: backgroundLoaded ? (isHero ? 0.35 : 0.09) : 0,
-    transition: 'opacity 0.5s ease-in-out'
-  }}
-/>
-</picture>
+    <img
+      src={BACKGROUND_DESKTOP}
+      alt=""
+      loading="eager"
+      fetchPriority="high"
+      onLoad={() => setBackgroundLoaded(true)}
+      className="absolute inset-0 w-full h-full object-cover object-center"
+      style={{
+        opacity: backgroundLoaded ? (isHero ? 0.35 : 0.09) : 0,
+        transition: 'opacity 0.5s ease-in-out'
+      }}
+    />
+  </picture>
+</div>
 
       {/* --- Hero Section --- */}
       <section 
