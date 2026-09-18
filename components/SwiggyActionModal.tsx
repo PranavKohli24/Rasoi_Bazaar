@@ -197,10 +197,14 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
 
   return createPortal(
     <div
-  className="fixed inset-0 bg-stone-950/85 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 sm:p-4 animate-fade-in-up"
+  className="fixed inset-0 bg-stone-950/45 backdrop-blur-[2px] flex items-end sm:items-center justify-center z-50 sm:p-4 animate-fade-in-up"
   style={{ animationDuration: "0.25s" }}
+  onClick={onMinimize}
 >
-  <div className="bg-stone-900 border border-stone-800 sm:border rounded-t-3xl sm:rounded-3xl shadow-xl shadow-black/40 w-full max-w-md flex flex-col max-h-[85vh] sm:max-h-[82vh]">
+  <div 
+  className="bg-stone-900 border border-stone-800 sm:border rounded-t-3xl sm:rounded-3xl shadow-xl shadow-black/40 w-full max-w-md flex flex-col max-h-[85vh] sm:max-h-[82vh]"
+  onClick={(e) => e.stopPropagation()}
+  >
     
         <div className="px-6 pt-6 pb-4 border-b border-stone-800">
           <div className="flex justify-between items-center">
