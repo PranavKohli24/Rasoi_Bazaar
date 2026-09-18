@@ -25,6 +25,10 @@ const App: React.FC = () => {
 
 
   const resultsRef = useRef<HTMLDivElement>(null);
+const prefersReducedMotionRef = useRef<boolean>(
+  typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+);
 
   const backPressTimeRef = useRef<number | null>(null);
 const recipeHistoryActiveRef = useRef(false);
@@ -86,7 +90,10 @@ useEffect(() => {
       setIsHero(true);
       setIsLoading(false);
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const prefersReducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
       return;
     }
 
@@ -125,8 +132,14 @@ useEffect(() => {
     setError(null);
     setRecipe(null);
 
+    const prefersReducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        resultsRef.current?.scrollIntoView({
+          behavior: prefersReducedMotion ? 'auto' : 'smooth',
+          block: 'start',
+        });
     }, 400);
 
     try {
@@ -171,7 +184,10 @@ useEffect(() => {
     history.back();
   }
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const prefersReducedMotion =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 };
 
   return (

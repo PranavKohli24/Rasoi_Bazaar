@@ -24,14 +24,9 @@ const SectionTitle: React.FC<{
   title: string;
   icon: React.ReactNode;
 }> = ({ title, icon }) => (
-  <div className="flex items-center mb-6 border-b-2 border-orange-800/50 pb-3">
-    <span className="text-orange-400 mr-4">
-      {icon}
-    </span>
-
-    <h2 className="text-3xl font-bold font-serif text-orange-100">
-      {title}
-    </h2>
+  <div className="flex items-center gap-3 mb-6">
+    <span className="text-orange-400">{icon}</span>
+    <h2 className="text-2xl font-bold font-serif text-white tracking-tight">{title}</h2>
   </div>
 );
 
@@ -635,7 +630,7 @@ const [
 
         {/* Left Sticky Column */}
         <aside className="lg:col-span-2 lg:sticky lg:top-12 lg:self-start">
-          <div className="bg-stone-800/50 backdrop-blur-lg rounded-2xl shadow-2xl p-6 sm:p-8 border border-stone-700">
+          <div className="bg-stone-800/50 backdrop-blur-lg rounded-3xl shadow-xl shadow-black/20 p-6 sm:p-8 border border-stone-700/70">
             <SectionTitle
               title="Ingredients"
               icon={
@@ -700,12 +695,10 @@ const [
             </ul>
 
             <button
-              onClick={
-                handleBuyFromInstamart
-              }
-              className="mt-6 w-full bg-stone-700 hover:bg-stone-600 text-orange-200 font-medium py-3 px-4 rounded-lg border border-stone-600 hover:border-orange-500/70 transition-all duration-200 flex items-center justify-center"
+              onClick={handleBuyFromInstamart}
+              className="mt-6 w-full bg-stone-800/80 hover:bg-stone-700/80 text-stone-200 font-medium py-3 px-4 rounded-full border border-stone-700 transition-colors duration-150 flex items-center justify-center gap-2"
             >
-              🛒 Don't have these? Buy from Instamart
+              <span>🛒</span> Don't have these? Buy from Instamart
             </button>
           </div>
         </aside>
@@ -744,12 +737,10 @@ const [
 
               <div className="mt-4">
                 <button
-                  onClick={
-                    handleOrderFromSwiggy
-                  }
-                  className="inline-flex items-center justify-center bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 px-4 py-2 rounded-full border border-orange-500/40 hover:border-orange-400 transition-all duration-200"
+                  onClick={handleOrderFromSwiggy}
+                  className="inline-flex items-center justify-center gap-2 bg-orange-500/10 hover:bg-orange-500/15 text-orange-300 px-4 py-2 rounded-full border border-orange-500/30 transition-colors duration-150"
                 >
-                  🍽️ Don't want to cook today? Order from Swiggy
+                  <span>🍽️</span> Don't want to cook today? Order from Swiggy
                 </button>
               </div>
             </div>
@@ -837,7 +828,7 @@ const [
                     onClick={
                       handleStartCooking
                     }
-                    className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-8 rounded-lg text-lg transition-colors duration-200"
+                    className="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-3.5 px-8 rounded-full text-lg transition-colors duration-150"
                   >
                     <div className="flex items-center justify-center">
                       <svg

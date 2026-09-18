@@ -97,13 +97,13 @@ const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
                     <button 
                         key={cat.name}
                         onClick={() => onSelect(cat.searchTerm)}
-                        className="group flex flex-col items-center justify-center text-center p-4 bg-stone-800/60 rounded-xl border-2 border-stone-700 backdrop-blur-sm hover:bg-stone-700/80 hover:border-orange-500/70 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-orange-500/50"
+                        className="group flex flex-col items-center justify-center text-center p-5 bg-stone-800/50 rounded-2xl border border-stone-700/80 backdrop-blur-sm hover:bg-stone-800/80 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50"
                     >
                         <div className="text-orange-400 group-hover:text-orange-300 transition-colors duration-300">
                             {cat.icon}
                         </div>
-                        <h3 className="font-bold text-base sm:text-lg text-white">{cat.name}</h3>
-                        <p className="text-xs sm:text-sm text-stone-400">{cat.description}</p>
+                        <h3 className="font-semibold text-base sm:text-lg text-white tracking-tight">{cat.name}</h3>
+                        <p className="text-xs sm:text-sm text-stone-400 mt-0.5">{cat.description}</p>
                     </button>
                 ))}
             </div>

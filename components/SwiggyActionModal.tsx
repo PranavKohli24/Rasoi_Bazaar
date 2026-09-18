@@ -197,24 +197,24 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
 
   return createPortal(
     <div
-      className="fixed inset-0 bg-stone-950/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in-up"
-      style={{ animationDuration: "0.25s" }}
-    >
-      <div className="bg-stone-900 border border-stone-800 rounded-3xl shadow-2xl w-full max-w-md flex flex-col max-h-[82vh]">
-        {/* Header */}
+  className="fixed inset-0 bg-stone-950/85 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 sm:p-4 animate-fade-in-up"
+  style={{ animationDuration: "0.25s" }}
+>
+  <div className="bg-stone-900 border border-stone-800 sm:border rounded-t-3xl sm:rounded-3xl shadow-xl shadow-black/40 w-full max-w-md flex flex-col max-h-[85vh] sm:max-h-[82vh]">
+    
         <div className="px-6 pt-6 pb-4 border-b border-stone-800">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-center">
             <h3 className="text-xl font-serif font-bold text-orange-100">
               {type === "instamart"
                 ? "Get ingredients"
                 : "Order this dish"}
             </h3>
 
-            <div className="flex items-center gap-3 -mt-1">
+            <div className="flex items-center gap-3">
               <button
                 onClick={onMinimize}
                 aria-label="Minimize"
-                className="text-stone-500 hover:text-stone-300 transition-colors"
+                className="flex items-center justify-center h-11 w-11 -mr-2.5 -mt-2.5 text-stone-500 hover:text-stone-300 transition-colors"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -233,7 +233,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
               <button
                 onClick={onClose}
                 aria-label="Close"
-                className="text-stone-500 hover:text-stone-300 text-xl leading-none transition-colors"
+                className="flex items-center justify-center h-11 w-11 -mr-2.5 -mt-2.5 text-stone-500 hover:text-stone-300 text-xl leading-none transition-colors"
               >
                 &times;
               </button>
@@ -333,10 +333,10 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                           onClick={() =>
                             onSelectAddress?.(address.id)
                           }
-                          className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
+                          className={`w-full text-left px-4 py-3 rounded-2xl border transition-colors ${
                             selected
-                              ? "border-orange-500/70 bg-orange-500/10"
-                              : "border-stone-800 hover:border-stone-700"
+                              ? "border-orange-500/60 bg-orange-500/10"
+                              : "border-stone-800 hover:bg-stone-800/60"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -355,7 +355,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                                   "Address"}
                               </p>
 
-                              <p className="text-stone-500 text-xs mt-0.5 truncate">
+                              <p className="text-stone-400 text-xs mt-0.5 truncate">
                                 {address.addressLine}
                               </p>
                             </div>
@@ -396,7 +396,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                             ))}
                           </div>
                         ) : products.length === 0 ? (
-                          <p className="text-stone-500 text-sm">
+                          <p className="text-stone-400 text-sm">
                             No match found for this item.
                           </p>
                         ) : (
@@ -502,10 +502,10 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                           onClick={() =>
                             onSelectAddress?.(address.id)
                           }
-                          className={`w-full text-left px-4 py-3 rounded-xl border transition-colors ${
+                          className={`w-full text-left px-4 py-3 rounded-2xl border transition-colors ${
                             selected
-                              ? "border-orange-500/70 bg-orange-500/10"
-                              : "border-stone-800 hover:border-stone-700"
+                              ? "border-orange-500/60 bg-orange-500/10"
+                              : "border-stone-800 hover:bg-stone-800/60"
                           }`}
                         >
                           <div className="flex items-center gap-3">
@@ -524,7 +524,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                                   "Address"}
                               </p>
 
-                              <p className="text-stone-500 text-xs mt-0.5 truncate">
+                              <p className="text-stone-400 text-xs mt-0.5 truncate">
                                 {address.addressLine}
                               </p>
                             </div>
@@ -551,7 +551,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                             {restaurant.name}
                           </p>
 
-                          <p className="text-stone-500 text-xs mt-0.5">
+                          <p className="text-stone-400 text-xs mt-0.5">
   {restaurant.eta
     ? restaurant.eta
     : ""}
@@ -583,7 +583,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
               <button
                 onClick={onContinueAddress}
                 disabled={!selectedAddressId}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-stone-800 disabled:text-stone-500 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+                className="w-full bg-orange-500 hover:bg-orange-400 disabled:bg-stone-800 disabled:text-stone-500 text-white text-sm font-semibold py-3.5 rounded-full transition-colors duration-150"
               >
                 {hasResults
                   ? "Continue"
@@ -603,7 +603,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
               <button
                 onClick={onAddIngredients}
                 disabled={selectedCount === 0}
-                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-stone-800 disabled:text-stone-500 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+                className="w-full bg-orange-500 hover:bg-orange-400 disabled:bg-stone-800 disabled:text-stone-500 text-white text-sm font-semibold py-3.5 rounded-full transition-colors duration-150"
               >
                 {selectedCount > 0
                   ? `Add ${selectedCount} ${
