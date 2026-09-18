@@ -330,8 +330,9 @@ useEffect(() => {
         </div>
       </footer>
       
-      {/* --- Modals --- */}
-      {showCelebration && <CelebrationPopup onReset={handleReset} />}
+      {showCelebration && (
+        <CelebrationPopup dishName={recipe?.dishName} onReset={handleReset} />
+      )}
     </div>
   );
 };
