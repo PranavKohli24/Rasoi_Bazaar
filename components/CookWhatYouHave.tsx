@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import KitchenEquipmentSelector from './KitchenEquipmentSelector';
 import {
   findRecipesFromIngredients,
   RecipeMatch,
@@ -8,17 +9,7 @@ interface CookWhatYouHaveProps {
   onSelectDish: (dish: string) => void;
 }
 
-const equipmentOptions = [
-  "Gas Stove",
-  "Induction",
-  "Tawa",
-  "Kadai",
-  "Pressure Cooker",
-  "Mixer / Grinder",
-  "Oven",
-  "Microwave",
-  "Air Fryer",
-];
+
 
 const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   onSelectDish,
@@ -152,67 +143,45 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
           {/* STEP 1 */}
           {step === 1 && (
-            <div className="mt-10 max-w-3xl mx-auto">
-              <h3 className="text-xl font-semibold text-white">
-                What equipment do you have?
-              </h3>
+            <div className="w-full">
+                <KitchenEquipmentSelector
+                selectedEquipment={equipment}
+                onChange={setEquipment}
+                />
 
-              <p className="mt-1 text-sm text-stone-500">
-                Select everything available in your kitchen.
-              </p>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
-                {equipmentOptions.map((item) => {
-                  const selected = equipment.includes(item);
-
-                  return (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => toggleEquipment(item)}
-                      className={`rounded-2xl border px-4 py-4 text-left transition-all duration-200 ${
-                        selected
-                          ? "border-orange-300 bg-orange-400/15 text-orange-100 shadow-[0_0_24px_rgba(251,146,60,0.08)]"
-                          : "border-stone-700/80 bg-stone-900/60 text-stone-300 hover:border-stone-500 hover:bg-stone-800/70"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={`flex h-5 w-5 items-center justify-center rounded-md border text-xs ${
-                            selected
-                              ? "border-orange-300 bg-orange-200 text-stone-900"
-                              : "border-stone-600"
-                          }`}
-                        >
-                          {selected ? "✓" : ""}
-                        </span>
-
-                        <span className="font-medium">
-                          {item}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {error && (
-                <p className="mt-4 text-sm text-red-300">
-                  {error}
-                </p>
-              )}
-
-              <div className="flex justify-end mt-8">
+                <div className="mt-6 flex justify-end">
                 <button
-                  type="button"
-                  onClick={handleStartIngredients}
-                  className="rounded-xl bg-orange-200 px-6 py-3 font-semibold text-stone-900 transition hover:bg-orange-100 hover:-translate-y-0.5"
+                    type="button"
+                    disabled={equipment.length === 0}
+                    onClick={() => setStep(2)}
+                    className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    rounded-xl
+                    bg-orange-200
+                    px-5
+                    py-3
+                    font-semibold
+                    text-stone-900
+                    shadow-lg
+                    transition-all
+                    duration-200
+                    hover:bg-orange-100
+                    hover:-translate-y-0.5
+                    disabled:cursor-not-allowed
+                    disabled:opacity-40
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-orange-300/70
+                    "
                 >
-                  Continue
+                    Next: Add Ingredients
+                    <span className="ml-2">→</span>
                 </button>
-              </div>
+                </div>
             </div>
-          )}
+            )}
 
           {/* STEP 2 */}
           {step === 2 && !results.length && (
