@@ -32,6 +32,13 @@ const QUICK_INGREDIENTS = [
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
 
+const LOADING_MESSAGES = [
+  "Checking your pantry…",
+  "Matching dishes to your appliances…",
+  "Picking the simplest options…",
+  "Almost ready…",
+];
+
 const primaryButton =
   "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-6 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
 
@@ -132,7 +139,7 @@ const ResultSkeleton: React.FC = () => (
 /* ---------- Main component ---------- */
 
 const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const [equipment, setEquipment] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -145,8 +152,23 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
 
-  const showingResults = results.length > 0;
-  const currentStep = showingResults ? 3 : step;
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  const currentStep = step;
+
+  // Rotate the loading message so the wait feels active
+  useEffect(() => {
+    if (!isLoading) {
+      setLoadingMessageIndex(0);
+      return;
+    }
+
+    const id = window.setInterval(() => {
+      setLoadingMessageIndex((i) => (i + 1) % LOADING_MESSAGES.length);
+    }, 1800);
+
+    return () => window.clearInterval(id);
+  }, [isLoading]);
 
   // Bring the top of the card into view whenever the user moves between steps
   useEffect(() => {
@@ -255,6 +277,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
     setError(null);
     setResults([]);
     setIsLoading(true);
+    setStep(3); // move on immediately; the wait happens on the next screen
 
     try {
       const response = await findRecipesFromIngredients({
@@ -358,7 +381,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
         )}
 
         {/* STEP 2 — Ingredients */}
-        {step === 2 && !showingResults && (
+        {step === 2 && (
           <>
             <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
               <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
@@ -505,12 +528,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 </div>
               )}
 
-              {isLoading && (
-                <div className="mt-6 grid gap-3" aria-hidden="true">
-                  <ResultSkeleton />
-                  <ResultSkeleton />
-                </div>
-              )}
             </div>
 
             <div className="sticky bottom-0 z-40 flex items-center justify-between gap-3 rounded-b-3xl border-t border-stone-800 bg-stone-950/95 px-5 py-4 backdrop-blur-md sm:px-12">
@@ -520,7 +537,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                   setError(null);
                   setStep(1);
                 }}
-                disabled={isLoading}
                 className={ghostButton}
               >
                 <span aria-hidden="true">←</span> Back
@@ -529,17 +545,88 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
               <button
                 type="button"
                 onClick={handleFindRecipes}
-                disabled={isLoading || ingredients.length === 0}
+                disabled={ingredients.length === 0}
                 className={`${footerButton} min-w-[10.5rem] shrink-0 whitespace-nowrap sm:min-w-[12.5rem]`}
               >
-                {isLoading ? "Finding dishes…" : "Find what I can make"}
+                Find what I can make
               </button>
             </div>
           </>
         )}
 
-        {/* RESULTS */}
-        {showingResults && (
+        {/* STEP 3 — Loading */}
+        {step === 3 && isLoading && (
+          <div
+            className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10"
+            role="status"
+            aria-live="polite"
+          >
+            <div className="mx-auto max-w-3xl">
+              <div className="flex items-center gap-4">
+                <span
+                  className="h-10 w-10 shrink-0 animate-spin rounded-full border-[3px] border-orange-400/20 border-t-orange-300"
+                  aria-hidden="true"
+                />
+                <div>
+                  <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                    Finding dishes you can make…
+                  </h3>
+                  <p className="mt-1 text-sm text-stone-400">
+                    {LOADING_MESSAGES[loadingMessageIndex]}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4" aria-hidden="true">
+                <ResultSkeleton />
+                <ResultSkeleton />
+                <ResultSkeleton />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3 — Error */}
+        {step === 3 && !isLoading && error && (
+          <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
+            <div className="mx-auto max-w-3xl">
+              <div
+                role="alert"
+                className="rounded-2xl border border-red-400/30 bg-red-500/10 p-5"
+              >
+                <h3 className="font-semibold text-red-100">
+                  We couldn&apos;t find dishes
+                </h3>
+                <p className="mt-1 text-sm leading-relaxed text-red-200">
+                  {error}
+                </p>
+              </div>
+
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+                <button
+                  type="button"
+                  onClick={handleFindRecipes}
+                  className={primaryButton}
+                >
+                  Try again
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setError(null);
+                    setStep(2);
+                  }}
+                  className={ghostButton}
+                >
+                  Edit ingredients
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3 — Results */}
+        {step === 3 && !isLoading && !error && results.length > 0 && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

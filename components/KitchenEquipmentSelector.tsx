@@ -279,20 +279,20 @@ const KitchenEquipmentSelector: React.FC<
                   <span
                     className="
                     absolute
-                    -right-1.5
-                    -top-1.5
+                    -right-1
+                    -top-1
                     sm:-right-2
                     sm:-top-2
                     flex
-                    h-4
-                    w-4
+                    h-3.5
+                    w-3.5
                     sm:h-6
                     sm:w-6
                     items-center
                     justify-center
                     rounded-full
                     bg-orange-400
-                    text-[9px]
+                    text-[8px]
                     sm:text-xs
                     font-black
                     text-stone-950
