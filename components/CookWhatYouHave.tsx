@@ -520,12 +520,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
               </div>
 
               {error && (
-                <div
+                <p
                   role="alert"
-                  className="mt-5 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+                  className="mt-5 text-sm text-orange-200/90"
                 >
                   {error}
-                </div>
+                </p>
               )}
 
             </div>
@@ -592,12 +592,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
             <div className="mx-auto max-w-3xl">
               <div
                 role="alert"
-                className="rounded-2xl border border-red-400/30 bg-red-500/10 p-5"
+                className="rounded-2xl border border-stone-700/80 bg-stone-900/60 p-5 sm:p-6"
               >
-                <h3 className="font-semibold text-red-100">
-                  We couldn&apos;t find dishes
+                <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                  Couldn&apos;t find dishes this time
                 </h3>
-                <p className="mt-1 text-sm leading-relaxed text-red-200">
+                <p className="mt-2 text-sm leading-relaxed text-stone-400 sm:text-base">
                   {error}
                 </p>
               </div>
