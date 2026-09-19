@@ -129,7 +129,7 @@ const KitchenEquipmentSelector: React.FC<
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-visible">
       {/* Heading */}
       <div className="text-center mb-6">
         <h2 className="font-serif text-2xl sm:text-3xl font-black text-orange-50">
@@ -142,7 +142,7 @@ const KitchenEquipmentSelector: React.FC<
       </div>
 
       {/* Kitchen scene */}
-      <div className="relative w-full aspect-[3/2]">
+      <div className="relative w-full aspect-[3/2] scale-[1.12] origin-center">
         {/* Background */}
         <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700/80 bg-stone-900 shadow-2xl">
           <img
