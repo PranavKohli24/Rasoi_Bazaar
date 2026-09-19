@@ -128,55 +128,62 @@ const KitchenEquipmentSelector: React.FC<
     onChange([]);
   };
 
+  const selectAll = () => {
+    onChange(equipmentItems.map((item) => item.name));
+  };
+
+  const allSelected = selectedEquipment.length === equipmentItems.length;
+
   return (
     <div className="w-full overflow-visible">
       {/* Heading */}
-      <div className="text-center mb-6">
-        <h2 className="font-serif text-2xl sm:text-3xl font-black text-orange-50">
-          What equipment do you have?
-        </h2>
+      <div className="mb-10 sm:mb-14">
+        <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+          What&apos;s in your kitchen?
+        </h3>
 
-        <p className="mt-2 text-sm sm:text-base text-stone-400">
-          Tap the things you have in your kitchen.
+        <p className="mt-2 max-w-xl text-sm leading-relaxed text-stone-400 sm:text-base">
+          Tap the appliances you own. Tap again to remove one.
         </p>
       </div>
 
-      {/* Kitchen scene */}
-      <div className="relative w-full aspect-[3/2] scale-[1.12] origin-center">
-        {/* Background */}
-        <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700/80 bg-stone-900 shadow-2xl">
-          <img
-            src="/kitchen/kitchen.jpeg"
-            alt="Kitchen"
-            className="absolute inset-0 h-full w-full object-cover"
-            draggable={false}
-          />
+      {/* Kitchen scene (unchanged) */}
+      <div className="px-2 pt-3 sm:px-4 sm:pt-5">
+        <div className="relative w-full aspect-[3/2] scale-[1.12] origin-center">
+          {/* Background */}
+          <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700/80 bg-stone-900 shadow-2xl">
+            <img
+              src="/kitchen/kitchen.jpeg"
+              alt="Kitchen"
+              className="absolute inset-0 h-full w-full object-cover"
+              draggable={false}
+            />
 
-          <div className="absolute inset-0 bg-stone-950/5 pointer-events-none" />
-        </div>
+            <div className="absolute inset-0 bg-stone-950/5 pointer-events-none" />
+          </div>
 
-        {/* Equipment layers */}
-        {equipmentItems.map((item) => {
-          const selected = selectedEquipment.includes(item.name);
+          {/* Equipment layers */}
+          {equipmentItems.map((item) => {
+            const selected = selectedEquipment.includes(item.name);
 
-          return (
-            <button
-              key={item.id}
-              type="button"
-              aria-label={`Select ${item.name}`}
-              aria-pressed={selected}
-              onClick={() => toggleEquipment(item.name)}
-              className="absolute group outline-none"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                width: `${item.width}%`,
-                zIndex: item.zIndex,
-              }}
-            >
-              {/* Glow / selection box */}
-              <span
-                className={`
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={`Select ${item.name}`}
+                aria-pressed={selected}
+                onClick={() => toggleEquipment(item.name)}
+                className="absolute group outline-none"
+                style={{
+                  left: `${item.left}%`,
+                  top: `${item.top}%`,
+                  width: `${item.width}%`,
+                  zIndex: item.zIndex,
+                }}
+              >
+                {/* Glow / selection box */}
+                <span
+                  className={`
                   pointer-events-none
                   absolute
                   inset-[-6%]
@@ -199,14 +206,14 @@ const KitchenEquipmentSelector: React.FC<
                       `
                   }
                 `}
-              />
+                />
 
-              {/* Equipment image */}
-              <img
-                src={item.src}
-                alt=""
-                draggable={false}
-                className={`
+                {/* Equipment image */}
+                <img
+                  src={item.src}
+                  alt=""
+                  draggable={false}
+                  className={`
                   relative
                   block
                   w-full
@@ -221,11 +228,11 @@ const KitchenEquipmentSelector: React.FC<
                       : 'group-hover:scale-[1.025]'
                   }
                 `}
-              />
+                />
 
-              {/* Label */}
-              <span
-  className={`
+                {/* Label */}
+                <span
+                  className={`
     absolute
     left-1/2
     -translate-x-1/2
@@ -263,15 +270,15 @@ const KitchenEquipmentSelector: React.FC<
         `
     }
   `}
->
-  {selected ? '✓ ' : ''}
-  {item.label}
-</span>
+                >
+                  {selected ? '✓ ' : ''}
+                  {item.label}
+                </span>
 
-              {/* Selected check */}
-              {selected && (
-                <span
-                  className="
+                {/* Selected check */}
+                {selected && (
+                  <span
+                    className="
                     absolute
                     -right-2
                     -top-2
@@ -287,71 +294,77 @@ const KitchenEquipmentSelector: React.FC<
                     text-stone-950
                     shadow-lg
                   "
-                >
-                  ✓
-                </span>
-              )}
-            </button>
-          );
-        })}
+                  >
+                    ✓
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Selected equipment */}
-      <div className="mt-5 rounded-2xl border border-stone-700/80 bg-stone-900/70 backdrop-blur-md p-4 sm:p-5">
+      {/* Equipment list: easier tapping on small screens, same selection state */}
+      <div className="mt-10 sm:mt-12">
         <div className="flex items-center justify-between gap-4">
-          <h3 className="font-semibold text-white">
-            Selected equipment
+          <h4 className="font-semibold text-white">
+            Your equipment
             <span className="ml-2 text-orange-300">
-              ({selectedEquipment.length})
+              ({selectedEquipment.length}/{equipmentItems.length})
             </span>
-          </h3>
+          </h4>
 
-          {selectedEquipment.length > 0 && (
-            <button
-              type="button"
-              onClick={clearAll}
-              className="text-xs sm:text-sm text-stone-500 hover:text-orange-300 transition-colors"
-            >
-              Clear all
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={allSelected ? clearAll : selectAll}
+            className="text-sm text-stone-500 transition-colors hover:text-orange-300 focus:outline-none focus-visible:underline"
+          >
+            {allSelected ? 'Clear all' : 'Select all'}
+          </button>
         </div>
 
-        {selectedEquipment.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {selectedEquipment.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => toggleEquipment(item)}
-                className="
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-full
-                  border
-                  border-orange-400/40
-                  bg-orange-400/10
-                  px-3
-                  py-1.5
-                  text-xs
-                  sm:text-sm
-                  font-medium
-                  text-orange-200
-                  hover:bg-orange-400/20
-                  transition-colors
-                "
-              >
-                {item}
-                <span className="text-orange-400">×</span>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <p className="mt-3 text-sm text-stone-500">
-            Nothing selected yet. Tap the equipment in the kitchen above.
-          </p>
-        )}
+        <ul className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
+          {equipmentItems.map((item) => {
+            const selected = selectedEquipment.includes(item.name);
+
+            return (
+              <li key={item.id} className="min-w-0">
+                <button
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => toggleEquipment(item.name)}
+                  className={`flex h-full w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
+                    selected
+                      ? 'border-orange-400 bg-orange-400/15 text-orange-50'
+                      : 'border-stone-700 bg-stone-900/60 text-stone-300 hover:border-stone-500 hover:text-stone-100'
+                  }`}
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-stone-800/80">
+                    <img
+                      src={item.src}
+                      alt=""
+                      draggable={false}
+                      className="max-h-8 max-w-8 object-contain"
+                    />
+                  </span>
+
+                  <span className="min-w-0 flex-1">{item.label}</span>
+
+                  <span
+                    aria-hidden="true"
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-black transition-colors ${
+                      selected
+                        ? 'bg-orange-400 text-stone-950'
+                        : 'border border-stone-600 text-transparent'
+                    }`}
+                  >
+                    ✓
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );
