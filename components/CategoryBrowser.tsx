@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import SectionDivider from './SectionDIvider';
+import SectionDivider from './SectionDivider';
 
 interface CategoryBrowserProps {
     onSelect: (dish: string) => void;
