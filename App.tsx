@@ -334,43 +334,51 @@ const App: React.FC = () => {
               <div className="relative mt-6 overflow-hidden rounded-3xl border border-orange-400/70 bg-stone-950/65 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10" />
 
-                <div className="relative flex flex-col md:flex-row items-center gap-5 md:gap-7 px-5 py-5 sm:px-7 sm:py-6 text-left">
-                  <div className="shrink-0 w-28 sm:w-36 md:w-40 flex justify-center">
+                <div className="relative grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-4 p-4 text-left sm:gap-x-6 sm:p-6 md:flex md:gap-7 md:px-7">
+                  {/* Basket */}
+                  <div className="flex w-20 shrink-0 justify-center sm:w-28 md:w-40">
                     <img
                       src="/basket.png"
                       alt="Basket of fresh ingredients"
-                      className="w-full max-h-28 sm:max-h-32 object-contain drop-shadow-2xl"
+                      className="max-h-24 w-full object-contain drop-shadow-2xl sm:max-h-28 md:max-h-32"
                       draggable={false}
                     />
                   </div>
 
-                  <div className="flex-1 min-w-0 text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start gap-3 mb-1">
+                  {/* Copy */}
+                  <div className="min-w-0 md:flex-1">
+                    <h2 className="flex items-center gap-1.5 font-serif text-xl font-black leading-tight text-orange-50 sm:gap-2 sm:text-2xl md:text-3xl">
                       <img
-                          src="/chef-hat.svg"
-                          alt=""
-                          className="h-7 w-7 object-contain"
-                          draggable={false}
+                        src="/chef-hat.svg"
+                        alt=""
+                        className="h-6 w-6 shrink-0 object-contain sm:h-7 sm:w-7"
+                        draggable={false}
                       />
-                      <h2 className="font-serif text-2xl sm:text-3xl font-black text-orange-50">
-                        Cook What You Have
-                      </h2>
-                    </div>
+                      Cook What You Have
+                    </h2>
 
-                    <p className="text-sm sm:text-base text-stone-300 max-w-2xl leading-relaxed">
-                      Have ingredients lying around? Tell us what you have and
-                      we&apos;ll find delicious recipes you can actually make.
+                    <p className="mt-1.5 max-w-2xl text-sm leading-snug text-stone-300 sm:text-base sm:leading-relaxed">
+                      <span className="md:hidden">
+                        Tell us what&apos;s in your kitchen and we&apos;ll find
+                        dishes you can make right now.
+                      </span>
+                      <span className="hidden md:inline">
+                        Have ingredients lying around? Tell us what you have
+                        and we&apos;ll find delicious recipes you can actually
+                        make.
+                      </span>
                     </p>
                   </div>
 
-                  <div className="shrink-0 w-full md:w-auto">
+                  {/* Action */}
+                  <div className="col-span-2 shrink-0 md:col-span-1 md:w-auto">
                     <button
-    type="button"
-    onClick={() => setShowCookWhatYouHave(true)}
-    className="inline-flex w-full md:w-auto items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-300/70"
->
-    Get Started
-</button>
+                      type="button"
+                      onClick={() => setShowCookWhatYouHave(true)}
+                      className="inline-flex w-full items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-300/70 md:w-auto"
+                    >
+                      Get Started
+                    </button>
                   </div>
 
                   <div className="hidden lg:flex flex-col items-center justify-center w-[150px] shrink-0">
