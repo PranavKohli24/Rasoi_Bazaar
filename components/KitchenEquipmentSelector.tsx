@@ -333,29 +333,29 @@ const KitchenEquipmentSelector: React.FC<
                   type="button"
                   aria-pressed={selected}
                   onClick={() => toggleEquipment(item.name)}
-                  className={`flex h-full w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
+                  className={`relative flex h-full w-full items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left text-[13px] font-medium leading-tight sm:gap-2.5 sm:px-3 sm:text-sm transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
                     selected
                       ? 'border-orange-400 bg-orange-400/15 text-orange-50'
                       : 'border-stone-700 bg-stone-900/60 text-stone-300 hover:border-stone-500 hover:text-stone-100'
                   }`}
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-stone-800/80">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-stone-800/80 sm:h-10 sm:w-10">
                     <img
                       src={item.src}
                       alt=""
                       draggable={false}
-                      className="max-h-8 max-w-8 object-contain"
+                      className="max-h-7 max-w-7 object-contain sm:max-h-8 sm:max-w-8"
                     />
                   </span>
 
-                  <span className="min-w-0 flex-1">{item.label}</span>
+                  <span className="min-w-0 flex-1 break-words">{item.label}</span>
 
                   <span
                     aria-hidden="true"
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-black transition-colors ${
+                    className={`absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-black transition-colors sm:static sm:h-5 sm:w-5 sm:shrink-0 sm:text-[11px] ${
                       selected
                         ? 'bg-orange-400 text-stone-950'
-                        : 'border border-stone-600 text-transparent'
+                        : 'border border-stone-600 text-transparent opacity-0 sm:opacity-100'
                     }`}
                   >
                     ✓
