@@ -32,6 +32,37 @@ const QUICK_INGREDIENTS = [
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
 
+// Keep the user's progress so the browser back button from a recipe
+// brings them back to their results instead of an empty form.
+const STORAGE_KEY = "rasoi:cook-what-you-have";
+
+interface SavedState {
+  equipment: string[];
+  ingredients: string[];
+  results: RecipeMatch[];
+  step: 1 | 2 | 3;
+}
+
+const loadSaved = (): SavedState | null => {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (
+      !Array.isArray(parsed.equipment) ||
+      !Array.isArray(parsed.ingredients) ||
+      !Array.isArray(parsed.results)
+    ) {
+      return null;
+    }
+
+    return parsed as SavedState;
+  } catch {
+    return null;
+  }
+};
+
 const LOADING_MESSAGES = [
   "Checking your pantry…",
   "Matching dishes to your appliances…",
@@ -139,13 +170,26 @@ const ResultSkeleton: React.FC = () => (
 /* ---------- Main component ---------- */
 
 const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [saved] = useState(loadSaved);
 
-  const [equipment, setEquipment] = useState<string[]>([]);
-  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [step, setStep] = useState<1 | 2 | 3>(() => {
+    if (!saved) return 1;
+    if (saved.results.length > 0) return 3;
+    if (!saved.equipment.length) return 1;
+    return saved.step === 1 ? 1 : 2;
+  });
+
+  const [equipment, setEquipment] = useState<string[]>(
+    saved?.equipment ?? []
+  );
+  const [ingredients, setIngredients] = useState<string[]>(
+    saved?.ingredients ?? []
+  );
   const [ingredientInput, setIngredientInput] = useState("");
 
-  const [results, setResults] = useState<RecipeMatch[]>([]);
+  const [results, setResults] = useState<RecipeMatch[]>(
+    saved?.results ?? []
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -155,6 +199,20 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
 
   const currentStep = step;
+
+  // Save progress (not while a request is in flight)
+  useEffect(() => {
+    if (isLoading) return;
+
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ equipment, ingredients, results, step })
+      );
+    } catch {
+      /* ignore storage problems */
+    }
+  }, [equipment, ingredients, results, step, isLoading]);
 
   // Rotate the loading message so the wait feels active
   useEffect(() => {

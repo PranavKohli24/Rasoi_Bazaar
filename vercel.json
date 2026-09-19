@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/recipe", "destination": "/index.html" },
+    { "source": "/cook-what-you-have", "destination": "/index.html" }
+  ]
+}
