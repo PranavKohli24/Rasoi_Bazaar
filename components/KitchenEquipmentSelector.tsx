@@ -225,47 +225,48 @@ const KitchenEquipmentSelector: React.FC<
 
               {/* Label */}
               <span
-                className={`
-                  absolute
-                  left-1/2
-                  -translate-x-1/2
-                  whitespace-nowrap
-                  rounded-full
-                  px-3
-                  py-1.5
-                  text-[11px]
-                  sm:text-xs
-                  font-semibold
-                  backdrop-blur-md
-                  transition-all
-                  duration-200
-                  ${
-                    selected
-                      ? `
-                        -top-10
-                        bg-orange-400
-                        text-stone-950
-                        shadow-lg
-                        opacity-100
-                        scale-100
-                      `
-                      : `
-                        -top-9
-                        bg-stone-950/90
-                        border
-                        border-stone-600/70
-                        text-stone-200
-                        opacity-0
-                        scale-95
-                        group-hover:opacity-100
-                        group-hover:scale-100
-                      `
-                  }
-                `}
-              >
-                {selected ? '✓ ' : ''}
-                {item.label}
-              </span>
+  className={`
+    absolute
+    left-1/2
+    -translate-x-1/2
+    whitespace-nowrap
+    rounded-full
+    px-2
+    py-0.5
+    text-[8px]
+    sm:text-[9px]
+    font-medium
+    leading-none
+    backdrop-blur-md
+    transition-all
+    duration-200
+    ${
+      selected
+        ? `
+          -top-6
+          bg-orange-400
+          text-stone-950
+          shadow-md
+          opacity-100
+          scale-100
+        `
+        : `
+          -top-6
+          bg-stone-950/90
+          border
+          border-stone-600/70
+          text-stone-200
+          opacity-0
+          scale-95
+          group-hover:opacity-100
+          group-hover:scale-100
+        `
+    }
+  `}
+>
+  {selected ? '✓ ' : ''}
+  {item.label}
+</span>
 
               {/* Selected check */}
               {selected && (
