@@ -262,6 +262,7 @@ const App: React.FC = () => {
             )}
           </div>
 
+          {/* 1. Search: "I know what I want to cook" */}
           <div
             className={
               isHero
@@ -278,9 +279,59 @@ const App: React.FC = () => {
             />
           </div>
 
+          {/* Quiet shortcut for people who arrive with ingredients, not a dish */}
           {isHero && (
-            <div className="w-full max-w-5xl mt-5 sm:mt-7">
-              <div className="relative overflow-hidden rounded-3xl border border-orange-400/70 bg-stone-950/65 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
+            <button
+              type="button"
+              onClick={() => setShowCookWhatYouHave(true)}
+              className="mt-3 rounded-lg px-2 py-1 text-sm text-stone-400 transition-colors hover:text-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+            >
+              No dish in mind?{' '}
+              <span className="font-medium text-orange-300 underline underline-offset-4">
+                Cook with what you have
+              </span>
+            </button>
+          )}
+
+          {/* 2. Browse: "Give me ideas", directly under search */}
+          <div
+    className={`w-full max-w-6xl transition-all duration-500 ${
+        isHero && !isLoading
+            ? 'opacity-100 translate-y-0 mt-8 sm:mt-10'
+            : 'opacity-0 translate-y-4 pointer-events-none absolute'
+    }`}
+>
+    <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8">
+
+        {/* Categories */}
+        <div className="w-full lg:w-2/3">
+            <CategoryBrowser onSelect={handleSuggestionSelect} />
+        </div>
+
+        {/* Quick suggestions */}
+        <div className="w-full lg:w-1/3 mt-6 lg:mt-8">
+            <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
+        </div>
+
+    </div>
+</div>
+
+          {/* 3. Cook What You Have: a separate path, clearly marked with "or" */}
+          {isHero && (
+            <div className="w-full max-w-5xl mt-12 sm:mt-16">
+              <div
+                className="flex items-center gap-4"
+                role="separator"
+                aria-label="or"
+              >
+                <div className="h-px flex-1 bg-gradient-to-r from-transparent to-stone-700" />
+                <span className="text-sm text-stone-400">
+                  or start from your kitchen
+                </span>
+                <div className="h-px flex-1 bg-gradient-to-l from-transparent to-stone-700" />
+              </div>
+
+              <div className="relative mt-6 overflow-hidden rounded-3xl border border-orange-400/70 bg-stone-950/65 backdrop-blur-md shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-transparent to-orange-500/10" />
 
                 <div className="relative flex flex-col md:flex-row items-center gap-5 md:gap-7 px-5 py-5 sm:px-7 sm:py-6 text-left">
@@ -316,7 +367,7 @@ const App: React.FC = () => {
                     <button
     type="button"
     onClick={() => setShowCookWhatYouHave(true)}
-    className="inline-flex items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-300/70"
+    className="inline-flex w-full md:w-auto items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange-300/70"
 >
     Get Started
 </button>
@@ -348,28 +399,6 @@ const App: React.FC = () => {
               </div>
             </div>
           )}
-
-          <div
-    className={`w-full max-w-6xl transition-all duration-500 ${
-        isHero && !isLoading
-            ? 'opacity-100 translate-y-0 mt-8 sm:mt-10'
-            : 'opacity-0 translate-y-4 pointer-events-none absolute'
-    }`}
->
-    <div className="flex flex-col lg:flex-row lg:items-start lg:gap-8">
-
-        {/* Categories */}
-        <div className="w-full lg:w-2/3">
-            <CategoryBrowser onSelect={handleSuggestionSelect} />
-        </div>
-
-        {/* Quick suggestions */}
-        <div className="w-full lg:w-1/3 mt-6 lg:mt-8">
-            <RecipeSuggestionChips onSelect={handleSuggestionSelect} />
-        </div>
-
-    </div>
-</div>
         </div>
       </section>
 
