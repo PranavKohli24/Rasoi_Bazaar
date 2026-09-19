@@ -271,7 +271,6 @@ const KitchenEquipmentSelector: React.FC<
     }
   `}
                 >
-                  {selected ? '✓ ' : ''}
                   {item.label}
                 </span>
 
@@ -280,16 +279,21 @@ const KitchenEquipmentSelector: React.FC<
                   <span
                     className="
                     absolute
-                    -right-2
-                    -top-2
+                    -right-1.5
+                    -top-1.5
+                    sm:-right-2
+                    sm:-top-2
                     flex
-                    h-6
-                    w-6
+                    h-4
+                    w-4
+                    sm:h-6
+                    sm:w-6
                     items-center
                     justify-center
                     rounded-full
                     bg-orange-400
-                    text-xs
+                    text-[9px]
+                    sm:text-xs
                     font-black
                     text-stone-950
                     shadow-lg
