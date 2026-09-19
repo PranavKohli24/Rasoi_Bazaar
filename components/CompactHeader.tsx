@@ -3,33 +3,65 @@ import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useDishSearch } from "../utils/dishRoutes";
 
+interface SiteHeaderProps {
+  /** Show the compact search box (hidden on the home page, where search is the hero) */
+  showSearch?: boolean;
+  /**
+   * Float over the page instead of taking up space (used on the home page,
+   * where the big hero wordmark sits in the middle of the screen).
+   */
+  overlay?: boolean;
+  /** When false the header is invisible. The home page reveals it once the hero wordmark scrolls away. */
+  revealed?: boolean;
+}
+
 /**
- * Logo (links home) + compact search, used on every page except the home page.
- * Positioned absolutely, so render it inside a `relative` container.
+ * Shared top bar: wordmark on the left, search on the right.
+ * Sticky from the sm breakpoint up; scrolls away on phones to save space.
  */
-const CompactHeader: React.FC = () => {
+const CompactHeader: React.FC<SiteHeaderProps> = ({
+  showSearch = true,
+  overlay = false,
+  revealed = true,
+}) => {
   const { term, setTerm, go } = useDishSearch();
 
-  return (
-    <>
-      <Link
-        to="/"
-        aria-label="Rasoi Bazaar home"
-        className="absolute left-4 top-4 z-50 rounded-lg font-serif text-3xl font-black tracking-tight text-transparent drop-shadow-lg bg-clip-text bg-gradient-to-b from-orange-100 to-orange-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:left-8 sm:top-6 sm:text-4xl lg:text-5xl"
-      >
-        Rasoi Bazaar
-      </Link>
+  const position = overlay
+    ? "fixed inset-x-0 top-0"
+    : "relative sm:sticky sm:top-0";
 
-      <div className="absolute right-3 top-[55px] z-30 w-[min(92vw,760px)]">
-        <SearchBar
-          searchTerm={term}
-          setSearchTerm={setTerm}
-          onSearch={() => go(term)}
-          isLoading={false}
-          compact
-        />
+  const visibility = revealed
+    ? "translate-y-0 border-stone-800/70 bg-stone-950/80 opacity-100"
+    : "pointer-events-none -translate-y-2 border-transparent bg-transparent opacity-0";
+
+  return (
+    <header
+      aria-hidden={!revealed}
+      className={`${position} ${visibility} z-40 border-b backdrop-blur-md transition-all duration-300 motion-reduce:transition-none`}
+    >
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6">
+        <Link
+          to="/"
+          tabIndex={revealed ? 0 : -1}
+          aria-label="Rasoi Bazaar home"
+          className="rounded-lg bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-serif text-2xl font-black tracking-tight text-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:text-3xl"
+        >
+          Rasoi Bazaar
+        </Link>
+
+        {showSearch && (
+          <div className="order-last w-full sm:order-none sm:ml-auto sm:w-auto sm:max-w-xl sm:flex-1">
+            <SearchBar
+              searchTerm={term}
+              setSearchTerm={setTerm}
+              onSearch={() => go(term)}
+              isLoading={false}
+              compact
+            />
+          </div>
+        )}
       </div>
-    </>
+    </header>
   );
 };
 

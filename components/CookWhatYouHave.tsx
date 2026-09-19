@@ -376,7 +376,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
     <section
       ref={sectionRef}
       id="cook-what-you-have"
-      className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-4 px-3 py-10 sm:px-4 sm:py-20"
+      className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20"
     >
       <div className="rounded-3xl border border-orange-400/30 bg-stone-950/80 shadow-[0_25px_80px_rgba(0,0,0,0.45)] backdrop-blur-xl">
         {/* Header */}

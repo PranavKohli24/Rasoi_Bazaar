@@ -64,43 +64,37 @@ const App: React.FC = () => {
         </Routes>
       </div>
 
-      <footer className="relative z-10 mt-auto pb-10 pt-2 text-center">
-        {isHome && (
-          <div className="mb-4 flex items-center justify-center gap-5 px-4">
-            <div className="h-px w-24 bg-gradient-to-r from-transparent to-stone-600 sm:w-32" />
-            <span className="text-base text-orange-200/90">😋</span>
-            <div className="h-px w-24 bg-gradient-to-l from-transparent to-stone-600 sm:w-32" />
+      <footer className="relative z-10 mt-8 border-t border-stone-800/70">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-center sm:flex-row sm:justify-between sm:px-6 sm:text-left">
+          <div>
+            <p className="font-hand text-2xl text-orange-100/90">
+              Good food brings people together
+            </p>
+            <p className="mt-1 text-sm text-stone-400">
+              © {new Date().getFullYear()} Rasoi Bazaar
+            </p>
           </div>
-        )}
 
-        <p className="font-[cursive] text-lg text-orange-100/85 sm:text-xl">
-          Good Food Brings People Together
-        </p>
-
-        <div className="mt-4 text-sm text-stone-600">
-          <p>
-            Designed & Built by{" "}
+          <p className="text-sm leading-relaxed text-stone-400">
+            Designed & built by{" "}
             <a
               href="https://www.linkedin.com/in/pranavkohli24/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-orange-200/80 transition-colors hover:text-orange-400"
+              className="text-orange-200 transition-colors hover:text-orange-300"
             >
               Pranav Kohli
             </a>
-          </p>
-
-          <p className="mt-1">
-            For any queries, mail me (Pranav) at:{" "}
+            <span className="mx-2 text-stone-600" aria-hidden="true">
+              ·
+            </span>
             <a
               href="mailto:hey@pranavkohli.me"
-              className="transition-colors hover:text-stone-400"
+              className="transition-colors hover:text-stone-200"
             >
               hey@pranavkohli.me
             </a>
           </p>
-
-          <p className="mt-1">© {new Date().getFullYear()} Rasoi Bazaar</p>
         </div>
       </footer>
     </div>

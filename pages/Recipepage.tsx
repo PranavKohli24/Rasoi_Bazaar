@@ -117,7 +117,7 @@ const RecipePage: React.FC = () => {
     <div className="relative z-10 w-full">
       <CompactHeader />
 
-      <main className="container mx-auto min-h-[60vh] px-4 pb-20 pt-24">
+      <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
         <div className="mx-auto w-full max-w-6xl">
           {isLoading && <CookingCompanion />}
           {error && <ErrorMessage message={error} />}

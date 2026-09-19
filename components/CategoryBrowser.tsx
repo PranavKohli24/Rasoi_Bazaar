@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import SectionDivider from './SectionDIvider';
 
 interface CategoryBrowserProps {
     onSelect: (dish: string) => void;
@@ -8,6 +9,7 @@ const categories = [
     {
         name: 'Quick Meals',
         description: 'Under 30 minutes',
+        icon: '/quick-meals.svg',
         searchTerms: [
             'Quick 20-minute Paneer Bhurji',
             'Poha (Kanda Batata Poha)',
@@ -15,18 +17,11 @@ const categories = [
             'Egg Bhurji (Anda Bhurji)',
             'Quick Vegetable Pulao',
         ],
-        icon: (
-            <img
-                src="/quick-meals.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
     {
         name: 'Healthy & Light',
         description: 'Nutritious & wholesome',
+        icon: '/healthy-light.svg',
         searchTerms: [
             'Healthy Moong Dal Cheela',
             'Vegetable Dalia (Broken Wheat Porridge)',
@@ -34,18 +29,11 @@ const categories = [
             'Sprouts Chaat',
             'Lauki Chana Dal (Bottle Gourd with Split Chickpea Lentils)',
         ],
-        icon: (
-            <img
-                src="/healthy-light.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
     {
         name: 'Decadent Desserts',
         description: 'Sweet indulgences',
+        icon: '/dessert-classics.svg',
         searchTerms: [
             'Kheer',
             'Gajar Halwa (Carrot Halwa)',
@@ -53,18 +41,11 @@ const categories = [
             'Rava Kesari (Semolina Halwa)',
             'Gulab Jamun (home-style, with milk powder)',
         ],
-        icon: (
-            <img
-                src="/dessert-classics.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
     {
         name: 'Vegetarian Mains',
         description: 'Hearty & flavorful',
+        icon: '/vegetarian-mains.svg',
         searchTerms: [
             'Palak Paneer',
             'Chana Masala',
@@ -72,18 +53,11 @@ const categories = [
             'Bhindi Masala (Okra Stir-fry)',
             'Baingan Bharta (Smoky Roasted Eggplant Mash)',
         ],
-        icon: (
-            <img
-                src="/vegetarian-mains.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
     {
         name: 'Chicken Classics',
         description: 'All-time favorites',
+        icon: '/chicken-classics.svg',
         searchTerms: [
             'Classic Chicken Korma',
             'Butter Chicken (Murgh Makhani)',
@@ -91,18 +65,11 @@ const categories = [
             'Chicken Tikka Masala (Stovetop)',
             'Chicken 65',
         ],
-        icon: (
-            <img
-                src="/chicken-classics.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
     {
         name: 'Breads & Rice',
         description: 'Perfect accompaniments',
+        icon: '/rice-classics.svg',
         searchTerms: [
             'Garlic Naan on Tawa',
             'Jeera Rice',
@@ -110,14 +77,6 @@ const categories = [
             'Laccha Paratha (Multi-layered Flatbread)',
             'Lemon Rice (Chitranna)',
         ],
-        icon: (
-            <img
-                src="/rice-classics.svg"
-                alt=""
-                className="h-11 w-11 mb-3 object-contain"
-                draggable={false}
-            />
-        )
     },
 ];
 
@@ -151,38 +110,55 @@ const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
     };
 
     return (
-        <div className="w-full animate-fade-in-up">
-            <div className="flex items-center gap-4 mb-5 sm:mb-6">
-                <div className="h-px flex-1 bg-gradient-to-r from-transparent via-stone-700 to-stone-600" />
-                <p className="shrink-0 text-center text-stone-200 text-base sm:text-lg font-medium tracking-tight">
-                    Or Explore by Category
-                </p>
-                <div className="h-px flex-1 bg-gradient-to-l from-transparent via-stone-700 to-stone-600" />
-            </div>
+        <section aria-labelledby="browse-heading" className="w-full">
+            <SectionDivider
+                heading
+                id="browse-heading"
+                label="Or explore by category"
+            />
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-5">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-2 xl:grid-cols-3">
                 {categories.map((cat) => (
                     <button
                         key={cat.name}
                         type="button"
-                        onClick={() => handleCategoryClick(cat.name, cat.searchTerms)}
-                        className="group min-h-[132px] sm:min-h-[142px] flex flex-col items-center justify-center text-center px-4 py-5 sm:px-5 bg-stone-900/55 rounded-2xl border border-stone-700/70 backdrop-blur-md transition-all duration-250 hover:bg-stone-800/70 hover:border-orange-300/30 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(0,0,0,0.25)] focus:outline-none focus:ring-2 focus:ring-orange-500/50"
+                        onClick={() =>
+                            handleCategoryClick(cat.name, cat.searchTerms)
+                        }
+                        className="group relative flex flex-col items-start gap-3 rounded-2xl border border-stone-800 bg-stone-900/50 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300/40 hover:bg-stone-900/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:p-5"
                     >
-                        <div className="text-orange-300/90 group-hover:text-orange-200 transition-colors duration-300">
-                            {cat.icon}
-                        </div>
+                        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-400/10 transition-colors group-hover:bg-orange-400/20 sm:h-12 sm:w-12">
+                            <img
+                                src={cat.icon}
+                                alt=""
+                                className="h-7 w-7 object-contain sm:h-8 sm:w-8"
+                                draggable={false}
+                            />
+                        </span>
 
-                        <h3 className="font-semibold text-sm sm:text-lg text-white tracking-tight leading-tight">
-                            {cat.name}
-                        </h3>
+                        <span className="block">
+                            <span className="block text-base font-semibold leading-tight text-orange-50 sm:text-lg">
+                                {cat.name}
+                            </span>
+                            <span className="mt-1 block text-sm text-stone-400">
+                                {cat.description}
+                            </span>
+                        </span>
 
-                        <p className="text-xs sm:text-sm text-stone-400 mt-1">
-                            {cat.description}
-                        </p>
+                        <span
+                            aria-hidden="true"
+                            className="absolute right-4 top-4 text-stone-600 transition-colors group-hover:text-orange-300"
+                        >
+                            ↗
+                        </span>
                     </button>
                 ))}
             </div>
-        </div>
+
+            <p className="mt-4 text-center text-sm text-stone-400">
+                Tap a category and we&apos;ll pick a dish for you.
+            </p>
+        </section>
     );
 };
 

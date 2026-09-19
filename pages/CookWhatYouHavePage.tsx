@@ -15,7 +15,7 @@ const CookWhatYouHavePage: React.FC = () => {
     <div className="relative z-10 w-full">
       <CompactHeader />
 
-      <div className="pt-20">
+      <div>
         <CookWhatYouHave
           onSelectDish={(dish) => navigate(RECIPE_PATH, { state: { dish } })}
         />
