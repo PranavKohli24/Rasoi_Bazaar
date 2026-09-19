@@ -16,13 +16,83 @@ const SearchBar: React.FC<SearchBarProps> = ({
   compact = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const [exampleIndex, setExampleIndex] = useState(0);
+  const [typedExample, setTypedExample] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  const examples = [
+    'Rajma Chawal',
+    'Shahi Paneer',
+    'Dal Makhani',
+    'Chole Bhature',
+    'Mushroom',
+  ];
 
   useEffect(() => {
     if (!compact) {
       setIsExpanded(false);
     }
   }, [compact]);
+
+  // Type and erase example dishes while the input is not focused.
+  useEffect(() => {
+    if (
+      compact ||
+      searchTerm ||
+      isLoading ||
+      isInputFocused
+    ) {
+      return;
+    }
+
+    const currentExample = examples[exampleIndex];
+
+    const isFinishedTyping =
+      typedExample.length === currentExample.length;
+
+    const delay = isDeleting
+      ? 35
+      : isFinishedTyping
+        ? 1600
+        : 60;
+
+    const timer = window.setTimeout(() => {
+      if (!isDeleting) {
+        if (typedExample.length < currentExample.length) {
+          setTypedExample(
+            currentExample.slice(0, typedExample.length + 1)
+          );
+        } else {
+          setIsDeleting(true);
+        }
+      } else {
+        if (typedExample.length > 0) {
+          setTypedExample(typedExample.slice(0, -1));
+        } else {
+          setIsDeleting(false);
+          setExampleIndex(
+            (prev) => (prev + 1) % examples.length
+          );
+        }
+      }
+    }, delay);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [
+    compact,
+    searchTerm,
+    isLoading,
+    isInputFocused,
+    exampleIndex,
+    typedExample,
+    isDeleting,
+  ]);
 
   // Close the expanded search when clicking outside it.
   useEffect(() => {
@@ -40,7 +110,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
     document.addEventListener('mousedown', handleOutsideClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener(
+        'mousedown',
+        handleOutsideClick
+      );
     };
   }, [compact, isExpanded]);
 
@@ -89,7 +162,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         >
           Enter a dish name{' '}
           <span className="text-stone-500 font-normal">
-            (e.g. "Rajma Chawal")
+            (try something delicious)
           </span>
         </label>
       )}
@@ -143,18 +216,22 @@ const SearchBar: React.FC<SearchBarProps> = ({
               </svg>
             </div>
 
-            {/* Input Field - Fixed Font Size for Mobile */}
+            {/* Input Field */}
             <input
               id="recipe-search"
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
               autoFocus={compact && isExpanded}
               placeholder={
                 compact
                   ? 'cook another masterpiece?'
-                  : 'What masterpiece will you create today?'
+                  : isInputFocused
+                    ? 'What masterpiece will you create today?'
+                    : typedExample
               }
               disabled={isLoading}
               className={`w-full
