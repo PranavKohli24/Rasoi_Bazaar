@@ -35,6 +35,12 @@ const STEPS = ["Equipment", "Ingredients", "Dishes"];
 const primaryButton =
   "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-6 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
 
+// Slightly smaller on phones so footer text + button both fit
+const footerButton = primaryButton.replace(
+  "px-6 py-3",
+  "px-4 py-2.5 text-sm sm:px-6 sm:py-3 sm:text-base"
+);
+
 const ghostButton =
   "inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400 transition-colors hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
 
@@ -320,7 +326,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
             </div>
 
             <div className="sticky bottom-0 z-40 flex items-center justify-between gap-4 rounded-b-3xl border-t border-stone-800 bg-stone-950/95 px-5 py-4 backdrop-blur-md sm:px-12">
-              <p className="min-w-0 flex-1 truncate text-sm text-stone-400">
+              <p className="min-w-0 flex-1 text-sm leading-tight text-stone-400">
                 {equipment.length === 0 ? (
                   "Select at least one"
                 ) : (
@@ -340,10 +346,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                   setError(null);
                   setStep(2);
                 }}
-                className={`${primaryButton} shrink-0 whitespace-nowrap`}
+                className={`${footerButton} shrink-0 whitespace-nowrap`}
               >
                 Next: ingredients
-                <span aria-hidden="true">→</span>
+                <span aria-hidden="true" className="hidden sm:inline">
+                  →
+                </span>
               </button>
             </div>
           </>
@@ -522,7 +530,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 type="button"
                 onClick={handleFindRecipes}
                 disabled={isLoading || ingredients.length === 0}
-                className={`${primaryButton} min-w-[12.5rem] shrink-0 whitespace-nowrap`}
+                className={`${footerButton} min-w-[10.5rem] shrink-0 whitespace-nowrap sm:min-w-[12.5rem]`}
               >
                 {isLoading ? "Finding dishes…" : "Find what I can make"}
               </button>
