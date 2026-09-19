@@ -4,7 +4,7 @@ import CompactHeader from "../components/CompactHeader";
 import SearchBar from "../components/SearchBar";
 import CategoryBrowser from "../components/CategoryBrowser";
 import RecipeSuggestionChips from "../components/RecipeSuggestionChips";
-import SectionDivider from "../components/SectionDIvider";
+import SectionDivider from "../components/SectionDivider";
 import { useDishSearch } from "../utils/dishRoutes";
 
 const COOK_STEPS = [
