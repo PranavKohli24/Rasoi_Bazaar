@@ -44,10 +44,10 @@ const HomePage: React.FC = () => {
 
       <main>
         {/* Hero: the brand, then one job, find a dish */}
-        <section className="mx-auto flex min-h-[88svh] max-w-3xl flex-col items-center justify-center px-4 py-14 text-center sm:py-20">
+        <section className="mx-auto flex min-h-[80svh] max-w-3xl flex-col items-center justify-center px-4 py-14 text-center sm:py-20 lg:min-h-0 lg:justify-start lg:pb-12 lg:pt-28">
           <h1
             ref={brandRef}
-            className="bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-serif text-6xl font-black tracking-tight text-transparent drop-shadow-lg sm:text-8xl"
+            className="bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-brand text-6xl font-black tracking-tight text-transparent drop-shadow-lg sm:text-8xl"
           >
             Rasoi Bazaar
           </h1>

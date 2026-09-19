@@ -44,7 +44,7 @@ const CompactHeader: React.FC<SiteHeaderProps> = ({
           to="/"
           tabIndex={revealed ? 0 : -1}
           aria-label="Rasoi Bazaar home"
-          className="rounded-lg bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-serif text-2xl font-black tracking-tight text-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:text-3xl"
+          className="rounded-lg bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-brand text-2xl font-black tracking-tight text-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:text-3xl"
         >
           Rasoi Bazaar
         </Link>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Navigate,
   Route,
@@ -15,14 +15,28 @@ const BACKGROUND_MOBILE = "/background_mobile.png";
 
 /** Scroll to top on new navigations; leave back/forward to the browser */
 const ScrollToTop: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname, key } = useLocation();
   const navigationType = useNavigationType();
+  const previousPathname = useRef(pathname);
 
+  // `key` changes on every navigation, including clicking a link to the page
+  // you're already on (which React Router treats as a "replace" with the same
+  // pathname, so depending on pathname alone only worked the first time).
   useEffect(() => {
-    if (navigationType !== "POP") {
-      window.scrollTo(0, 0);
-    }
-  }, [pathname, navigationType]);
+    const samePage = previousPathname.current === pathname;
+    previousPathname.current = pathname;
+
+    if (navigationType === "POP") return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    window.scrollTo({
+      top: 0,
+      behavior: samePage && !reduceMotion ? "smooth" : "auto",
+    });
+  }, [key, pathname, navigationType]);
 
   return null;
 };
