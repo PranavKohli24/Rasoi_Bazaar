@@ -320,7 +320,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
             </div>
 
             <div className="sticky bottom-0 z-40 flex items-center justify-between gap-4 rounded-b-3xl border-t border-stone-800 bg-stone-950/95 px-5 py-4 backdrop-blur-md sm:px-12">
-              <p className="text-sm text-stone-400">
+              <p className="min-w-0 flex-1 truncate text-sm text-stone-400">
                 {equipment.length === 0 ? (
                   "Select at least one"
                 ) : (
@@ -340,7 +340,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                   setError(null);
                   setStep(2);
                 }}
-                className={primaryButton}
+                className={`${primaryButton} shrink-0 whitespace-nowrap`}
               >
                 Next: ingredients
                 <span aria-hidden="true">→</span>
@@ -522,7 +522,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 type="button"
                 onClick={handleFindRecipes}
                 disabled={isLoading || ingredients.length === 0}
-                className={primaryButton}
+                className={`${primaryButton} min-w-[12.5rem] shrink-0 whitespace-nowrap`}
               >
                 {isLoading ? "Finding dishes…" : "Find what I can make"}
               </button>
