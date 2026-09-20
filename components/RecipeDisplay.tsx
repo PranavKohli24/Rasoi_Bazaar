@@ -767,7 +767,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         <aside className="lg:sticky lg:top-24 lg:col-span-2 lg:self-start">
           <section
             aria-labelledby="ingredients-heading"
-            className="flex flex-col rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20 lg:max-h-[calc(100vh-7.5rem)]"
+            className="flex flex-col rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20 lg:min-h-[calc(100vh-7.5rem)]"
           >
             {/* Header: sticks while the list scrolls past (phones/tablets),
                 and stays put above the scrolling list on desktop */}
@@ -789,7 +789,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             </div>
 
             {/* Scrolls inside the card on desktop only; on phones the page scrolls */}
-            <div className="relative lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:[scrollbar-color:#44403c_transparent] lg:[scrollbar-width:thin]">
+            <div className="relative lg:flex-1">
             <ul className="px-2 py-2 sm:px-3 lg:pb-8">
               {recipe.ingredients.map((ing, index) => (
                 <li key={index}>
@@ -858,11 +858,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
               ))}
             </ul>
 
-              {/* Fade hint that there is more to scroll (desktop) */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none sticky bottom-0 -mt-8 hidden h-8 bg-gradient-to-t from-stone-900 to-transparent lg:block"
-              />
+      
             </div>
 
             <div className="shrink-0 border-t border-stone-800 p-5 sm:p-6">
