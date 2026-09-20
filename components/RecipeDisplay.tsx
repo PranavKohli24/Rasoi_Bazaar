@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Recipe, Tip } from "../types";
 
 import {
@@ -6,7 +6,9 @@ import {
   searchInstamartProducts,
   addToInstamartCart,
   searchRestaurants,
+  addDishToFoodCart,
   startSwiggyLogin,
+  MAX_CART_QUANTITY,
   SwiggyAddress,
   InstamartProduct,
   InstamartVariation,
@@ -279,6 +281,31 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
   const [flashIndex, setFlashIndex] = useState<number | null>(null);
 
+  // On desktop the ingredients card stays pinned while you cook, but only if
+  // it fits on screen. A card taller than the screen would have its bottom
+  // cut off, so in that case it scrolls with the page instead.
+  const ingredientsCardRef = useRef<HTMLElement>(null);
+  const [canStick, setCanStick] = useState(true);
+
+  useEffect(() => {
+    const element = ingredientsCardRef.current;
+    if (!element) return;
+
+    const update = () =>
+      setCanStick(element.offsetHeight <= window.innerHeight - 120);
+
+    update();
+
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    window.addEventListener("resize", update);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
   const [isCooking, setIsCooking] = useState(false);
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
@@ -318,6 +345,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     Record<string, InstamartVariation>
   >({});
 
+  // How many packs of each chosen product to add (defaults to 1)
+  const [productQuantities, setProductQuantities] = useState<
+    Record<string, number>
+  >({});
+
   const [instamartCartAdded, setInstamartCartAdded] = useState(false);
 
   const [swiggyError, setSwiggyError] = useState<string | null>(null);
@@ -349,6 +381,21 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
    */
 
   const [restaurants, setRestaurants] = useState<SwiggyRestaurant[]>([]);
+
+  const [selectedRestaurant, setSelectedRestaurant] =
+    useState<SwiggyRestaurant | null>(null);
+
+  const [foodCartAdded, setFoodCartAdded] = useState(false);
+
+  // Sends the person to sign in with Swiggy. It only happens once: if they come
+  // back still not signed in, we say so instead of sending them round again.
+  const redirectToLogin = () => {
+    if (!startSwiggyLogin()) {
+      setSwiggyError(
+        "We couldn't sign you in to Swiggy. Please try again in a minute."
+      );
+    }
+  };
 
   /*
    * -----------------------------
@@ -406,6 +453,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setSelectedAddressId(null);
     setIngredientProducts({});
     setSelectedProducts({});
+    setProductQuantities({});
     setInstamartCartAdded(false);
 
     try {
@@ -421,7 +469,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         error instanceof Error ? error.message : "Could not connect to Swiggy.";
 
       if (message === "SWIGGY_NOT_CONNECTED") {
-        startSwiggyLogin();
+        redirectToLogin();
         return;
       }
 
@@ -451,6 +499,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
     if (hasExistingProducts && currentKey !== searchedIngredientsKey) {
       setSelectedProducts({});
+      setProductQuantities({});
       setInstamartCartAdded(false);
       handleSearchIngredients();
     }
@@ -471,11 +520,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setSelectedAddressId(null);
     setIngredientProducts({});
     setSelectedProducts({});
+    setProductQuantities({});
     setInstamartCartAdded(false);
     setSearchedIngredientsKey(null);
     setLastSearchedAddressId(null);
     setIsChoosingAddress(false);
     setRestaurants([]);
+    setSelectedRestaurant(null);
+    setFoodCartAdded(false);
     setLoadingStage(null);
     setSearchIngredientNames([]);
     setPendingIngredientNames([]);
@@ -532,6 +584,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setSwiggyError(null);
     setIngredientProducts({});
     setSelectedProducts({});
+    setProductQuantities({});
     setInstamartCartAdded(false);
     setIsChoosingAddress(false);
 
@@ -540,11 +593,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setSearchIngredientNames(names);
     setPendingIngredientNames(names);
 
-    // Fire every ingredient search in parallel. Each one updates
-    // its own result as soon as it resolves, instead of waiting
-    // for all of them to finish together.
-    await Promise.all(
-      missingIngredients.map(async (ingredient) => {
+    // Search several ingredients at a time. Swiggy's MCP layer doesn't
+    // enforce rate limiting yet (a shed request just surfaces as a busy
+    // error, retried with backoff below in swiggyService), so a slightly
+    // higher concurrency here is a safe way to cut overall wait time.
+    const SEARCH_CONCURRENCY = 5;
+    let nextIndex = 0;
+    let redirectedToLogin = false;
+
+    const worker = async () => {
+      while (nextIndex < missingIngredients.length) {
+        const ingredient = missingIngredients[nextIndex++];
         const query = ingredient.englishName || ingredient.commonName;
 
         try {
@@ -557,7 +616,19 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             ...prev,
             [ingredient.commonName]: products,
           }));
-        } catch {
+        } catch (error) {
+          // Login expired: sign in again instead of showing "No match found"
+          if (
+            error instanceof Error &&
+            error.message === "SWIGGY_NOT_CONNECTED"
+          ) {
+            if (!redirectedToLogin) {
+              redirectedToLogin = true;
+              redirectToLogin();
+            }
+            return;
+          }
+
           setIngredientProducts((prev) => ({
             ...prev,
             [ingredient.commonName]: [],
@@ -567,7 +638,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             prev.filter((name) => name !== ingredient.commonName)
           );
         }
-      })
+      }
+    };
+
+    await Promise.all(
+      Array.from(
+        { length: Math.min(SEARCH_CONCURRENCY, missingIngredients.length) },
+        worker
+      )
     );
 
     setSearchedIngredientsKey(JSON.stringify(checkedIngredients));
@@ -583,20 +661,45 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
       return;
     }
 
-    setSelectedProducts((current) => {
-      const alreadySelected =
-        current[ingredientName]?.spinId === variation.spinId;
+    const alreadySelected =
+      selectedProducts[ingredientName]?.spinId === variation.spinId;
 
-      if (alreadySelected) {
+    if (alreadySelected) {
+      setSelectedProducts((current) => {
         const updated = { ...current };
         delete updated[ingredientName];
         return updated;
-      }
+      });
 
-      return {
-        ...current,
-        [ingredientName]: variation,
-      };
+      setProductQuantities((current) => {
+        const updated = { ...current };
+        delete updated[ingredientName];
+        return updated;
+      });
+
+      return;
+    }
+
+    setSelectedProducts((current) => ({
+      ...current,
+      [ingredientName]: variation,
+    }));
+
+    // Switching pack size keeps the quantity; a first pick starts at 1
+    setProductQuantities((current) => ({
+      ...current,
+      [ingredientName]: current[ingredientName] ?? 1,
+    }));
+  };
+
+  const handleChangeQuantity = (ingredientName: string, delta: 1 | -1) => {
+    setProductQuantities((current) => {
+      const next = Math.min(
+        MAX_CART_QUANTITY,
+        Math.max(1, (current[ingredientName] ?? 1) + delta)
+      );
+
+      return { ...current, [ingredientName]: next };
     });
   };
 
@@ -620,23 +723,30 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setSwiggyError(null);
 
     try {
-      const items = selectedEntries.map(([, variation]) => ({
+      const items = selectedEntries.map(([ingredientName, variation]) => ({
         spinId: variation.spinId,
 
         skuId: variation.skuId,
 
-        quantity: 1,
+        quantity: productQuantities[ingredientName] ?? 1,
       }));
 
       await addToInstamartCart(selectedAddressId, items);
 
       setInstamartCartAdded(true);
     } catch (error) {
-      setSwiggyError(
+      const message =
         error instanceof Error
           ? error.message
-          : "Could not update your Instamart cart."
-      );
+          : "Could not update your Instamart cart.";
+
+      // The Swiggy login lasts about 5 days: sign in again instead of showing an error
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+
+      setSwiggyError(message);
     } finally {
       setIsModalLoading(false);
       setLoadingStage(null);
@@ -659,6 +769,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setLoadingStage("restaurants");
     setSwiggyError(null);
     setRestaurants([]);
+    setSelectedRestaurant(null);
+    setFoodCartAdded(false);
 
     try {
       const results = await searchRestaurants(
@@ -678,7 +790,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
           : "Could not search restaurants.";
 
       if (message === "SWIGGY_NOT_CONNECTED") {
-        startSwiggyLogin();
+        redirectToLogin();
         return;
       }
 
@@ -711,11 +823,64 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setIsChoosingAddress(true);
   };
 
+  const handleSelectRestaurant = (restaurant: SwiggyRestaurant) => {
+    setSelectedRestaurant(restaurant);
+    setFoodCartAdded(false);
+    setSwiggyError(null);
+  };
+
+  const handleAddDishToSwiggyCart = async () => {
+    if (!selectedAddressId) {
+      setSwiggyError("Please select a delivery address.");
+      return;
+    }
+
+    if (!selectedRestaurant) {
+      setSwiggyError("Please select a restaurant.");
+      return;
+    }
+
+    setIsModalLoading(true);
+    setLoadingStage("cart");
+    setSwiggyError(null);
+
+    try {
+      await addDishToFoodCart(
+        selectedAddressId,
+        selectedRestaurant.id,
+        selectedRestaurant.name,
+        recipe.dishName
+      );
+
+      setFoodCartAdded(true);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Could not add this dish to your Swiggy cart.";
+
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+
+      setSwiggyError(message);
+    } finally {
+      setIsModalLoading(false);
+      setLoadingStage(null);
+    }
+  };
+
   /*
    * -----------------------------
    * Render
    * -----------------------------
    */
+
+  // "Paneer" -> "200 g", so the modal can show what the recipe needs
+  const ingredientAmounts: Record<string, string> = Object.fromEntries(
+    recipe.ingredients.map((ing) => [ing.commonName, ing.amount])
+  );
 
   const checkedCount = checkedIngredients.filter(Boolean).length;
   const totalSteps = recipe.method.length;
@@ -764,14 +929,18 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
       <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:gap-12">
         {/* Ingredients */}
-        <aside className="lg:sticky lg:top-24 lg:col-span-2 lg:self-start">
+        <aside
+          className={`lg:col-span-2 lg:self-start ${
+            canStick ? "lg:sticky lg:top-24" : ""
+          }`}
+        >
           <section
+            ref={ingredientsCardRef}
             aria-labelledby="ingredients-heading"
-            className="flex flex-col rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20 lg:min-h-[calc(100vh-7.5rem)]"
+            className="rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20"
           >
-            {/* Header: sticks while the list scrolls past (phones/tablets),
-                and stays put above the scrolling list on desktop */}
-            <div className="sticky top-0 z-10 shrink-0 rounded-t-3xl border-b border-stone-800/80 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6 lg:static">
+            {/* Header: sticks to the top while you scroll through the list */}
+            <div className="sticky top-0 z-10 rounded-t-3xl border-b border-stone-800/80 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6">
             <SectionTitle
               flush
               id="ingredients-heading"
@@ -788,9 +957,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             />
             </div>
 
-            {/* Scrolls inside the card on desktop only; on phones the page scrolls */}
-            <div className="relative lg:flex-1">
-            <ul className="px-2 py-2 sm:px-3 lg:pb-8">
+            <ul className="px-2 py-2 sm:px-3">
               {recipe.ingredients.map((ing, index) => (
                 <li key={index}>
                   <label
@@ -858,10 +1025,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
               ))}
             </ul>
 
-      
-            </div>
-
-            <div className="shrink-0 border-t border-stone-800 p-5 sm:p-6">
+            <div className="border-t border-stone-800 p-5 sm:p-6">
               <button
                 type="button"
                 onClick={handleBuyFromInstamart}
@@ -1108,9 +1272,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         searchIngredientNames={searchIngredientNames}
         pendingIngredientNames={pendingIngredientNames}
         selectedProducts={selectedProducts}
+        ingredientAmounts={ingredientAmounts}
+        quantities={productQuantities}
+        onChangeQuantity={handleChangeQuantity}
         onSelectProduct={handleSelectProduct}
         onAddIngredients={handleAddIngredientsToCart}
         cartAdded={instamartCartAdded}
+        selectedRestaurant={selectedRestaurant}
+        onSelectRestaurant={handleSelectRestaurant}
+        onAddDishToCart={handleAddDishToSwiggyCart}
+        foodCartAdded={foodCartAdded}
         error={swiggyError}
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}
