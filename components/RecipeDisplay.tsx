@@ -20,65 +20,243 @@ interface RecipeDisplayProps {
   onFinishCooking: () => void;
 }
 
+/* ------------------------------------------------------------------ */
+/* Icons                                                               */
+/* ------------------------------------------------------------------ */
+
+const iconProps = {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  "aria-hidden": true,
+};
+
+const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </svg>
+);
+
+const CartIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <circle cx="8" cy="21" r="1" />
+    <circle cx="19" cy="21" r="1" />
+    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  </svg>
+);
+
+const UtensilsIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+    <path d="M7 2v20" />
+    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+  </svg>
+);
+
+const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" />
+  </svg>
+);
+
+const ChevronLeftIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+);
+
+const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
+const BulbIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <path d="M9 18h6" />
+    <path d="M10 22h4" />
+    <path d="M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.9-1.5-2.5Z" />
+  </svg>
+);
+
+const PotIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg {...iconProps} className={className}>
+    <path d="M2 12h20" />
+    <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" />
+    <path d="m4 8 16-4" />
+    <path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" />
+  </svg>
+);
+
+/* Section icons (the originals) */
+
+const IngredientsIcon: React.FC = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+    <path
+      fillRule="evenodd"
+      d="M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const EquipmentIcon: React.FC = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 21V3M11 3V8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8V3M15.5 13V3M15.5 13C13.567 13 12 14.7909 12 17C12 19.2091 13.567 21 15.5 21C17.433 21 19 19.2091 19 17C19 14.7909 17.433 13 15.5 13Z" />
+  </svg>
+);
+
+const MethodIcon: React.FC = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const NotesIcon: React.FC = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-6 w-6"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+/* Pictures reused from the kitchen selector, matched by equipment name */
+
+const EQUIPMENT_IMAGES: [RegExp, string][] = [
+  [/microwave/i, "/kitchen/microwave.png"],
+  [/air.?fryer/i, "/kitchen/air_fryer.png"],
+  [/grinder|mixer|blender/i, "/kitchen/grinder.png"],
+  [/cooker/i, "/kitchen/cooker.png"],
+  [/kadai|kadhai|wok/i, "/kitchen/kadai.png"],
+  [/tawa|griddle/i, "/kitchen/tawa.png"],
+  [/oven|tandoor/i, "/kitchen/oven.png"],
+  [/stove|gas/i, "/kitchen/stove.png"],
+];
+
+const getEquipmentImage = (name: string): string | null =>
+  EQUIPMENT_IMAGES.find(([pattern]) => pattern.test(name))?.[1] ?? null;
+
+const isPotLike = (name: string): boolean =>
+  /\b(pan|pot|skillet|saucepan)\b/i.test(name);
+
+/* Slide animation for the method steps */
+
+const STEP_ANIMATION_CSS = `
+@keyframes step-slide-from-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes step-slide-from-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.step-slide-from-right { animation: step-slide-from-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.step-slide-from-left  { animation: step-slide-from-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .step-slide-from-right, .step-slide-from-left { animation: none; }
+}
+`;
+
+/* ------------------------------------------------------------------ */
+/* Shared UI                                                           */
+/* ------------------------------------------------------------------ */
+
+const primaryButton =
+  "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
+
+const secondaryButton =
+  "inline-flex items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-800/70 px-5 py-3 font-medium text-stone-100 transition-colors duration-200 hover:bg-stone-700/70 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
+
 const SectionTitle: React.FC<{
+  id: string;
   title: string;
   icon: React.ReactNode;
-}> = ({ title, icon }) => (
-  <div className="flex items-center gap-3 mb-6">
-    <span className="text-orange-400">{icon}</span>
-    <h2 className="text-2xl font-bold font-serif text-white tracking-tight">{title}</h2>
+  aside?: React.ReactNode;
+  flush?: boolean;
+}> = ({ id, title, icon, aside, flush = false }) => (
+  <div
+    className={`${flush ? "" : "mb-5"} flex items-center justify-between gap-4`}
+  >
+    <div className="flex items-center gap-3">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-400/10 text-orange-300">
+        {icon}
+      </span>
+      <h2
+        id={id}
+        className="font-serif text-2xl font-black tracking-tight text-orange-50 sm:text-3xl"
+      >
+        {title}
+      </h2>
+    </div>
+    {aside}
   </div>
 );
 
 const TipCallout: React.FC<{
   tip: Tip;
 }> = ({ tip }) => {
-  const [isOpen, setIsOpen] =
-    useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const tipId = `tip-${tip.title.replace(/\s+/g, "-")}`;
 
   return (
-    <div className="mt-4">
+    <div className="mt-6">
       <button
-        onClick={() =>
-          setIsOpen(!isOpen)
-        }
-        className="inline-flex items-center max-w-full text-sm text-orange-400 hover:text-orange-300 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500/50 rounded"
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="inline-flex max-w-full items-center gap-2 rounded-lg text-left text-sm font-semibold text-orange-300 transition-colors duration-200 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
         aria-expanded={isOpen}
-        aria-controls={`tip-${tip.title.replace(
-          /\s+/g,
-          "-"
-        )}`}
+        aria-controls={tipId}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 mr-2"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M9 18h6" />
-          <path d="M10 22h4" />
-          <path d="M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.9-1.5-2.5Z" />
-        </svg>
-
-        <span className="truncate max-w-[240px]">
-          {isOpen ? "Hide Tip" : tip.title}
-        </span>
+        <BulbIcon className="h-5 w-5 shrink-0" />
+        <span>{isOpen ? "Hide tip" : tip.title}</span>
       </button>
 
       {isOpen && (
         <div
-          id={`tip-${tip.title.replace(
-            /\s+/g,
-            "-"
-          )}`}
-          className="mt-2 ml-4 p-3 bg-orange-900/40 border-l-4 border-orange-500 text-orange-200 rounded-r-md text-sm animate-fade-in-up"
-          style={{
-            animationDuration: "0.3s",
-          }}
+          id={tipId}
+          className="mt-3 animate-fade-in-up rounded-xl border-l-4 border-orange-400 bg-orange-400/10 p-4 text-sm leading-relaxed text-orange-100 sm:text-base"
+          style={{ animationDuration: "0.3s" }}
         >
           <p>{tip.content}</p>
         </div>
@@ -87,47 +265,38 @@ const TipCallout: React.FC<{
   );
 };
 
-const RecipeDisplay: React.FC<
-  RecipeDisplayProps
-> = ({
+/* ------------------------------------------------------------------ */
+/* Component                                                           */
+/* ------------------------------------------------------------------ */
+
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
   recipe,
   onFinishCooking,
 }) => {
-  const [
-  checkedIngredients,
-  setCheckedIngredients,
-] = useState<boolean[]>(
-  new Array(
-    recipe.ingredients.length
-  ).fill(false)
-);
+  const [checkedIngredients, setCheckedIngredients] = useState<boolean[]>(
+    new Array(recipe.ingredients.length).fill(false)
+  );
 
-const [flashIndex, setFlashIndex] = useState<number | null>(null);
+  const [flashIndex, setFlashIndex] = useState<number | null>(null);
 
-  const [isCooking, setIsCooking] =
-    useState(false);
+  const [isCooking, setIsCooking] = useState(false);
 
-  const [
-    currentStepIndex,
-    setCurrentStepIndex,
-  ] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  const [modalType, setModalType] =
-    useState<
-      "instamart" | "swiggy" | null
-    >(null);
+  // Which way the step card should slide in
+  const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">(
+    "none"
+  );
 
-  const [
-  isModalLoading,
-  setIsModalLoading,
-] = useState(false);
+  const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(
+    null
+  );
 
-const [
-  loadingStage,
-  setLoadingStage,
-] = useState<
-  "addresses" | "restaurants" | "ingredients" | "cart" | null
->(null);
+  const [isModalLoading, setIsModalLoading] = useState(false);
+
+  const [loadingStage, setLoadingStage] = useState<
+    "addresses" | "restaurants" | "ingredients" | "cart" | null
+  >(null);
 
   /*
    * -----------------------------
@@ -135,62 +304,43 @@ const [
    * -----------------------------
    */
 
-  const [
-    swiggyAddresses,
-    setSwiggyAddresses,
-  ] = useState<SwiggyAddress[]>([]);
+  const [swiggyAddresses, setSwiggyAddresses] = useState<SwiggyAddress[]>([]);
 
-  const [
-    selectedAddressId,
-    setSelectedAddressId,
-  ] = useState<string | null>(null);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null
+  );
 
-  const [
-    ingredientProducts,
-    setIngredientProducts,
-  ] = useState<
-    Record<
-      string,
-      InstamartProduct[]
-    >
+  const [ingredientProducts, setIngredientProducts] = useState<
+    Record<string, InstamartProduct[]>
   >({});
 
-  const [
-    selectedProducts,
-    setSelectedProducts,
-  ] = useState<
-    Record<
-      string,
-      InstamartVariation
-    >
+  const [selectedProducts, setSelectedProducts] = useState<
+    Record<string, InstamartVariation>
   >({});
 
-  const [
-    instamartCartAdded,
-    setInstamartCartAdded,
-  ] = useState(false);
+  const [instamartCartAdded, setInstamartCartAdded] = useState(false);
 
-  const [swiggyError, setSwiggyError] =
-    useState<string | null>(null);
+  const [swiggyError, setSwiggyError] = useState<string | null>(null);
 
-  const [searchedIngredientsKey, setSearchedIngredientsKey] =
-    useState<string | null>(null);
+  const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<
+    string | null
+  >(null);
 
-  const [lastSearchedAddressId, setLastSearchedAddressId] =
-    useState<string | null>(null);
+  const [lastSearchedAddressId, setLastSearchedAddressId] = useState<
+    string | null
+  >(null);
 
-  const [isChoosingAddress, setIsChoosingAddress] =
-    useState(false);
+  const [isChoosingAddress, setIsChoosingAddress] = useState(false);
 
   // The full ordered list of ingredient names in this search round
-  const [searchIngredientNames, setSearchIngredientNames] =
-    useState<string[]>([]);
+  const [searchIngredientNames, setSearchIngredientNames] = useState<string[]>(
+    []
+  );
 
   // Names still waiting on their Instamart search to resolve
-  const [pendingIngredientNames, setPendingIngredientNames] =
-    useState<string[]>([]);
-
-  
+  const [pendingIngredientNames, setPendingIngredientNames] = useState<
+    string[]
+  >([]);
 
   /*
    * -----------------------------
@@ -198,8 +348,7 @@ const [
    * -----------------------------
    */
 
-  const [restaurants, setRestaurants] =
-    useState<SwiggyRestaurant[]>([]);
+  const [restaurants, setRestaurants] = useState<SwiggyRestaurant[]>([]);
 
   /*
    * -----------------------------
@@ -207,51 +356,39 @@ const [
    * -----------------------------
    */
 
-  const handleIngredientToggle = (
-  index: number
-) => {
-  const newCheckedState = [
-    ...checkedIngredients,
-  ];
+  const handleIngredientToggle = (index: number) => {
+    const newCheckedState = [...checkedIngredients];
 
-  const isNowChecked = !newCheckedState[index];
-  newCheckedState[index] = isNowChecked;
+    const isNowChecked = !newCheckedState[index];
+    newCheckedState[index] = isNowChecked;
 
-  setCheckedIngredients(
-    newCheckedState
-  );
+    setCheckedIngredients(newCheckedState);
 
-  if (isNowChecked) {
-    setFlashIndex(index);
-    window.setTimeout(() => {
-      setFlashIndex((current) =>
-        current === index ? null : current
-      );
-    }, 500);
-  }
-};
+    if (isNowChecked) {
+      setFlashIndex(index);
+      window.setTimeout(() => {
+        setFlashIndex((current) => (current === index ? null : current));
+      }, 500);
+    }
+  };
 
   const handleStartCooking = () => {
     setIsCooking(true);
+    setStepDirection("none");
     setCurrentStepIndex(0);
   };
 
   const handleNextStep = () => {
-    if (
-      currentStepIndex <
-      recipe.method.length - 1
-    ) {
-      setCurrentStepIndex(
-        (prev) => prev + 1
-      );
+    if (currentStepIndex < recipe.method.length - 1) {
+      setStepDirection("next");
+      setCurrentStepIndex((prev) => prev + 1);
     }
   };
 
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
-      setCurrentStepIndex(
-        (prev) => prev - 1
-      );
+      setStepDirection("prev");
+      setCurrentStepIndex((prev) => prev - 1);
     }
   };
 
@@ -281,9 +418,7 @@ const [
       }
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Could not connect to Swiggy.";
+        error instanceof Error ? error.message : "Could not connect to Swiggy.";
 
       if (message === "SWIGGY_NOT_CONNECTED") {
         startSwiggyLogin();
@@ -310,16 +445,11 @@ const [
     // Already have products from before: check if the ingredient
     // checkboxes changed since that search. If so, silently
     // re-search - same address, no extra taps needed.
-    const hasExistingProducts =
-      Object.keys(ingredientProducts).length > 0;
+    const hasExistingProducts = Object.keys(ingredientProducts).length > 0;
 
-    const currentKey =
-      JSON.stringify(checkedIngredients);
+    const currentKey = JSON.stringify(checkedIngredients);
 
-    if (
-      hasExistingProducts &&
-      currentKey !== searchedIngredientsKey
-    ) {
+    if (hasExistingProducts && currentKey !== searchedIngredientsKey) {
       setSelectedProducts({});
       setInstamartCartAdded(false);
       handleSearchIngredients();
@@ -350,9 +480,8 @@ const [
     setSearchIngredientNames([]);
     setPendingIngredientNames([]);
   };
-  const handleSelectAddress = (
-    addressId: string
-  ) => {
+
+  const handleSelectAddress = (addressId: string) => {
     // Just record the choice - whether to refetch
     // is decided when the user confirms.
     setSelectedAddressId(addressId);
@@ -370,10 +499,7 @@ const [
 
     // Same address as last search: nothing to refetch,
     // just go back to the results screen.
-    if (
-      selectedAddressId === lastSearchedAddressId &&
-      hasExistingResults
-    ) {
+    if (selectedAddressId === lastSearchedAddressId && hasExistingResults) {
       setIsChoosingAddress(false);
       return;
     }
@@ -387,96 +513,79 @@ const [
     }
   };
 
-    const handleSearchIngredients =
-    async () => {
-      const missingIngredients =
-        recipe.ingredients.filter(
-          (_, index) =>
-            !checkedIngredients[index]
-        );
+  const handleSearchIngredients = async () => {
+    const missingIngredients = recipe.ingredients.filter(
+      (_, index) => !checkedIngredients[index]
+    );
 
-      if (missingIngredients.length === 0) {
-        setIngredientProducts({});
-        setSwiggyError(
-          "You already have all the ingredients for this recipe."
-        );
-        return;
-      }
-
-      if (!selectedAddressId) {
-        setSwiggyError(
-          "Please select a delivery address."
-        );
-        return;
-      }
-
-      setSwiggyError(null);
+    if (missingIngredients.length === 0) {
       setIngredientProducts({});
-      setSelectedProducts({});
-      setInstamartCartAdded(false);
-      setIsChoosingAddress(false);
+      setSwiggyError("You already have all the ingredients for this recipe.");
+      return;
+    }
 
-      const names = missingIngredients.map(
-        (ing) => ing.commonName
-      );
+    if (!selectedAddressId) {
+      setSwiggyError("Please select a delivery address.");
+      return;
+    }
 
-      setSearchIngredientNames(names);
-      setPendingIngredientNames(names);
+    setSwiggyError(null);
+    setIngredientProducts({});
+    setSelectedProducts({});
+    setInstamartCartAdded(false);
+    setIsChoosingAddress(false);
 
-      // Fire every ingredient search in parallel. Each one updates
-      // its own result as soon as it resolves, instead of waiting
-      // for all of them to finish together.
-      await Promise.all(
-        missingIngredients.map(async (ingredient) => {
-          const query =
-            ingredient.englishName || ingredient.commonName;
+    const names = missingIngredients.map((ing) => ing.commonName);
 
-          try {
-            const products = await searchInstamartProducts(
-              selectedAddressId,
-              query
-            );
+    setSearchIngredientNames(names);
+    setPendingIngredientNames(names);
 
-            setIngredientProducts((prev) => ({
-              ...prev,
-              [ingredient.commonName]: products,
-            }));
-          } catch {
-            setIngredientProducts((prev) => ({
-              ...prev,
-              [ingredient.commonName]: [],
-            }));
-          } finally {
-            setPendingIngredientNames((prev) =>
-              prev.filter((name) => name !== ingredient.commonName)
-            );
-          }
-        })
-      );
+    // Fire every ingredient search in parallel. Each one updates
+    // its own result as soon as it resolves, instead of waiting
+    // for all of them to finish together.
+    await Promise.all(
+      missingIngredients.map(async (ingredient) => {
+        const query = ingredient.englishName || ingredient.commonName;
 
-      setSearchedIngredientsKey(
-        JSON.stringify(checkedIngredients)
-      );
+        try {
+          const products = await searchInstamartProducts(
+            selectedAddressId,
+            query
+          );
 
-      setLastSearchedAddressId(
-        selectedAddressId
-      );
-    };
+          setIngredientProducts((prev) => ({
+            ...prev,
+            [ingredient.commonName]: products,
+          }));
+        } catch {
+          setIngredientProducts((prev) => ({
+            ...prev,
+            [ingredient.commonName]: [],
+          }));
+        } finally {
+          setPendingIngredientNames((prev) =>
+            prev.filter((name) => name !== ingredient.commonName)
+          );
+        }
+      })
+    );
+
+    setSearchedIngredientsKey(JSON.stringify(checkedIngredients));
+
+    setLastSearchedAddressId(selectedAddressId);
+  };
 
   const handleSelectProduct = (
     ingredientName: string,
     variation: InstamartVariation
   ) => {
-    if (
-      !variation.isInStockAndAvailable
-    ) {
+    if (!variation.isInStockAndAvailable) {
       return;
     }
 
     setSelectedProducts((current) => {
       const alreadySelected =
-        current[ingredientName]?.spinId ===
-        variation.spinId;
+        current[ingredientName]?.spinId === variation.spinId;
 
       if (alreadySelected) {
         const updated = { ...current };
@@ -491,64 +600,48 @@ const [
     });
   };
 
-  const handleAddIngredientsToCart =
-    async () => {
-      if (!selectedAddressId) {
-        setSwiggyError(
-          "Please select a delivery address."
-        );
+  const handleAddIngredientsToCart = async () => {
+    if (!selectedAddressId) {
+      setSwiggyError("Please select a delivery address.");
 
-        return;
-      }
+      return;
+    }
 
-      const selectedEntries =
-        Object.entries(
-          selectedProducts
-        );
+    const selectedEntries = Object.entries(selectedProducts);
 
-      if (selectedEntries.length === 0) {
-        setSwiggyError(
-          "Please select at least one product."
-        );
+    if (selectedEntries.length === 0) {
+      setSwiggyError("Please select at least one product.");
 
-        return;
-      }
+      return;
+    }
 
-            setIsModalLoading(true);
-      setLoadingStage("cart");
-      setSwiggyError(null);
+    setIsModalLoading(true);
+    setLoadingStage("cart");
+    setSwiggyError(null);
 
-      try {
-        const items =
-          selectedEntries.map(
-            ([, variation]) => ({
-              spinId:
-                variation.spinId,
+    try {
+      const items = selectedEntries.map(([, variation]) => ({
+        spinId: variation.spinId,
 
-              skuId:
-                variation.skuId,
+        skuId: variation.skuId,
 
-              quantity: 1,
-            })
-          );
+        quantity: 1,
+      }));
 
-        await addToInstamartCart(
-          selectedAddressId,
-          items
-        );
+      await addToInstamartCart(selectedAddressId, items);
 
-        setInstamartCartAdded(true);
-      } catch (error) {
-        setSwiggyError(
-          error instanceof Error
-            ? error.message
-            : "Could not update your Instamart cart."
-        );
-      } finally {
-        setIsModalLoading(false);
-        setLoadingStage(null);
-      }
-    };
+      setInstamartCartAdded(true);
+    } catch (error) {
+      setSwiggyError(
+        error instanceof Error
+          ? error.message
+          : "Could not update your Instamart cart."
+      );
+    } finally {
+      setIsModalLoading(false);
+      setLoadingStage(null);
+    }
+  };
 
   /*
    * -----------------------------
@@ -558,9 +651,7 @@ const [
 
   const handleSearchRestaurants = async () => {
     if (!selectedAddressId) {
-      setSwiggyError(
-        "Please select a delivery address."
-      );
+      setSwiggyError("Please select a delivery address.");
       return;
     }
 
@@ -570,17 +661,14 @@ const [
     setRestaurants([]);
 
     try {
-      const results =
-        await searchRestaurants(
-          selectedAddressId,
-          recipe.dishName
-        );
+      const results = await searchRestaurants(
+        selectedAddressId,
+        recipe.dishName
+      );
 
       setRestaurants(results);
 
-      setLastSearchedAddressId(
-        selectedAddressId
-      );
+      setLastSearchedAddressId(selectedAddressId);
 
       setIsChoosingAddress(false);
     } catch (error) {
@@ -601,7 +689,7 @@ const [
     }
   };
 
-    const handleOrderFromSwiggy = () => {
+  const handleOrderFromSwiggy = () => {
     setModalType("swiggy");
     setSwiggyError(null);
 
@@ -625,458 +713,411 @@ const [
 
   /*
    * -----------------------------
-   * Modal close
+   * Render
    * -----------------------------
    */
 
+  const checkedCount = checkedIngredients.filter(Boolean).length;
+  const totalSteps = recipe.method.length;
+  const currentStep = recipe.method[currentStepIndex];
+  const isLastStep = currentStepIndex >= totalSteps - 1;
+
+  const stepAnimationClass =
+    stepDirection === "next"
+      ? "step-slide-from-right"
+      : stepDirection === "prev"
+      ? "step-slide-from-left"
+      : "animate-fade-in-up";
+
   return (
-    <div className="w-full max-w-7xl mx-auto animate-fade-in-up">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-12">
-        {/* Mobile dish header */}
-        <div className="lg:hidden mb-8 text-center">
-          <h1 className="font-serif text-4xl font-black text-white mb-2">
-            {recipe.dishName}
-          </h1>
+    <div className="w-full animate-fade-in-up">
+      <style>{STEP_ANIMATION_CSS}</style>
+
+      {/* Header */}
+      <header className="max-w-3xl">
+        <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
+          {recipe.dishName}
+        </h1>
+
+        <p className="mt-4 font-serif text-lg italic leading-relaxed text-orange-200/90 sm:text-xl">
+          “{recipe.description}”
+        </p>
+
+        <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-300">
+          <li className="inline-flex items-center gap-1.5 rounded-full border border-stone-700 bg-stone-900/60 px-3 py-1.5">
+            <ClockIcon className="h-4 w-4 text-orange-300" />
+            {recipe.prepTime}
+          </li>
+        </ul>
+
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={handleOrderFromSwiggy}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+          >
+            <UtensilsIcon className="h-4 w-4" />
+            Don&apos;t want to cook today? Order from Swiggy
+          </button>
         </div>
+      </header>
 
-        {/* Left Sticky Column */}
-        <aside className="lg:col-span-2 lg:sticky lg:top-12 lg:self-start">
-          <div className="bg-stone-800/50 backdrop-blur-lg rounded-3xl shadow-xl shadow-black/20 p-6 sm:p-8 border border-stone-700/70">
+      <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:gap-12">
+        {/* Ingredients */}
+        <aside className="lg:sticky lg:top-24 lg:col-span-2 lg:self-start">
+          <section
+            aria-labelledby="ingredients-heading"
+            className="flex flex-col rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20 lg:max-h-[calc(100vh-7.5rem)]"
+          >
+            {/* Header: sticks while the list scrolls past (phones/tablets),
+                and stays put above the scrolling list on desktop */}
+            <div className="sticky top-0 z-10 shrink-0 rounded-t-3xl border-b border-stone-800/80 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6 lg:static">
             <SectionTitle
+              flush
+              id="ingredients-heading"
               title="Ingredients"
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+              icon={<IngredientsIcon />}
+              aside={
+                <span
+                  className="rounded-full bg-orange-400/10 px-2.5 py-1 text-xs font-medium text-orange-200"
+                  aria-label={`${checkedCount} of ${recipe.ingredients.length} ingredients ticked`}
                 >
-                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                  {checkedCount}/{recipe.ingredients.length}
+                </span>
+              }
+            />
+            </div>
 
-                  <path
-                    fillRule="evenodd"
-                    d="M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+            {/* Scrolls inside the card on desktop only; on phones the page scrolls */}
+            <div className="relative lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:[scrollbar-color:#44403c_transparent] lg:[scrollbar-width:thin]">
+            <ul className="px-2 py-2 sm:px-3 lg:pb-8">
+              {recipe.ingredients.map((ing, index) => (
+                <li key={index}>
+                  <label
+                    className={`group flex cursor-pointer items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors duration-300 hover:bg-stone-800/50 ${
+                      flashIndex === index ? "bg-orange-200/10" : ""
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checkedIngredients[index]}
+                      onChange={() => handleIngredientToggle(index)}
+                      className="peer sr-only"
+                    />
+
+                    <span
+                      className={`relative mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-orange-300 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-stone-900 ${
+                        checkedIngredients[index]
+                          ? "border-orange-200 bg-orange-200"
+                          : "border-stone-500 bg-stone-800 group-hover:border-stone-400"
+                      }`}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        stroke="#1c1917"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`h-3.5 w-3.5 transition-all duration-200 ${
+                          checkedIngredients[index]
+                            ? "scale-100 opacity-100"
+                            : "scale-0 opacity-0"
+                        }`}
+                      >
+                        <path d="M4 10l4 4 8-8" />
+                      </svg>
+                    </span>
+
+                    <span
+                      className={`min-w-0 flex-1 transition-colors duration-300 ${
+                        checkedIngredients[index]
+                          ? "text-stone-500 line-through"
+                          : "text-stone-300 group-hover:text-stone-100"
+                      }`}
+                    >
+                      <span className="block leading-snug">
+                        <span
+                          className={`font-semibold ${
+                            checkedIngredients[index]
+                              ? "text-stone-500"
+                              : "text-orange-50"
+                          }`}
+                        >
+                          {ing.amount}
+                        </span>{" "}
+                        {ing.commonName}
+                      </span>
+                      <span className="block text-sm text-stone-500">
+                        {ing.englishName}
+                      </span>
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+
+              {/* Fade hint that there is more to scroll (desktop) */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none sticky bottom-0 -mt-8 hidden h-8 bg-gradient-to-t from-stone-900 to-transparent lg:block"
+              />
+            </div>
+
+            <div className="shrink-0 border-t border-stone-800 p-5 sm:p-6">
+              <button
+                type="button"
+                onClick={handleBuyFromInstamart}
+                className={`${secondaryButton} w-full`}
+              >
+                <CartIcon className="h-5 w-5 text-orange-300" />
+                Don&apos;t have these? Buy from Instamart
+              </button>
+              <p className="mt-2.5 text-center text-xs text-stone-500">
+                We&apos;ll only search for what you haven&apos;t ticked.
+              </p>
+            </div>
+          </section>
+        </aside>
+
+        {/* Equipment, method, notes */}
+        <div className="flex flex-col gap-12 lg:col-span-3">
+          {/* Equipment */}
+          <section aria-labelledby="equipment-heading">
+            <SectionTitle
+              id="equipment-heading"
+              title="Equipment"
+              icon={<EquipmentIcon />}
+            />
+
+            <ul className="grid items-start gap-3 sm:grid-cols-2">
+              {recipe.equipment.map((tool, index) => {
+                const image = getEquipmentImage(tool.item);
+                const special = tool.isSpecialized;
+
+                return (
+                  <li
+                    key={index}
+                    className={`rounded-2xl border p-3.5 sm:p-4 ${
+                      special
+                        ? "border-orange-400/30 bg-orange-400/5"
+                        : "border-stone-800 bg-stone-900/50"
+                    } ${special && tool.alternative ? "sm:col-span-2" : ""}`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-stone-800/80 ring-1 ring-stone-700/60">
+                        {image ? (
+                          <img
+                            src={image}
+                            alt=""
+                            className="max-h-9 max-w-9 object-contain"
+                            draggable={false}
+                          />
+                        ) : isPotLike(tool.item) ? (
+                          <PotIcon className="h-6 w-6 text-orange-300" />
+                        ) : (
+                          <UtensilsIcon className="h-6 w-6 text-orange-300" />
+                        )}
+                      </span>
+
+                      <div className="min-w-0">
+                        <p className="font-medium leading-snug text-stone-100">
+                          {tool.item}
+                        </p>
+
+                        {special && (
+                          <span className="mt-1 inline-block rounded-full bg-orange-400/15 px-2 py-0.5 text-xs font-medium text-orange-200">
+                            Heads up
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {special && tool.alternative && (
+                      <p className="mt-3 rounded-xl bg-stone-950/40 p-3 text-sm leading-relaxed text-orange-100">
+                        <span className="font-semibold">Alternative:</span>{" "}
+                        {tool.alternative}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+
+          {/* Method */}
+          <section
+            aria-labelledby="method-heading"
+            className="border-t border-stone-800 pt-10"
+          >
+            <SectionTitle
+              id="method-heading"
+              title="Method"
+              icon={<MethodIcon />}
+              aside={
+                isCooking ? (
+                  <span className="text-sm text-stone-400">
+                    Step {currentStepIndex + 1} of {totalSteps}
+                  </span>
+                ) : undefined
               }
             />
 
-            <ul className="space-y-4">
-              {recipe.ingredients.map(
-                (ing, index) => (
-                  <li key={index}>
-  <label
-  className={`flex items-center gap-4 cursor-pointer group rounded-xl px-3 -mx-3 py-2.5 transition-colors duration-300 ${
-    flashIndex === index ? "bg-stone-100/10" : ""
-  }`}
->
-    <input
-      type="checkbox"
-      checked={checkedIngredients[index]}
-      onChange={() => handleIngredientToggle(index)}
-      className="sr-only peer"
-    />
+            {!isCooking ? (
+              <div className="flex flex-col gap-5 rounded-3xl border border-dashed border-stone-700 bg-stone-900/30 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+                <div>
+                  <p className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                    Ready when you are
+                  </p>
+                  <p className="mt-1 text-sm text-stone-400 sm:text-base">
+                    We&apos;ll walk you through {totalSteps} steps, one at a
+                    time.
+                  </p>
+                </div>
 
-    <span
-  className={`relative shrink-0 h-6 w-6 rounded-md border-2 flex items-center justify-center transition-all duration-200 ${
-    checkedIngredients[index]
-      ? "bg-stone-100 border-stone-100"
-      : "bg-stone-700 border-stone-500 group-hover:border-stone-400"
-  } peer-focus-visible:ring-2 peer-focus-visible:ring-orange-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-stone-800`}
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 20"
-    fill="none"
-    stroke="#1c1917"
-    strokeWidth="3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={`h-3.5 w-3.5 transition-all duration-200 ${
-      checkedIngredients[index]
-        ? "scale-100 opacity-100"
-        : "scale-0 opacity-0"
-    }`}
-  >
-    <path d="M4 10l4 4 8-8" />
-  </svg>
-</span>
-
-    <span
-      className={`flex-1 text-stone-300 group-hover:text-white transition-colors duration-300 ${
-        checkedIngredients[index]
-          ? "line-through text-stone-500"
-          : ""
-      }`}
-    >
-      <span className="font-semibold text-white">
-        {ing.amount}
-      </span>{" "}
-      {ing.commonName} ({ing.englishName})
-    </span>
-  </label>
-</li>
-                )
-              )}
-            </ul>
-
-            <button
-              onClick={handleBuyFromInstamart}
-              className="mt-6 w-full bg-stone-800/80 hover:bg-stone-700/80 text-stone-200 font-medium py-3 px-4 rounded-full border border-stone-700 transition-colors duration-150 flex items-center justify-center gap-2"
-            >
-              <span>🛒</span> Don't have these? Buy from Instamart
-            </button>
-          </div>
-        </aside>
-
-        {/* Right Content Column */}
-        <main className="lg:col-span-3">
-          <div className="bg-stone-800/50 backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden border border-stone-700 p-6 sm:p-8 md:p-12">
-            {/* Header */}
-            <div className="mb-12">
-              <h1 className="font-serif text-5xl md:text-7xl font-black text-white mb-4">
-                {recipe.dishName}
-              </h1>
-
-              <p className="text-xl text-orange-200/90 italic max-w-3xl">
-                “{recipe.description}”
-              </p>
-
-              <div className="mt-6 flex items-center gap-2 text-stone-300">
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5 text-orange-400"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-    >
-        <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.414-1.414L11 10.586V6z"
-            clipRule="evenodd"
-        />
-    </svg>
-
-    <span className="text-sm font-medium">
-        {recipe.prepTime}
-    </span>
-</div>
-
-              <div className="mt-4">
                 <button
-                  onClick={handleOrderFromSwiggy}
-                  className="inline-flex items-center justify-center gap-2 bg-orange-500/10 hover:bg-orange-500/15 text-orange-300 px-4 py-2 rounded-full border border-orange-500/30 transition-colors duration-150"
+                  type="button"
+                  onClick={handleStartCooking}
+                  className={`${primaryButton} w-full shrink-0 sm:w-auto`}
                 >
-                  <span>🍽️</span> Don't want to cook today? Order from Swiggy
+                  <PlayIcon className="h-5 w-5" />
+                  Start cooking
                 </button>
               </div>
-            </div>
-
-            {/* Equipment */}
-            <div className="mb-12 pt-10 border-t border-stone-700/40">
-              <SectionTitle
-                title="Equipment"
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-8 w-8"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M8 21V3M11 3V8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8V3M15.5 13V3M15.5 13C13.567 13 12 14.7909 12 17C12 19.2091 13.567 21 15.5 21C17.433 21 19 19.2091 19 17C19 14.7909 17.433 13 15.5 13Z" />
-                  </svg>
-                }
-              />
-
-              <ul className="space-y-3 text-stone-300">
-                {recipe.equipment.map(
-                  (tool, index) => (
-                    <li
-                      key={index}
-                      className="pl-1 text-lg"
-                    >
-                      <span className="text-orange-500 font-bold mr-2">
-                        &#8227;
-                      </span>
-
-                      {tool.item}
-
-                      {tool.isSpecialized && (
-                        <div className="mt-2 ml-4 p-3 bg-orange-900/40 border-l-4 border-orange-500 text-orange-200 rounded-r-md text-sm">
-                          <span className="font-bold">
-                            Heads up!
-                          </span>
-
-                          {tool.alternative && (
-                            <p className="mt-1">
-                              <span className="font-semibold">
-                                Alternative:
-                              </span>{" "}
-                              {
-                                tool.alternative
-                              }
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-
-            {/* Method */}
-            <div className="mb-12 pt-10 border-t border-stone-700/40">
-              <SectionTitle
-                title="Method"
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-7 w-7 text-orange-500"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                }
-              />
-
-              {!isCooking ? (
-                <div className="text-center py-8">
-                  <button
-                    onClick={
-                      handleStartCooking
-                    }
-                    className="bg-orange-500 hover:bg-orange-400 text-white font-semibold py-3.5 px-8 rounded-full text-lg transition-colors duration-150"
-                  >
-                    <div className="flex items-center justify-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-
-                      Start Cooking
-                    </div>
-                  </button>
-                </div>
-              ) : (
-                <div className="mt-6">
-                  {/* Step Display */}
+            ) : (
+              <div>
+                <div
+                  aria-live="polite"
+                  className="overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/60 p-5 shadow-xl shadow-black/20 sm:p-8"
+                >
+                  {/* Progress (stays put while the step slides) */}
                   <div
-                    key={currentStepIndex}
-                    className="bg-stone-800 p-6 sm:p-8 rounded-lg border border-stone-700 transition-all duration-300"
+                    className="flex gap-1.5"
+                    role="progressbar"
+                    aria-valuemin={1}
+                    aria-valuemax={totalSteps}
+                    aria-valuenow={currentStepIndex + 1}
+                    aria-label="Recipe progress"
                   >
-                    <p className="text-sm font-semibold text-orange-400 mb-2">
-                      STEP{" "}
-                      {currentStepIndex +
-                        1}{" "}
-                      OF{" "}
-                      {
-                        recipe.method
-                          .length
-                      }
+                    {recipe.method.map((_, index) => (
+                      <span
+                        key={index}
+                        className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
+                          index <= currentStepIndex
+                            ? "bg-orange-300"
+                            : "bg-stone-700"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Next slides in from the right, Previous from the left */}
+                  <div key={currentStepIndex} className={stepAnimationClass}>
+                    <p className="mt-6 text-sm font-semibold text-orange-300">
+                      Step {currentStepIndex + 1}
                     </p>
 
-                    <p className="text-stone-100 text-lg md:text-xl leading-relaxed">
-                      {
-                        recipe.method[
-                          currentStepIndex
-                        ].instruction
-                      }
+                    <p className="mt-2 text-xl leading-relaxed text-stone-50 sm:text-2xl sm:leading-relaxed">
+                      {currentStep.instruction}
                     </p>
 
-                    {recipe.method[currentStepIndex].tip?.title?.trim() &&
-                      recipe.method[currentStepIndex].tip?.content?.trim() && (
-                        <TipCallout
-                          tip={recipe.method[currentStepIndex].tip!}
-                        />
+                    {currentStep.tip?.title?.trim() &&
+                      currentStep.tip?.content?.trim() && (
+                        <TipCallout tip={currentStep.tip!} />
                       )}
                   </div>
+                </div>
 
-                  {/* Navigation */}
-                  <div className="flex justify-between items-center gap-3 mt-8">
+                {/* Navigation */}
+                <div className="mt-5 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handlePrevStep}
+                    disabled={currentStepIndex === 0}
+                    className={`${secondaryButton} flex-1 sm:flex-none`}
+                  >
+                    <ChevronLeftIcon className="h-5 w-5" />
+                    Previous
+                  </button>
+
+                  {!isLastStep ? (
                     <button
-                      onClick={
-                        handlePrevStep
-                      }
-                      disabled={
-                        currentStepIndex ===
-                        0
-                      }
-                      className="bg-stone-700 hover:bg-stone-600 disabled:bg-stone-900 disabled:text-stone-500 text-stone-100 font-medium py-2 px-5 rounded-lg transition-colors duration-200 flex items-center"
+                      type="button"
+                      onClick={handleNextStep}
+                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 mr-2"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-
-                      Previous
+                      Next
+                      <ChevronRightIcon className="h-5 w-5" />
                     </button>
-
-                    {currentStepIndex <
-                    recipe.method.length -
-                      1 ? (
-                      <button
-                        onClick={
-                          handleNextStep
-                        }
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-5 rounded-lg transition-colors duration-200 flex items-center"
-                      >
-                        Next
-
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 ml-2"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    ) : (
-                      <button
-                        onClick={
-                          onFinishCooking
-                        }
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 sm:px-6 rounded-lg transition-colors duration-200"
-                      >
-                        I’m Done Cooking
-                      </button>
-                    )}
-                  </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={onFinishCooking}
+                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                    >
+                      I&apos;m done cooking
+                    </button>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+          </section>
 
-            {/* Notes */}
-            {recipe.notes &&
-              recipe.notes.length >
-                0 && (
-                <div className="mb-12 pt-10 border-t border-stone-700/40">
-                  <SectionTitle
-                    title="Notes & Tips"
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-8 w-8"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    }
-                  />
+          {/* Notes */}
+          {recipe.notes && recipe.notes.length > 0 && (
+            <section
+              aria-labelledby="notes-heading"
+              className="border-t border-stone-800 pt-10"
+            >
+              <SectionTitle
+                id="notes-heading"
+                title="Notes & tips"
+                icon={<NotesIcon />}
+              />
 
-                  <ul className="list-disc list-inside space-y-3 text-stone-300 prose prose-lg max-w-none">
-                    {recipe.notes.map(
-                      (note, index) => (
-                        <li key={index}>
-                          {note}
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              )}
-          </div>
-        </main>
+              <ul className="space-y-3 rounded-2xl border border-stone-800 bg-stone-900/50 p-5 sm:p-6">
+                {recipe.notes.map((note, index) => (
+                  <li
+                    key={index}
+                    className="flex gap-3 leading-relaxed text-stone-300"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-300"
+                    />
+                    <span>{note}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
       </div>
 
       {/* Swiggy / Instamart Modal */}
       <SwiggyActionModal
         type={modalType}
-        isLoading={
-          isModalLoading
-        }
-        loadingStage={
-          loadingStage
-        }
-        restaurants={
-          restaurants
-        }
-        addresses={
-          swiggyAddresses
-        }
-        selectedAddressId={
-          selectedAddressId
-        }
-        onSelectAddress={
-          handleSelectAddress
-        }
-        onContinueAddress={
-          handleConfirmAddress
-        }
-        onGoToAddress={
-          handleGoToAddress
-        }
-        onConfirmAddress={
-          handleConfirmAddress
-        }
-        isChoosingAddress={
-          isChoosingAddress
-        }
-        ingredientProducts={
-          ingredientProducts
-        }
-        searchIngredientNames={
-          searchIngredientNames
-        }
-        pendingIngredientNames={
-          pendingIngredientNames
-        }
-        selectedProducts={
-          selectedProducts
-        }
-        onSelectProduct={
-          handleSelectProduct
-        }
-        onAddIngredients={
-          handleAddIngredientsToCart
-        }
-        cartAdded={
-          instamartCartAdded
-        }
-        error={
-          swiggyError
-        }
-        onMinimize={
-          handleMinimizeModal
-        }
-        onClose={
-          handleCloseModal
-        }
+        isLoading={isModalLoading}
+        loadingStage={loadingStage}
+        restaurants={restaurants}
+        addresses={swiggyAddresses}
+        selectedAddressId={selectedAddressId}
+        onSelectAddress={handleSelectAddress}
+        onContinueAddress={handleConfirmAddress}
+        onGoToAddress={handleGoToAddress}
+        onConfirmAddress={handleConfirmAddress}
+        isChoosingAddress={isChoosingAddress}
+        ingredientProducts={ingredientProducts}
+        searchIngredientNames={searchIngredientNames}
+        pendingIngredientNames={pendingIngredientNames}
+        selectedProducts={selectedProducts}
+        onSelectProduct={handleSelectProduct}
+        onAddIngredients={handleAddIngredientsToCart}
+        cartAdded={instamartCartAdded}
+        error={swiggyError}
+        onMinimize={handleMinimizeModal}
+        onClose={handleCloseModal}
       />
     </div>
   );
