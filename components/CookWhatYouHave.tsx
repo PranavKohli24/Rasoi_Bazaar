@@ -490,7 +490,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                   value={ingredientInput}
                   onChange={(event) => setIngredientInput(event.target.value)}
                   onKeyDown={handleIngredientKeyDown}
-                  placeholder="e.g. paneer, onion, tomato"
+                  placeholder="e.g. paneer, onion, dal"
                   autoComplete="off"
                   enterKeyHint="done"
                   className="min-w-0 flex-1 rounded-xl border border-stone-700 bg-stone-900/80 px-4 py-3 text-base text-stone-100 outline-none transition placeholder:text-stone-600 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"

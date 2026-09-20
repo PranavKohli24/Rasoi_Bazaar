@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import SectionDivider from './SectionDivider';
 
 interface CategoryBrowserProps {
@@ -80,31 +80,55 @@ const categories = [
     },
 ];
 
+// Remembered per browser tab. The home page unmounts whenever you open a
+// recipe, so this can't live in component state or the "no repeats" rule
+// would reset every time you come back.
+const USED_DISHES_KEY = 'rasoi:used-dishes';
+
+const loadUsedDishes = (): Record<string, string[]> => {
+    try {
+        return JSON.parse(sessionStorage.getItem(USED_DISHES_KEY) ?? '{}') ?? {};
+    } catch {
+        return {};
+    }
+};
+
+const saveUsedDishes = (used: Record<string, string[]>) => {
+    try {
+        sessionStorage.setItem(USED_DISHES_KEY, JSON.stringify(used));
+    } catch {
+        /* ignore storage problems */
+    }
+};
+
 const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
-    const usedDishesRef = useRef<Record<string, string[]>>({});
 
     const handleCategoryClick = (
         categoryName: string,
         searchTerms: string[]
     ) => {
-        const usedDishes = usedDishesRef.current[categoryName] || [];
+        const used = loadUsedDishes();
+        const usedDishes = (used[categoryName] ?? []).filter((dish) =>
+            searchTerms.includes(dish)
+        );
 
         let availableDishes = searchTerms.filter(
             (dish) => !usedDishes.includes(dish)
         );
 
+        // Every dish has been shown: start a new round, but never open the
+        // round with the dish that was just shown.
         if (availableDishes.length === 0) {
-            usedDishesRef.current[categoryName] = [];
-            availableDishes = [...searchTerms];
+            const lastShown = usedDishes[usedDishes.length - 1];
+            availableDishes = searchTerms.filter((dish) => dish !== lastShown);
+            usedDishes.length = 0;
         }
 
         const randomDish =
             availableDishes[Math.floor(Math.random() * availableDishes.length)];
 
-        usedDishesRef.current[categoryName] = [
-            ...(usedDishesRef.current[categoryName] || []),
-            randomDish,
-        ];
+        used[categoryName] = [...usedDishes, randomDish];
+        saveUsedDishes(used);
 
         onSelect(randomDish);
     };
