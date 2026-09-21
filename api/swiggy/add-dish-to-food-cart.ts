@@ -50,9 +50,21 @@ export async function POST(request: Request): Promise<Response> {
       );
     }
 
-    const session = JSON.parse(
-      Buffer.from(sessionCookie, "base64url").toString("utf8")
-    );
+        let session: { accessToken: string };
+
+    try {
+      session = JSON.parse(
+        Buffer.from(sessionCookie, "base64url").toString("utf8")
+      );
+    } catch {
+      return new Response(
+        JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
 
     const body = await request.json();
 

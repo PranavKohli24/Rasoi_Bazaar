@@ -453,13 +453,15 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
         ? "address"
         : "products";
 
-  const loadingText =
+    const loadingText =
     loadingStage === "addresses"
       ? "Loading your addresses..."
       : loadingStage === "ingredients"
         ? "Checking Instamart..."
         : loadingStage === "cart"
-          ? "Adding to your Swiggy cart..."
+          ? type === "swiggy"
+            ? "Adding to your Swiggy cart..."
+            : "Adding to your Instamart cart..."
           : "Finding restaurants nearby...";
 
   return createPortal(
@@ -803,7 +805,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                   </h4>
 
                   <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-stone-400">
-                    {selectedRestaurant?.name} has been added to your Swiggy cart.
+                    Your dish from {selectedRestaurant?.name} is in your Swiggy cart.
                   </p>
                 </div>
               ) : (
