@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
 
           <h1
             ref={brandRef}
-            className="mt-5 font-brand text-6xl font-black tracking-tight text-orange-200 sm:text-8xl"
+            className="mt-5 font-brand text-4xl font-black tracking-tight text-orange-200 sm:text-6xl"
           >
             Rasoi Bazaar
           </h1>

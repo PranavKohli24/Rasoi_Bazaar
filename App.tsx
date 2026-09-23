@@ -9,6 +9,7 @@ import {
 import HomePage from "./pages/HomePage";
 import RecipePage from "./pages/Recipepage";
 import CookWhatYouHavePage from "./pages/CookWhatYouHavePage";
+import FoodBackground from "./components/FoodBackground";
 
 /** Scroll to top on new navigations; leave back/forward to the browser */
 const ScrollToTop: React.FC = () => {
@@ -38,11 +39,12 @@ const ScrollToTop: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  // The page background (cream + faint spice motif) lives on <body> in
-  // index.html, so this wrapper stays transparent.
+  // The cream page colour lives on <body> in index.html; the scattered food
+  // pictures come from <FoodBackground />. This wrapper stays transparent.
   return (
     <div className="flex min-h-screen flex-col font-sans text-stone-200 selection:bg-orange-500/25">
       <ScrollToTop />
+      <FoodBackground />
 
       <div className="flex-1">
         <Routes>
