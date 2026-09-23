@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
   const [brandInView, setBrandInView] = useState(true);
 
   useEffect(() => {
-    document.title = "Rasoi Bazaar | Home-style Indian cooking";
+    document.title = "Rasoi Bazaar | Aaj khane mai kya banaye?";
   }, []);
 
   useEffect(() => {
