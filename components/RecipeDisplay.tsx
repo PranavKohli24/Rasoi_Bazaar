@@ -214,6 +214,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [isCooking, setIsCooking] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
@@ -281,6 +282,36 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       setStepDirection("prev");
       setCurrentStepIndex((prev) => prev - 1);
     }
+  };
+
+  // Swipe on the step card: left = next step, right = previous step.
+  // Needs a clearly horizontal drag, so normal vertical scrolling is untouched.
+  const SWIPE_MIN_DISTANCE = 50;
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    // Ignore pinch / multi-finger gestures
+    if (event.touches.length !== 1) {
+      touchStart.current = null;
+      return;
+    }
+    const touch = event.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start) return;
+
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+
+    if (Math.abs(dx) < SWIPE_MIN_DISTANCE) return;
+    if (Math.abs(dx) < Math.abs(dy) * 1.5) return; // mostly vertical: not a swipe
+
+    if (dx < 0) handleNextStep();
+    else handlePrevStep();
   };
 
   /* ----- Instamart handlers ----- */
@@ -844,7 +875,15 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </div>
             ) : (
               <div>
-                <div aria-live="polite" className={`${card} overflow-hidden p-5 sm:p-8`}>
+                <div
+                  aria-live="polite"
+                  onTouchStart={handleTouchStart}
+                  onTouchEnd={handleTouchEnd}
+                  onTouchCancel={() => {
+                    touchStart.current = null;
+                  }}
+                  className={`${card} touch-pan-y overflow-hidden p-5 sm:p-8`}
+                >
                   <div
                     className="flex gap-1.5"
                     role="progressbar"
@@ -876,7 +915,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   </div>
                 </div>
 
-                <div className="mt-5 flex items-center gap-3">
+                <p className="mt-3 text-center text-xs text-stone-500 sm:hidden">
+                  Swipe left or right to change steps
+                </p>
+
+                <div className="mt-4 flex items-center gap-3">
                   <button
                     type="button"
                     onClick={handlePrevStep}

@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
   const [brandInView, setBrandInView] = useState(true);
 
   useEffect(() => {
-    document.title = "Rasoi Bazaar | Home-style Indian cooking ";
+    document.title = "Rasoi Bazaar | Home-style Indian cooking";
   }, []);
 
   useEffect(() => {
@@ -101,12 +101,20 @@ const HomePage: React.FC = () => {
               <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-[#FFE8D6] p-6 shadow-sm sm:p-7">
                 <div className="flex items-start justify-between gap-4">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
-                    <img
-                      src="/chef-hat.svg"
-                      alt=""
-                      className="h-6 w-6 object-contain"
-                      draggable={false}
-                    />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-6 w-6 text-orange-200"
+                      aria-hidden="true"
+                    >
+                      <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z" />
+                      <path d="M6 17h12" />
+                    </svg>
                   </span>
 
                   <img
