@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { useDishSearch } from "../utils/dishRoutes";
+import { RECIPE_PATH, useDishSearch } from "../utils/dishRoutes";
 
 interface SiteHeaderProps {
   /** Show the compact search box (hidden on the home page, where search is the hero) */
@@ -19,6 +19,11 @@ const CompactHeader: React.FC<SiteHeaderProps> = ({
   revealed = true,
 }) => {
   const { term, setTerm, go } = useDishSearch();
+  const { pathname } = useLocation();
+
+  // On a recipe, invite another dish; on other pages (e.g. Cook what you have) use a neutral prompt.
+  const searchPlaceholder =
+    pathname === RECIPE_PATH ? "cook another masterpiece?" : "Have a dish in mind?";
 
   const position = overlay
     ? "fixed inset-x-0 top-0"
@@ -51,6 +56,7 @@ const CompactHeader: React.FC<SiteHeaderProps> = ({
               onSearch={() => go(term)}
               isLoading={false}
               compact
+              compactPlaceholder={searchPlaceholder}
             />
           </div>
         )}

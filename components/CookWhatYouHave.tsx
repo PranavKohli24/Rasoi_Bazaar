@@ -16,6 +16,10 @@ const QUICK_INGREDIENTS = [
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
 
+// Shown instead of any technical error text.
+const FRIENDLY_ERROR =
+  "Our kitchen got a little too busy just now. Your ingredients are safe, so give it another go in a moment.";
+
 // Keep progress so the browser back button from a recipe returns to results.
 const STORAGE_KEY = "rasoi:cook-what-you-have";
 
@@ -139,6 +143,50 @@ const ResultSkeleton: React.FC = () => (
       <div className="h-6 w-14 rounded-full bg-stone-800" />
     </div>
   </div>
+);
+
+/** A pot with a rattling lid and rising steam, shown while dishes are being found. */
+const SteamingPot: React.FC = () => (
+  <span className="shrink-0" aria-hidden="true">
+    <svg
+      viewBox="0 0 64 64"
+      className="h-14 w-14 text-orange-200"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path className="pot-steam pot-steam-1" d="M22 24c-3-4 3-6 0-11" />
+      <path className="pot-steam pot-steam-2" d="M32 24c-3-4 3-6 0-11" />
+      <path className="pot-steam pot-steam-3" d="M42 24c-3-4 3-6 0-11" />
+      <g className="pot-lid">
+        <path d="M15 31h34" />
+        <path d="M29 31a3 3 0 0 1 6 0" />
+      </g>
+      <path d="M17 34h30v11a7 7 0 0 1-7 7H24a7 7 0 0 1-7-7V34Z" fill="#FFE8D6" />
+      <path d="M17 38h-5M47 38h5" />
+    </svg>
+    <style>{`
+      @keyframes pot-steam {
+        0% { opacity: 0; transform: translateY(6px); }
+        40% { opacity: 1; }
+        100% { opacity: 0; transform: translateY(-6px); }
+      }
+      @keyframes pot-lid {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-1.5px) rotate(-2deg); }
+      }
+      .pot-steam { animation: pot-steam 1.8s ease-in-out infinite; }
+      .pot-steam-2 { animation-delay: 0.3s; }
+      .pot-steam-3 { animation-delay: 0.6s; }
+      .pot-lid { transform-box: fill-box; transform-origin: center; animation: pot-lid 0.5s ease-in-out infinite; }
+      @media (prefers-reduced-motion: reduce) {
+        .pot-steam, .pot-lid { animation: none; }
+        .pot-steam { opacity: 0.8; }
+      }
+    `}</style>
+  </span>
 );
 
 /* ---------- Main component ---------- */
@@ -297,9 +345,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
         setResults(response.recipes);
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
-      );
+      // The real error goes to the console for debugging, never to the user.
+      console.error("Cook what you have failed:", err);
+      setError(FRIENDLY_ERROR);
     } finally {
       setIsLoading(false);
     }
@@ -557,10 +605,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
           >
             <div className="mx-auto max-w-3xl">
               <div className="flex items-center gap-4">
-                <span
-                  className="h-10 w-10 shrink-0 animate-spin rounded-full border-[3px] border-orange-400/20 border-t-orange-300"
-                  aria-hidden="true"
-                />
+                <SteamingPot />
                 <div>
                   <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
                     Finding dishes you can make…

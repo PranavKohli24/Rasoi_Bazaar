@@ -6,6 +6,8 @@ interface SearchBarProps {
   onSearch: () => void;
   isLoading: boolean;
   compact?: boolean;
+  /** Placeholder used by the compact (header) search box */
+  compactPlaceholder?: string;
 }
 
 // Dishes typed out (then erased) in the placeholder while the input is idle.
@@ -41,6 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
   isLoading,
   compact = false,
+  compactPlaceholder = 'cook another masterpiece?',
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -117,9 +120,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const placeholder = compact
-    ? 'cook another masterpiece?'
+    ? compactPlaceholder
     : isInputFocused
-      ? 'What masterpiece will you create today?'
+      ? 'What masterpiece will you make?'
       : typedExample;
 
   return (
@@ -172,10 +175,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
               autoFocus={compact && isExpanded}
               placeholder={placeholder}
               disabled={isLoading}
-              className={`w-full border bg-stone-900 text-stone-100 shadow-sm placeholder-stone-500 transition-all duration-200 focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 disabled:opacity-60 ${
+              className={`w-full border bg-stone-900 text-stone-100 shadow-sm placeholder-stone-500 transition-all duration-200 focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 disabled:opacity-60 text-ellipsis ${
                 compact
-                  ? 'h-11 rounded-full border-stone-700 pl-10 pr-4 text-sm'
-                  : 'h-12 rounded-xl border-stone-700 pl-11 pr-4 text-base sm:h-14 sm:pl-12 sm:text-lg'
+                  ? 'h-11 rounded-full border-stone-700 pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
+                  : 'h-12 rounded-xl border-stone-700 pl-11 pr-3 text-sm sm:h-14 sm:pl-12 sm:pr-4 sm:text-lg'
               }`}
             />
           </div>
@@ -184,9 +187,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
             type="button"
             onClick={handleSearchClick}
             disabled={isLoading}
+            aria-label="Generate recipe"
             className={`flex items-center justify-center bg-orange-200 font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:active:scale-100 ${
               compact
-                ? 'h-11 rounded-full px-4 text-sm'
+                ? 'h-11 w-11 shrink-0 rounded-full text-sm sm:w-auto sm:px-4'
                 : 'h-12 w-full min-w-[160px] rounded-xl sm:h-14 sm:w-auto sm:px-6'
             }`}
           >
@@ -206,8 +210,25 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                Cooking...
+                <span className={compact ? 'hidden sm:inline' : ''}>Cooking...</span>
               </span>
+            ) : compact ? (
+              <>
+                <span className="hidden sm:inline">Generate Recipe</span>
+                <svg
+                  className="h-5 w-5 sm:hidden"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </>
             ) : (
               'Generate Recipe'
             )}

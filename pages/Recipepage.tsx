@@ -12,6 +12,10 @@ import { toSlug } from "../utils/dishRoutes";
 
 const LAST_DISH_KEY = "rasoi:last-dish";
 
+// Shown instead of any technical error text.
+const FRIENDLY_ERROR =
+  "We couldn't cook up this recipe right now. Please try again in a moment, or search for another dish.";
+
 const readLastDish = (): string => {
   try {
     return sessionStorage.getItem(LAST_DISH_KEY) ?? "";
@@ -96,9 +100,9 @@ const RecipePage: React.FC = () => {
       })
       .catch((err) => {
         if (cancelled) return;
-        setError(
-          err instanceof Error ? err.message : "An unexpected error occurred."
-        );
+        // The real error goes to the console for debugging, never to the user.
+        console.error("Recipe fetch failed:", err);
+        setError(FRIENDLY_ERROR);
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);
