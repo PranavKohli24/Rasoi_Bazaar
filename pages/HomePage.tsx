@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
   const [brandInView, setBrandInView] = useState(true);
 
   useEffect(() => {
-    document.title = "Rasoi Bazaar | Aaj khane mai kya banaye?";
+    document.title = "Rasoi Bazaar | Home-style Indian cooking ";
   }, []);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const HomePage: React.FC = () => {
         {/* Hero: the brand, then one job, find a dish */}
         <section className="mx-auto flex min-h-[80svh] max-w-3xl flex-col items-center justify-center px-4 py-14 text-center sm:py-20 lg:min-h-0 lg:justify-start lg:pb-12 lg:pt-28">
           <span className="rounded-full bg-orange-400/15 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-100">
-            Home-style Indian cooking
+            Aaj khane mai kya banaye?
           </span>
 
           <h1
