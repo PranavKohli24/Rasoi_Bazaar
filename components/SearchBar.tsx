@@ -8,6 +8,33 @@ interface SearchBarProps {
   compact?: boolean;
 }
 
+// Dishes typed out (then erased) in the placeholder while the input is idle.
+const EXAMPLES = [
+  'Rajma Chawal',
+  'Shahi Paneer',
+  'Dal Makhani',
+  'Chole Bhature',
+  'Mushroom',
+];
+
+const SearchIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    aria-hidden="true"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    />
+  </svg>
+);
+
 const SearchBar: React.FC<SearchBarProps> = ({
   searchTerm,
   setSearchTerm,
@@ -24,75 +51,35 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const examples = [
-    'Rajma Chawal',
-    'Shahi Paneer',
-    'Dal Makhani',
-    'Chole Bhature',
-    'Mushroom',
-  ];
-
   useEffect(() => {
-    if (!compact) {
-      setIsExpanded(false);
-    }
+    if (!compact) setIsExpanded(false);
   }, [compact]);
 
   // Type and erase example dishes while the input is not focused.
   useEffect(() => {
-    if (
-      compact ||
-      searchTerm ||
-      isLoading ||
-      isInputFocused
-    ) {
-      return;
-    }
+    if (compact || searchTerm || isLoading || isInputFocused) return;
 
-    const currentExample = examples[exampleIndex];
-
-    const isFinishedTyping =
-      typedExample.length === currentExample.length;
-
-    const delay = isDeleting
-      ? 35
-      : isFinishedTyping
-        ? 1600
-        : 60;
+    const currentExample = EXAMPLES[exampleIndex];
+    const isFinishedTyping = typedExample.length === currentExample.length;
+    const delay = isDeleting ? 35 : isFinishedTyping ? 1600 : 60;
 
     const timer = window.setTimeout(() => {
       if (!isDeleting) {
         if (typedExample.length < currentExample.length) {
-          setTypedExample(
-            currentExample.slice(0, typedExample.length + 1)
-          );
+          setTypedExample(currentExample.slice(0, typedExample.length + 1));
         } else {
           setIsDeleting(true);
         }
+      } else if (typedExample.length > 0) {
+        setTypedExample(typedExample.slice(0, -1));
       } else {
-        if (typedExample.length > 0) {
-          setTypedExample(typedExample.slice(0, -1));
-        } else {
-          setIsDeleting(false);
-          setExampleIndex(
-            (prev) => (prev + 1) % examples.length
-          );
-        }
+        setIsDeleting(false);
+        setExampleIndex((prev) => (prev + 1) % EXAMPLES.length);
       }
     }, delay);
 
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [
-    compact,
-    searchTerm,
-    isLoading,
-    isInputFocused,
-    exampleIndex,
-    typedExample,
-    isDeleting,
-  ]);
+    return () => window.clearTimeout(timer);
+  }, [compact, searchTerm, isLoading, isInputFocused, exampleIndex, typedExample, isDeleting]);
 
   // Close the expanded search when clicking outside it.
   useEffect(() => {
@@ -108,62 +95,49 @@ const SearchBar: React.FC<SearchBarProps> = ({
     };
 
     document.addEventListener('mousedown', handleOutsideClick);
-
-    return () => {
-      document.removeEventListener(
-        'mousedown',
-        handleOutsideClick
-      );
-    };
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [compact, isExpanded]);
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !isLoading) {
-      if (compact) {
-        setIsExpanded(false);
-      }
-
+      if (compact) setIsExpanded(false);
       onSearch();
     }
   };
 
   const handleSearchClick = () => {
-    // Compact mode: clicking the icon opens the search.
+    // Compact mode: the first click opens the search.
     if (compact && !isExpanded) {
       setIsExpanded(true);
       return;
     }
-
-    // Compact mode: submitting the search closes it first.
-    if (compact) {
-      setIsExpanded(false);
-    }
-
+    // Compact mode: submitting closes it.
+    if (compact) setIsExpanded(false);
     onSearch();
   };
+
+  const placeholder = compact
+    ? 'cook another masterpiece?'
+    : isInputFocused
+      ? 'What masterpiece will you create today?'
+      : typedExample;
 
   return (
     <div
       ref={searchContainerRef}
       className={
         compact
-          ? `ml-auto transition-all duration-300 ${
-              isExpanded ? 'w-full' : 'w-11'
-            }`
-          : 'w-full max-w-2xl mx-auto px-1 sm:px-0'
+          ? `ml-auto transition-all duration-300 ${isExpanded ? 'w-full' : 'w-11'}`
+          : 'mx-auto w-full max-w-2xl px-1 sm:px-0'
       }
     >
       {!compact && (
         <label
           htmlFor="recipe-search"
-          className="block text-left text-orange-200/80 text-sm font-medium mb-2 ml-1"
+          className="mb-2 ml-1 block text-left text-sm font-medium text-stone-300"
         >
           Enter a dish name{' '}
-          <span className="text-stone-500 font-normal">
-            (try something delicious)
-          </span>
+          <span className="font-normal text-stone-500">(try something delicious)</span>
         </label>
       )}
 
@@ -172,51 +146,21 @@ const SearchBar: React.FC<SearchBarProps> = ({
           type="button"
           onClick={() => setIsExpanded(true)}
           aria-label="Search for another recipe"
-          className="w-11 h-11 rounded-full bg-stone-900/80 border border-stone-700 hover:border-orange-500/70 hover:bg-stone-800 text-stone-300 hover:text-orange-300 flex items-center justify-center transition-all duration-300 shadow-lg"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-stone-700 bg-stone-900 text-stone-300 shadow-sm transition-all duration-300 hover:border-orange-400 hover:bg-orange-400/10 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
         >
-          <svg
-            className="h-5 w-5"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+          <SearchIcon className="h-5 w-5" />
         </button>
       ) : (
         <div
           className={`flex items-stretch ${
-            compact
-              ? 'gap-2'
-              : 'flex-col sm:flex-row gap-3 sm:gap-4'
+            compact ? 'gap-2' : 'flex-col gap-3 sm:flex-row sm:gap-4'
           }`}
         >
-          <div className="relative w-full flex-grow group">
-            {/* Search Icon */}
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors duration-200 group-focus-within:text-orange-500">
-              <svg
-                className="h-5 w-5 text-stone-400"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+          <div className="group relative w-full flex-grow">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-stone-500 transition-colors duration-200 group-focus-within:text-orange-200">
+              <SearchIcon className="h-5 w-5" />
             </div>
 
-            {/* Input Field */}
             <input
               id="recipe-search"
               type="text"
@@ -226,69 +170,44 @@ const SearchBar: React.FC<SearchBarProps> = ({
               onFocus={() => setIsInputFocused(true)}
               onBlur={() => setIsInputFocused(false)}
               autoFocus={compact && isExpanded}
-              placeholder={
-                compact
-                  ? 'cook another masterpiece?'
-                  : isInputFocused
-                    ? 'What masterpiece will you create today?'
-                    : typedExample
-              }
+              placeholder={placeholder}
               disabled={isLoading}
-              className={`w-full
-                ${
-                  compact
-                    ? 'h-11 pl-9 pr-4 text-xs rounded-full border-stone-700'
-                    : 'h-12 sm:h-14 pl-9 sm:pl-12 pr-4 text-sm sm:text-lg rounded-xl border-orange-700'
-                }
-                bg-stone-900 text-stone-100 placeholder-stone-500
-                border-2
-                focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500
-                focus:shadow-[0_0_15px_rgba(234,88,12,0.4)]
-                transition-all duration-200`}
+              className={`w-full border bg-stone-900 text-stone-100 shadow-sm placeholder-stone-500 transition-all duration-200 focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 disabled:opacity-60 ${
+                compact
+                  ? 'h-11 rounded-full border-stone-700 pl-10 pr-4 text-sm'
+                  : 'h-12 rounded-xl border-stone-700 pl-11 pr-4 text-base sm:h-14 sm:pl-12 sm:text-lg'
+              }`}
             />
           </div>
 
-          {/* Button */}
           <button
+            type="button"
             onClick={handleSearchClick}
             disabled={isLoading}
-            className={`${
+            className={`flex items-center justify-center bg-orange-200 font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:active:scale-100 ${
               compact
-                ? 'px-3 h-11 rounded-full text-sm'
-                : 'w-full sm:w-auto min-w-[160px] h-12 sm:h-14 rounded-xl'
-            }
-            bg-orange-600 hover:bg-orange-500 active:scale-95
-            text-white font-medium
-            transition-all duration-200
-            disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed disabled:active:scale-100
-            shadow-lg shadow-orange-900/20
-            flex items-center justify-center
-            border-2 border-transparent hover:border-orange-400/30`}
+                ? 'h-11 rounded-full px-4 text-sm'
+                : 'h-12 w-full min-w-[160px] rounded-xl sm:h-14 sm:w-auto sm:px-6'
+            }`}
           >
             {isLoading ? (
-              <div className="flex items-center gap-2">
+              <span className="flex items-center gap-2">
                 <svg
-                  className="animate-spin h-5 w-5 text-white"
+                  className="h-5 w-5 animate-spin"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path
                     className="opacity-75"
                     fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   />
                 </svg>
-                <span>Cooking...</span>
-              </div>
+                Cooking...
+              </span>
             ) : (
               'Generate Recipe'
             )}

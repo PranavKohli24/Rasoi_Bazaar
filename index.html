@@ -13,211 +13,155 @@
     <meta property="og:image:alt" content="Rasoi Bazaar - Indian Kitchen Guide" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rasoi-bazaar.vercel.app/" />
+    <meta name="theme-color" content="#FFF8F1" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Merriweather:wght@700;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="preload"
-      as="image"
-      href="/background.png"
-      fetchpriority="high"
-    />
-
-    <link
-      rel="preload"
-      as="image"
-      href="/background_mobile.png"
-      media="(max-width: 767px)"
-      fetchpriority="high"
-    />
+    <script>
+      /*
+       * THEME: warm cream + one orange.
+       * The existing classes were written for a dark UI, so the "stone" scale
+       * is flipped here (stone-950 = page cream, stone-900 = white card,
+       * stone-100 = dark text). "orange" 50-300 are remapped to the brand
+       * orange and its dark shades. 400-900 keep Tailwind's defaults.
+       */
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              stone: {
+                50: '#24180F', 100: '#2E2119', 200: '#3E2E23', 300: '#5A4638',
+                400: '#7A6353', 500: '#9A8270', 600: '#CDB39A', 700: '#E3CDB6',
+                800: '#F0DFCC', 900: '#FFFFFF', 950: '#FFF8F1',
+              },
+              orange: {
+                50: '#2B1A10',   // headings
+                100: '#B94A08',  // hover / strong accent
+                200: '#DD5E0B',  // brand orange (buttons, links)
+                300: '#D9600D',  // icons, small accents
+              },
+            },
+          },
+        },
+      };
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Playfair+Display:wght@700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Playfair+Display:wght@700;800;900&display=swap"
       rel="stylesheet"
     />
 
     <link rel="icon" type="image/png" href="/favicon.png" />
 
     <style>
-      html .font-serif { font-family: 'Fraunces', ui-serif, Georgia, serif; }
-  html .font-sans  { font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; }
-  html .font-hand  { font-family: 'Caveat', cursive; }
- 
-  /* Wordmark only. To try another look, change just this line. */
-  html .font-brand { font-family: 'Playfair Display', ui-serif, Georgia, serif; }
+      html .font-serif { font-family: 'Fraunces', ui-serif, Georgia, serif; letter-spacing: -0.02em; }
+      html .font-sans  { font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif; }
+      html .font-hand  { font-family: 'Caveat', cursive; }
+      html .font-brand { font-family: 'Playfair Display', ui-serif, Georgia, serif; }
+
+      /*
+       * Background: flat cream with a faint tiled spice-and-leaf motif
+       * (drawn in SVG, no photo, no gradient). It scrolls with the page.
+       */
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Lato', sans-serif;
-        background-color: #1c1b17;
+        font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+        color: #3E2E23;
+        background-color: #FFF8F1;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23E8873A' stroke-opacity='.16' stroke-width='1.4' stroke-linecap='round'%3E%3Ccircle cx='24' cy='24' r='7'/%3E%3Ccircle cx='24' cy='24' r='2' fill='%23E8873A' fill-opacity='.16' stroke='none'/%3E%3Cpath d='M72 62c7-3 12-9 12-18-9 0-15 6-17 13-1 3 0 5 5 5z'/%3E%3Cpath d='M72 62c3-6 6-9 11-13'/%3E%3C/g%3E%3Ccircle cx='72' cy='16' r='1.6' fill='%23E8873A' fill-opacity='.18'/%3E%3Ccircle cx='16' cy='76' r='1.6' fill='%23E8873A' fill-opacity='.18'/%3E%3C/svg%3E");
+        background-size: 96px 96px;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
-        letter-spacing: -0.01em;
-      }
-      .font-serif {
-        font-family: 'Merriweather', serif;
-        letter-spacing: -0.02em;
-      }
-      .prose ol > li::marker {
-          font-weight: 700;
-          color: #f97316; /* text-orange-500 */
       }
 
-      /* --- Background Animation --- */
-      #background-animation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background: radial-gradient(ellipse at top, #2c2420, #1a1614 60%);
-      }
-
-
-      @keyframes gradient-animation {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
+      .prose ol > li::marker { font-weight: 700; color: #DD5E0B; }
 
       @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
       }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.7s ease-out forwards;
-      }
-      
-      /* --- Celebration Sparkles --- */
+      .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+
+      /* Celebration sparkles (used by CelebrationPopup) */
       @keyframes sparkle-animation {
-        0% {
-          transform: scale(0) rotate(0deg);
-          opacity: 1;
-        }
-        50% {
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1.5) rotate(180deg);
-          opacity: 0;
-        }
+        0%   { transform: scale(0) rotate(0deg); opacity: 1; }
+        50%  { opacity: 1; }
+        100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
       }
       .celebration-popup .sparkle {
         position: absolute;
         width: 10px;
         height: 10px;
-        background: white;
+        background: #F59E0B;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         animation: sparkle-animation 1s ease-out forwards;
       }
 
-      /* --- Custom Scrollbar --- */
-      ::-webkit-scrollbar {
-        width: 10px;
-      }
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background-color: rgba(154, 130, 112, 0.35); border-radius: 20px; }
+      ::-webkit-scrollbar-thumb:hover { background-color: rgba(221, 94, 11, 0.7); }
 
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background-color: rgba(255, 255, 255, 0.18);
-        border-radius: 20px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(234, 88, 12, 0.8);
-      }
-
-
-      /* Keep Chrome autofill dark */
+      /* Autofill stays on-theme */
       input:-webkit-autofill,
       input:-webkit-autofill:hover,
       input:-webkit-autofill:focus,
       input:-webkit-autofill:active {
-        -webkit-text-fill-color: #f5f5f4 !important;
-        -webkit-box-shadow: 0 0 0 1000px #1c1917 inset !important;
-        box-shadow: 0 0 0 1000px #1c1917 inset !important;
-        caret-color: #f5f5f4;
+        -webkit-text-fill-color: #3E2E23 !important;
+        -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+        box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+        caret-color: #3E2E23;
         transition: background-color 9999s ease-in-out 0s;
       }
 
       @media (prefers-reduced-motion: reduce) {
-        #background-animation {
-          animation: none;
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.01ms linear forwards;
-        }
-        .celebration-popup .sparkle {
-          animation: none;
-          opacity: 0;
-        }
-        * {
-          scroll-behavior: auto !important;
-        }
+        .animate-fade-in-up { animation: fadeInUp 0.01ms linear forwards; }
+        .celebration-popup .sparkle { animation: none; opacity: 0; }
+        * { scroll-behavior: auto !important; }
       }
 
-
-     .cook-note {
-  font-family: 'Caveat', cursive;
-  color: rgba(255, 235, 205, 0.78);
-  font-size: 22px;
-  line-height: 1.02;
-  font-weight: 600;
-  transform: rotate(-5deg);
-  text-align: center;
-  white-space: nowrap;
-  text-shadow: 0 1px 8px rgba(255, 224, 180, 0.08);
-
-  margin-left: 22px;
-}
-
-.cook-note-arrow {
-  width: 68px;
-  height: 48px;
-  overflow: visible;
-  margin-top: 12px;
-  margin-left: -72px;
-  transform: rotate(20deg);
-}
-
-.cook-note-arrow path {
-  fill: none;
-  stroke: rgba(255, 235, 205, 0.78);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+      /* Handwritten note on the home page */
+      .cook-note {
+        font-family: 'Caveat', cursive;
+        color: #B94A08;
+        font-size: 22px;
+        line-height: 1.02;
+        font-weight: 600;
+        transform: rotate(-5deg);
+        text-align: center;
+        white-space: nowrap;
+        margin-left: 22px;
+      }
+      .cook-note-arrow {
+        width: 68px;
+        height: 48px;
+        overflow: visible;
+        margin-top: 12px;
+        margin-left: -72px;
+        transform: rotate(20deg);
+      }
+      .cook-note-arrow path {
+        fill: none;
+        stroke: #B94A08;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
     </style>
+
     <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.19.0",
-    "react/": "https://aistudiocdn.com/react@^19.1.1/",
-    "react": "https://aistudiocdn.com/react@^19.1.1"
-  }
-}
-</script>
-</head>
+      {
+        "imports": {
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.19.0",
+          "react/": "https://aistudiocdn.com/react@^19.1.1/",
+          "react": "https://aistudiocdn.com/react@^19.1.1"
+        }
+      }
+    </script>
+  </head>
   <body>
-    <div id="background-animation"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

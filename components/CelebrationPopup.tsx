@@ -26,12 +26,13 @@ interface Sparkle {
   size: number;
 }
 
+// Warm, soft colours that read well on the dark-brown scrim.
 const CONFETTI_COLORS = [
-  "#f97316", // orange-500
-  "#fb923c", // orange-400
-  "#fdba74", // orange-300
-  "#fef3c7", // warm cream
-  "#f5f5f4", // stone-100 / white-ish
+  "#F97316", // brand orange
+  "#FB923C", // light orange
+  "#FBBF24", // amber
+  "#F9A8A0", // soft coral
+  "#A7C99A", // sage
 ];
 
 const CONFETTI_COUNT = 60;
@@ -57,10 +58,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
         delay: Math.random() * 0.5,
         duration: 2.6 + Math.random() * 1.8,
         size: 6 + Math.random() * 7,
-        color:
-          CONFETTI_COLORS[
-            Math.floor(Math.random() * CONFETTI_COLORS.length)
-          ],
+        color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
         rotation: Math.random() * 360,
         drift: Math.random() * 140 - 70,
         shape: Math.random() > 0.5 ? "rect" : "circle",
@@ -82,11 +80,11 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
 
   return createPortal(
     <div
-      className="celebration-popup fixed inset-0 z-[70] bg-stone-950/90 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in-up overflow-hidden"
+      className="celebration-popup fixed inset-0 z-[70] flex animate-fade-in-up items-center justify-center overflow-hidden bg-stone-100/50 p-4 backdrop-blur-sm"
       style={{ animationDuration: "0.3s" }}
     >
       {/* Confetti burst */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         {confetti.map((piece) => (
           <span
             key={piece.id}
@@ -109,7 +107,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
       </div>
 
       {/* Star sparkles, using the .sparkle system already in index.html */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         {sparkles.map((s) => (
           <span
             key={s.id}
@@ -120,19 +118,25 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
               width: `${s.size}px`,
               height: `${s.size}px`,
               animationDelay: `${s.delay}s`,
-              background: "#fdba74",
+              background: "#FBBF24",
             }}
           />
         ))}
       </div>
 
-      <div className="relative max-w-sm w-full text-center">
-        <div className="mx-auto mb-6 h-14 w-14 rounded-full bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Recipe complete"
+        className="relative w-full max-w-sm rounded-3xl border border-stone-700 bg-stone-900 p-8 text-center shadow-2xl"
+      >
+        <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[#DDEBD3]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-orange-400"
+            className="h-6 w-6 text-emerald-700"
             viewBox="0 0 20 20"
             fill="currentColor"
+            aria-hidden="true"
           >
             <path
               fillRule="evenodd"
@@ -142,21 +146,21 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
           </svg>
         </div>
 
-        <p className="text-stone-400 text-sm mb-2 tracking-wide uppercase">
+        <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-orange-200">
           Well done
         </p>
 
-        <h2 className="font-serif text-3xl sm:text-4xl font-black text-white tracking-tight mb-3">
+        <h2 className="mb-3 font-serif text-3xl font-black tracking-tight text-orange-50 sm:text-4xl">
           {dishName ? `You made ${dishName}.` : "You made it."}
         </h2>
 
-        <p className="text-stone-400 text-base leading-relaxed mb-8">
+        <p className="mb-8 text-base leading-relaxed text-stone-400">
           Time for the best part - eating it!
         </p>
 
         <button
           onClick={onReset}
-          className="w-full h-12 rounded-full bg-orange-500 hover:bg-orange-400 text-white font-semibold transition-colors duration-150"
+          className="h-12 w-full rounded-full bg-orange-200 font-semibold text-white shadow-md transition-colors duration-150 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
         >
           Cook something else
         </button>

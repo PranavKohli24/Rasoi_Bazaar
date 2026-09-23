@@ -5,11 +5,13 @@ interface CategoryBrowserProps {
     onSelect: (dish: string) => void;
 }
 
+// `tint` is a soft pastel behind each icon (peach, butter, rose, sage, sand, mint).
 const categories = [
     {
         name: 'Quick Meals',
         description: 'Under 30 minutes',
         icon: '/quick-meals.svg',
+        tint: '#FFE8D6',
         searchTerms: [
             'Quick 20-minute Paneer Bhurji',
             'Poha (Kanda Batata Poha)',
@@ -22,6 +24,7 @@ const categories = [
         name: 'Healthy & Light',
         description: 'Nutritious & wholesome',
         icon: '/healthy-light.svg',
+        tint: '#DDEBD3',
         searchTerms: [
             'Healthy Moong Dal Cheela',
             'Vegetable Dalia (Broken Wheat Porridge)',
@@ -34,6 +37,7 @@ const categories = [
         name: 'Decadent Desserts',
         description: 'Sweet indulgences',
         icon: '/dessert-classics.svg',
+        tint: '#FADDD8',
         searchTerms: [
             'Kheer',
             'Gajar Halwa (Carrot Halwa)',
@@ -46,6 +50,7 @@ const categories = [
         name: 'Vegetarian Mains',
         description: 'Hearty & flavorful',
         icon: '/vegetarian-mains.svg',
+        tint: '#E4F0DA',
         searchTerms: [
             'Palak Paneer',
             'Chana Masala',
@@ -58,6 +63,7 @@ const categories = [
         name: 'Chicken Classics',
         description: 'All-time favorites',
         icon: '/chicken-classics.svg',
+        tint: '#FFF1C9',
         searchTerms: [
             'Classic Chicken Korma',
             'Butter Chicken (Murgh Makhani)',
@@ -70,6 +76,7 @@ const categories = [
         name: 'Breads & Rice',
         description: 'Perfect accompaniments',
         icon: '/rice-classics.svg',
+        tint: '#F3E6D3',
         searchTerms: [
             'Garlic Naan on Tawa',
             'Jeera Rice',
@@ -102,7 +109,6 @@ const saveUsedDishes = (used: Record<string, string[]>) => {
 };
 
 const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
-
     const handleCategoryClick = (
         categoryName: string,
         searchTerms: string[]
@@ -149,9 +155,12 @@ const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
                         onClick={() =>
                             handleCategoryClick(cat.name, cat.searchTerms)
                         }
-                        className="group relative flex flex-col items-start gap-3 rounded-2xl border border-stone-800 bg-stone-900/50 p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300/40 hover:bg-stone-900/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:p-5"
+                        className="group relative flex flex-col items-start gap-3 rounded-2xl border border-stone-700 bg-stone-900 p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:p-5"
                     >
-                        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-400/10 transition-colors group-hover:bg-orange-400/20 sm:h-12 sm:w-12">
+                        <span
+                            className="flex h-12 w-12 items-center justify-center rounded-xl sm:h-14 sm:w-14"
+                            style={{ backgroundColor: cat.tint }}
+                        >
                             <img
                                 src={cat.icon}
                                 alt=""
@@ -161,7 +170,7 @@ const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
                         </span>
 
                         <span className="block">
-                            <span className="block text-base font-semibold leading-tight text-orange-50 sm:text-lg">
+                            <span className="block text-base font-semibold leading-tight text-stone-100 sm:text-lg">
                                 {cat.name}
                             </span>
                             <span className="mt-1 block text-sm text-stone-400">
@@ -171,7 +180,7 @@ const CategoryBrowser: React.FC<CategoryBrowserProps> = ({ onSelect }) => {
 
                         <span
                             aria-hidden="true"
-                            className="absolute right-4 top-4 text-stone-600 transition-colors group-hover:text-orange-300"
+                            className="absolute right-4 top-4 text-stone-600 transition-colors group-hover:text-orange-200"
                         >
                             ↗
                         </span>

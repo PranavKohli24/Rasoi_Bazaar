@@ -1,29 +1,38 @@
-import React from 'react';
+import React from "react";
 
 interface RecipeSuggestionChipsProps {
-    onSelect: (dish: string) => void;
+  onSelect: (dish: string) => void;
 }
 
-const suggestions = ["Paneer Butter Masala", "Chicken Biryani", "Masala Dosa", "Aloo Gobi", "Dal Makhani", "Samosa"];
+const suggestions = [
+  "Paneer Butter Masala",
+  "Chicken Biryani",
+  "Masala Dosa",
+  "Aloo Gobi",
+  "Dal Makhani",
+  "Samosa",
+];
 
-const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({ onSelect }) => {
-    return (
-        <div
-        className="flex flex-wrap justify-center lg:justify-start gap-3 mt-8 lg:mt-0 animate-fade-in-up"
-        style={{ animationDelay: '0.5s' }}
+const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
+  onSelect,
+}) => (
+  <div className="animate-fade-in-up">
+    <p className="mb-3 text-center text-sm text-stone-400">
+      Or try one of these
+    </p>
+    <div className="flex flex-wrap justify-center gap-2.5">
+      {suggestions.map((dish) => (
+        <button
+          key={dish}
+          type="button"
+          onClick={() => onSelect(dish)}
+          className="rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm transition-colors duration-200 hover:border-orange-400 hover:bg-orange-400/10 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
         >
-            <p className="w-full text-center lg:text-left text-stone-400 mb-2">Or you can try one of these:</p>
-            {suggestions.map((dish, index) => (
-                <button 
-                    key={index}
-                    onClick={() => onSelect(dish)}
-                    className="px-4 py-2 bg-stone-800/60 text-stone-200 rounded-full border border-stone-700 hover:bg-stone-700/80 hover:text-white transition-colors duration-200"
-                >
-                    {dish}
-                </button>
-            ))}
-        </div>
-    );
-};
+          {dish}
+        </button>
+      ))}
+    </div>
+  </div>
+);
 
 export default RecipeSuggestionChips;

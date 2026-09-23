@@ -16,8 +16,7 @@ const COOK_STEPS = [
 const HomePage: React.FC = () => {
   const { term, setTerm, go } = useDishSearch();
 
-  // The big wordmark sits in the middle of the hero. Once it scrolls out of
-  // view, the header wordmark fades in at the top-left to take its place.
+  // Once the big wordmark scrolls out of view, the header wordmark fades in.
   const brandRef = useRef<HTMLHeadingElement>(null);
   const [brandInView, setBrandInView] = useState(true);
 
@@ -45,17 +44,21 @@ const HomePage: React.FC = () => {
       <main>
         {/* Hero: the brand, then one job, find a dish */}
         <section className="mx-auto flex min-h-[80svh] max-w-3xl flex-col items-center justify-center px-4 py-14 text-center sm:py-20 lg:min-h-0 lg:justify-start lg:pb-12 lg:pt-28">
+          <span className="rounded-full bg-orange-400/15 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-100">
+            Home-style Indian cooking
+          </span>
+
           <h1
             ref={brandRef}
-            className="bg-gradient-to-b from-orange-100 to-orange-300 bg-clip-text font-brand text-6xl font-black tracking-tight text-transparent drop-shadow-lg sm:text-8xl"
+            className="mt-5 font-brand text-6xl font-black tracking-tight text-orange-200 sm:text-8xl"
           >
             Rasoi Bazaar
           </h1>
 
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-400 sm:text-lg md:text-xl">
-            Your personal guide to home-style Indian cooking.
+            Recipes you can follow, with ingredients you have.
             <br className="hidden sm:block" />
-            <span className="font-medium text-stone-200">
+            <span className="font-medium text-stone-100">
               What delicious dish will you make today?
             </span>
           </p>
@@ -70,16 +73,16 @@ const HomePage: React.FC = () => {
             />
           </div>
 
-          <div className="mt-5 w-full max-w-2xl">
+          <div className="mt-6 w-full max-w-2xl">
             <RecipeSuggestionChips onSelect={go} />
           </div>
 
           <Link
             to="/cook-what-you-have"
-            className="mt-4 rounded-lg px-2 py-1 text-sm text-stone-400 transition-colors hover:text-stone-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+            className="mt-5 rounded-lg px-2 py-1 text-sm text-stone-400 transition-colors hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
           >
             No dish in mind?{" "}
-            <span className="font-medium text-orange-300 underline underline-offset-4">
+            <span className="font-semibold text-orange-200 underline underline-offset-4">
               Cook with what you have
             </span>
           </Link>
@@ -95,9 +98,9 @@ const HomePage: React.FC = () => {
             <aside className="flex flex-col lg:col-span-2">
               <SectionDivider label="or start from your kitchen" />
 
-              <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-gradient-to-br from-orange-500/15 via-stone-900/60 to-stone-950/60 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.3)] sm:p-7">
+              <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-[#FFE8D6] p-6 shadow-sm sm:p-7">
                 <div className="flex items-start justify-between gap-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-400/15">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
                     <img
                       src="/chef-hat.svg"
                       alt=""
@@ -109,7 +112,7 @@ const HomePage: React.FC = () => {
                   <img
                     src="/basket.png"
                     alt=""
-                    className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-2xl sm:h-28"
+                    className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-lg sm:h-28"
                     draggable={false}
                   />
                 </div>
@@ -141,7 +144,7 @@ const HomePage: React.FC = () => {
                 <div className="mt-auto flex flex-col gap-4 pt-7 sm:flex-row sm:items-center">
                   <Link
                     to="/cook-what-you-have"
-                    className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
+                    className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
                   >
                     Get started
                     <span aria-hidden="true">→</span>
@@ -159,14 +162,8 @@ const HomePage: React.FC = () => {
                       what you have
                     </div>
 
-                    <svg
-                      className="cook-note-arrow"
-                      viewBox="0 0 68 48"
-                    >
-                      {/* Main curved arrow */}
+                    <svg className="cook-note-arrow" viewBox="0 0 68 48">
                       <path d="M61 2 C60 13, 56 22, 47 29 C38 36, 27 38, 10 38" />
-
-                      {/* Arrow head pointing toward Get Started */}
                       <path d="M10 38 L21 31" />
                       <path d="M10 38 L21 44" />
                     </svg>

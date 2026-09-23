@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Recipe, Tip } from "../types";
-
 import {
   getSwiggyAddresses,
   searchInstamartProducts,
@@ -14,7 +13,6 @@ import {
   InstamartVariation,
   SwiggyRestaurant,
 } from "../services/swiggyService";
-
 import SwiggyActionModal from "./SwiggyActionModal";
 
 interface RecipeDisplayProps {
@@ -22,145 +20,78 @@ interface RecipeDisplayProps {
   onFinishCooking: () => void;
 }
 
-/* ------------------------------------------------------------------ */
-/* Icons                                                               */
-/* ------------------------------------------------------------------ */
+/* ---------- Icons ---------- */
 
-const iconProps = {
-  xmlns: "http://www.w3.org/2000/svg",
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 2,
-  strokeLinecap: "round" as const,
-  strokeLinejoin: "round" as const,
-  "aria-hidden": true,
-};
-
-const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M12 7v5l3 2" />
-  </svg>
-);
-
-const CartIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <circle cx="8" cy="21" r="1" />
-    <circle cx="19" cy="21" r="1" />
-    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-  </svg>
-);
-
-const UtensilsIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-    <path d="M7 2v20" />
-    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
-  </svg>
-);
-
-const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <circle cx="12" cy="12" r="9" />
-    <path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" />
-  </svg>
-);
-
-const ChevronLeftIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <path d="m15 18-6-6 6-6" />
-  </svg>
-);
-
-const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <path d="m9 18 6-6-6-6" />
-  </svg>
-);
-
-const BulbIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <path d="M9 18h6" />
-    <path d="M10 22h4" />
-    <path d="M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.9-1.5-2.5Z" />
-  </svg>
-);
-
-const PotIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg {...iconProps} className={className}>
-    <path d="M2 12h20" />
-    <path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" />
-    <path d="m4 8 16-4" />
-    <path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" />
-  </svg>
-);
-
-/* Section icons (the originals) */
-
-const IngredientsIcon: React.FC = () => (
+const Icon: React.FC<{ className?: string; children: React.ReactNode }> = ({
+  className,
+  children,
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    aria-hidden="true"
-  >
-    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-    <path
-      fillRule="evenodd"
-      d="M4 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
-
-const EquipmentIcon: React.FC = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="2"
+    strokeWidth={2}
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
+    className={className}
   >
-    <path d="M8 21V3M11 3V8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8V3M15.5 13V3M15.5 13C13.567 13 12 14.7909 12 17C12 19.2091 13.567 21 15.5 21C17.433 21 19 19.2091 19 17C19 14.7909 17.433 13 15.5 13Z" />
+    {children}
   </svg>
 );
 
-const MethodIcon: React.FC = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    aria-hidden="true"
-  >
-    <path
-      fillRule="evenodd"
-      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
+type IconC = React.FC<{ className?: string }>;
 
-const NotesIcon: React.FC = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6"
-    viewBox="0 0 20 20"
-    fill="currentColor"
-    aria-hidden="true"
-  >
-    <path
-      fillRule="evenodd"
-      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-      clipRule="evenodd"
-    />
-  </svg>
+const ClockIcon: IconC = ({ className }) => (
+  <Icon className={className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
+);
+const CartIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <circle cx="8" cy="21" r="1" /><circle cx="19" cy="21" r="1" />
+    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+  </Icon>
+);
+const UtensilsIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" />
+    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+  </Icon>
+);
+const PlayIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <circle cx="12" cy="12" r="9" /><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" />
+  </Icon>
+);
+const ChevronLeftIcon: IconC = ({ className }) => (
+  <Icon className={className}><path d="m15 18-6-6 6-6" /></Icon>
+);
+const ChevronRightIcon: IconC = ({ className }) => (
+  <Icon className={className}><path d="m9 18 6-6-6-6" /></Icon>
+);
+const BulbIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M9 18h6" /><path d="M10 22h4" />
+    <path d="M8.5 14.5a6 6 0 1 1 7 0c-.9.6-1.5 1.4-1.5 2.5h-4c0-1.1-.6-1.9-1.5-2.5Z" />
+  </Icon>
+);
+const PotIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M2 12h20" /><path d="M20 12v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8" />
+    <path d="m4 8 16-4" />
+    <path d="m8.86 6.78-.45-1.81a2 2 0 0 1 1.45-2.43l1.94-.48a2 2 0 0 1 2.43 1.46l.45 1.8" />
+  </Icon>
+);
+const IngredientsIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" />
+  </Icon>
+);
+const MethodIcon: IconC = ({ className }) => (
+  <Icon className={className}><path d="M4 6h16M4 12h16M4 18h10" /></Icon>
+);
+const NotesIcon: IconC = ({ className }) => (
+  <Icon className={className}><circle cx="12" cy="12" r="9" /><path d="M12 16v-4M12 8h.01" /></Icon>
 );
 
 /* Pictures reused from the kitchen selector, matched by equipment name */
@@ -182,33 +113,23 @@ const getEquipmentImage = (name: string): string | null =>
 const isPotLike = (name: string): boolean =>
   /\b(pan|pot|skillet|saucepan)\b/i.test(name);
 
-/* Slide animation for the method steps */
-
 const STEP_ANIMATION_CSS = `
-@keyframes step-slide-from-right {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes step-slide-from-left {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
+@keyframes step-slide-from-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes step-slide-from-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
 .step-slide-from-right { animation: step-slide-from-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-.step-slide-from-left  { animation: step-slide-from-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@media (prefers-reduced-motion: reduce) {
-  .step-slide-from-right, .step-slide-from-left { animation: none; }
-}
+.step-slide-from-left { animation: step-slide-from-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) { .step-slide-from-right, .step-slide-from-left { animation: none; } }
 `;
 
-/* ------------------------------------------------------------------ */
-/* Shared UI                                                           */
-/* ------------------------------------------------------------------ */
+/* ---------- Shared UI ---------- */
 
 const primaryButton =
-  "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-lg transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
+  "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
 
 const secondaryButton =
-  "inline-flex items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-800/70 px-5 py-3 font-medium text-stone-100 transition-colors duration-200 hover:bg-stone-700/70 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
+  "inline-flex items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-900 px-5 py-3 font-medium text-stone-100 transition-colors duration-200 hover:border-orange-300/70 hover:bg-orange-400/10 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
+
+const card = "rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_8px_30px_rgba(120,70,30,0.08)]";
 
 const SectionTitle: React.FC<{
   id: string;
@@ -217,17 +138,12 @@ const SectionTitle: React.FC<{
   aside?: React.ReactNode;
   flush?: boolean;
 }> = ({ id, title, icon, aside, flush = false }) => (
-  <div
-    className={`${flush ? "" : "mb-5"} flex items-center justify-between gap-4`}
-  >
+  <div className={`${flush ? "" : "mb-5"} flex items-center justify-between gap-4`}>
     <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-400/10 text-orange-300">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FFE8D6] text-orange-200">
         {icon}
       </span>
-      <h2
-        id={id}
-        className="font-serif text-2xl font-black tracking-tight text-orange-50 sm:text-3xl"
-      >
+      <h2 id={id} className="font-serif text-2xl font-black tracking-tight text-orange-50 sm:text-3xl">
         {title}
       </h2>
     </div>
@@ -235,9 +151,7 @@ const SectionTitle: React.FC<{
   </div>
 );
 
-const TipCallout: React.FC<{
-  tip: Tip;
-}> = ({ tip }) => {
+const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
   const [isOpen, setIsOpen] = useState(false);
   const tipId = `tip-${tip.title.replace(/\s+/g, "-")}`;
 
@@ -246,7 +160,7 @@ const TipCallout: React.FC<{
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex max-w-full items-center gap-2 rounded-lg text-left text-sm font-semibold text-orange-300 transition-colors duration-200 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+        className="inline-flex max-w-full items-center gap-2 rounded-lg text-left text-sm font-semibold text-orange-200 transition-colors duration-200 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
         aria-expanded={isOpen}
         aria-controls={tipId}
       >
@@ -257,7 +171,7 @@ const TipCallout: React.FC<{
       {isOpen && (
         <div
           id={tipId}
-          className="mt-3 animate-fade-in-up rounded-xl border-l-4 border-orange-400 bg-orange-400/10 p-4 text-sm leading-relaxed text-orange-100 sm:text-base"
+          className="mt-3 animate-fade-in-up rounded-xl border-l-4 border-orange-300 bg-[#FFF1C9] p-4 text-sm leading-relaxed text-stone-200 sm:text-base"
           style={{ animationDuration: "0.3s" }}
         >
           <p>{tip.content}</p>
@@ -267,23 +181,15 @@ const TipCallout: React.FC<{
   );
 };
 
-/* ------------------------------------------------------------------ */
-/* Component                                                           */
-/* ------------------------------------------------------------------ */
+/* ---------- Component ---------- */
 
-const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
-  recipe,
-  onFinishCooking,
-}) => {
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }) => {
   const [checkedIngredients, setCheckedIngredients] = useState<boolean[]>(
     new Array(recipe.ingredients.length).fill(false)
   );
-
   const [flashIndex, setFlashIndex] = useState<number | null>(null);
 
-  // On desktop the ingredients card stays pinned while you cook, but only if
-  // it fits on screen. A card taller than the screen would have its bottom
-  // cut off, so in that case it scrolls with the page instead.
+  // The ingredients card stays pinned on desktop only if it fits on screen.
   const ingredientsCardRef = useRef<HTMLElement>(null);
   const [canStick, setCanStick] = useState(true);
 
@@ -295,7 +201,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
       setCanStick(element.offsetHeight <= window.innerHeight - 120);
 
     update();
-
     const observer = new ResizeObserver(update);
     observer.observe(element);
     window.addEventListener("resize", update);
@@ -307,109 +212,48 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
   }, []);
 
   const [isCooking, setIsCooking] = useState(false);
-
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
 
-  // Which way the step card should slide in
-  const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">(
-    "none"
-  );
-
-  const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(
-    null
-  );
-
+  const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
-
   const [loadingStage, setLoadingStage] = useState<
     "addresses" | "restaurants" | "ingredients" | "cart" | null
   >(null);
 
-  /*
-   * -----------------------------
-   * Instamart state
-   * -----------------------------
-   */
-
+  // Instamart state
   const [swiggyAddresses, setSwiggyAddresses] = useState<SwiggyAddress[]>([]);
-
-  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
-    null
-  );
-
-  const [ingredientProducts, setIngredientProducts] = useState<
-    Record<string, InstamartProduct[]>
-  >({});
-
-  const [selectedProducts, setSelectedProducts] = useState<
-    Record<string, InstamartVariation>
-  >({});
-
-  // How many packs of each chosen product to add (defaults to 1)
-  const [productQuantities, setProductQuantities] = useState<
-    Record<string, number>
-  >({});
-
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const [ingredientProducts, setIngredientProducts] = useState<Record<string, InstamartProduct[]>>({});
+  const [selectedProducts, setSelectedProducts] = useState<Record<string, InstamartVariation>>({});
+  const [productQuantities, setProductQuantities] = useState<Record<string, number>>({});
   const [instamartCartAdded, setInstamartCartAdded] = useState(false);
-
   const [swiggyError, setSwiggyError] = useState<string | null>(null);
-
-  const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<
-    string | null
-  >(null);
-
-  const [lastSearchedAddressId, setLastSearchedAddressId] = useState<
-    string | null
-  >(null);
-
+  const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<string | null>(null);
+  const [lastSearchedAddressId, setLastSearchedAddressId] = useState<string | null>(null);
   const [isChoosingAddress, setIsChoosingAddress] = useState(false);
+  const [searchIngredientNames, setSearchIngredientNames] = useState<string[]>([]);
+  const [pendingIngredientNames, setPendingIngredientNames] = useState<string[]>([]);
 
-  // The full ordered list of ingredient names in this search round
-  const [searchIngredientNames, setSearchIngredientNames] = useState<string[]>(
-    []
-  );
-
-  // Names still waiting on their Instamart search to resolve
-  const [pendingIngredientNames, setPendingIngredientNames] = useState<
-    string[]
-  >([]);
-
-  /*
-   * -----------------------------
-   * Food state
-   * -----------------------------
-   */
-
+  // Food state
   const [restaurants, setRestaurants] = useState<SwiggyRestaurant[]>([]);
-
-  const [selectedRestaurant, setSelectedRestaurant] =
-    useState<SwiggyRestaurant | null>(null);
-
+  const [selectedRestaurant, setSelectedRestaurant] = useState<SwiggyRestaurant | null>(null);
   const [foodCartAdded, setFoodCartAdded] = useState(false);
 
-  // Sends the person to sign in with Swiggy. It only happens once: if they come
-  // back still not signed in, we say so instead of sending them round again.
+  // Sends the person to sign in with Swiggy; if it can't, say so.
   const redirectToLogin = () => {
     if (!startSwiggyLogin()) {
-      setSwiggyError(
-        "We couldn't sign you in to Swiggy. Please try again in a minute."
-      );
+      setSwiggyError("We couldn't sign you in to Swiggy. Please try again in a minute.");
     }
   };
 
-  /*
-   * -----------------------------
-   * Recipe handlers
-   * -----------------------------
-   */
+  /* ----- Recipe handlers ----- */
 
   const handleIngredientToggle = (index: number) => {
-    const newCheckedState = [...checkedIngredients];
-
-    const isNowChecked = !newCheckedState[index];
-    newCheckedState[index] = isNowChecked;
-
-    setCheckedIngredients(newCheckedState);
+    const next = [...checkedIngredients];
+    const isNowChecked = !next[index];
+    next[index] = isNowChecked;
+    setCheckedIngredients(next);
 
     if (isNowChecked) {
       setFlashIndex(index);
@@ -439,16 +283,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     }
   };
 
-  /*
-   * -----------------------------
-   * Instamart handlers
-   * -----------------------------
-   */
+  /* ----- Instamart handlers ----- */
 
   const fetchSwiggyAddresses = async () => {
     setIsModalLoading(true);
     setLoadingStage("addresses");
-
     setSwiggyAddresses([]);
     setSelectedAddressId(null);
     setIngredientProducts({});
@@ -458,21 +297,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
     try {
       const addresses = await getSwiggyAddresses();
-
       setSwiggyAddresses(addresses);
-
-      if (addresses.length === 1) {
-        setSelectedAddressId(addresses[0].id);
-      }
+      if (addresses.length === 1) setSelectedAddressId(addresses[0].id);
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Could not connect to Swiggy.";
-
+      const message = error instanceof Error ? error.message : "Could not connect to Swiggy.";
       if (message === "SWIGGY_NOT_CONNECTED") {
         redirectToLogin();
         return;
       }
-
       setSwiggyError(message);
     } finally {
       setIsModalLoading(false);
@@ -484,17 +316,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setModalType("instamart");
     setSwiggyError(null);
 
-    // First time ever: fetch addresses
     if (swiggyAddresses.length === 0) {
       fetchSwiggyAddresses();
       return;
     }
 
-    // Already have products from before: check if the ingredient
-    // checkboxes changed since that search. If so, silently
-    // re-search - same address, no extra taps needed.
+    // If the ticked ingredients changed since the last search, silently re-search.
     const hasExistingProducts = Object.keys(ingredientProducts).length > 0;
-
     const currentKey = JSON.stringify(checkedIngredients);
 
     if (hasExistingProducts && currentKey !== searchedIngredientsKey) {
@@ -503,16 +331,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
       setInstamartCartAdded(false);
       handleSearchIngredients();
     }
-
-    // Otherwise: resume exactly as it was, do nothing.
   };
 
-  // Minimize: just hide the modal, keep every bit of state as-is
-  const handleMinimizeModal = () => {
-    setModalType(null);
-  };
+  // Minimize keeps all state; Close resets the whole flow.
+  const handleMinimizeModal = () => setModalType(null);
 
-  // Close (X): fully reset, for when the user is done with this flow
   const handleCloseModal = () => {
     setModalType(null);
     setSwiggyError(null);
@@ -533,15 +356,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setPendingIngredientNames([]);
   };
 
-  const handleSelectAddress = (addressId: string) => {
-    // Just record the choice - whether to refetch
-    // is decided when the user confirms.
-    setSelectedAddressId(addressId);
-  };
-
-  const handleGoToAddress = () => {
-    setIsChoosingAddress(true);
-  };
+  const handleSelectAddress = (addressId: string) => setSelectedAddressId(addressId);
+  const handleGoToAddress = () => setIsChoosingAddress(true);
 
   const handleConfirmAddress = () => {
     const hasExistingResults =
@@ -549,14 +365,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         ? restaurants.length > 0
         : Object.keys(ingredientProducts).length > 0;
 
-    // Same address as last search: nothing to refetch,
-    // just go back to the results screen.
+    // Same address as last search: just go back to the results.
     if (selectedAddressId === lastSearchedAddressId && hasExistingResults) {
       setIsChoosingAddress(false);
       return;
     }
 
-    // Address changed (or first time): re-fetch for this address.
     if (modalType === "swiggy") {
       handleSearchRestaurants();
     } else {
@@ -589,14 +403,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setIsChoosingAddress(false);
 
     const names = missingIngredients.map((ing) => ing.commonName);
-
     setSearchIngredientNames(names);
     setPendingIngredientNames(names);
 
-    // Search several ingredients at a time. Swiggy's MCP layer doesn't
-    // enforce rate limiting yet (a shed request just surfaces as a busy
-    // error, retried with backoff below in swiggyService), so a slightly
-    // higher concurrency here is a safe way to cut overall wait time.
+    // Several searches at a time; busy errors are retried in swiggyService.
     const SEARCH_CONCURRENCY = 5;
     let nextIndex = 0;
     let redirectedToLogin = false;
@@ -607,32 +417,18 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         const query = ingredient.englishName || ingredient.commonName;
 
         try {
-          const products = await searchInstamartProducts(
-            selectedAddressId,
-            query
-          );
-
-          setIngredientProducts((prev) => ({
-            ...prev,
-            [ingredient.commonName]: products,
-          }));
+          const products = await searchInstamartProducts(selectedAddressId, query);
+          setIngredientProducts((prev) => ({ ...prev, [ingredient.commonName]: products }));
         } catch (error) {
           // Login expired: sign in again instead of showing "No match found"
-          if (
-            error instanceof Error &&
-            error.message === "SWIGGY_NOT_CONNECTED"
-          ) {
+          if (error instanceof Error && error.message === "SWIGGY_NOT_CONNECTED") {
             if (!redirectedToLogin) {
               redirectedToLogin = true;
               redirectToLogin();
             }
             return;
           }
-
-          setIngredientProducts((prev) => ({
-            ...prev,
-            [ingredient.commonName]: [],
-          }));
+          setIngredientProducts((prev) => ({ ...prev, [ingredient.commonName]: [] }));
         } finally {
           setPendingIngredientNames((prev) =>
             prev.filter((name) => name !== ingredient.commonName)
@@ -642,27 +438,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     };
 
     await Promise.all(
-      Array.from(
-        { length: Math.min(SEARCH_CONCURRENCY, missingIngredients.length) },
-        worker
-      )
+      Array.from({ length: Math.min(SEARCH_CONCURRENCY, missingIngredients.length) }, worker)
     );
 
     setSearchedIngredientsKey(JSON.stringify(checkedIngredients));
-
     setLastSearchedAddressId(selectedAddressId);
   };
 
-  const handleSelectProduct = (
-    ingredientName: string,
-    variation: InstamartVariation
-  ) => {
-    if (!variation.isInStockAndAvailable) {
-      return;
-    }
+  const handleSelectProduct = (ingredientName: string, variation: InstamartVariation) => {
+    if (!variation.isInStockAndAvailable) return;
 
-    const alreadySelected =
-      selectedProducts[ingredientName]?.spinId === variation.spinId;
+    const alreadySelected = selectedProducts[ingredientName]?.spinId === variation.spinId;
 
     if (alreadySelected) {
       setSelectedProducts((current) => {
@@ -670,21 +456,15 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         delete updated[ingredientName];
         return updated;
       });
-
       setProductQuantities((current) => {
         const updated = { ...current };
         delete updated[ingredientName];
         return updated;
       });
-
       return;
     }
 
-    setSelectedProducts((current) => ({
-      ...current,
-      [ingredientName]: variation,
-    }));
-
+    setSelectedProducts((current) => ({ ...current, [ingredientName]: variation }));
     // Switching pack size keeps the quantity; a first pick starts at 1
     setProductQuantities((current) => ({
       ...current,
@@ -698,7 +478,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         MAX_CART_QUANTITY,
         Math.max(1, (current[ingredientName] ?? 1) + delta)
       );
-
       return { ...current, [ingredientName]: next };
     });
   };
@@ -706,7 +485,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
   const handleAddIngredientsToCart = async () => {
     if (!selectedAddressId) {
       setSwiggyError("Please select a delivery address.");
-
       return;
     }
 
@@ -714,7 +492,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
     if (selectedEntries.length === 0) {
       setSwiggyError("Please select at least one product.");
-
       return;
     }
 
@@ -725,27 +502,21 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     try {
       const items = selectedEntries.map(([ingredientName, variation]) => ({
         spinId: variation.spinId,
-
         skuId: variation.skuId,
-
         quantity: productQuantities[ingredientName] ?? 1,
       }));
 
       await addToInstamartCart(selectedAddressId, items);
-
       setInstamartCartAdded(true);
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Could not update your Instamart cart.";
+        error instanceof Error ? error.message : "Could not update your Instamart cart.";
 
       // The Swiggy login lasts about 5 days: sign in again instead of showing an error
       if (message === "SWIGGY_NOT_CONNECTED") {
         redirectToLogin();
         return;
       }
-
       setSwiggyError(message);
     } finally {
       setIsModalLoading(false);
@@ -753,11 +524,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     }
   };
 
-  /*
-   * -----------------------------
-   * Food ordering
-   * -----------------------------
-   */
+  /* ----- Food ordering ----- */
 
   const handleSearchRestaurants = async () => {
     if (!selectedAddressId) {
@@ -773,27 +540,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setFoodCartAdded(false);
 
     try {
-      const results = await searchRestaurants(
-        selectedAddressId,
-        recipe.dishName
-      );
-
+      const results = await searchRestaurants(selectedAddressId, recipe.dishName);
       setRestaurants(results);
-
       setLastSearchedAddressId(selectedAddressId);
-
       setIsChoosingAddress(false);
     } catch (error) {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Could not search restaurants.";
-
+      const message = error instanceof Error ? error.message : "Could not search restaurants.";
       if (message === "SWIGGY_NOT_CONNECTED") {
         redirectToLogin();
         return;
       }
-
       setSwiggyError(message);
     } finally {
       setIsModalLoading(false);
@@ -805,22 +561,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     setModalType("swiggy");
     setSwiggyError(null);
 
-    // Fetch saved addresses only if we haven't loaded them yet.
     if (swiggyAddresses.length === 0) {
       setIsChoosingAddress(true);
       fetchSwiggyAddresses();
       return;
     }
 
-    // Already have restaurant results from before: resume exactly
-    // as it was, don't force the address screen.
-    if (restaurants.length > 0) {
-      setIsChoosingAddress(false);
-      return;
-    }
-
-    // Have addresses but no results yet: show the picker.
-    setIsChoosingAddress(true);
+    // Results already loaded: resume as it was. Otherwise show the picker.
+    setIsChoosingAddress(restaurants.length === 0);
   };
 
   const handleSelectRestaurant = (restaurant: SwiggyRestaurant) => {
@@ -834,7 +582,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
       setSwiggyError("Please select a delivery address.");
       return;
     }
-
     if (!selectedRestaurant) {
       setSwiggyError("Please select a restaurant.");
       return;
@@ -851,19 +598,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         selectedRestaurant.name,
         recipe.dishName
       );
-
       setFoodCartAdded(true);
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : "Could not add this dish to your Swiggy cart.";
-
+        error instanceof Error ? error.message : "Could not add this dish to your Swiggy cart.";
       if (message === "SWIGGY_NOT_CONNECTED") {
         redirectToLogin();
         return;
       }
-
       setSwiggyError(message);
     } finally {
       setIsModalLoading(false);
@@ -871,11 +613,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
     }
   };
 
-  /*
-   * -----------------------------
-   * Render
-   * -----------------------------
-   */
+  /* ----- Render ----- */
 
   // "Paneer" -> "200 g", so the modal can show what the recipe needs
   const ingredientAmounts: Record<string, string> = Object.fromEntries(
@@ -904,13 +642,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
           {recipe.dishName}
         </h1>
 
-        <p className="mt-4 font-serif text-lg italic leading-relaxed text-orange-200/90 sm:text-xl">
+        <p className="mt-4 font-serif text-lg italic leading-relaxed text-stone-400 sm:text-xl">
           “{recipe.description}”
         </p>
 
-        <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-300">
-          <li className="inline-flex items-center gap-1.5 rounded-full border border-stone-700 bg-stone-900/60 px-3 py-1.5">
-            <ClockIcon className="h-4 w-4 text-orange-300" />
+        <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-200">
+          <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
+            <ClockIcon className="h-4 w-4 text-orange-200" />
             {recipe.prepTime}
           </li>
         </ul>
@@ -919,7 +657,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
           <button
             type="button"
             onClick={handleOrderFromSwiggy}
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
           >
             <UtensilsIcon className="h-4 w-4" />
             Don&apos;t want to cook today? Order from Swiggy
@@ -929,40 +667,31 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
       <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:gap-12">
         {/* Ingredients */}
-        <aside
-          className={`lg:col-span-2 lg:self-start ${
-            canStick ? "lg:sticky lg:top-24" : ""
-          }`}
-        >
-          <section
-            ref={ingredientsCardRef}
-            aria-labelledby="ingredients-heading"
-            className="rounded-3xl border border-stone-800 bg-stone-900/60 shadow-xl shadow-black/20"
-          >
-            {/* Header: sticks to the top while you scroll through the list */}
-            <div className="sticky top-0 z-10 rounded-t-3xl border-b border-stone-800/80 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6">
-            <SectionTitle
-              flush
-              id="ingredients-heading"
-              title="Ingredients"
-              icon={<IngredientsIcon />}
-              aside={
-                <span
-                  className="rounded-full bg-orange-400/10 px-2.5 py-1 text-xs font-medium text-orange-200"
-                  aria-label={`${checkedCount} of ${recipe.ingredients.length} ingredients ticked`}
-                >
-                  {checkedCount}/{recipe.ingredients.length}
-                </span>
-              }
-            />
+        <aside className={`lg:col-span-2 lg:self-start ${canStick ? "lg:sticky lg:top-24" : ""}`}>
+          <section ref={ingredientsCardRef} aria-labelledby="ingredients-heading" className={card}>
+            <div className="sticky top-0 z-10 rounded-t-3xl border-b border-stone-700 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6">
+              <SectionTitle
+                flush
+                id="ingredients-heading"
+                title="Ingredients"
+                icon={<IngredientsIcon className="h-6 w-6" />}
+                aside={
+                  <span
+                    className="rounded-full bg-orange-400/15 px-2.5 py-1 text-xs font-semibold text-orange-100"
+                    aria-label={`${checkedCount} of ${recipe.ingredients.length} ingredients ticked`}
+                  >
+                    {checkedCount}/{recipe.ingredients.length}
+                  </span>
+                }
+              />
             </div>
 
             <ul className="px-2 py-2 sm:px-3">
               {recipe.ingredients.map((ing, index) => (
                 <li key={index}>
                   <label
-                    className={`group flex cursor-pointer items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors duration-300 hover:bg-stone-800/50 ${
-                      flashIndex === index ? "bg-orange-200/10" : ""
+                    className={`group flex cursor-pointer items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors duration-300 hover:bg-stone-950 ${
+                      flashIndex === index ? "bg-orange-400/10" : ""
                     }`}
                   >
                     <input
@@ -976,21 +705,19 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                       className={`relative mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-orange-300 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-stone-900 ${
                         checkedIngredients[index]
                           ? "border-orange-200 bg-orange-200"
-                          : "border-stone-500 bg-stone-800 group-hover:border-stone-400"
+                          : "border-stone-600 bg-stone-900 group-hover:border-orange-300"
                       }`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="none"
-                        stroke="#1c1917"
+                        stroke="#FFFFFF"
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className={`h-3.5 w-3.5 transition-all duration-200 ${
-                          checkedIngredients[index]
-                            ? "scale-100 opacity-100"
-                            : "scale-0 opacity-0"
+                          checkedIngredients[index] ? "scale-100 opacity-100" : "scale-0 opacity-0"
                         }`}
                       >
                         <path d="M4 10l4 4 8-8" />
@@ -999,39 +726,29 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
                     <span
                       className={`min-w-0 flex-1 transition-colors duration-300 ${
-                        checkedIngredients[index]
-                          ? "text-stone-500 line-through"
-                          : "text-stone-300 group-hover:text-stone-100"
+                        checkedIngredients[index] ? "text-stone-500 line-through" : "text-stone-300"
                       }`}
                     >
                       <span className="block leading-snug">
                         <span
                           className={`font-semibold ${
-                            checkedIngredients[index]
-                              ? "text-stone-500"
-                              : "text-orange-50"
+                            checkedIngredients[index] ? "text-stone-500" : "text-stone-100"
                           }`}
                         >
                           {ing.amount}
                         </span>{" "}
                         {ing.commonName}
                       </span>
-                      <span className="block text-sm text-stone-500">
-                        {ing.englishName}
-                      </span>
+                      <span className="block text-sm text-stone-500">{ing.englishName}</span>
                     </span>
                   </label>
                 </li>
               ))}
             </ul>
 
-            <div className="border-t border-stone-800 p-5 sm:p-6">
-              <button
-                type="button"
-                onClick={handleBuyFromInstamart}
-                className={`${secondaryButton} w-full`}
-              >
-                <CartIcon className="h-5 w-5 text-orange-300" />
+            <div className="border-t border-stone-700 p-5 sm:p-6">
+              <button type="button" onClick={handleBuyFromInstamart} className={`${secondaryButton} w-full`}>
+                <CartIcon className="h-5 w-5 text-orange-200" />
                 Don&apos;t have these? Buy from Instamart
               </button>
               <p className="mt-2.5 text-center text-xs text-stone-500">
@@ -1045,11 +762,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
         <div className="flex flex-col gap-12 lg:col-span-3">
           {/* Equipment */}
           <section aria-labelledby="equipment-heading">
-            <SectionTitle
-              id="equipment-heading"
-              title="Equipment"
-              icon={<EquipmentIcon />}
-            />
+            <SectionTitle id="equipment-heading" title="Equipment" icon={<UtensilsIcon className="h-6 w-6" />} />
 
             <ul className="grid items-start gap-3 sm:grid-cols-2">
               {recipe.equipment.map((tool, index) => {
@@ -1059,35 +772,25 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                 return (
                   <li
                     key={index}
-                    className={`rounded-2xl border p-3.5 sm:p-4 ${
-                      special
-                        ? "border-orange-400/30 bg-orange-400/5"
-                        : "border-stone-800 bg-stone-900/50"
+                    className={`rounded-2xl border p-3.5 shadow-sm sm:p-4 ${
+                      special ? "border-orange-400/40 bg-[#FFF1C9]/60" : "border-stone-700 bg-stone-900"
                     } ${special && tool.alternative ? "sm:col-span-2" : ""}`}
                   >
                     <div className="flex items-center gap-3.5">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-stone-800/80 ring-1 ring-stone-700/60">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFE8D6]">
                         {image ? (
-                          <img
-                            src={image}
-                            alt=""
-                            className="max-h-9 max-w-9 object-contain"
-                            draggable={false}
-                          />
+                          <img src={image} alt="" className="max-h-9 max-w-9 object-contain" draggable={false} />
                         ) : isPotLike(tool.item) ? (
-                          <PotIcon className="h-6 w-6 text-orange-300" />
+                          <PotIcon className="h-6 w-6 text-orange-200" />
                         ) : (
-                          <UtensilsIcon className="h-6 w-6 text-orange-300" />
+                          <UtensilsIcon className="h-6 w-6 text-orange-200" />
                         )}
                       </span>
 
                       <div className="min-w-0">
-                        <p className="font-medium leading-snug text-stone-100">
-                          {tool.item}
-                        </p>
-
+                        <p className="font-medium leading-snug text-stone-100">{tool.item}</p>
                         {special && (
-                          <span className="mt-1 inline-block rounded-full bg-orange-400/15 px-2 py-0.5 text-xs font-medium text-orange-200">
+                          <span className="mt-1 inline-block rounded-full bg-orange-400/20 px-2 py-0.5 text-xs font-semibold text-orange-100">
                             Heads up
                           </span>
                         )}
@@ -1095,8 +798,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                     </div>
 
                     {special && tool.alternative && (
-                      <p className="mt-3 rounded-xl bg-stone-950/40 p-3 text-sm leading-relaxed text-orange-100">
-                        <span className="font-semibold">Alternative:</span>{" "}
+                      <p className="mt-3 rounded-xl bg-stone-900 p-3 text-sm leading-relaxed text-stone-300">
+                        <span className="font-semibold text-stone-100">Alternative:</span>{" "}
                         {tool.alternative}
                       </p>
                     )}
@@ -1107,14 +810,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
           </section>
 
           {/* Method */}
-          <section
-            aria-labelledby="method-heading"
-            className="border-t border-stone-800 pt-10"
-          >
+          <section aria-labelledby="method-heading" className="border-t border-stone-700 pt-10">
             <SectionTitle
               id="method-heading"
               title="Method"
-              icon={<MethodIcon />}
+              icon={<MethodIcon className="h-6 w-6" />}
               aside={
                 isCooking ? (
                   <span className="text-sm text-stone-400">
@@ -1125,14 +825,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
             />
 
             {!isCooking ? (
-              <div className="flex flex-col gap-5 rounded-3xl border border-dashed border-stone-700 bg-stone-900/30 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <div className="flex flex-col gap-5 rounded-3xl border border-dashed border-orange-400/50 bg-[#FFE8D6]/50 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
                 <div>
-                  <p className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
-                    Ready when you are
-                  </p>
+                  <p className="font-serif text-xl font-black text-orange-50 sm:text-2xl">Ready when you are</p>
                   <p className="mt-1 text-sm text-stone-400 sm:text-base">
-                    We&apos;ll walk you through {totalSteps} steps, one at a
-                    time.
+                    We&apos;ll walk you through {totalSteps} steps, one at a time.
                   </p>
                 </div>
 
@@ -1147,11 +844,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
               </div>
             ) : (
               <div>
-                <div
-                  aria-live="polite"
-                  className="overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/60 p-5 shadow-xl shadow-black/20 sm:p-8"
-                >
-                  {/* Progress (stays put while the step slides) */}
+                <div aria-live="polite" className={`${card} overflow-hidden p-5 sm:p-8`}>
                   <div
                     className="flex gap-1.5"
                     role="progressbar"
@@ -1164,32 +857,25 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
                       <span
                         key={index}
                         className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-                          index <= currentStepIndex
-                            ? "bg-orange-300"
-                            : "bg-stone-700"
+                          index <= currentStepIndex ? "bg-orange-200" : "bg-stone-700"
                         }`}
                       />
                     ))}
                   </div>
 
-                  {/* Next slides in from the right, Previous from the left */}
                   <div key={currentStepIndex} className={stepAnimationClass}>
-                    <p className="mt-6 text-sm font-semibold text-orange-300">
-                      Step {currentStepIndex + 1}
-                    </p>
+                    <p className="mt-6 text-sm font-semibold text-orange-200">Step {currentStepIndex + 1}</p>
 
-                    <p className="mt-2 text-xl leading-relaxed text-stone-50 sm:text-2xl sm:leading-relaxed">
+                    <p className="mt-2 text-xl leading-relaxed text-stone-100 sm:text-2xl sm:leading-relaxed">
                       {currentStep.instruction}
                     </p>
 
-                    {currentStep.tip?.title?.trim() &&
-                      currentStep.tip?.content?.trim() && (
-                        <TipCallout tip={currentStep.tip!} />
-                      )}
+                    {currentStep.tip?.title?.trim() && currentStep.tip?.content?.trim() && (
+                      <TipCallout tip={currentStep.tip!} />
+                    )}
                   </div>
                 </div>
 
-                {/* Navigation */}
                 <div className="mt-5 flex items-center gap-3">
                   <button
                     type="button"
@@ -1226,26 +912,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({
 
           {/* Notes */}
           {recipe.notes && recipe.notes.length > 0 && (
-            <section
-              aria-labelledby="notes-heading"
-              className="border-t border-stone-800 pt-10"
-            >
-              <SectionTitle
-                id="notes-heading"
-                title="Notes & tips"
-                icon={<NotesIcon />}
-              />
+            <section aria-labelledby="notes-heading" className="border-t border-stone-700 pt-10">
+              <SectionTitle id="notes-heading" title="Notes & tips" icon={<NotesIcon className="h-6 w-6" />} />
 
-              <ul className="space-y-3 rounded-2xl border border-stone-800 bg-stone-900/50 p-5 sm:p-6">
+              <ul className="space-y-3 rounded-2xl border border-stone-700 bg-[#FFF1C9]/50 p-5 sm:p-6">
                 {recipe.notes.map((note, index) => (
-                  <li
-                    key={index}
-                    className="flex gap-3 leading-relaxed text-stone-300"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-300"
-                    />
+                  <li key={index} className="flex gap-3 leading-relaxed text-stone-200">
+                    <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-200" />
                     <span>{note}</span>
                   </li>
                 ))}
