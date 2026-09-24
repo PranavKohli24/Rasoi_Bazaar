@@ -5473,4 +5473,337 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "In winter, add a pinch of black pepper or a small piece of cinnamon for a warming chai.",
     ],
   },
+
+    // ============================================================
+  // MORE FAN-FAVOURITE ADDITIONS
+  // ============================================================
+
+  "kadai paneer": {
+    dishName: "Kadai Paneer",
+    description:
+      "Paneer and capsicum tossed in a punchy, freshly ground kadai masala with onion and tomato - drier and spicier than a paneer gravy, not to be confused with palak paneer's smooth spinach base.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: "Crush the coriander and chillies coarsely with a rolling pin instead" },
+    ],
+    ingredients: [
+      { amount: "200 g", commonName: "Paneer", englishName: "paneer, cubed" },
+      { amount: "1 large", commonName: "Shimla Mirch", englishName: "capsicum, cubed" },
+      { amount: "1 large", commonName: "Pyaaz", englishName: "onion, cubed and layers separated" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Dhaniya (sabut)", englishName: "whole coriander seeds" },
+      { amount: "3", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 inch", commonName: "Adrak (julienne)", englishName: "ginger, sliced thin, for garnish" },
+      { amount: "3 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction: "Dry roast the whole coriander seeds and dried red chillies in the kadai on low heat for 1 to 2 minutes, until you smell them toasting. Take them out and let them cool.",
+      },
+      {
+        step: 2,
+        instruction: "Coarsely crush the roasted coriander and chillies in a grinder - just a few pulses, you want a coarse texture, not a fine powder. This is your kadai masala.",
+        tip: {
+          title: "The whole point of the dish",
+          content: "Coarse, freshly ground kadai masala is what makes this dish taste completely different from any other paneer curry. Don't use fine ready-made powder here.",
+        },
+      },
+      { step: 3, instruction: "Heat oil in the kadai. Add the onion and capsicum and stir-fry on high heat for 2 to 3 minutes, so they stay a little crunchy. Take them out and set aside." },
+      { step: 4, instruction: "In the same kadai, add the ginger-garlic paste and cook for 30 seconds until fragrant." },
+      { step: 5, instruction: "Add the tomatoes and cook for 6 to 7 minutes, pressing them down, until soft and mushy." },
+      { step: 6, instruction: "Add the crushed kadai masala, turmeric and salt. Mix well and cook for 2 minutes." },
+      { step: 7, instruction: "Add the fried onion and capsicum back in, along with the paneer cubes. Toss gently on high heat for 2 to 3 minutes so everything is coated but the paneer stays soft." },
+      { step: 8, instruction: "Sprinkle garam masala, top with the ginger juliennes and coriander leaves, and serve hot with roti or naan." },
+    ],
+    notes: [
+      "This is meant to be a semi-dry dish, not a gravy. If it looks too dry, splash in a couple tablespoons of water rather than making it a curry.",
+      "Adding the capsicum and onion back in near the end keeps them crunchy, which is the real texture difference from a soft paneer gravy like palak paneer.",
+    ],
+  },
+
+  "tandoori chicken (oven-style)": {
+    dishName: "Tandoori Chicken",
+    description:
+      "Chicken marinated in spiced, tangy yogurt and roasted until charred at the edges and smoky inside - the tandoor flavour, made entirely in a home oven.",
+    prepTime: "Approx. 50 minutes (plus 4+ hours marination)",
+    equipment: [
+      { item: "oven", isSpecialized: true, alternative: "air_fryer, at 400°F (200°C) for 20 to 25 minutes, flipping halfway" },
+      { item: "stove", isSpecialized: false, alternative: "Skip this step if you don't want the smoky finish" },
+    ],
+    ingredients: [
+      { amount: "800 g", commonName: "Chicken", englishName: "chicken leg pieces, skin removed, slit deeply" },
+      { amount: "1", commonName: "Nimbu", englishName: "lemon, juiced" },
+      { amount: "1 cup", commonName: "Dahi (gaadha)", englishName: "thick yogurt, whisked" },
+      { amount: "1.5 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1.5 tsp", commonName: "Kashmiri Lal Mirch", englishName: "Kashmiri red chilli powder" },
+      { amount: "1 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Jeera Powder", englishName: "cumin powder" },
+      { amount: "1/2 tsp", commonName: "Ajwain", englishName: "carom seeds, crushed" },
+      { amount: "2 tbsp", commonName: "Sarson ya Tel", englishName: "mustard oil or any cooking oil" },
+      { amount: "as needed", commonName: "Makhan (pighla hua)", englishName: "melted butter, for basting" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Rub the chicken pieces with lemon juice and 1/2 tsp salt. Set aside for 15 minutes - this helps the deeper marinade stick and cuts any raw smell." },
+      { step: 2, instruction: "In a large bowl, mix yogurt, ginger-garlic paste, chilli powder, garam masala, coriander powder, cumin powder, ajwain, oil and salt into a smooth marinade." },
+      {
+        step: 3,
+        instruction: "Add the chicken to the marinade and massage it in well, pushing some into the slits you made. Cover and refrigerate for at least 4 hours, ideally overnight.",
+        tip: {
+          title: "Longer is better",
+          content: "The deep slits and long marination are what let the flavour actually reach the bone, not just sit on the surface.",
+        },
+      },
+      { step: 4, instruction: "Take the chicken out 20 minutes before cooking so it isn't fridge-cold. Preheat the oven to 220°C (425°F)." },
+      { step: 5, instruction: "Arrange the pieces on a wire rack over a tray (or directly on a greased tray) and roast for 25 to 30 minutes, turning once halfway through." },
+      { step: 6, instruction: "Switch the oven to grill/broil mode for the last 3 to 5 minutes to get charred spots on top. Watch closely so it doesn't burn." },
+      {
+        step: 7,
+        instruction: "For a smoky finish, place a small piece of hot charcoal in a steel bowl, set it in the centre of the tray, pour a few drops of oil on it and cover the tray tightly with foil for 2 minutes. This is optional but authentic.",
+      },
+      { step: 8, instruction: "Brush generously with melted butter, squeeze over some fresh lemon and serve hot with mint chutney and sliced onions." },
+    ],
+    notes: [
+      "No wire rack? Just flip the pieces once or twice during roasting so both sides colour evenly.",
+      "The char on top is from high heat, not from burning - keep an eye on it in the last few minutes under the grill.",
+    ],
+  },
+
+  "veg biryani": {
+    dishName: "Veg Biryani",
+    description:
+      "Fragrant basmati rice layered with a spiced mixed-vegetable masala and slow-cooked on dum - a full celebration meal in one pot.",
+    prepTime: "Approx. 1 hour",
+    equipment: [
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "cooker", isSpecialized: false, alternative: "Boil the rice in an open pot instead, draining it once 70% cooked" },
+      { item: "stove", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Basmati Chawal", englishName: "basmati rice, soaked 30 minutes" },
+      { amount: "2 cups", commonName: "Mixed Vegetables", englishName: "carrot, beans, cauliflower, peas, chopped" },
+      { amount: "1", commonName: "Aloo", englishName: "potato, cubed" },
+      { amount: "2 large", commonName: "Pyaaz (talaa hua)", englishName: "onions, thinly sliced and fried golden" },
+      { amount: "1/2 cup", commonName: "Dahi", englishName: "yogurt, whisked" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2 tbsp", commonName: "Biryani Masala", englishName: "biryani masala powder" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1 inch, 3, 4, 1", commonName: "Dalchini, Elaichi, Laung, Tej Patta", englishName: "cinnamon, cardamom, cloves, bay leaf" },
+      { amount: "a small handful", commonName: "Pudina aur Hara Dhaniya", englishName: "mint and coriander leaves, chopped" },
+      { amount: "a few strands in 2 tbsp warm milk", commonName: "Kesar Doodh", englishName: "saffron soaked in warm milk" },
+      { amount: "3 tbsp", commonName: "Ghee ya Tel", englishName: "ghee or oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Boil a large pot (or cooker, uncovered) of water with the whole spices and salt. Add the soaked rice and cook until about 70% done - still a bit firm at the centre when you bite one grain." },
+      { step: 2, instruction: "Drain the rice immediately and spread it on a plate so it doesn't keep cooking." },
+      { step: 3, instruction: "Heat ghee in the kadai. Add the ginger-garlic paste and cook for 1 minute." },
+      { step: 4, instruction: "Add the potato and mixed vegetables and stir-fry for 4 to 5 minutes." },
+      { step: 5, instruction: "Add red chilli powder, biryani masala and salt. Mix well." },
+      { step: 6, instruction: "Turn the heat to low and stir in the whisked yogurt, mixing constantly for a minute so it doesn't split. Cover and cook for 8 to 10 minutes until the vegetables are just tender." },
+      { step: 7, instruction: "Spread this vegetable masala evenly across the bottom of the kadai." },
+      { step: 8, instruction: "Layer the partially cooked rice evenly on top. Scatter the fried onions, mint, coriander and saffron milk over the rice." },
+      {
+        step: 9,
+        instruction: "Cover the kadai with a tight lid (seal the edges with dough or a damp cloth if it doesn't fit snugly) and cook on the lowest possible heat for 20 minutes.",
+        tip: {
+          title: "Low and slow",
+          content: "This gentle steaming, called dum, is what finishes cooking the rice and lets all the layered flavours mix through evenly. Don't rush it with high heat.",
+        },
+      },
+      { step: 10, instruction: "Turn off the heat and let it rest, covered, for 10 minutes. Gently fluff the layers together and serve hot with raita." },
+    ],
+    notes: [
+      "Cut all the vegetables roughly the same size so they cook evenly.",
+      "A tawa placed under the kadai during the dum step helps stop the bottom layer from catching.",
+    ],
+  },
+
+  "vada pav": {
+    dishName: "Vada Pav",
+    description:
+      "Spiced mashed potato dumplings, deep fried in a gram flour batter and packed into a soft pav with chutneys - Mumbai's favourite quick bite.",
+    prepTime: "Approx. 40 minutes",
+    equipment: [
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "tawa", isSpecialized: false, alternative: "Toast the pav directly in the kadai on low heat instead" },
+      { item: "grinder", isSpecialized: false, alternative: "Crush the garlic and chillies with a mortar and pestle instead" },
+    ],
+    ingredients: [
+      { amount: "4 medium", commonName: "Aloo", englishName: "potatoes, boiled and mashed" },
+      { amount: "1 tsp", commonName: "Rai", englishName: "mustard seeds" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun-Hari Mirch Paste", englishName: "ginger, garlic and green chilli, crushed together" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 cup", commonName: "Besan", englishName: "gram flour" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "8", commonName: "Pav", englishName: "pav buns" },
+      { amount: "10 cloves", commonName: "Lehsun", englishName: "garlic, for dry chutney" },
+      { amount: "3 tbsp", commonName: "Sukha Nariyal", englishName: "dry desiccated coconut, for dry chutney" },
+      { amount: "2 tbsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder, for dry chutney" },
+      { amount: "as needed", commonName: "Hari Chutney", englishName: "green coriander-mint chutney, to serve" },
+      { amount: "as needed", commonName: "Tel", englishName: "cooking oil, for deep frying and toasting" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "For the dry garlic chutney, dry roast the garlic cloves and coconut in a pan on low heat until light golden and fragrant. Cool, then grind coarsely with red chilli powder and a pinch of salt. Set aside." },
+      { step: 2, instruction: "Heat 1 tablespoon oil in the kadai. Add mustard seeds and let them pop, then add curry leaves and the ginger-garlic-chilli paste. Cook for 30 seconds." },
+      { step: 3, instruction: "Add turmeric and the mashed potato, along with salt. Mix everything together well and cook for 2 minutes. Let it cool slightly." },
+      { step: 4, instruction: "Shape the potato mixture into round balls, about the size of a small lemon." },
+      { step: 5, instruction: "Make the batter by whisking besan, baking soda, a pinch of salt and enough water into a smooth, medium-thick batter, like pancake batter." },
+      {
+        step: 6,
+        instruction: "Heat oil in the kadai for deep frying. Dip each potato ball in the batter, coating it fully, and slide it gently into the hot oil.",
+        tip: {
+          title: "Test the oil first",
+          content: "Drop a bit of batter in - it should rise to the top steadily, not instantly. Too-hot oil browns the vada before the inside heats through.",
+        },
+      },
+      { step: 7, instruction: "Fry in batches for 4 to 5 minutes, turning occasionally, until deep golden and crisp all over. Drain on paper towels." },
+      { step: 8, instruction: "Slit each pav and toast it lightly on the tawa with a little oil or butter until warm." },
+      { step: 9, instruction: "Spread green chutney on one side of the pav and a pinch of dry garlic chutney on the other. Place a hot vada inside and press gently. Serve immediately, with a fried green chilli on the side if you like it spicy." },
+    ],
+    notes: [
+      "The batter should coat the back of a spoon and drip off slowly. Too thin and it won't stick; too thick and it turns doughy.",
+      "Vada pav is best eaten fresh and hot, right after frying.",
+    ],
+  },
+
+  "rasam": {
+    dishName: "Rasam",
+    description:
+      "Thin, tangy, peppery South Indian lentil-tomato soup, finished with a sizzling tadka - light, comforting, and great with rice or on its own.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+      { item: "cooker", isSpecialized: false, alternative: "Simmer the dal in a covered pot for 25 to 30 minutes instead" },
+      { item: "kadai", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1/4 cup", commonName: "Toor Dal", englishName: "split pigeon peas" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Imli", englishName: "tamarind pulp, or a small lemon-sized ball soaked in warm water" },
+      { amount: "2 tsp", commonName: "Rasam Powder", englishName: "rasam powder" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Kali Mirch (kuti hui)", englishName: "black pepper, crushed" },
+      { amount: "1 tsp", commonName: "Jeera (kuta hua)", englishName: "cumin seeds, crushed" },
+      { amount: "1 tsp", commonName: "Rai", englishName: "mustard seeds" },
+      { amount: "2", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "2 tbsp", commonName: "Ghee ya Tel", englishName: "ghee or oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      { step: 1, instruction: "Wash the toor dal and pressure cook it with turmeric and 1.5 cups water for 4 to 5 whistles, until completely soft. Mash it smooth with a spoon or whisk." },
+      { step: 2, instruction: "In a kadai, add the mashed dal, chopped tomatoes, tamarind pulp, rasam powder and salt, along with 2 cups water. Mix well." },
+      { step: 3, instruction: "Bring it to a gentle boil and simmer for 8 to 10 minutes until the tomatoes soften and the raw tamarind smell is gone." },
+      {
+        step: 4,
+        instruction: "Add the crushed pepper and cumin. Let it simmer for 2 more minutes, but don't let it boil hard once this is added.",
+        tip: {
+          title: "Never let rasam boil hard",
+          content: "A gentle simmer keeps rasam light and fragrant. A rolling boil cooks off the very aroma that makes it special.",
+        },
+      },
+      { step: 5, instruction: "For the tadka, heat ghee in a small pan. Add mustard seeds and let them pop." },
+      { step: 6, instruction: "Add the dried red chillies, curry leaves and a pinch of hing. Sizzle for 10 seconds and pour the tadka over the rasam." },
+      { step: 7, instruction: "Garnish with coriander leaves. Turn off the heat as soon as it starts to froth up at the edges - that's your sign it's ready." },
+      { step: 8, instruction: "Serve hot, either as a soup on its own or poured over steamed rice." },
+    ],
+    notes: [
+      "Rasam should be thin and soupy, not thick like sambar. Add more water if it looks too concentrated.",
+      "A ripe, slightly squashed tomato added whole while simmering, then mashed in, gives extra body and flavour.",
+    ],
+  },
+
+  "khichdi (moong dal khichdi)": {
+    dishName: "Khichdi",
+    description:
+      "Soft, comforting rice and moong dal cooked together with mild spices - the classic simple, easy-to-digest one-pot meal.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+      { item: "cooker", isSpecialized: false, alternative: "Cook covered in a pot on the stove for 25 to 30 minutes, adding extra water as needed" },
+      { item: "kadai", isSpecialized: false, alternative: "Skip the separate tadka and add the whole spices directly to the cooker in step 1" },
+    ],
+    ingredients: [
+      { amount: "1/2 cup", commonName: "Chawal", englishName: "rice, rinsed" },
+      { amount: "1/2 cup", commonName: "Peeli Moong Dal", englishName: "split yellow moong dal, rinsed" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 cup", commonName: "Mixed Vegetables", englishName: "carrot, beans, peas, chopped (optional)" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, slit" },
+      { amount: "1 inch", commonName: "Adrak", englishName: "ginger, finely chopped" },
+      { amount: "3 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "4 cups", commonName: "Paani", englishName: "water" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Wash the rice and dal together until the water runs mostly clear. Soak them in water for 10 minutes, then drain." },
+      { step: 2, instruction: "Heat 1 tablespoon ghee in the kadai. Add cumin seeds, bay leaf and a pinch of hing and let them sizzle for 10 seconds." },
+      { step: 3, instruction: "Add the ginger and green chilli and cook for 30 seconds. If using vegetables, add them now and stir-fry for 2 minutes." },
+      { step: 4, instruction: "Transfer this tempering to the pressure cooker. Add the drained rice and dal, turmeric and salt." },
+      {
+        step: 5,
+        instruction: "Add the water and mix once. Close the lid and cook for 3 to 4 whistles on medium heat.",
+        tip: {
+          title: "Softer is the goal",
+          content: "Khichdi should be soft and slightly mushy, almost like a thick porridge, not separate grains like plain rice. If in doubt, add a little more water.",
+        },
+      },
+      { step: 6, instruction: "Let the pressure release on its own. Open the lid and give it a good stir - it should fall off the spoon easily. Add a splash of hot water if it looks too thick." },
+      { step: 7, instruction: "Spoon the remaining ghee on top and serve hot, with a side of yogurt, papad or pickle." },
+    ],
+    notes: [
+      "For a version that's easy on the stomach when unwell, skip the vegetables and tempering and just simmer rice, dal, turmeric and salt together.",
+      "Leftover khichdi thickens as it cools - loosen it with a little hot water or milk when reheating.",
+    ],
+  },
+
+  "lassi (sweet lassi)": {
+    dishName: "Sweet Lassi",
+    description:
+      "Thick, chilled, sweetened yogurt drink blended till frothy - the classic cooling companion to a spicy meal or a hot afternoon.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [
+      { item: "grinder", isSpecialized: false, alternative: "Whisk vigorously by hand with a wired whisk instead" },
+    ],
+    ingredients: [
+      { amount: "2 cups", commonName: "Dahi (gaadha, thanda)", englishName: "thick, chilled yogurt" },
+      { amount: "1/2 cup", commonName: "Thanda Doodh", englishName: "chilled milk" },
+      { amount: "4 tbsp", commonName: "Cheeni", englishName: "sugar, adjust to taste" },
+      { amount: "1/4 tsp", commonName: "Elaichi Powder", englishName: "cardamom powder" },
+      { amount: "a few ice cubes", commonName: "Barf", englishName: "ice cubes" },
+      { amount: "a pinch", commonName: "Kesar", englishName: "saffron strands, for garnish (optional)" },
+      { amount: "1 tsp", commonName: "Malai", englishName: "fresh cream, for topping (optional)" },
+    ],
+    method: [
+      { step: 1, instruction: "Whisk the yogurt in a bowl first for about a minute until it looks smooth and lump-free. This makes blending much easier." },
+      { step: 2, instruction: "Add the whisked yogurt, milk, sugar, cardamom powder and ice cubes to the grinder." },
+      {
+        step: 3,
+        instruction: "Blend on high for 30 to 45 seconds until completely smooth and frothy on top.",
+        tip: {
+          title: "Getting that froth",
+          content: "Blending with ice cubes already in the jar, rather than adding them after, is what gives lassi its light, frothy top layer.",
+        },
+      },
+      { step: 4, instruction: "Taste and add a little more sugar if needed, then blend for 5 more seconds to mix it in." },
+      { step: 5, instruction: "Pour into tall glasses. Top with a few saffron strands and a small spoon of fresh cream if using, and serve immediately." },
+    ],
+    notes: [
+      "Use thick, full-fat yogurt - thin or watery yogurt makes a runny lassi no matter how much you blend it.",
+      "For mango lassi, blend in 1 cup of chopped ripe mango and reduce the sugar to taste.",
+    ],
+  },
 };

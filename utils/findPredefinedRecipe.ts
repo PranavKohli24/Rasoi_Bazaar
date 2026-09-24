@@ -180,6 +180,20 @@ const MANUAL_ALIASES: Record<string, string> = {
   "masala tea": "chai (masala chai)",
   "adrak chai": "chai (masala chai)",
   "cutting chai": "chai (masala chai)",
+
+
+    // kadai paneer, tandoori chicken, biryani, vada pav, rasam, khichdi, lassi
+  "karahi paneer": "kadai paneer",
+  "tandoori murgh": "tandoori chicken (oven-style)",
+  "chicken tandoori": "tandoori chicken (oven-style)",
+  "vegetable biryani": "veg biryani",
+  "veg dum biryani": "veg biryani",
+  "batata vada": "vada pav",
+  "vada pao": "vada pav",
+  "moong dal khichdi": "khichdi (moong dal khichdi)",
+  "dal khichdi": "khichdi (moong dal khichdi)",
+  "sweet lassi": "lassi (sweet lassi)",
+  "mithi lassi": "lassi (sweet lassi)",
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
