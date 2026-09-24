@@ -556,6 +556,38 @@ const MANUAL_ALIASES: Record<string, string> = {
   "strawberry icecream": "easy strawberry ice cream",
   "strawberry ice cream": "easy strawberry ice cream",
 
+  // juices
+  "juice": "easy orange juice",
+  "orange juice": "easy orange juice",
+  "orange juice recipe": "easy orange juice",
+  "apple juice": "fresh apple juice",
+  "apple juice recipe": "fresh apple juice",
+  "mango juice": "easy mango juice",
+  "mango juice recipe": "easy mango juice",
+  "pineapple juice": "fresh pineapple juice",
+  "pineapple juice recipe": "fresh pineapple juice",
+  "grape juice": "fresh grape juice",
+  "grape juice recipe": "fresh grape juice",
+  "watermelon juice": "fresh watermelon juice",
+  "watermelon juice recipe": "fresh watermelon juice",
+
+  // milkshakes
+  "vanilla milk shake": "easy vanilla milkshake",
+  "vanilla milkshake": "easy vanilla milkshake",
+  "vanilla shake": "easy vanilla milkshake",
+  "chocolate milk shake": "easy chocolate milkshake",
+  "chocolate milkshake": "easy chocolate milkshake",
+  "chocolate shake": "easy chocolate milkshake",
+  "strawberry milk shake": "easy strawberry milkshake",
+  "strawberry milkshake": "easy strawberry milkshake",
+  "strawberry shake": "easy strawberry milkshake",
+  "oreo milk shake": "easy oreo milkshake",
+  "oreo milkshake": "easy oreo milkshake",
+  "oreo shake": "easy oreo milkshake",
+  "orea shake": "easy oreo milkshake",
+  "milk shake": "easy oreo milkshake",
+  "milkshake": "easy oreo milkshake",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {

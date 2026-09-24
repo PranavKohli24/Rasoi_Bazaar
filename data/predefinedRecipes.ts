@@ -9993,4 +9993,215 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [],
   },
 
+
+  // ============================================================
+  // JUICES & MILKSHAKES
+  // ============================================================
+
+  "easy orange juice": {
+    dishName: "Orange Juice",
+    description: "Fresh homemade orange juice made in minutes with sweet oranges and a little water.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "4", commonName: "Santra", englishName: "sweet oranges, peeled" },
+      { amount: "1/4 cup", commonName: "Paani", englishName: "cold water" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Peel the oranges and remove any seeds." },
+      { step: 2, instruction: "Add the orange segments and cold water to a grinder." },
+      { step: 3, instruction: "Blend until the juice is smooth." },
+      { step: 4, instruction: "Taste and add sugar only if the oranges are not sweet enough." },
+      { step: 5, instruction: "Pour into a glass and serve cold, with ice if you like.", tip: { title: "Keep it fresh", content: "Use sweet, juicy oranges and drink the juice soon after blending." } },
+    ],
+    notes: [],
+  },
+
+  "fresh apple juice": {
+    dishName: "Apple Juice",
+    description: "Simple homemade apple juice blended with fresh apples and a little chilled water.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "2 large", commonName: "Seb", englishName: "sweet apples, cored and chopped" },
+      { amount: "1/2 cup", commonName: "Paani", englishName: "cold water" },
+      { amount: "1 tsp", commonName: "Nimbu Ras", englishName: "lemon juice, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Wash the apples, remove the cores and chop them into small pieces." },
+      { step: 2, instruction: "Add the apples and cold water to a grinder." },
+      { step: 3, instruction: "Blend until smooth." },
+      { step: 4, instruction: "Add lemon juice if you want a fresher, slightly tangy taste." },
+      { step: 5, instruction: "Pour into a glass and serve immediately.", tip: { title: "Avoid browning", content: "Blend and serve the juice soon after cutting the apples for a fresher colour and taste." } },
+    ],
+    notes: [],
+  },
+
+  "easy mango juice": {
+    dishName: "Mango Juice",
+    description: "A quick homemade mango drink made with ripe mangoes, chilled water and optional sugar.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "2 medium", commonName: "Aam", englishName: "ripe mangoes, peeled and chopped" },
+      { amount: "1 cup", commonName: "Paani", englishName: "chilled water" },
+      { amount: "1 to 2 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Peel the mangoes and remove the stones." },
+      { step: 2, instruction: "Add the mango pieces and chilled water to a grinder." },
+      { step: 3, instruction: "Blend until smooth and pourable." },
+      { step: 4, instruction: "Taste and add sugar only if needed." },
+      { step: 5, instruction: "Pour into glasses and serve chilled.", tip: { title: "Use ripe mangoes", content: "Sweet, ripe mangoes give the juice better flavour without needing much extra sugar." } },
+    ],
+    notes: [],
+  },
+
+  "fresh pineapple juice": {
+    dishName: "Pineapple Juice",
+    description: "Bright homemade pineapple juice made with fresh pineapple and chilled water.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "2 cups", commonName: "Ananas", englishName: "fresh pineapple, peeled and chopped" },
+      { amount: "1/2 cup", commonName: "Paani", englishName: "cold water" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Peel the pineapple, remove the hard core and chop it." },
+      { step: 2, instruction: "Add pineapple and cold water to a grinder." },
+      { step: 3, instruction: "Blend until smooth." },
+      { step: 4, instruction: "Taste and add sugar only if the pineapple is not sweet enough." },
+      { step: 5, instruction: "Pour into glasses and serve cold.", tip: { title: "Balance the taste", content: "Very ripe pineapple gives a naturally sweet juice, so taste before adding sugar." } },
+    ],
+    notes: [],
+  },
+
+  "fresh grape juice": {
+    dishName: "Grape Juice",
+    description: "Easy homemade grape juice blended from sweet seedless grapes and chilled water.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "2 cups", commonName: "Angoor", englishName: "seedless grapes, washed" },
+      { amount: "1/2 cup", commonName: "Paani", englishName: "cold water" },
+      { amount: "1 tsp", commonName: "Nimbu Ras", englishName: "lemon juice, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Wash the grapes well and remove any stems." },
+      { step: 2, instruction: "Add the grapes and cold water to a grinder." },
+      { step: 3, instruction: "Blend until smooth." },
+      { step: 4, instruction: "Add lemon juice if you want a slightly sharper taste." },
+      { step: 5, instruction: "Pour into glasses and serve immediately.", tip: { title: "Use seedless grapes", content: "Seedless grapes make the juice easier to blend and give a smoother drink." } },
+    ],
+    notes: [],
+  },
+
+  "fresh watermelon juice": {
+    dishName: "Watermelon Juice",
+    description: "A refreshing summer drink made by blending juicy watermelon with no cooking required.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "3 cups", commonName: "Tarbooz", englishName: "watermelon, deseeded and cubed" },
+      { amount: "1 tsp", commonName: "Nimbu Ras", englishName: "lemon juice, optional" },
+      { amount: "a few", commonName: "Pudina", englishName: "mint leaves, optional" },
+      { amount: "a few", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Cut the watermelon into small cubes and remove as many seeds as possible." },
+      { step: 2, instruction: "Add the watermelon to a grinder." },
+      { step: 3, instruction: "Blend for a few seconds until juicy and smooth." },
+      { step: 4, instruction: "Add lemon juice or mint if you like." },
+      { step: 5, instruction: "Pour into glasses and serve cold.", tip: { title: "No extra water needed", content: "Watermelon already contains plenty of water, so blend it on its own first." } },
+    ],
+    notes: [],
+  },
+
+  "easy vanilla milkshake": {
+    dishName: "Vanilla Milkshake",
+    description: "A simple creamy vanilla milkshake made with chilled milk, vanilla ice cream and a little vanilla.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "2 scoops", commonName: "Vanilla Ice Cream", englishName: "vanilla ice cream" },
+      { amount: "1/2 tsp", commonName: "Vanilla", englishName: "vanilla extract" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Add chilled milk, vanilla ice cream and vanilla to a grinder." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth and frothy." },
+      { step: 3, instruction: "Taste and add sugar only if needed." },
+      { step: 4, instruction: "Pour into a glass and serve immediately.", tip: { title: "Keep it thick", content: "Use cold milk and firm ice cream for a thicker shake." } },
+    ],
+    notes: [],
+  },
+
+  "easy chocolate milkshake": {
+    dishName: "Chocolate Milkshake",
+    description: "A quick creamy chocolate milkshake made with chilled milk, chocolate ice cream and cocoa.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "2 scoops", commonName: "Chocolate Ice Cream", englishName: "chocolate ice cream" },
+      { amount: "1 tbsp", commonName: "Cocoa Powder", englishName: "unsweetened cocoa powder" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Add chilled milk, chocolate ice cream and cocoa powder to a grinder." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth." },
+      { step: 3, instruction: "Taste and add sugar only if you want it sweeter." },
+      { step: 4, instruction: "Pour into a glass and serve cold.", tip: { title: "Richer chocolate", content: "Use good cocoa powder and chocolate ice cream for a deeper flavour." } },
+    ],
+    notes: [],
+  },
+
+  "easy strawberry milkshake": {
+    dishName: "Strawberry Milkshake",
+    description: "A simple strawberry milkshake made with fresh strawberries, chilled milk and strawberry ice cream.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1 cup", commonName: "Strawberries", englishName: "fresh strawberries, hulled" },
+      { amount: "1 cup", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "2 scoops", commonName: "Strawberry Ice Cream", englishName: "strawberry ice cream" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Add strawberries, chilled milk and strawberry ice cream to a grinder." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth and creamy." },
+      { step: 3, instruction: "Taste and add sugar only if needed." },
+      { step: 4, instruction: "Pour into a glass and serve immediately.", tip: { title: "Use ripe berries", content: "Sweet ripe strawberries give better flavour and colour without extra sugar." } },
+    ],
+    notes: [],
+  },
+
+  "easy oreo milkshake": {
+    dishName: "Oreo Milkshake",
+    description: "A quick creamy cookie shake made with Oreo biscuits, chilled milk and vanilla ice cream.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "5", commonName: "Oreo Biscuits", englishName: "Oreo-style chocolate sandwich cookies" },
+      { amount: "1.5 cups", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "2 scoops", commonName: "Vanilla Ice Cream", englishName: "vanilla ice cream" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Break the biscuits into pieces and add them to a grinder with the milk and ice cream." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth, with a few cookie crumbs if you like." },
+      { step: 3, instruction: "Taste and add sugar only if needed." },
+      { step: 4, instruction: "Pour into a glass and serve immediately.", tip: { title: "Cookie texture", content: "Blend a little less if you want small Oreo pieces in the shake." } },
+    ],
+    notes: [],
+  },
+
 };
