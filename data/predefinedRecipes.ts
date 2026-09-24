@@ -3995,4 +3995,1482 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "The filling should be completely cool before stuffing.",
     ],
   },
+
+
+    // ============================================================
+  // MORE POPULAR INDIAN DISHES
+  // ============================================================
+
+  "rajma chawal": {
+    dishName: "Rajma Chawal",
+    description:
+      "Soft kidney beans in a thick, homely onion-tomato gravy served over fluffy rice - the ultimate comfort meal.",
+    prepTime: "Approx. 1 hour (plus overnight soaking)",
+    equipment: [
+      {
+        item: "Pressure cooker",
+        isSpecialized: false,
+        alternative: "A heavy pot, but the beans will need 1.5 to 2 hours to soften",
+      },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+      { item: "Pot with lid, for rice", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Rajma", englishName: "kidney beans, soaked overnight" },
+      { amount: "1 cup", commonName: "Basmati Chawal", englishName: "basmati rice" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "3 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1.5 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "3 tbsp", commonName: "Tel ya Ghee", englishName: "oil or ghee" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Drain the soaked rajma and add it to a pressure cooker with 3 cups of fresh water and a pinch of salt. Cook for 6 to 7 whistles, until a bean crushes easily between your fingers.",
+      },
+      {
+        step: 2,
+        instruction:
+          "While that cooks, rinse the basmati until the water runs almost clear. Cook it in a pot with 2 cups water and a pinch of salt, covered, on low heat for 12 to 15 minutes. Leave it covered and off the heat until you're ready to serve.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Heat oil or ghee in a kadai. Add the cumin seeds and bay leaf and let them sizzle for 10 seconds.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add the chopped onions and cook for 8 to 10 minutes, stirring now and then, until they turn golden brown. Don't rush this. It sets the flavour of the whole dish.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the ginger-garlic paste and cook for 1 minute, until the raw smell is gone.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add the tomatoes and cook for 6 to 8 minutes, pressing them with your spatula, until they turn mushy and you see oil at the edges.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add turmeric, red chilli powder, coriander powder and salt. Add a splash of water and cook for 2 minutes so the spices don't stick.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Add the cooked rajma along with about 2 cups of its cooking water. Mash a few beans against the side of the pan with your spoon.",
+        tip: {
+          title: "Free thickener",
+          content:
+            "Those mashed beans are what make the gravy thick and creamy. No flour or cream needed.",
+        },
+      },
+      {
+        step: 9,
+        instruction:
+          "Simmer on low heat for 20 minutes, stirring occasionally, until the gravy is thick and the beans taste rich and soft.",
+      },
+      {
+        step: 10,
+        instruction:
+          "Stir in the garam masala and half the coriander. Serve the rajma over the hot rice, topped with the remaining coriander.",
+      },
+    ],
+    notes: [
+      "Rajma tastes even better the next day, once the flavours have settled in.",
+      "In a hurry? Use 2 cups of canned rajma (rinsed) and simmer for 15 minutes. You can skip step 1.",
+      "Serve with sliced raw onion, a wedge of lemon and a little pickle on the side.",
+    ],
+  },
+
+  "chole bhature": {
+    dishName: "Chole Bhature",
+    description:
+      "Tangy, spicy chickpea curry with puffy, golden fried bread - the Punjabi weekend breakfast everyone loves.",
+    prepTime: "Approx. 1.5 hours (plus overnight soaking and 2 hours dough rest)",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A heavy pot, with longer cooking time" },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+      { item: "Mixing bowl", isSpecialized: false, alternative: null },
+      { item: "Rolling pin (belan)", isSpecialized: false, alternative: null },
+      { item: "Slotted spoon (jhara)", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
+      { amount: "1", commonName: "Chai Patti (tea bag)", englishName: "tea bag, for colour" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2 tsp", commonName: "Chole Masala", englishName: "chole masala powder" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Amchur", englishName: "dry mango powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "2 cups", commonName: "Maida", englishName: "all-purpose flour, for bhature" },
+      { amount: "2 tbsp", commonName: "Suji", englishName: "fine semolina, for bhature" },
+      { amount: "1/3 cup", commonName: "Dahi", englishName: "yogurt, for bhature" },
+      { amount: "1/2 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "as needed", commonName: "Tel", englishName: "cooking oil, for deep frying" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Make the dough first, since it needs time. In a bowl, mix maida, suji, baking soda, sugar and 1/2 tsp salt. Add yogurt and 1 tablespoon oil, then knead with a little warm water into a soft, slightly sticky dough.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Cover the dough with a damp cloth and rest it in a warm spot for 2 hours. It should look puffed up.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Drain the soaked chickpeas and put them in a pressure cooker with the tea bag, 1/2 tsp salt and 3 cups water. Cook for 8 to 10 whistles, until soft enough to mash with a fingertip. Remove the tea bag and keep the chickpeas in their water.",
+        tip: {
+          title: "The dhaba colour trick",
+          content:
+            "The tea bag gives chole that deep brown colour you see at restaurants. You won't taste the tea at all.",
+        },
+      },
+      {
+        step: 4,
+        instruction:
+          "Heat 2 tablespoons oil in a kadai and add the cumin seeds. Add the onions and cook for 8 to 10 minutes until golden brown.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the ginger-garlic paste and cook for 1 minute. Add the tomatoes and cook for 6 to 8 minutes until they turn soft and mushy.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add turmeric, red chilli powder, coriander powder, chole masala and salt. Add a splash of water and cook for 2 minutes.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add the boiled chickpeas with about 1.5 cups of their water. Mash a few chickpeas to thicken the gravy and simmer for 15 to 20 minutes.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Stir in the amchur, taste, and adjust the salt. Keep the chole warm on the lowest heat.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Divide the rested dough into 6 balls. Lightly oil your rolling pin and surface, and roll each ball into an oval about 1/4 inch thick.",
+      },
+      {
+        step: 10,
+        instruction:
+          "Heat oil for frying in a kadai on medium-high heat. To test it, drop in a small piece of dough. It should rise to the top in a couple of seconds.",
+      },
+      {
+        step: 11,
+        instruction:
+          "Slide one bhatura in and gently press it down with the slotted spoon. It puffs up within seconds. Flip and fry for about 30 seconds more until golden. Drain and repeat.",
+        tip: {
+          title: "Oil temperature matters",
+          content:
+            "If the oil is too cool, the bhature turn oily and don't puff. If it's too hot, they brown before they cook inside.",
+        },
+      },
+      {
+        step: 12,
+        instruction:
+          "Serve the bhature hot with the chole, sliced raw onion, green chillies and a lemon wedge.",
+      },
+    ],
+    notes: [
+      "Don't roll the bhature too thin, or they won't puff properly.",
+      "No time for the 2-hour rest? Rest the dough for 30 minutes with a pinch more baking soda. It'll still work, just slightly less fluffy.",
+      "The chole can be made a day ahead and reheated with a splash of water.",
+    ],
+  },
+
+  "chole kulche": {
+    dishName: "Chole Kulche",
+    description:
+      "Spicy, tangy chickpea curry served with soft, tawa-cooked kulchas - the classic street-food pairing, made at home.",
+    prepTime: "Approx. 1.5 hours (plus overnight soaking and 1 hour dough rest)",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A heavy pot, with longer cooking time" },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+      { item: "Tawa (griddle)", isSpecialized: false, alternative: "Heavy flat pan" },
+      { item: "Rolling pin (belan)", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
+      { amount: "1", commonName: "Chai Patti (tea bag)", englishName: "tea bag, for colour" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2 tsp", commonName: "Chole Masala", englishName: "chole masala powder" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Amchur", englishName: "dry mango powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "2 cups", commonName: "Maida", englishName: "all-purpose flour, for kulche" },
+      { amount: "1/2 cup", commonName: "Dahi", englishName: "yogurt, for kulche" },
+      { amount: "1/2 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1/2 tsp", commonName: "Kalonji", englishName: "nigella seeds (optional)" },
+      { amount: "2 tbsp", commonName: "Makhan", englishName: "butter, for brushing" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Make the kulcha dough first. Mix maida, baking powder, baking soda, sugar and 1/2 tsp salt. Add yogurt and 1 tablespoon oil, then knead with a little water into a soft, smooth dough.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Cover with a damp cloth and rest the dough for 1 hour.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Drain the soaked chickpeas and pressure cook them with the tea bag, 1/2 tsp salt and 3 cups water for 8 to 10 whistles, until very soft. Remove the tea bag and keep the chickpeas in their water.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Heat 2 tablespoons oil in a kadai and add the cumin seeds. Add the onions and cook for 8 to 10 minutes until golden brown.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the ginger-garlic paste and cook for a minute. Add the tomatoes and cook for 6 to 8 minutes until mushy and the oil separates.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add turmeric, red chilli powder, chole masala and salt, with a splash of water. Cook for 2 minutes.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add the chickpeas with about 1.5 cups of their water. Mash a few to thicken the gravy and simmer for 15 to 20 minutes. Finish with amchur and keep warm.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Divide the dough into 6 balls. Roll each into a round about 1/4 inch thick, pressing a pinch of kalonji into the top if using.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Brush a little water on the bottom side of the kulcha. Place it water-side down on a hot tawa and cook for about 1 minute until bubbles appear.",
+      },
+      {
+        step: 10,
+        instruction:
+          "Flip and cook the other side for 1 to 2 minutes until golden spots appear. Brush with butter and serve hot.",
+        tip: {
+          title: "Soft kulche",
+          content:
+            "Keep cooked kulche wrapped in a clean cloth. The steam keeps them soft until everyone's ready to eat.",
+        },
+      },
+      {
+        step: 11,
+        instruction:
+          "Serve the kulche with the hot chole, sliced onion, green chilli and lemon.",
+      },
+    ],
+    notes: [
+      "The dough should feel soft and a little sticky. Add a little flour only if it really sticks to your hands.",
+      "The chole can be made a day ahead and gets tastier overnight.",
+    ],
+  },
+
+  "shahi paneer": {
+    dishName: "Shahi Paneer",
+    description:
+      "Soft paneer cubes in a rich, creamy, mildly sweet gravy made from onions, tomatoes and cashews - a proper special-occasion sabzi.",
+    prepTime: "Approx. 40 minutes",
+    equipment: [
+      { item: "Mixer grinder", isSpecialized: false, alternative: null },
+      { item: "Deep pan or kadai", isSpecialized: false, alternative: null },
+      { item: "Small pot, for boiling", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "250 g", commonName: "Paneer", englishName: "paneer, cubed" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, roughly chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, roughly chopped" },
+      { amount: "15", commonName: "Kaju", englishName: "cashews" },
+      { amount: "1/4 cup", commonName: "Dahi", englishName: "yogurt, whisked smooth" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2", commonName: "Elaichi", englishName: "green cardamom pods" },
+      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      { amount: "1 tsp", commonName: "Kashmiri Lal Mirch", englishName: "Kashmiri red chilli powder" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 tsp", commonName: "Kasuri Methi", englishName: "dried fenugreek leaves, crushed" },
+      { amount: "3 tbsp", commonName: "Malai", englishName: "fresh cream" },
+      { amount: "2 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "1/2 tsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Put the onions, tomatoes, cashews and cardamom in a small pot with 1.5 cups water. Bring to a boil and simmer for 10 to 12 minutes until everything is soft.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Let it cool for a few minutes, then blend into a very smooth puree. A smooth puree is the secret to that silky restaurant gravy.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Heat ghee in a pan and add the bay leaf. Add the ginger-garlic paste and cook for 1 minute.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Pour in the puree and cook on medium heat for 8 to 10 minutes, stirring often, until it thickens and the ghee starts to show at the edges.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Turn the heat to low. Add the whisked yogurt a spoon at a time, stirring constantly so it doesn't split.",
+        tip: {
+          title: "Curd without splitting",
+          content:
+            "Whisk the yogurt until smooth and add it on low heat. Cold, lumpy yogurt in a boiling gravy is what makes it curdle.",
+        },
+      },
+      {
+        step: 6,
+        instruction:
+          "Add Kashmiri chilli powder, coriander powder, sugar and salt. Add 1/2 cup water and simmer for 5 minutes.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add the paneer cubes and simmer gently for 4 to 5 minutes.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Stir in the cream, crushed kasuri methi and garam masala. Cook for 1 more minute and switch off the heat.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Serve hot with naan, roti or jeera rice.",
+      },
+    ],
+    notes: [
+      "Soaking paneer cubes in warm water for 10 minutes before adding keeps them extra soft.",
+      "Shahi paneer is meant to be mild and slightly sweet. Add more chilli only if you like it spicy.",
+      "Rub the kasuri methi between your palms before adding so it releases its aroma.",
+    ],
+  },
+
+  "dal tadka": {
+    dishName: "Dal Tadka",
+    description:
+      "Everyday yellow dal, cooked soft and finished with a sizzling garlic-cumin tadka - simple, comforting and goes with everything.",
+    prepTime: "Approx. 35 minutes",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A pot with a lid, simmered for 40 to 45 minutes" },
+      { item: "Small tadka pan", isSpecialized: false, alternative: "Any small pan or steel ladle" },
+    ],
+    ingredients: [
+      { amount: "1/2 cup", commonName: "Toor Dal", englishName: "split pigeon peas" },
+      { amount: "1/4 cup", commonName: "Moong Dal", englishName: "split yellow lentils" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Tamatar", englishName: "tomato, chopped" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "4 cloves", commonName: "Lehsun", englishName: "garlic, finely chopped" },
+      { amount: "2", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "2 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "1/2", commonName: "Nimbu", englishName: "lemon, juiced" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Wash both dals well until the water runs clear. Add them to a pressure cooker with turmeric, salt and 3 cups water.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Cook for 4 to 5 whistles, until the dal is completely soft. Once the pressure is gone, open the lid and whisk the dal with a spoon until creamy. Add a little hot water if it feels too thick.",
+      },
+      {
+        step: 3,
+        instruction:
+          "In a pan, heat 1 tablespoon ghee. Add half the cumin seeds and a pinch of hing.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add the chopped onion and cook for 4 to 5 minutes until golden.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the tomato and red chilli powder and cook for 3 to 4 minutes until the tomato turns soft and mushy.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Pour this masala into the dal, mix well and simmer for 5 minutes so the flavours come together.",
+      },
+      {
+        step: 7,
+        instruction:
+          "For the final tadka, heat the remaining ghee in a small pan. Add the remaining cumin, then the garlic and dried red chillies. Fry for about 30 seconds until the garlic turns light golden.",
+        tip: {
+          title: "Don't burn the garlic",
+          content:
+            "Take it off the heat the moment it turns light golden. Dark garlic tastes bitter and can spoil the whole dal.",
+        },
+      },
+      {
+        step: 8,
+        instruction:
+          "Pour the sizzling tadka over the dal. Add the lemon juice and coriander and cover for a minute.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Serve hot with rice or roti.",
+      },
+    ],
+    notes: [
+      "Mixing moong dal with toor dal makes it cook faster and taste creamier.",
+      "Dal thickens as it sits, so add a little hot water when you reheat it.",
+    ],
+  },
+
+  "matar paneer": {
+    dishName: "Matar Paneer",
+    description:
+      "Soft paneer and sweet green peas in a spiced onion-tomato gravy - a north Indian favourite that goes with roti or rice.",
+    prepTime: "Approx. 35 minutes",
+    equipment: [
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+      { item: "Mixer grinder", isSpecialized: false, alternative: "Skip it for a chunky, homestyle gravy" },
+    ],
+    ingredients: [
+      { amount: "200 g", commonName: "Paneer", englishName: "paneer, cubed" },
+      { amount: "1 cup", commonName: "Hari Matar", englishName: "green peas, fresh or frozen" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, chopped" },
+      { amount: "3 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 tsp", commonName: "Kasuri Methi", englishName: "dried fenugreek leaves (optional)" },
+      { amount: "2 tbsp", commonName: "Tel ya Ghee", englishName: "oil or ghee" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Heat oil in a kadai and add the cumin seeds. Let them sizzle for 10 seconds.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Add the onions and cook for 6 to 8 minutes until golden.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Add the ginger-garlic paste and cook for 1 minute.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add the tomatoes, turmeric, red chilli powder, coriander powder and salt. Cook for 8 to 10 minutes until the tomatoes turn mushy and the oil separates from the masala.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Let the masala cool for a few minutes, then blend it to a smooth paste and return it to the pan. Skip this step if you like a chunkier gravy.",
+        tip: {
+          title: "Smooth vs. homestyle",
+          content:
+            "Blending gives a restaurant-style smooth gravy. Leaving it chunky is how most homes make it, and it's just as tasty.",
+        },
+      },
+      {
+        step: 6,
+        instruction:
+          "Add the peas and 1 cup water. Cover and cook for 5 to 7 minutes until the peas are tender.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add the paneer cubes and simmer gently for 3 to 4 minutes.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Crush the kasuri methi between your palms and add it with the garam masala. Mix gently.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Garnish with coriander and serve hot with roti, paratha or rice.",
+      },
+    ],
+    notes: [
+      "Frozen peas work perfectly. Add them straight from the freezer.",
+      "If you like a richer gravy, add 2 tablespoons of cream or a spoon of cashew paste at the end.",
+    ],
+  },
+
+  "pav bhaji": {
+    dishName: "Pav Bhaji",
+    description:
+      "Buttery, spicy mashed vegetable curry served with toasted pav - Mumbai's most loved street food, easy to make at home.",
+    prepTime: "Approx. 45 minutes",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A pot, boiling the vegetables until very soft" },
+      { item: "Large pan or tawa", isSpecialized: false, alternative: null },
+      { item: "Potato masher", isSpecialized: false, alternative: "Back of a sturdy spoon or spatula" },
+    ],
+    ingredients: [
+      { amount: "3 medium", commonName: "Aloo", englishName: "potatoes, peeled and cubed" },
+      { amount: "1 cup", commonName: "Gobi", englishName: "cauliflower florets" },
+      { amount: "1/2 cup", commonName: "Hari Matar", englishName: "green peas" },
+      { amount: "1", commonName: "Gajar", englishName: "carrot, chopped" },
+      { amount: "1", commonName: "Shimla Mirch", englishName: "capsicum, finely chopped" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "3 medium", commonName: "Tamatar", englishName: "tomatoes, finely chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2 tbsp", commonName: "Pav Bhaji Masala", englishName: "pav bhaji masala" },
+      { amount: "1 tsp", commonName: "Kashmiri Lal Mirch", englishName: "Kashmiri red chilli powder" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "4 tbsp", commonName: "Makhan", englishName: "butter, plus extra for the pav" },
+      { amount: "8", commonName: "Pav", englishName: "pav buns" },
+      { amount: "1", commonName: "Nimbu", englishName: "lemon" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Put the potatoes, cauliflower, peas and carrot in a pressure cooker with 1 cup water and a pinch of salt. Cook for 3 to 4 whistles, until everything is very soft.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Heat 2 tablespoons butter in a large pan. Add half the chopped onions and cook for 4 to 5 minutes until soft.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Add the capsicum and cook for 2 minutes. Add the ginger-garlic paste and cook for 1 minute.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add the tomatoes and cook for 8 to 10 minutes, pressing them down, until they turn completely mushy.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add turmeric, red chilli powder, pav bhaji masala and salt. Cook for 2 minutes, adding a splash of water if it sticks.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add the boiled vegetables with the water they cooked in. Mash everything with a potato masher until mostly smooth, leaving a few small chunks.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add 1/2 to 1 cup water, depending on how thick you like it. Simmer for 10 minutes, mashing again as needed.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Stir in 1 to 2 tablespoons butter and half the lemon juice. Turn off the heat and garnish with coriander.",
+        tip: {
+          title: "Butter is the point",
+          content:
+            "Good pav bhaji is buttery. Add butter at the end so the flavour stays fresh, and don't be shy.",
+        },
+      },
+      {
+        step: 9,
+        instruction:
+          "Slit each pav in half. Melt a little butter on a tawa, sprinkle a pinch of pav bhaji masala, and toast the pav for about 1 minute on each side until golden and crisp.",
+      },
+      {
+        step: 10,
+        instruction:
+          "Serve the bhaji hot with the toasted pav, remaining chopped onion, a lemon wedge and a small dab of butter on top.",
+      },
+    ],
+    notes: [
+      "Chopped raw onion and lemon on the side are what make pav bhaji taste like the real thing.",
+      "Leftover bhaji tastes even better the next day. Add a splash of water when reheating.",
+    ],
+  },
+
+  "egg curry (anda curry)": {
+    dishName: "Egg Curry (Anda Curry)",
+    description:
+      "Boiled eggs simmered in a spiced onion-tomato gravy - quick, filling and perfect with rice or roti.",
+    prepTime: "Approx. 35 minutes",
+    equipment: [
+      { item: "Pot, for boiling eggs", isSpecialized: false, alternative: null },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "5", commonName: "Ande", englishName: "eggs" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1.5 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "3 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Boil the eggs in water for 10 minutes. Cool them in cold water, peel, and make 2 to 3 small slits on each egg with a knife so the masala can get in.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Heat 1 tablespoon oil in a pan. Add a pinch of turmeric and red chilli powder, then fry the eggs for 2 minutes until lightly golden and set aside.",
+        tip: {
+          title: "Why fry the eggs?",
+          content:
+            "A light fry gives the eggs a golden skin that holds the masala better and stops them from turning rubbery in the gravy.",
+        },
+      },
+      {
+        step: 3,
+        instruction:
+          "In the same pan, heat the remaining oil. Add the cumin seeds and let them sizzle.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add the onions and cook for 8 to 10 minutes until golden brown.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the ginger-garlic paste and cook for 1 minute.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add the tomatoes and cook for 6 to 8 minutes until soft and the oil starts to separate.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add turmeric, red chilli powder, coriander powder and salt. Add a splash of water and cook for 2 minutes.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Add 1 cup water and bring to a gentle boil. Simmer for 5 minutes for the gravy to thicken slightly.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Add the eggs, spoon the gravy over them and simmer for 5 minutes. Add the garam masala.",
+      },
+      {
+        step: 10,
+        instruction:
+          "Garnish with coriander and serve hot with rice or roti.",
+      },
+    ],
+    notes: [
+      "Don't boil the eggs for longer than 10 minutes, or the yolks turn grey and chalky.",
+      "Want a thicker, restaurant-style gravy? Blend the onion-tomato masala before adding the water.",
+    ],
+  },
+
+  "idli sambar": {
+    dishName: "Idli Sambar",
+    description:
+      "Soft, fluffy steamed rice-lentil cakes served with a tangy, spiced lentil-and-vegetable sambar - a light South Indian breakfast.",
+    prepTime: "Approx. 50 minutes (using ready idli batter)",
+    equipment: [
+      {
+        item: "Idli steamer with idli plates",
+        isSpecialized: true,
+        alternative:
+          "Grease small steel bowls or katoris and steam them on a rack inside a covered pot",
+      },
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A pot, with longer cooking time" },
+      { item: "Pot or kadai, for sambar", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "3 cups", commonName: "Idli Batter", englishName: "fermented idli batter" },
+      { amount: "1/2 cup", commonName: "Toor Dal", englishName: "split pigeon peas" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, chopped" },
+      { amount: "1", commonName: "Tamatar", englishName: "tomato, chopped" },
+      { amount: "1", commonName: "Gajar", englishName: "carrot, chopped" },
+      { amount: "1/2 cup", commonName: "Lauki ya Sahjan", englishName: "bottle gourd or drumstick pieces (optional)" },
+      { amount: "1 tbsp", commonName: "Imli", englishName: "tamarind pulp, or a small lemon-sized ball soaked in warm water" },
+      { amount: "2 tsp", commonName: "Sambar Powder", englishName: "sambar powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Rai", englishName: "mustard seeds" },
+      { amount: "2", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "2 tbsp", commonName: "Tel ya Ghee", englishName: "oil or ghee" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Wash the toor dal and pressure cook it with turmeric and 2 cups water for 4 to 5 whistles, until completely soft. Mash it with a spoon.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Grease the idli plates lightly with oil and fill each mould with batter, about 3/4 full.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Steam the idlis for 10 to 12 minutes on medium heat. To check, insert a knife into an idli. If it comes out clean, they're done. Let them rest for 2 minutes before removing.",
+        tip: {
+          title: "Easy idli removal",
+          content:
+            "Dip a spoon in water and run it around each idli. They pop out without breaking.",
+        },
+      },
+      {
+        step: 4,
+        instruction:
+          "For the sambar, put the chopped carrot, onion, tomato and other vegetables in a pot with 2 cups water and a pinch of salt. Cook for 8 to 10 minutes until tender.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add the tamarind pulp and sambar powder and simmer for 3 to 4 minutes.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add the mashed dal and 1/2 cup extra water if needed. Add salt and simmer for 5 to 7 minutes until it reaches a soup-like consistency.",
+      },
+      {
+        step: 7,
+        instruction:
+          "For the tadka, heat oil or ghee in a small pan. Add the mustard seeds and let them pop. Add the dried red chillies, curry leaves and hing and let them sizzle for 10 seconds.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Pour the tadka over the sambar, add coriander and stir.",
+      },
+      {
+        step: 9,
+        instruction:
+          "Serve the hot idlis in a bowl with sambar poured over or on the side, ideally with coconut chutney.",
+      },
+    ],
+    notes: [
+      "Good store-bought idli batter works just as well and saves you the overnight fermentation.",
+      "Sambar is better the next day. Add a little water when reheating.",
+      "Dip leftover idlis in the sambar the next morning. They're just as good.",
+    ],
+  },
+
+  "dosa (plain crispy dosa)": {
+    dishName: "Plain Dosa",
+    description:
+      "Thin, crisp, golden dosa made from fermented rice-lentil batter - simple, light and great with chutney and sambar.",
+    prepTime: "Approx. 30 minutes (using ready dosa batter)",
+    equipment: [
+      {
+        item: "Tawa (griddle)",
+        isSpecialized: false,
+        alternative: "Non-stick flat pan",
+      },
+      { item: "Ladle (karchi)", isSpecialized: false, alternative: "A steel katori" },
+    ],
+    ingredients: [
+      { amount: "2 cups", commonName: "Dosa Batter", englishName: "fermented dosa batter" },
+      { amount: "as needed", commonName: "Paani", englishName: "water, to loosen the batter" },
+      { amount: "1/2", commonName: "Pyaaz", englishName: "onion, halved, for greasing the tawa" },
+      { amount: "as needed", commonName: "Tel ya Ghee", englishName: "oil or ghee, for cooking" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Take the batter out of the fridge 20 to 30 minutes before cooking so it comes to room temperature. Add a pinch of salt only if needed and stir gently.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Add a little water and stir until the batter is thin and pourable, like thin cream. It should fall off the ladle in a smooth stream.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Heat the tawa on medium-high heat for 2 to 3 minutes. Sprinkle a few drops of water. They should sizzle and disappear quickly.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Stick a fork into the cut side of the onion half, dip it in a little oil and rub it over the hot tawa. This cleans and seasons the surface.",
+        tip: {
+          title: "Tawa temperature",
+          content:
+            "If the tawa is too hot, the batter won't spread. If it's too cool, the dosa sticks. Sprinkle a little water on it between dosas to bring the temperature down.",
+        },
+      },
+      {
+        step: 5,
+        instruction:
+          "Pour a ladle of batter in the centre. Quickly spread it outward in circles with the back of the ladle, moving from the middle to the edges, into a thin round.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Drizzle 1 teaspoon oil or ghee around the edges and over the top. Cook for 2 to 3 minutes without flipping, until the underside is golden and the edges lift away.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Fold the dosa in half or roll it and serve straight away.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Serve hot with coconut chutney, sambar or a spoon of ghee and podi.",
+      },
+    ],
+    notes: [
+      "The first dosa usually breaks or sticks. That's normal. Just get the tawa temperature right and the rest will be perfect.",
+      "Thin batter makes a crisp dosa. Slightly thicker batter makes a softer one.",
+      "Want a filling? Look up our Masala Dosa recipe for the classic potato masala.",
+    ],
+  },
+
+  "french toast (anda bread)": {
+    dishName: "French Toast (Anda Bread)",
+    description:
+      "Bread dipped in a spiced egg mixture with onion, green chilli and coriander, then pan-fried golden - a quick desi-style breakfast.",
+    prepTime: "Approx. 15 minutes",
+    equipment: [
+      { item: "Shallow bowl or plate", isSpecialized: false, alternative: null },
+      { item: "Tawa or non-stick pan", isSpecialized: false, alternative: null },
+      { item: "Fork or whisk", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "4 slices", commonName: "Bread", englishName: "bread slices" },
+      { amount: "2", commonName: "Ande", englishName: "eggs" },
+      { amount: "2 tbsp", commonName: "Doodh", englishName: "milk" },
+      { amount: "2 tbsp", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, finely chopped" },
+      { amount: "1 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+      { amount: "1 pinch", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 pinch", commonName: "Kali Mirch", englishName: "black pepper" },
+      { amount: "2 tbsp", commonName: "Makhan ya Tel", englishName: "butter or oil, for cooking" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "In a shallow bowl, beat the eggs with milk, onion, green chilli, coriander, turmeric, pepper and salt until well mixed.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Heat a tawa on medium heat and add a little butter or oil.",
+      },
+      {
+        step: 3,
+        instruction:
+          "Dip one slice of bread into the egg mixture for about 3 seconds on each side. It should soak in but not fall apart.",
+        tip: {
+          title: "Don't soak it",
+          content:
+            "A quick dip is enough. Leaving the bread too long makes it soggy and hard to flip.",
+        },
+      },
+      {
+        step: 4,
+        instruction:
+          "Place it on the tawa. Spoon a little extra egg mixture with the onions over the top if any is left.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Cook for 2 to 3 minutes until golden brown underneath, then flip and cook the other side for 2 minutes.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Repeat with the remaining slices, adding butter to the tawa each time.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Serve hot with tomato ketchup or green chutney.",
+      },
+    ],
+    notes: [
+      "Slightly stale bread works best because it absorbs the egg without falling apart.",
+      "Prefer sweet? Skip the onion, chilli, coriander and pepper. Add 1 tablespoon sugar and a pinch of cardamom powder or cinnamon to the egg mixture instead.",
+    ],
+  },
+
+    // ============================================================
+  // EVERYDAY FAVOURITES: SABZI, DAL, SNACKS & CHAI
+  // ============================================================
+
+  "french beans (beans ki sabzi)": {
+    dishName: "French Beans Sabzi (Beans ki Sabzi)",
+    description:
+      "Tender, lightly spiced dry french beans with onion and cumin - a quick everyday sabzi that goes with roti or dal-rice.",
+    prepTime: "Approx. 25 minutes",
+    equipment: [
+      { item: "Kadai or pan with a lid", isSpecialized: false, alternative: null },
+      { item: "Spatula", isSpecialized: false, alternative: "Wooden spoon" },
+    ],
+    ingredients: [
+      { amount: "250 g", commonName: "French Beans", englishName: "french beans, trimmed and chopped small" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, chopped" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "2 tbsp", commonName: "Nariyal", englishName: "grated fresh coconut (optional)" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Wash the beans, pat them dry, snip off both ends and chop into small pieces, about the size of your little fingertip. Smaller pieces cook faster and evenly." },
+      { step: 2, instruction: "Heat oil in a kadai and add the cumin seeds. Let them sizzle for 10 seconds." },
+      { step: 3, instruction: "Add the onion and green chilli and cook for 4 to 5 minutes until the onion turns soft and light golden." },
+      { step: 4, instruction: "Add the beans, turmeric, coriander powder, red chilli powder and salt. Mix well so every piece is coated." },
+      {
+        step: 5,
+        instruction: "Sprinkle 2 tablespoons of water, cover with a lid and cook on low heat for 8 to 10 minutes, stirring every 3 minutes, until the beans are tender but still bright green.",
+        tip: {
+          title: "Don't add much water",
+          content: "The beans cook in their own steam. Too much water makes them soggy and dull in colour.",
+        },
+      },
+      { step: 6, instruction: "Remove the lid and cook for 2 to 3 minutes on medium heat to dry off any extra moisture. Add the grated coconut, if using, and mix." },
+      { step: 7, instruction: "Serve hot with roti or dal and rice." },
+    ],
+    notes: [
+      "To check if it's done, bite one piece. It should be soft with a slight bite, not mushy.",
+      "Add a diced potato with the beans for a heartier sabzi. It will need 3 to 4 extra minutes.",
+    ],
+  },
+
+  "nutrela (soya chunks curry)": {
+    dishName: "Nutrela (Soya Chunks Curry)",
+    description:
+      "Soft, juicy soya chunks simmered in a spiced onion-tomato gravy - a protein-packed sabzi that goes well with roti or rice.",
+    prepTime: "Approx. 35 minutes",
+    equipment: [
+      { item: "Pot, for soaking soya chunks", isSpecialized: false, alternative: "A large bowl with hot water" },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Nutrela / Soya Chunks", englishName: "soya chunks" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, finely chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1/4 cup", commonName: "Dahi", englishName: "yogurt, whisked" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1.5 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "3 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      { step: 1, instruction: "Boil 3 cups of water with 1/2 tsp salt. Add the soya chunks and let them soak and simmer for 10 minutes until soft and doubled in size." },
+      {
+        step: 2,
+        instruction: "Drain them, rinse in cold water, then squeeze each chunk between your palms until all the water comes out. Set aside.",
+        tip: {
+          title: "Squeeze well",
+          content: "This is the most important step. It removes the raw beany smell and lets the chunks soak up the masala.",
+        },
+      },
+      { step: 3, instruction: "Heat oil in a kadai and add the cumin seeds. Let them sizzle, then add the onions and cook for 8 to 10 minutes until golden brown." },
+      { step: 4, instruction: "Add the ginger-garlic paste and cook for 1 minute." },
+      { step: 5, instruction: "Add the tomatoes and cook for 6 to 8 minutes until they turn mushy and the oil separates at the edges." },
+      { step: 6, instruction: "Add turmeric, red chilli powder, coriander powder and salt. Add a splash of water and cook for 2 minutes." },
+      { step: 7, instruction: "Turn the heat to low and stir in the whisked yogurt, mixing constantly for 1 minute so it doesn't split." },
+      { step: 8, instruction: "Add the squeezed soya chunks and stir until they are fully coated. Fry for 3 to 4 minutes." },
+      { step: 9, instruction: "Add 1 cup water, cover and simmer for 8 to 10 minutes until the gravy thickens and the chunks are soft." },
+      { step: 10, instruction: "Sprinkle garam masala and coriander. Serve hot with roti or rice." },
+    ],
+    notes: [
+      "For a dry sabzi, add only 1/4 cup water and cook uncovered until the masala clings to the chunks.",
+      "Add a cup of green peas or cubed potato with the water for a heartier curry.",
+    ],
+  },
+
+  "atta halwa (wheat flour halwa)": {
+    dishName: "Atta Halwa (Wheat Flour Halwa)",
+    description:
+      "Warm, ghee-rich halwa made from roasted whole wheat flour and sugar - the same comforting taste as gurudwara prasad, ready in 20 minutes.",
+    prepTime: "Approx. 20 minutes",
+    equipment: [
+      { item: "Heavy-bottomed kadai or pan", isSpecialized: false, alternative: null },
+      { item: "Small pot, for hot syrup", isSpecialized: false, alternative: null },
+      { item: "Spatula", isSpecialized: false, alternative: "Wooden spoon" },
+    ],
+    ingredients: [
+      { amount: "1/2 cup", commonName: "Atta", englishName: "whole wheat flour" },
+      { amount: "1/2 cup", commonName: "Ghee", englishName: "ghee" },
+      { amount: "1/2 cup", commonName: "Cheeni", englishName: "sugar (or grated jaggery)" },
+      { amount: "1.5 cups", commonName: "Paani", englishName: "water" },
+      { amount: "2", commonName: "Elaichi", englishName: "green cardamom pods, crushed" },
+      { amount: "1 tbsp", commonName: "Badam", englishName: "chopped almonds (optional)" },
+    ],
+    method: [
+      { step: 1, instruction: "In a small pot, bring the water, sugar and cardamom to a boil. Stir until the sugar dissolves, then keep it hot on the lowest heat." },
+      { step: 2, instruction: "Melt the ghee in a kadai on low heat. Add the atta." },
+      {
+        step: 3,
+        instruction: "Roast on low heat, stirring constantly, for 10 to 12 minutes. You'll know it's ready when the atta turns golden brown, smells nutty and the ghee starts separating from the edges.",
+        tip: {
+          title: "Patience with the roast",
+          content: "The roasting decides the taste. Under-roasted atta tastes raw, so keep going until it's a deep golden colour.",
+        },
+      },
+      { step: 4, instruction: "Stand back a little and carefully pour in the hot syrup while stirring. It will splutter and bubble, which is normal." },
+      { step: 5, instruction: "Keep stirring for 2 to 3 minutes until the halwa thickens, turns glossy and leaves the sides of the pan." },
+      { step: 6, instruction: "Turn off the heat, top with almonds and serve warm." },
+    ],
+    notes: [
+      "Always add hot syrup to the roasted atta. Cold water causes lumps.",
+      "For a more traditional taste, swap the sugar for the same amount of grated jaggery.",
+    ],
+  },
+
+  "chana dal (chana dal tadka)": {
+    dishName: "Chana Dal (Chana Dal Tadka)",
+    description:
+      "Nutty, thick split chickpea dal with a garlicky onion-tomato tadka - hearty and best with hot rice or roti.",
+    prepTime: "Approx. 45 minutes (plus 1 hour soaking)",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A pot with a lid, simmered for 50 to 60 minutes" },
+      { item: "Small pan, for tadka", isSpecialized: false, alternative: "Any small pan or steel ladle" },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Chana Dal", englishName: "split chickpeas, soaked 1 hour" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1 medium", commonName: "Tamatar", englishName: "tomato, chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "2", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "2 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      { step: 1, instruction: "Drain the soaked chana dal and add it to a pressure cooker with turmeric, salt and 3 cups water." },
+      {
+        step: 2,
+        instruction: "Cook for 5 to 6 whistles, until the dal is soft and can be mashed easily with a spoon. Let the pressure release on its own, then lightly mash a few spoonfuls.",
+        tip: {
+          title: "Chana dal is slow to soften",
+          content: "It takes longer than toor or moong dal. If it's still firm after opening, give it 2 more whistles.",
+        },
+      },
+      { step: 3, instruction: "Heat 1 tablespoon ghee in a pan. Add the cumin seeds and a pinch of hing." },
+      { step: 4, instruction: "Add the onion and cook for 5 to 6 minutes until golden. Add the ginger-garlic paste and cook for 1 minute." },
+      { step: 5, instruction: "Add the tomato, coriander powder and red chilli powder. Cook for 4 to 5 minutes until the tomato turns soft and mushy." },
+      { step: 6, instruction: "Pour this masala into the dal, mix well and simmer for 8 to 10 minutes. Add hot water if it gets too thick." },
+      { step: 7, instruction: "For the final tadka, heat the remaining ghee, add the dried red chillies and let them sizzle for 10 seconds. Pour it over the dal." },
+      { step: 8, instruction: "Garnish with coriander and serve hot with rice or roti." },
+    ],
+    notes: [
+      "In a hurry? Soak the dal for at least 30 minutes and add 1 extra whistle.",
+      "A squeeze of lemon at the end brightens the taste.",
+    ],
+  },
+
+  "white chole (safed chole)": {
+    dishName: "White Chole (Safed Chole)",
+    description:
+      "Mild, pale chickpea curry in a smooth onion-ginger gravy with yogurt - lighter than the usual dark chole and lovely with kulche or rice.",
+    prepTime: "Approx. 1 hour (plus overnight soaking)",
+    equipment: [
+      { item: "Pressure cooker", isSpecialized: false, alternative: "A heavy pot, with longer cooking time" },
+      { item: "Mixer grinder", isSpecialized: false, alternative: null },
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
+      { amount: "2 medium", commonName: "Pyaaz", englishName: "onions, roughly chopped" },
+      { amount: "1 inch", commonName: "Adrak", englishName: "ginger" },
+      { amount: "2", commonName: "Hari Mirch", englishName: "green chillies" },
+      { amount: "8", commonName: "Kaju", englishName: "cashews (optional, for creaminess)" },
+      { amount: "1/4 cup", commonName: "Dahi", englishName: "yogurt, whisked smooth" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      { amount: "1.5 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1/2 tsp", commonName: "Amchur", englishName: "dry mango powder" },
+      { amount: "2 tbsp", commonName: "Ghee ya Tel", englishName: "ghee or oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+    ],
+    method: [
+      { step: 1, instruction: "Drain the soaked chickpeas and pressure cook with 3 cups water and 1/2 tsp salt for 8 to 10 whistles, until very soft. Keep them in their water." },
+      { step: 2, instruction: "Blend the onions, ginger, green chillies and cashews with a few tablespoons of water into a smooth, pale paste." },
+      { step: 3, instruction: "Heat ghee in a kadai and add the cumin seeds and bay leaf. Let them sizzle for 10 seconds." },
+      {
+        step: 4,
+        instruction: "Add the onion paste and cook on medium-low heat for 8 to 10 minutes, stirring often, until the raw smell goes and the paste looks thick. Don't let it brown.",
+        tip: {
+          title: "Keep it pale",
+          content: "The white look comes from cooking the paste gently. If it turns brown, lower the heat and add a splash of water.",
+        },
+      },
+      { step: 5, instruction: "Add the coriander powder and salt, then turn the heat to low and stir in the whisked yogurt. Mix constantly for 1 to 2 minutes so it doesn't split." },
+      { step: 6, instruction: "Add the boiled chickpeas with about 1.5 cups of their water. Mash a few chickpeas against the side of the pan to thicken the gravy." },
+      { step: 7, instruction: "Simmer for 15 minutes, stirring occasionally, until the gravy is creamy." },
+      { step: 8, instruction: "Add the garam masala and amchur, mix, and turn off the heat. Garnish with coriander and serve hot." },
+    ],
+    notes: [
+      "This is a mild chole. For more heat, add an extra green chilli or a pinch of white pepper.",
+      "Serve with kulche, bhature, jeera rice or plain roti.",
+    ],
+  },
+
+  "pasta (indian masala pasta)": {
+    dishName: "Pasta (Indian Masala Pasta)",
+    description:
+      "Desi-style red sauce pasta with onion, capsicum and a little garam masala - tangy, a little spicy and ready in 25 minutes.",
+    prepTime: "Approx. 25 minutes",
+    equipment: [
+      { item: "Large pot, for boiling pasta", isSpecialized: false, alternative: null },
+      { item: "Kadai or wide pan", isSpecialized: false, alternative: null },
+      { item: "Strainer", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Pasta", englishName: "penne or any short pasta" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1/2", commonName: "Shimla Mirch", englishName: "capsicum, chopped" },
+      { amount: "3 medium", commonName: "Tamatar", englishName: "tomatoes, blended into puree" },
+      { amount: "3 cloves", commonName: "Lehsun", englishName: "garlic, finely chopped" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1/2 tsp", commonName: "Oregano", englishName: "dried oregano or mixed herbs" },
+      { amount: "1 tbsp", commonName: "Tomato Ketchup", englishName: "tomato ketchup" },
+      { amount: "1 pinch", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "2 tbsp", commonName: "Tel ya Makhan", englishName: "oil or butter" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "a handful", commonName: "Cheese", englishName: "grated cheese (optional)" },
+    ],
+    method: [
+      { step: 1, instruction: "Bring 6 cups of water to a boil with 1 tablespoon salt and a teaspoon of oil. Add the pasta and cook for 8 to 9 minutes until al dente." },
+      {
+        step: 2,
+        instruction: "Drain the pasta, but save 1/2 cup of the starchy pasta water. Rinse the pasta lightly with cold water so it doesn't stick.",
+        tip: {
+          title: "Save the pasta water",
+          content: "A splash of this starchy water later makes the sauce cling to the pasta instead of sliding off.",
+        },
+      },
+      { step: 3, instruction: "Heat oil or butter in a kadai. Add the garlic and cook for 20 seconds until fragrant." },
+      { step: 4, instruction: "Add the onion and cook for 3 to 4 minutes until soft. Add the capsicum and cook for 2 minutes." },
+      { step: 5, instruction: "Add the tomato puree, red chilli powder, salt and sugar. Cook for 6 to 8 minutes, stirring, until the sauce thickens and the oil separates." },
+      { step: 6, instruction: "Stir in the ketchup, oregano and garam masala." },
+      { step: 7, instruction: "Add the boiled pasta and a few spoonfuls of the saved pasta water. Toss well on medium heat for 2 minutes until the sauce coats every piece." },
+      { step: 8, instruction: "Top with grated cheese if using, cover for 1 minute so it melts, and serve hot." },
+    ],
+    notes: [
+      "Add sweet corn, boiled peas or chopped carrot for a veggie-loaded version.",
+      "Swap the garam masala for a pinch of chaat masala for extra tang.",
+    ],
+  },
+
+  "maggi (masala maggi noodles)": {
+    dishName: "Maggi (Masala Maggi Noodles)",
+    description:
+      "Loaded masala Maggi with onion, tomato and green chilli - a fast, comforting favourite for rainy evenings and late-night hunger.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [
+      { item: "Pan or small kadai with a lid", isSpecialized: false, alternative: null },
+      { item: "Spoon or fork", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "2 packets", commonName: "Maggi Noodles", englishName: "instant noodles with tastemaker" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1 small", commonName: "Tamatar", englishName: "tomato, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, chopped" },
+      { amount: "1/4 cup", commonName: "Mixed Vegetables", englishName: "peas, carrot or capsicum (optional)" },
+      { amount: "2.5 cups", commonName: "Paani", englishName: "water" },
+      { amount: "1 tbsp", commonName: "Makhan ya Tel", englishName: "butter or oil" },
+      { amount: "1 pinch", commonName: "Kali Mirch", englishName: "black pepper" },
+      { amount: "as needed", commonName: "Hara Dhaniya", englishName: "coriander leaves" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat butter or oil in a pan. Add the onion and green chilli and cook for 1 to 2 minutes until soft." },
+      { step: 2, instruction: "Add the tomato and any vegetables and cook for 2 minutes." },
+      { step: 3, instruction: "Add the water and both tastemaker sachets. Stir and bring it to a boil." },
+      { step: 4, instruction: "Break the noodle cakes into the boiling water. Cook for 2 to 3 minutes, gently pushing the noodles down and turning them, until they turn soft." },
+      {
+        step: 5,
+        instruction: "Cover and cook for 1 more minute on low heat. Stop when most of the water has been absorbed and a little masala gravy is left.",
+        tip: {
+          title: "Don't overcook",
+          content: "Maggi keeps cooking in its own heat after you switch off the stove. Turn it off when it's slightly saucy and it will thicken perfectly on the plate.",
+        },
+      },
+      { step: 6, instruction: "Sprinkle pepper and coriander, and serve hot straight from the pan." },
+    ],
+    notes: [
+      "For extra protein, crack an egg into the boiling water before adding the noodles and stir gently.",
+      "Want a soupy Maggi? Use 3 cups water instead of 2.5.",
+    ],
+  },
+
+  "macaroni (masala macaroni)": {
+    dishName: "Macaroni (Masala Macaroni)",
+    description:
+      "Street-style masala macaroni tossed with veggies, tomato and Indian spices - tangy and slightly spicy, and kids love it.",
+    prepTime: "Approx. 25 minutes",
+    equipment: [
+      { item: "Pot, for boiling macaroni", isSpecialized: false, alternative: null },
+      { item: "Kadai or wide pan", isSpecialized: false, alternative: null },
+      { item: "Strainer", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Macaroni", englishName: "elbow macaroni" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Tamatar", englishName: "tomato, finely chopped" },
+      { amount: "1/2", commonName: "Shimla Mirch", englishName: "capsicum, finely chopped" },
+      { amount: "1/4 cup", commonName: "Gajar", englishName: "carrot, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, chopped" },
+      { amount: "2 tbsp", commonName: "Tomato Ketchup", englishName: "tomato ketchup" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1/2 tsp", commonName: "Chaat Masala", englishName: "chaat masala" },
+      { amount: "2 tbsp", commonName: "Tel ya Makhan", englishName: "oil or butter" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "as needed", commonName: "Hara Dhaniya", englishName: "coriander leaves" },
+    ],
+    method: [
+      { step: 1, instruction: "Boil 5 cups of water with 1 tablespoon salt. Add the macaroni and cook for 7 to 8 minutes until soft but not mushy. Drain and rinse under cold water." },
+      { step: 2, instruction: "Heat oil or butter in a kadai. Add the onion and green chilli and cook for 2 to 3 minutes until soft." },
+      { step: 3, instruction: "Add the carrot and capsicum and cook for 3 minutes so they stay slightly crunchy." },
+      { step: 4, instruction: "Add the tomato, red chilli powder and salt. Cook for 3 to 4 minutes until the tomato turns mushy." },
+      { step: 5, instruction: "Stir in the ketchup, garam masala and chaat masala." },
+      {
+        step: 6,
+        instruction: "Add the boiled macaroni and toss on medium heat for 2 to 3 minutes until every piece is coated in the masala.",
+        tip: {
+          title: "Stops sticking",
+          content: "Rinsing the boiled macaroni in cold water and adding a little oil keeps it from clumping together.",
+        },
+      },
+      { step: 7, instruction: "Garnish with coriander and serve hot." },
+    ],
+    notes: [
+      "Add a handful of grated cheese at the end and cover for a minute for a cheesy version.",
+      "Sweet corn and boiled peas are also great additions.",
+    ],
+  },
+
+  "cake (simple eggless vanilla cake)": {
+    dishName: "Cake (Simple Eggless Vanilla Cake)",
+    description:
+      "A soft, fluffy eggless vanilla sponge made with curd and basic pantry ingredients - easy for beginners and great with tea.",
+    prepTime: "Approx. 50 minutes",
+    equipment: [
+      {
+        item: "Oven",
+        isSpecialized: true,
+        alternative:
+          "A large pot or pressure cooker (gasket and whistle removed) with a layer of salt at the bottom and a stand on top. Preheat covered for 10 minutes, then bake the tin inside on low heat.",
+      },
+      { item: "Cake tin (6 to 7 inch)", isSpecialized: false, alternative: "Any steel or aluminium round tin" },
+      { item: "Mixing bowl", isSpecialized: false, alternative: null },
+      { item: "Sieve (chalni)", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "3/4 cup", commonName: "Cheeni", englishName: "powdered sugar" },
+      { amount: "3/4 cup", commonName: "Dahi", englishName: "thick curd / yogurt" },
+      { amount: "1/2 cup", commonName: "Tel", englishName: "neutral cooking oil" },
+      { amount: "1 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/2 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla essence" },
+      { amount: "3 to 4 tbsp", commonName: "Doodh", englishName: "milk, to adjust the batter" },
+      { amount: "1 pinch", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 180°C (350°F) for 10 minutes. Grease the tin with a little oil and dust it with flour." },
+      { step: 2, instruction: "In a bowl, whisk the curd and sugar until the sugar dissolves and the mixture looks smooth." },
+      { step: 3, instruction: "Add the oil and vanilla and whisk well." },
+      { step: 4, instruction: "Sieve the maida, baking powder, baking soda and salt directly into the bowl." },
+      {
+        step: 5,
+        instruction: "Fold gently with a spatula in one direction until no dry flour is left. Add milk one spoon at a time until the batter falls off the spoon in a thick ribbon. Don't over-mix.",
+        tip: {
+          title: "Gentle mixing",
+          content: "Over-mixing makes the cake dense and chewy. Mix only until the flour disappears.",
+        },
+      },
+      { step: 6, instruction: "Pour the batter into the tin and tap it once or twice on the counter to remove air bubbles." },
+      { step: 7, instruction: "Bake for 30 to 35 minutes. To check, insert a toothpick or knife into the centre. If it comes out clean, the cake is done." },
+      { step: 8, instruction: "Let the cake cool in the tin for 10 minutes, then turn it out onto a plate and let it cool fully before cutting." },
+    ],
+    notes: [
+      "Don't open the oven in the first 20 minutes, or the cake may sink in the middle.",
+      "Add 1/2 cup chopped nuts or tutti frutti to the batter for a fun variation.",
+      "If using the pot method, bake on the lowest flame for 35 to 45 minutes and check with a toothpick.",
+    ],
+  },
+
+  "pakode (pakora)": {
+    dishName: "Pakode (Pakora)",
+    description:
+      "Crispy, golden onion and potato fritters made with gram flour and spices - the ultimate monsoon snack with chai.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+      { item: "Kadai", isSpecialized: false, alternative: "Any deep, heavy-bottomed pan" },
+      { item: "Mixing bowl", isSpecialized: false, alternative: null },
+      { item: "Slotted spoon (jhara)", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "2 large", commonName: "Pyaaz", englishName: "onions, thinly sliced" },
+      { amount: "1 medium", commonName: "Aloo", englishName: "potato, thinly sliced (optional)" },
+      { amount: "1 cup", commonName: "Besan", englishName: "gram flour" },
+      { amount: "2 tbsp", commonName: "Chawal Ka Atta", englishName: "rice flour, for extra crunch" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, chopped" },
+      { amount: "1/2 tsp", commonName: "Ajwain", englishName: "carom seeds" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "2 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+      { amount: "as needed", commonName: "Tel", englishName: "cooking oil, for deep frying" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction: "In a bowl, mix the sliced onion, potato and 1/2 teaspoon salt. Rub with your hands and leave for 10 minutes. The vegetables will release water.",
+        tip: {
+          title: "Little or no water",
+          content: "The water from the salted onions is usually enough to make the batter. Too much added water makes soggy pakode.",
+        },
+      },
+      { step: 2, instruction: "Add the besan, rice flour, green chilli, ajwain, red chilli powder, turmeric and coriander to the bowl." },
+      { step: 3, instruction: "Mix well. Add water 1 tablespoon at a time, only if needed, until the batter is thick and just coats the vegetables." },
+      { step: 4, instruction: "Heat oil in a kadai on medium heat. To test it, drop a small bit of batter in. It should rise to the top in a few seconds." },
+      { step: 5, instruction: "Drop small spoonfuls of batter into the oil, without crowding the pan. Fry for 4 to 5 minutes, turning occasionally, until deep golden and crisp." },
+      { step: 6, instruction: "Drain on paper towels and repeat with the rest." },
+      { step: 7, instruction: "Serve hot with green chutney, tomato ketchup and a cup of chai." },
+    ],
+    notes: [
+      "Fry on medium heat. Too-hot oil browns the outside and leaves the inside raw.",
+      "Try palak, gobi or paneer slices in place of the potato.",
+      "Reheat leftover pakode in a dry pan or oven to crisp them up again.",
+    ],
+  },
+
+  "chai (masala chai)": {
+    dishName: "Chai (Masala Chai)",
+    description:
+      "Strong, milky Indian tea simmered with ginger and cardamom - the everyday cup that starts most Indian mornings. Makes 2 cups.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [
+      { item: "Small saucepan", isSpecialized: false, alternative: null },
+      { item: "Strainer", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Paani", englishName: "water" },
+      { amount: "1 cup", commonName: "Doodh", englishName: "milk" },
+      { amount: "2 tsp", commonName: "Chai Patti", englishName: "loose black tea leaves" },
+      { amount: "1.5 tsp", commonName: "Cheeni", englishName: "sugar, adjust to taste" },
+      { amount: "1/2 inch", commonName: "Adrak", englishName: "ginger, crushed" },
+      { amount: "1", commonName: "Elaichi", englishName: "green cardamom pod, crushed" },
+    ],
+    method: [
+      { step: 1, instruction: "Bring the water to a boil in a saucepan. Add the crushed ginger and cardamom and let them boil for 1 to 2 minutes." },
+      { step: 2, instruction: "Add the tea leaves and boil for 1 minute until the water turns a deep amber." },
+      { step: 3, instruction: "Add the sugar and milk and stir." },
+      {
+        step: 4,
+        instruction: "Let it come to a boil. When the chai rises to the rim, lower the heat for a few seconds, then let it rise again. Repeat once more, about 2 to 3 minutes total.",
+        tip: {
+          title: "The 2-3 boil rule",
+          content: "Letting the chai rise a couple of times gives it a rich colour and stronger flavour. Don't leave it unattended, because milk boils over quickly.",
+        },
+      },
+      { step: 5, instruction: "Strain into cups and serve hot." },
+    ],
+    notes: [
+      "Like it stronger? Add an extra 1/2 teaspoon of tea leaves. Like it milkier? Use 1/2 cup water and 1.5 cups milk.",
+      "In winter, add a pinch of black pepper or a small piece of cinnamon for a warming chai.",
+    ],
+  },
 };

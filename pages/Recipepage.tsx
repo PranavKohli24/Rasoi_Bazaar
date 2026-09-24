@@ -7,7 +7,7 @@ import CookingCompanion from "../components/CookingCompanion";
 import ErrorMessage from "../components/ErrorMessage";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
-import { predefinedRecipes } from "../data/predefinedRecipes"; // adjust to your file name/path
+import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 import { toSlug } from "../utils/dishRoutes";
 
 const LAST_DISH_KEY = "rasoi:last-dish";
@@ -57,19 +57,17 @@ const RecipePage: React.FC = () => {
 
     setShowCelebration(false);
 
-    // Predefined recipes are matched by slug, so no API call is needed.
-    // (Turning the slug back into a name loses characters like "-" and
-    // brackets, so it can't be used as the lookup key.)
-    const predefined = Object.entries(predefinedRecipes).find(
-      ([key]) => toSlug(key) === slug
-    );
+        // Predefined recipes are matched by full name, dish name and shorter aliases,
+    // so no API call is needed.
+    const predefined = findPredefinedRecipe(dish);
 
     if (predefined) {
-      setRecipe(predefined[1]);
+      setRecipe(predefined);
       setError(null);
       setIsLoading(false);
       return;
     }
+    
 
     // Reuse a recipe fetched earlier this session (refresh / back button)
     try {

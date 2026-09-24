@@ -1,5 +1,5 @@
 import { Recipe } from "../types";
-import { predefinedRecipes } from "../data/predefinedRecipes";
+import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 
 /*
  * Recipes for dishes we don't have written up are generated on the server
@@ -7,51 +7,7 @@ import { predefinedRecipes } from "../data/predefinedRecipes";
  * nothing secret is shipped to the browser.
  */
 
-// Strips common conversational filler so natural phrasing like
-// "i want to eat rajma chawal today" or "can you give me a recipe for chole bhature please"
-// still matches a predefined recipe keyed just "rajma chawal" / "chole bhature".
-const normalizeDishQuery = (input: string): string => {
-  let text = input.trim().toLowerCase();
 
-  // Leading filler phrases (intent/request wrappers)
-  const leadingFillers = [
-    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook)\s+/,
-    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+/,
-    /^(can|could|would)\s+you\s+(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
-    /^(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
-    /^how\s+(do\s+i|to)\s+(make|cook|prepare)\s+/,
-    /^(recipe|make|cook|prepare)\s+(for|of)\s+/,
-    /^i(’|'| a)?m\s+craving\s+/,
-    /^craving\s+/,
-    /^please\s+/,
-  ];
-
-  // Trailing filler words (time/politeness tacked on the end)
-  const trailingFillers = [
-    /\s+(today|tonight|now|please|asap|tomorrow|for\s+dinner|for\s+lunch|for\s+breakfast)\s*$/,
-  ];
-
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const pattern of leadingFillers) {
-      const stripped = text.replace(pattern, "");
-      if (stripped !== text) {
-        text = stripped.trim();
-        changed = true;
-      }
-    }
-    for (const pattern of trailingFillers) {
-      const stripped = text.replace(pattern, "");
-      if (stripped !== text) {
-        text = stripped.trim();
-        changed = true;
-      }
-    }
-  }
-
-  return text.trim();
-};
 
 /**
  * True only for a complete, usable recipe. Used on everything that comes from
@@ -101,10 +57,9 @@ export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
 
   // Strip conversational filler ("i want to eat ... today") so natural phrasing
   // still hits the predefined-recipe cache instead of always falling through to the API.
-  const normalizedKey = normalizeDishQuery(key);
-
-  const predefinedRecipe =
-    predefinedRecipes[normalizedKey] ?? predefinedRecipes[key];
+    // Predefined recipes are matched by full name, dish name and shorter aliases
+  // ("paneer bhurji" -> "quick 20-minute paneer bhurji"), so no API call is needed.
+  const predefinedRecipe = findPredefinedRecipe(dishName);
 
   if (predefinedRecipe) {
     return predefinedRecipe;
