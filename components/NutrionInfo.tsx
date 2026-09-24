@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 /**
  * Matches the `nutrition` field on predefinedRecipes.ts entries:
@@ -42,28 +43,70 @@ const NUTRITION_ROWS = (n: Nutrition): { label: string; value: string }[] => [
   { label: "Fat", value: `${n.fat} g` },
 ];
 
+const PANEL_WIDTH = 224; // 14rem, matches the old w-56
+const VIEWPORT_MARGIN = 16; // keep clear of the screen edge
+const GAP_BELOW_BUTTON = 8;
+
 const NutritionInfo: React.FC<NutritionInfoProps> = ({ nutrition }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [panelPosition, setPanelPosition] = useState<{ top: number; left: number; width: number } | null>(
+    null
+  );
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click / Escape, same as a typical small popover
+  // Position the panel from the button's actual on-screen location, clamped
+  // so it can never sit past the viewport edge (this is what stops the
+  // horizontal scroll on narrow screens).
+  useLayoutEffect(() => {
+    if (!isOpen || !buttonRef.current) return;
+
+    const updatePosition = () => {
+      const rect = buttonRef.current!.getBoundingClientRect();
+      const width = Math.min(PANEL_WIDTH, window.innerWidth - VIEWPORT_MARGIN * 2);
+
+      let left = rect.left;
+      if (left + width > window.innerWidth - VIEWPORT_MARGIN) {
+        left = window.innerWidth - VIEWPORT_MARGIN - width;
+      }
+      left = Math.max(VIEWPORT_MARGIN, left);
+
+      setPanelPosition({ top: rect.bottom + GAP_BELOW_BUTTON, left, width });
+    };
+
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    return () => window.removeEventListener("resize", updatePosition);
+  }, [isOpen]);
+
+  // Close on outside click, Escape, or scroll (the panel is fixed, so it
+  // would otherwise detach from the button as the page scrolls under it)
   useEffect(() => {
     if (!isOpen) return;
 
     const handlePointer = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        buttonRef.current &&
+        !buttonRef.current.contains(target) &&
+        panelRef.current &&
+        !panelRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setIsOpen(false);
     };
+    const handleScroll = () => setIsOpen(false);
 
     document.addEventListener("mousedown", handlePointer);
     document.addEventListener("keydown", handleKey);
+    window.addEventListener("scroll", handleScroll, true);
     return () => {
       document.removeEventListener("mousedown", handlePointer);
       document.removeEventListener("keydown", handleKey);
+      window.removeEventListener("scroll", handleScroll, true);
     };
   }, [isOpen]);
 
@@ -73,8 +116,9 @@ const NutritionInfo: React.FC<NutritionInfoProps> = ({ nutrition }) => {
   const panelId = "nutrition-popover";
 
   return (
-    <div ref={containerRef} className="relative inline-flex">
+    <>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
@@ -85,32 +129,41 @@ const NutritionInfo: React.FC<NutritionInfoProps> = ({ nutrition }) => {
         <InfoIcon className="h-3.5 w-3.5" />
       </button>
 
-      {isOpen && (
-        <div
-          id={panelId}
-          role="dialog"
-          className="absolute left-0 top-8 z-20 w-56 rounded-2xl border border-stone-700 bg-stone-900 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
-          style={{ animationDuration: "0.15s" }}
-        >
-          <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
-            Nutrition, per serving
-          </p>
+      {isOpen &&
+        panelPosition &&
+        createPortal(
+          <div
+            ref={panelRef}
+            id={panelId}
+            role="dialog"
+            className="fixed z-50 rounded-2xl border border-stone-700 bg-stone-900 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
+            style={{
+              top: panelPosition.top,
+              left: panelPosition.left,
+              width: panelPosition.width,
+              animationDuration: "0.15s",
+            }}
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+              Nutrition, per serving
+            </p>
 
-          <dl className="mt-3 space-y-2">
-            {NUTRITION_ROWS(nutrition).map((row) => (
-              <div key={row.label} className="flex items-center justify-between text-sm">
-                <dt className="text-stone-400">{row.label}</dt>
-                <dd className="font-semibold text-stone-100">{row.value}</dd>
-              </div>
-            ))}
-          </dl>
+            <dl className="mt-3 space-y-2">
+              {NUTRITION_ROWS(nutrition).map((row) => (
+                <div key={row.label} className="flex items-center justify-between text-sm">
+                  <dt className="text-stone-400">{row.label}</dt>
+                  <dd className="font-semibold text-stone-100">{row.value}</dd>
+                </div>
+              ))}
+            </dl>
 
-          <p className="mt-3 text-xs leading-relaxed text-stone-500">
-            Estimated; actual values vary with brands and portions.
-          </p>
-        </div>
-      )}
-    </div>
+            <p className="mt-3 text-xs leading-relaxed text-stone-500">
+              Estimated; actual values vary with brands and portions.
+            </p>
+          </div>,
+          document.body
+        )}
+    </>
   );
 };
 
