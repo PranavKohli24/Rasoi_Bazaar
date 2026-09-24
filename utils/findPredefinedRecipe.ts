@@ -114,6 +114,7 @@ for (const [key, recipe] of entries) {
 }
 
 // Manual aliases for common searches the auto-aliases can't derive.
+// Generic terms (for example "paneer") are intentionally left unresolved when ambiguous.
 // Format: "what people type": "predefined recipe key"
 const MANUAL_ALIASES: Record<string, string> = {
   // added home-style basics and common everyday searches
@@ -170,7 +171,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "aloo tamatar sabzi": "aloo tamatar sabzi",
   "kadhi": "kadhi",
   "plain kadhi": "kadhi",
-  "paneer": "shahi paneer",
   "paneer sabzi": "shahi paneer",
   "mushroom": "mushroom masala",
   "mushroom ki sabzi": "mushroom masala",
@@ -320,7 +320,8 @@ const MANUAL_ALIASES: Record<string, string> = {
   "dal": "dal tadka",
   "tadka dal": "dal tadka",
   "dal fry": "dal tadka",
-  "bread omelette": "french toast (anda bread)",
+  "bread omelette": "egg omelette",
+  "bread omelet": "egg omelette",
   "egg toast": "french toast (anda bread)",
 
   // halwa
@@ -585,8 +586,8 @@ const MANUAL_ALIASES: Record<string, string> = {
   "oreo milkshake": "easy oreo milkshake",
   "oreo shake": "easy oreo milkshake",
   "orea shake": "easy oreo milkshake",
-  "milk shake": "easy oreo milkshake",
-  "milkshake": "easy oreo milkshake",
+  "milk shake": "easy vanilla milkshake",
+  "milkshake": "easy vanilla milkshake",
   "coffee": "hot coffee",
   "hot coffee": "hot coffee",
   "hot coffee recipe": "hot coffee",
@@ -602,6 +603,41 @@ const MANUAL_ALIASES: Record<string, string> = {
   "vietnamse coffee": "easy vietnamese coffee",
   "vietnamese": "easy vietnamese coffee",
   "vietnamse": "easy vietnamese coffee",
+
+  // common explicit recipe searches and Indian spelling variants
+  "paneer bhurji": "quick 20-minute paneer bhurji",
+  "paneer bhurji recipe": "quick 20-minute paneer bhurji",
+  "anda bhurji": "egg bhurji (anda bhurji)",
+  "egg bhurji recipe": "egg bhurji (anda bhurji)",
+  "kanda batata poha": "poha (kanda batata poha)",
+  "thayir sadam": "curd rice (thayir sadam)",
+  "dahi chawal": "curd rice (thayir sadam)",
+  "curd rice recipe": "curd rice (thayir sadam)",
+  "lauki chana dal": "lauki chana dal (bottle gourd with split chickpea lentils)",
+  "gajar ka halwa": "gajar halwa (carrot halwa)",
+  "carrot halwa": "gajar halwa (carrot halwa)",
+  "besan ladoo": "besan ladoo",
+  "besan laddu": "besan ladoo",
+  "gulab jamun": "gulab jamun (home-style, with milk powder)",
+  "chicken 65": "chicken 65",
+  "chicken 65 recipe": "chicken 65",
+  "garlic naan": "garlic naan on tawa",
+  "jeera rice": "jeera rice",
+  "aloo paratha": "aloo paratha",
+  "laccha paratha": "laccha paratha (multi-layered flatbread)",
+  "paneer butter masala": "paneer butter masala",
+  "butter paneer": "paneer butter masala",
+  "chicken biryani recipe": "chicken biryani",
+  "veg biryani recipe": "veg biryani",
+  "pav bhaji recipe": "pav bhaji",
+  "idli sambar recipe": "idli sambar",
+  "plain dosa": "dosa (plain crispy dosa)",
+  "masala dosa recipe": "masala dosa",
+  "momo recipe": "momos (veg momos)",
+  "veg momo": "momos (veg momos)",
+  "mutton curry recipe": "mutton curry",
+  "mutton biryani recipe": "mutton biryani",
+  "south indian thali rice": "sambar chawal",
 
 };
 
