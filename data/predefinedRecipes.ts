@@ -9912,4 +9912,85 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "For a simpler burger, use only the potato patty, ketchup, onion and tomato.",
     ],
   },
+
+  // ============================================================
+  // ICE CREAMS
+  // ============================================================
+
+  "easy chocolate ice cream": {
+    dishName: "Chocolate Ice Cream",
+    description:
+      "A simple no-churn chocolate ice cream made with cream, condensed milk and cocoa - rich, smooth and easy to make at home.",
+    prepTime: "Approx. 15 minutes (plus freezing time)",
+    equipment: [
+      { item: "grinder", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Fresh Cream", englishName: "chilled heavy cream" },
+      { amount: "1/2 cup", commonName: "Condensed Milk", englishName: "sweetened condensed milk" },
+      { amount: "2 tbsp", commonName: "Cocoa Powder", englishName: "unsweetened cocoa powder" },
+      { amount: "1/2 tsp", commonName: "Vanilla", englishName: "vanilla extract" },
+    ],
+    method: [
+      { step: 1, instruction: "Add chilled cream, condensed milk, cocoa and vanilla to a grinder." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth and creamy. Do not over-blend." },
+      { step: 3, instruction: "Pour the mixture into a freezer-safe container and cover it." },
+      { step: 4, instruction: "Freeze for 6 to 8 hours until firm." },
+      { step: 5, instruction: "Let it sit for 5 minutes before scooping so it softens slightly.", tip: { title: "Keep it scoopable", content: "Store the ice cream covered tightly to reduce ice crystals." } },
+      { step: 6, instruction: "Scoop and serve cold." },
+    ],
+    notes: [
+      "For a stronger chocolate flavour, add 1 extra tablespoon of cocoa powder.",
+    ],
+  },
+
+  "easy vanilla ice cream": {
+    dishName: "Vanilla Ice Cream",
+    description:
+      "A simple no-churn vanilla ice cream made with cream, condensed milk and vanilla - creamy and easy to prepare at home.",
+    prepTime: "Approx. 15 minutes (plus freezing time)",
+    equipment: [
+      { item: "grinder", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Fresh Cream", englishName: "chilled heavy cream" },
+      { amount: "1/2 cup", commonName: "Condensed Milk", englishName: "sweetened condensed milk" },
+      { amount: "1 tsp", commonName: "Vanilla", englishName: "vanilla extract" },
+    ],
+    method: [
+      { step: 1, instruction: "Add chilled cream, condensed milk and vanilla to a grinder." },
+      { step: 2, instruction: "Blend for 20 to 30 seconds until smooth and slightly thickened." },
+      { step: 3, instruction: "Pour into a freezer-safe container and cover it." },
+      { step: 4, instruction: "Freeze for 6 to 8 hours until firm." },
+      { step: 5, instruction: "Let it sit for 5 minutes before scooping.", tip: { title: "Best texture", content: "Keep the container covered tightly while freezing to limit ice crystals." } },
+      { step: 6, instruction: "Scoop and serve cold." },
+    ],
+    notes: [],
+  },
+
+  "easy strawberry ice cream": {
+    dishName: "Strawberry Ice Cream",
+    description:
+      "A simple no-churn strawberry ice cream made with fresh strawberries, cream and condensed milk for an easy homemade treat.",
+    prepTime: "Approx. 20 minutes (plus freezing time)",
+    equipment: [
+      { item: "grinder", isSpecialized: false, alternative: null },
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Strawberries", englishName: "fresh strawberries, hulled" },
+      { amount: "1 cup", commonName: "Fresh Cream", englishName: "chilled heavy cream" },
+      { amount: "1/2 cup", commonName: "Condensed Milk", englishName: "sweetened condensed milk" },
+      { amount: "1 tsp", commonName: "Vanilla", englishName: "vanilla extract" },
+    ],
+    method: [
+      { step: 1, instruction: "Blend the strawberries until smooth. Keep 2 tablespoons aside for fruit pieces if you like." },
+      { step: 2, instruction: "Add the strawberry puree, cream, condensed milk and vanilla to the grinder." },
+      { step: 3, instruction: "Blend for 20 to 30 seconds until smooth and creamy." },
+      { step: 4, instruction: "Pour into a freezer-safe container. Swirl in the reserved strawberry pieces if using." },
+      { step: 5, instruction: "Cover and freeze for 6 to 8 hours until firm.", tip: { title: "Keep the flavour fresh", content: "Use ripe, sweet strawberries so you need less added sweetness." } },
+      { step: 6, instruction: "Let it sit for 5 minutes, then scoop and serve cold." },
+    ],
+    notes: [],
+  },
+
 };

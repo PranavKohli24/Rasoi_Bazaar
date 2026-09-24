@@ -546,6 +546,16 @@ const MANUAL_ALIASES: Record<string, string> = {
   "veg burger": "home style burger",
   "vegetable burger": "home style burger",
   "homemade burger": "home style burger",
+  // ice cream
+  "icecream": "easy chocolate ice cream",
+  "ice cream": "easy chocolate ice cream",
+  "chocolate icecream": "easy chocolate ice cream",
+  "chocolate ice cream": "easy chocolate ice cream",
+  "vanilla icecream": "easy vanilla ice cream",
+  "vanilla ice cream": "easy vanilla ice cream",
+  "strawberry icecream": "easy strawberry ice cream",
+  "strawberry ice cream": "easy strawberry ice cream",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
