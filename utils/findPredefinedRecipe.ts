@@ -587,6 +587,21 @@ const MANUAL_ALIASES: Record<string, string> = {
   "orea shake": "easy oreo milkshake",
   "milk shake": "easy oreo milkshake",
   "milkshake": "easy oreo milkshake",
+  "coffee": "hot coffee",
+  "hot coffee": "hot coffee",
+  "hot coffee recipe": "hot coffee",
+  "cold coffee": "easy cold coffee",
+  "cold coffee recipe": "easy cold coffee",
+  "frappe": "easy coffee frappe",
+  "coffee frappe": "easy coffee frappe",
+  "iced frappe": "easy coffee frappe",
+  "iced latte": "easy iced latte",
+  "ice latte": "easy iced latte",
+  "iced coffee latte": "easy iced latte",
+  "vietnamese coffee": "easy vietnamese coffee",
+  "vietnamse coffee": "easy vietnamese coffee",
+  "vietnamese": "easy vietnamese coffee",
+  "vietnamse": "easy vietnamese coffee",
 
 };
 

@@ -10204,4 +10204,116 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [],
   },
 
+
+
+  "hot coffee": {
+    dishName: "Hot Coffee",
+    description: "Simple hot milk coffee made with instant coffee, milk and optional sugar, ready in a few minutes.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "stove", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1 cup", commonName: "Doodh", englishName: "milk" },
+      { amount: "1 tsp", commonName: "Coffee", englishName: "instant coffee powder" },
+      { amount: "1 to 2 tsp", commonName: "Cheeni", englishName: "sugar, optional" },
+      { amount: "1 tbsp", commonName: "Paani", englishName: "hot water" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat the milk on the stove until hot, but do not let it boil over." },
+      { step: 2, instruction: "Mix coffee, sugar and hot water in a cup until smooth." },
+      { step: 3, instruction: "Pour the hot milk into the coffee mixture and stir well." },
+      { step: 4, instruction: "Taste and adjust the sugar if needed." },
+      { step: 5, instruction: "Serve hot immediately.", tip: { title: "Make it frothy", content: "Stir the coffee mixture quickly before adding the milk for a lighter foam on top." } },
+    ],
+    notes: [],
+  },
+
+  "easy cold coffee": {
+    dishName: "Cold Coffee",
+    description: "A creamy chilled coffee made by blending cold milk, coffee, sugar and ice cream until frothy.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1.5 cups", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "1.5 tsp", commonName: "Coffee", englishName: "instant coffee powder" },
+      { amount: "2 scoops", commonName: "Vanilla Ice Cream", englishName: "vanilla ice cream" },
+      { amount: "1 to 2 tsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "5 to 6", commonName: "Baraf", englishName: "ice cubes" },
+    ],
+    method: [
+      { step: 1, instruction: "Dissolve the coffee in 1 tablespoon warm water." },
+      { step: 2, instruction: "Add chilled milk, coffee, sugar, ice cream and ice to a grinder." },
+      { step: 3, instruction: "Blend for 20 to 30 seconds until smooth and frothy." },
+      { step: 4, instruction: "Taste and add more sugar if needed." },
+      { step: 5, instruction: "Pour into a glass and serve immediately.", tip: { title: "Keep it creamy", content: "Use cold milk and firm ice cream so the drink stays thick instead of watery." } },
+    ],
+    notes: [],
+  },
+
+  "easy coffee frappe": {
+    dishName: "Coffee Frappe",
+    description: "A thick iced coffee blended with milk, coffee, ice and ice cream for a café-style drink at home.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1 cup", commonName: "Doodh", englishName: "chilled milk" },
+      { amount: "1 tsp", commonName: "Coffee", englishName: "instant coffee powder" },
+      { amount: "1 scoop", commonName: "Vanilla Ice Cream", englishName: "vanilla ice cream" },
+      { amount: "1 to 2 tsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1 cup", commonName: "Baraf", englishName: "ice cubes" },
+    ],
+    method: [
+      { step: 1, instruction: "Dissolve the coffee in 1 tablespoon warm water." },
+      { step: 2, instruction: "Add milk, coffee, ice cream, sugar and ice to a grinder." },
+      { step: 3, instruction: "Blend until thick, smooth and frothy." },
+      { step: 4, instruction: "Taste and add sugar if needed." },
+      { step: 5, instruction: "Pour into a chilled glass and serve immediately.", tip: { title: "Make it thicker", content: "Use more ice and less milk for a thicker frappe." } },
+    ],
+    notes: [],
+  },
+
+  "easy iced latte": {
+    dishName: "Iced Latte",
+    description: "A simple homemade iced latte made with strong coffee, cold milk and ice.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "grinder", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1 tsp", commonName: "Coffee", englishName: "instant coffee powder" },
+      { amount: "2 tbsp", commonName: "Paani", englishName: "hot water" },
+      { amount: "1 cup", commonName: "Doodh", englishName: "cold milk" },
+      { amount: "1 tsp", commonName: "Cheeni", englishName: "sugar or syrup, optional" },
+      { amount: "6 to 8", commonName: "Baraf", englishName: "ice cubes" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix coffee with hot water until fully dissolved." },
+      { step: 2, instruction: "Add the coffee, cold milk and sugar to a grinder and blend for 10 seconds." },
+      { step: 3, instruction: "Fill a glass with ice cubes." },
+      { step: 4, instruction: "Pour the coffee mixture over the ice." },
+      { step: 5, instruction: "Stir and serve cold.", tip: { title: "Keep the layers", content: "Pour the milk slowly over the ice if you want a clear coffee-and-milk look." } },
+    ],
+    notes: [],
+  },
+
+  "easy vietnamese coffee": {
+    dishName: "Vietnamese Coffee",
+    description: "Strong Vietnamese-style coffee sweetened with condensed milk, made at home with an easy instant-coffee method.",
+    prepTime: "Approx. 5 minutes",
+    equipment: [{ item: "stove", isSpecialized: false, alternative: null }],
+    ingredients: [
+      { amount: "1.5 tsp", commonName: "Coffee", englishName: "strong instant coffee powder" },
+      { amount: "1/4 cup", commonName: "Paani", englishName: "hot water" },
+      { amount: "2 tbsp", commonName: "Condensed Milk", englishName: "sweetened condensed milk" },
+      { amount: "1/2 cup", commonName: "Baraf", englishName: "ice cubes, optional" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat the water on the stove until very hot." },
+      { step: 2, instruction: "Mix the coffee with the hot water until strong and fully dissolved." },
+      { step: 3, instruction: "Add condensed milk to a glass." },
+      { step: 4, instruction: "Pour the strong coffee over the condensed milk and stir well." },
+      { step: 5, instruction: "Serve hot, or add ice and serve cold.", tip: { title: "Vietnamese-style balance", content: "Use strong coffee and sweet condensed milk. Start with less condensed milk and add more to taste." } },
+    ],
+    notes: [
+      "This is a simplified home version using instant coffee instead of a traditional Vietnamese coffee filter.",
+    ],
+  },
+
 };
