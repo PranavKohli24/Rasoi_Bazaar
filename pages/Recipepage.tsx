@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Recipe } from "../types";
-import { fetchRecipe } from "../services/geminiService";
+import { fetchRecipe, isRecipe } from "../services/geminiService";
 import CompactHeader from "../components/CompactHeader";
 import CookingCompanion from "../components/CookingCompanion";
 import ErrorMessage from "../components/ErrorMessage";
@@ -74,8 +74,10 @@ const RecipePage: React.FC = () => {
     // Reuse a recipe fetched earlier this session (refresh / back button)
     try {
       const cached = sessionStorage.getItem(cacheKey);
-      if (cached) {
-        setRecipe(JSON.parse(cached) as Recipe);
+      const parsed = cached ? JSON.parse(cached) : null;
+      // A saved copy that is broken or from an older version is ignored and fetched again.
+      if (isRecipe(parsed)) {
+        setRecipe(parsed);
         setError(null);
         setIsLoading(false);
         return;

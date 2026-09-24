@@ -17,126 +17,45 @@ export interface CookWhatYouHaveResponse {
 }
 
 /*
- * Change ONLY this line when you want to switch models.
- *
- * Examples:
- * "openrouter/free"
- * "openai/gpt-oss-20b:free"
- * "google/gemma-4-26b-a4b:free"
+ * The matching itself runs on the server (/api/cook-match). The AI key, model
+ * and prompt live there, so nothing secret is shipped to the browser.
+ * To change the model, set OPENROUTER_MODEL in the Vercel environment variables.
  */
-const MODEL = "openrouter/free";
 
-const BASE_URL = "https://openrouter.ai/api/v1";
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+const GENERIC_ERROR =
+  "The kitchen assistant couldn't find recipes right now. Please try again.";
+const OFFLINE_ERROR =
+  "Couldn't reach our kitchen. Check your connection and try again.";
 
-const responseSchema = {
-  type: "object",
-  additionalProperties: false,
-  properties: {
-    recipes: {
-      type: "array",
-      maxItems: 3,
-      items: {
-        type: "object",
-        additionalProperties: false,
-        properties: {
-          dishName: {
-            type: "string",
-          },
-          description: {
-            type: "string",
-          },
-          prepTime: {
-            type: "string",
-          },
-          ingredientsUsed: {
-            type: "array",
-            items: {
-              type: "string",
-            },
-          },
-          equipmentUsed: {
-            type: "array",
-            items: {
-              type: "string",
-            },
-          },
-          whyItWorks: {
-            type: "string",
-          },
+const text = (value: unknown): string =>
+  typeof value === "string" ? value.trim() : "";
+
+const textList = (value: unknown): string[] =>
+  Array.isArray(value) ? value.map(text).filter(Boolean) : [];
+
+/** Keeps only complete results, so a half-filled one can never break the results screen. */
+const cleanMatches = (value: unknown): RecipeMatch[] =>
+  (Array.isArray(value) ? value : [])
+    .flatMap((raw: any): RecipeMatch[] => {
+      const dishName = text(raw?.dishName);
+      if (!dishName) return [];
+
+      return [
+        {
+          dishName,
+          description: text(raw?.description),
+          prepTime: text(raw?.prepTime),
+          ingredientsUsed: textList(raw?.ingredientsUsed),
+          equipmentUsed: textList(raw?.equipmentUsed),
+          whyItWorks: text(raw?.whyItWorks),
         },
-        required: [
-          "dishName",
-          "description",
-          "prepTime",
-          "ingredientsUsed",
-          "equipmentUsed",
-          "whyItWorks",
-        ],
-      },
-    },
-  },
-  required: ["recipes"],
-};
-
-const buildPrompt = ({
-  equipment,
-  ingredients,
-}: CookWhatYouHaveInput): string => {
-  return `
-You are the recipe-matching engine for an Indian cooking app.
-
-The user has given us their COMPLETE list of available ingredients and kitchen equipment.
-
-AVAILABLE EQUIPMENT:
-${equipment.map((item) => `- ${item}`).join("\n")}
-
-AVAILABLE INGREDIENTS:
-${ingredients.map((item) => `- ${item}`).join("\n")}
-
-Your task:
-Find up to 3 real dishes that the user can ACTUALLY cook right now.
-
-STRICT RULES:
-
-1. Only recommend dishes that can be made with the ingredients provided.
-2. Do NOT assume the user has ingredients that are not listed.
-3. Do NOT assume salt, oil, butter, spices, dairy, vegetables, herbs or garnishes unless they appear in the ingredient list.
-4. Water is always available and does not need to be listed.
-5. The required cooking equipment must be available.
-6. Do not recommend a dish if an essential ingredient is missing.
-7. Prefer dishes that use several of the ingredients the user already has.
-8. Prefer practical home-style Indian dishes, but dishes from other cuisines are allowed when they genuinely fit.
-9. Do not invent fictional dishes.
-10. Return fewer than 3 results if fewer than 3 valid dishes exist.
-11. Do not return dishes with missing essential ingredients.
-12. Keep every description and explanation to one short sentence.
-13. Do not provide cooking instructions.
-14. Prefer the simplest valid dishes first.
-
-For every result return:
-- dishName
-- description
-- prepTime
-- ingredientsUsed
-- equipmentUsed
-- whyItWorks
-
-The recipes do NOT need to be limited to dishes already known by the app. Discover suitable real dishes from the available ingredients.
-
-Return ONLY the requested JSON structure.
-`;
-};
+      ];
+    })
+    .slice(0, 3);
 
 export const findRecipesFromIngredients = async (
   input: CookWhatYouHaveInput
 ): Promise<CookWhatYouHaveResponse> => {
-  if (!API_KEY) {
-    throw new Error(
-      "OpenRouter API key is missing. Add VITE_OPENROUTER_API_KEY to your environment."
-    );
-  }
-
   if (!input.equipment.length) {
     throw new Error("Please select at least one piece of equipment.");
   }
@@ -145,80 +64,47 @@ export const findRecipesFromIngredients = async (
     throw new Error("Please add at least one ingredient.");
   }
 
+  let response: Response;
+
   try {
-    const response = await fetch(`${BASE_URL}/chat/completions`, {
+    response = await fetch("/api/cook-match", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": window.location.origin,
-        "X-Title": "Rasoi Bazaar",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: MODEL,
-
-        messages: [
-          {
-            role: "system",
-            content:
-            "Match recipes strictly to the provided ingredients and equipment. Return ONLY valid JSON matching the requested structure. Do not write any text outside the JSON.",
-          },
-          {
-            role: "user",
-            content: buildPrompt(input),
-          },
-        ],
-
-        response_format: {
-        type: "json_object",
-        },
-
-        temperature: 0.2,
-        max_tokens: 1000,
+        equipment: input.equipment,
+        ingredients: input.ingredients,
       }),
     });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      console.error("OpenRouter error:", errorText);
-
-      throw new Error(
-        "The kitchen assistant couldn't find recipes right now. Please try again."
-      );
-    }
-
-    const data = await response.json();
-
-    const content = data?.choices?.[0]?.message?.content;
-
-    if (!content) {
-      throw new Error("The kitchen assistant returned an empty response.");
-    }
-
-    const cleanedContent = content
-      .replace(/^```json\s*/i, "")
-      .replace(/```$/i, "")
-      .trim();
-
-    const parsed = JSON.parse(cleanedContent) as CookWhatYouHaveResponse;
-
-    if (!Array.isArray(parsed.recipes)) {
-      throw new Error("The kitchen assistant returned an invalid response.");
-    }
-
-    return {
-      recipes: parsed.recipes.slice(0, 3),
-    };
   } catch (error) {
-    console.error("Cook What You Have error:", error);
+    console.error("Cook What You Have request failed:", error);
+    throw new Error(OFFLINE_ERROR);
+  }
 
-    if (error instanceof Error) {
-      throw error;
-    }
+  let data: any = null;
 
-    throw new Error(
-      "Something went wrong while finding recipes from your ingredients."
+  try {
+    data = await response.json();
+  } catch {
+    console.error(
+      "The cook-match API didn't return JSON. Locally, start the app with `vercel dev` instead of `npm run dev`."
     );
   }
+
+  if (!response.ok) {
+    console.error("Cook What You Have error:", response.status, JSON.stringify(data?.error));
+
+    // The server only sends messages that are safe to show.
+    throw new Error(
+      typeof data?.error?.message === "string" && data.error.message
+        ? data.error.message
+        : GENERIC_ERROR
+    );
+  }
+
+  if (!Array.isArray(data?.recipes)) {
+    console.error("The cook-match API returned an unexpected response:", data);
+    throw new Error(GENERIC_ERROR);
+  }
+
+  return { recipes: cleanMatches(data.recipes) };
 };
