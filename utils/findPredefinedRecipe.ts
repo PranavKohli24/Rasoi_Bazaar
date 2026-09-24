@@ -186,7 +186,116 @@ for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
   const recipe = predefinedRecipes[targetKey];
   if (recipe) register(byKey, matchKey(alias), recipe);
 }
+/* ------------------------------------------------------------------ */
+/* Fuzzy matching: catches typos and small variations ("rajma chawl"  */
+/* -> "rajma chawal", "chiken biryani" -> "chicken biryani") without  */
+/* needing a hardcoded list of every possible misspelling.            */
+/* ------------------------------------------------------------------ */
 
+// Standard Levenshtein edit distance (insertions/deletions/substitutions).
+const levenshtein = (a: string, b: string): number => {
+  const alen = a.length;
+  const blen = b.length;
+  if (alen === 0) return blen;
+  if (blen === 0) return alen;
+
+  let prevRow = new Array<number>(blen + 1);
+  let curRow = new Array<number>(blen + 1);
+  for (let j = 0; j <= blen; j++) prevRow[j] = j;
+
+  for (let i = 1; i <= alen; i++) {
+    curRow[0] = i;
+    for (let j = 1; j <= blen; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curRow[j] = Math.min(
+        curRow[j - 1] + 1, // insertion
+        prevRow[j] + 1, // deletion
+        prevRow[j - 1] + cost // substitution
+      );
+    }
+    [prevRow, curRow] = [curRow, prevRow];
+  }
+  return prevRow[blen];
+};
+
+// How many edits we tolerate scales with string length, so short words
+// ("dal") don't accidentally match unrelated short words, while longer
+// phrases get more room for typos.
+const maxAllowedDistance = (len: number): number => {
+  if (len <= 4) return 1;
+  if (len <= 8) return 2;
+  return Math.min(4, Math.round(len * 0.3));
+};
+
+const similarity = (a: string, b: string): number => {
+  const dist = levenshtein(a, b);
+  const maxLen = Math.max(a.length, b.length);
+  return maxLen === 0 ? 1 : 1 - dist / maxLen;
+};
+
+// Word-order-insensitive comparison, so "biryani chicken" still finds
+// "chicken biryani".
+const sortedWords = (s: string): string => s.split(" ").sort().join(" ");
+
+// Every alias we know about, built once at module load. Fuzzy search is
+// a linear scan over this, which is fine for a few hundred entries.
+const allKeys: string[] = Array.from(byKey.keys());
+
+const fuzzyFindKey = (query: string): Recipe | null => {
+  if (!query || query.length < 3) return null;
+
+  const queryWords = query.split(" ");
+  const querySorted = sortedWords(query);
+
+  let best: { recipe: Recipe; score: number } | null = null;
+
+  for (const key of allKeys) {
+    // Cheap length pre-filter: two strings that differ wildly in length
+    // can't be within a small edit distance of each other.
+    if (Math.abs(key.length - query.length) > maxAllowedDistance(Math.max(key.length, query.length)) + 3) {
+      continue;
+    }
+
+    // Signal 1: direct edit distance on the whole string.
+    const directDist = levenshtein(query, key);
+    const directOk = directDist <= maxAllowedDistance(Math.max(query.length, key.length));
+    const directScore = similarity(query, key);
+
+    // Signal 2: same words, different order/spacing ("biryani chicken").
+    const keySorted = sortedWords(key);
+    const sortedDist = levenshtein(querySorted, keySorted);
+    const sortedOk = sortedDist <= maxAllowedDistance(Math.max(querySorted.length, keySorted.length));
+    const sortedScore = similarity(querySorted, keySorted);
+
+    // Signal 3: token overlap - handles a missing/extra word ("chana masala
+    // curry" vs "chana masala") and per-word typos.
+    const keyWords = key.split(" ");
+    let matchedWords = 0;
+    for (const qw of queryWords) {
+      const hasMatch = keyWords.some((kw) => {
+        if (qw === kw) return true;
+        if (qw.length < 3 || kw.length < 3) return false;
+        return levenshtein(qw, kw) <= maxAllowedDistance(Math.max(qw.length, kw.length));
+      });
+      if (hasMatch) matchedWords++;
+    }
+    const tokenScore =
+      matchedWords / Math.max(queryWords.length, keyWords.length);
+
+    if (!directOk && !sortedOk && tokenScore < 0.75) continue;
+
+    const score = Math.max(directScore, sortedScore, tokenScore * 0.95);
+
+    if (!best || score > best.score) {
+      const recipe = byKey.get(key)!;
+      best = { recipe, score };
+    }
+  }
+
+  // Require a reasonably confident match - this is the "typo tolerance"
+  // threshold; below it we'd rather fall through to the AI than guess wrong.
+  return best && best.score >= 0.72 ? best.recipe : null;
+};
 
 export const findPredefinedRecipe = (query: string): Recipe | null => {
   const raw = matchKey(query);
@@ -200,6 +309,8 @@ export const findPredefinedRecipe = (query: string): Recipe | null => {
     byKey.get(raw) ??
     bySlug.get(toSlug(query)) ??
     bySlug.get(toSlug(cleaned)) ??
+    fuzzyFindKey(cleaned) ??
+    fuzzyFindKey(raw) ??
     null
   );
 };
