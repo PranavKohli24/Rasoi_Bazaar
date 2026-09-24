@@ -100,9 +100,11 @@ const RecipePage: React.FC = () => {
       })
       .catch((err) => {
         if (cancelled) return;
-        // The real error goes to the console for debugging, never to the user.
+        // geminiService only throws user-safe messages (e.g. "That doesn't look like a
+        // dish - try Paneer Butter Masala"), so those are shown as written. Anything
+        // unexpected falls back to the friendly message. Details go to the console.
         console.error("Recipe fetch failed:", err);
-        setError(FRIENDLY_ERROR);
+        setError(err instanceof Error && err.message ? err.message : FRIENDLY_ERROR);
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);
