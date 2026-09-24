@@ -7,7 +7,7 @@ export interface BackgroundItem {
   id: number;
   kind: "doodle" | "equipment";
   index: number;
-  /** Position as a percentage of the screen */
+  /** Position in px from the top-left of the background layer */
   left: number;
   top: number;
   /** Size in px */
@@ -36,8 +36,8 @@ export const buildLayout = (
   equipmentCount: number
 ): BackgroundItem[] => {
   const small = width < 768;
-  const spacing = small ? 112 : 148;
-  const target = Math.min(80, Math.max(8, Math.round((width * height) / (spacing * spacing * 1.2))));
+  const spacing = small ? 140 : 185; // bigger gap = calmer background
+  const target = Math.min(60, Math.max(8, Math.round((width * height) / (spacing * spacing * 1.25))));
 
   // A shuffled "bag" of every picture, dealt out in turn, so the same item
   // doesn't show up twice in a row and everything appears about equally.
@@ -76,18 +76,18 @@ export const buildLayout = (
     dealt++;
     if (dealt % bag.length === 0) shuffle();
 
-    const base = small ? 34 : 44;
-    const range = small ? 26 : 36;
+    const base = small ? 30 : 38;
+    const range = small ? 20 : 26;
 
     items.push({
       id: n,
       kind: pick.kind,
       index: pick.index,
-      left: (spot.x / width) * 100,
-      top: (spot.y / height) * 100,
+      left: Math.round(spot.x),
+      top: Math.round(spot.y),
       size: Math.round(base + rand() * range),
-      rotate: Math.round(rand() * 80 - 40),
-      flip: rand() > 0.5,
+      rotate: Math.round(rand() * 56 - 28),
+      flip: false,
     });
   }
 

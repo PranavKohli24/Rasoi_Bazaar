@@ -10,7 +10,7 @@ import { buildLayout, makeRng } from "../utils/backgroundLayout";
 const doodleProps = {
   fill: "none",
   stroke: "#C9722E",
-  strokeOpacity: 0.24,
+  strokeOpacity: 0.22,
   strokeWidth: 1.5,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
@@ -120,32 +120,27 @@ const getSeed = (): number => {
   return fresh;
 };
 
+// The layer is sized once, for the biggest screen this device can show, and
+// positions are in px. Resizing the window or a phone's address bar sliding in
+// and out therefore never moves anything (that was the "jump" while scrolling).
 const FoodBackground: React.FC = () => {
-  const items = useMemo(
-    () =>
-      buildLayout(
-        window.innerWidth,
-        window.innerHeight,
-        makeRng(getSeed()),
-        DOODLES.length,
-        EQUIPMENT.length
-      ),
-    []
-  );
+  const items = useMemo(() => {
+    const screenW = window.screen?.width ?? 0;
+    const screenH = window.screen?.height ?? 0;
+    const width = Math.max(window.innerWidth, screenW);
+    const height = Math.max(window.innerHeight, Math.min(screenH, window.innerHeight * 1.25));
+
+    return buildLayout(width, height, makeRng(getSeed()), DOODLES.length, EQUIPMENT.length);
+  }, []);
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-    >
+    <div aria-hidden="true" className="food-bg">
       {items.map((item) => {
         const style: React.CSSProperties = {
           position: "absolute",
-          left: `${item.left}%`,
-          top: `${item.top}%`,
-          transform: `translate(-50%, -50%) rotate(${item.rotate}deg) scaleX(${
-            item.flip ? -1 : 1
-          })`,
+          left: item.left,
+          top: item.top,
+          transform: `translate(-50%, -50%) rotate(${item.rotate}deg)`,
         };
 
         return item.kind === "doodle" ? (
@@ -170,12 +165,28 @@ const FoodBackground: React.FC = () => {
               ...style,
               width: item.size * 1.3,
               height: "auto",
-              opacity: 0.12,
-              filter: "sepia(0.55) saturate(1.1)",
+              opacity: 0.1,
             }}
           />
         );
       })}
+
+      <style>{`
+        .food-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          height: 100lvh; /* full height even when a phone's address bar hides */
+          z-index: 0;
+          overflow: hidden;
+          pointer-events: none;
+          contain: strict;
+          transform: translateZ(0); /* own layer: scrolling doesn't repaint it */
+          filter: sepia(0.5) saturate(1.1); /* one warm tint for everything, applied once */
+        }
+      `}</style>
     </div>
   );
 };
