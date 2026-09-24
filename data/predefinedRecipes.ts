@@ -1959,6 +1959,146 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
   },
 
+  "mutter mushroom": {
+    dishName: "Matar Mushroom",
+    description:
+      "Tender mushrooms and green peas cooked in a lightly spiced onion-tomato masala - a comforting everyday North Indian curry.",
+    prepTime: "Approx. 35 minutes",
+    equipment: [
+      { item: "Kadai or deep pan", isSpecialized: false, alternative: null },
+      { item: "Spatula", isSpecialized: false, alternative: "Wooden spoon" },
+    ],
+    ingredients: [
+      {
+        amount: "200 g",
+        commonName: "Mushroom",
+        englishName: "button mushrooms, sliced",
+      },
+      {
+        amount: "1 cup",
+        commonName: "Matar",
+        englishName: "green peas, fresh or frozen",
+      },
+      {
+        amount: "1 medium",
+        commonName: "Pyaaz",
+        englishName: "onion, finely chopped",
+      },
+      {
+        amount: "2 medium",
+        commonName: "Tamatar",
+        englishName: "tomatoes, finely chopped",
+      },
+      {
+        amount: "1 tsp",
+        commonName: "Adrak-Lehsun Paste",
+        englishName: "ginger-garlic paste",
+      },
+      {
+        amount: "1",
+        commonName: "Hari Mirch",
+        englishName: "green chilli, chopped",
+      },
+      {
+        amount: "1/4 tsp",
+        commonName: "Haldi",
+        englishName: "turmeric",
+      },
+      {
+        amount: "1 tsp",
+        commonName: "Dhaniya Powder",
+        englishName: "coriander powder",
+      },
+      {
+        amount: "1/2 tsp",
+        commonName: "Lal Mirch Powder",
+        englishName: "red chilli powder",
+      },
+      {
+        amount: "1/2 tsp",
+        commonName: "Garam Masala",
+        englishName: "garam masala",
+      },
+      {
+        amount: "1/2 tsp",
+        commonName: "Kasuri Methi",
+        englishName: "dried fenugreek leaves, optional",
+      },
+      {
+        amount: "2 tbsp",
+        commonName: "Tel",
+        englishName: "cooking oil",
+      },
+      {
+        amount: "1/2 cup",
+        commonName: "Paani",
+        englishName: "water",
+      },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      {
+        amount: "as needed",
+        commonName: "Hara Dhaniya",
+        englishName: "coriander leaves, chopped",
+      },
+    ],
+    method: [
+      {
+        step: 1,
+        instruction:
+          "Clean the mushrooms, trim the stems if needed and slice them. Keep them aside.",
+      },
+      {
+        step: 2,
+        instruction:
+          "Heat oil in a kadai on medium-high heat. Add the sliced mushrooms and sauté for 4 to 5 minutes until they release their moisture and lightly brown. Remove and set aside.",
+      },
+      {
+        step: 3,
+        instruction:
+          "In the same kadai, add chopped onion and cook until soft and lightly golden.",
+      },
+      {
+        step: 4,
+        instruction:
+          "Add ginger-garlic paste and green chilli. Cook for 30 seconds until fragrant.",
+      },
+      {
+        step: 5,
+        instruction:
+          "Add chopped tomatoes, turmeric, coriander powder, red chilli powder and salt. Cook until the tomatoes soften and the masala becomes thick.",
+      },
+      {
+        step: 6,
+        instruction:
+          "Add green peas and water. Cover and cook for 5 to 7 minutes, until the peas are tender.",
+      },
+      {
+        step: 7,
+        instruction:
+          "Add the sautéed mushrooms and mix gently. Simmer uncovered for 4 to 5 minutes until the gravy reaches your preferred consistency.",
+      },
+      {
+        step: 8,
+        instruction:
+          "Add garam masala and crushed kasuri methi if using. Mix well and cook for 1 more minute.",
+        tip: {
+          title: "Don't overcook the mushrooms",
+          content:
+            "Keep the final simmer short so the mushrooms stay tender instead of becoming rubbery.",
+        },
+      },
+      {
+        step: 9,
+        instruction:
+          "Garnish with coriander leaves and serve hot with roti, naan or rice.",
+      },
+    ],
+    notes: [
+      "Frozen peas can go straight into the pan. Fresh peas may need a few extra minutes to become tender.",
+      "For a drier version, use less water and simmer uncovered until the masala coats the mushrooms and peas.",
+    ],
+  },
+
   "baingan bharta (smoky roasted eggplant mash)": {
     dishName: "Baingan Bharta",
     description:

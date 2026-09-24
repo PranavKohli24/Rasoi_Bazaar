@@ -116,6 +116,16 @@ for (const [key, recipe] of entries) {
 // Manual aliases for common searches the auto-aliases can't derive.
 // Format: "what people type": "predefined recipe key"
 const MANUAL_ALIASES: Record<string, string> = {
+  // bharta / bhindi
+  "bharta": "baingan bharta (smoky roasted eggplant mash)",
+  "baingan bharta": "baingan bharta (smoky roasted eggplant mash)",
+  "bhindi": "bhindi masala (okra stir-fry)",
+
+  // mushroom + peas
+  "matar mushroom": "mutter mushroom",
+  "mushroom matar": "mutter mushroom",
+  "matar mushroom masala": "mutter mushroom",
+
   // earlier
   "chole": "chana masala",
   "chickpea curry": "chana masala",
