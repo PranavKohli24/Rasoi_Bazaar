@@ -107,12 +107,7 @@ const NotesIcon: IconC = ({ className }) => (
     <path d="M9 17h4" />
   </Icon>
 );
-const EquipmentIcon: IconC = ({ className }) => (
-  <Icon className={className}>
-    <circle cx="10" cy="14" r="7" />
-    <path d="M15 9l6-6" />
-  </Icon>
-);
+
 
 /* Pictures reused from the kitchen selector, matched by equipment name */
 
@@ -122,7 +117,7 @@ const EQUIPMENT_IMAGES: [RegExp, string][] = [
   [/grinder|mixer|blender/i, "/kitchen/grinder.png"],
   [/cooker/i, "/kitchen/cooker.png"],
   [/kadai|kadhai|wok/i, "/kitchen/kadai.png"],
-  [/tawa|griddle/i, "/kitchen/tawa.png"],
+  [/tawa|griddle|\bpan\b/i, "/kitchen/tawa.png"],
   [/oven|tandoor/i, "/kitchen/oven.png"],
   [/stove|gas/i, "/kitchen/stove.png"],
 ];
@@ -816,7 +811,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         <div className="flex flex-col gap-12 lg:col-span-3">
           {/* Equipment */}
           <section aria-labelledby="equipment-heading">
-            <SectionTitle id="equipment-heading" title="Equipment" icon={<EquipmentIcon className="h-6 w-6" />} />
+            <SectionTitle id="equipment-heading" title="Equipment" icon={<PotIcon className="h-6 w-6" />} />
 
             <ul className="grid items-start gap-3 sm:grid-cols-2">
               {recipe.equipment.map((tool, index) => {
@@ -834,10 +829,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                       <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFE8D6]">
                         {image ? (
                           <img src={image} alt="" className="max-h-9 max-w-9 object-contain" draggable={false} />
-                        ) : isPotLike(tool.item) ? (
-                          <PotIcon className="h-6 w-6 text-orange-200" />
                         ) : (
-                          <EquipmentIcon className="h-6 w-6 text-orange-200" />
+                          <PotIcon className="h-6 w-6 text-orange-200" />
                         )}
                       </span>
 
