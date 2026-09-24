@@ -15,7 +15,7 @@ import {
 } from "../services/swiggyService";
 import SwiggyActionModal from "./SwiggyActionModal";
 
-import NutritionInfo from "./NutrionInfo";
+import NutritionInfo from "./NutritionInfo";
 
 interface RecipeDisplayProps {
   recipe: Recipe;
