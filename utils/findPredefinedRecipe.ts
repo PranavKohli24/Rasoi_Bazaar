@@ -537,6 +537,15 @@ const MANUAL_ALIASES: Record<string, string> = {
   "tandoori momos": "tandoori momos",
   "tandoori momo": "tandoori momos",
 
+  // pizza and burger
+  "pizza": "home style pizza",
+  "veg pizza": "home style pizza",
+  "vegetable pizza": "home style pizza",
+  "homemade pizza": "home style pizza",
+  "burger": "home style burger",
+  "veg burger": "home style burger",
+  "vegetable burger": "home style burger",
+  "homemade burger": "home style burger",
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
