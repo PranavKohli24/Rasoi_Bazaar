@@ -11,8 +11,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A quick, spicy and comforting Indian paneer dish made with crumbled paneer, onions, tomatoes and everyday spices.",
     prepTime: "Approx. 20 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "200 g", commonName: "Paneer", englishName: "paneer" },
@@ -87,8 +88,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A light, tangy flattened-rice breakfast tempered with mustard seeds, curry leaves, peanuts and a squeeze of lemon.",
     prepTime: "Approx. 20 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -210,8 +212,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A warm, savory semolina porridge studded with vegetables and tempered spices - quick and filling.",
     prepTime: "Approx. 20 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -326,8 +329,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Spicy scrambled eggs cooked with onions, tomatoes and chillies - a protein-packed 15-minute favorite.",
     prepTime: "Approx. 15 minutes",
     equipment: [
+
       { item: "pan", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "4", commonName: "Ande", englishName: "eggs" },
@@ -394,8 +398,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A fragrant one-pot rice dish loaded with mixed vegetables and whole spices, ready in under 30 minutes.",
     prepTime: "Approx. 25 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -510,9 +515,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A light, protein-rich savoury pancake made from ground yellow moong dal, perfect for a wholesome breakfast.",
     prepTime: "Approx. 30 minutes (plus 2 hours soaking)",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -599,8 +605,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A light, fiber-rich savory porridge made from broken wheat and vegetables - wholesome and easy to digest.",
     prepTime: "Approx. 30 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -698,8 +705,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Cool, comforting rice mixed with yogurt and a light tempering - a soothing South Indian classic.",
     prepTime: "Approx. 15 minutes (plus cooked rice)",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -767,7 +775,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 2,
         instruction:
-          "Add curd, then add milk if using. Mix until creamy and add salt.",
+          "Add curd and milk, mix until creamy and add salt.",
       },
       {
         step: 3,
@@ -787,7 +795,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 6,
         instruction:
-          "Chill for 20 to 30 minutes before serving for best flavor, or serve at room temperature. Garnish with pomegranate or grapes if using.",
+          "Chill for 20 to 30 minutes before serving for best flavor, or serve at room temperature.",
       },
     ],
     notes: [
@@ -801,7 +809,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A crunchy, protein-rich salad of sprouted moong beans tossed with vegetables, lemon and spices - no cooking needed.",
     prepTime: "Approx. 15 minutes (plus sprouting time)",
     equipment: [
-      { item: "stove", isSpecialized: false, alternative: null },
+
+
     ],
     ingredients: [
       {
@@ -898,9 +907,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A light, nutritious dal-vegetable combo of bottle gourd simmered with chana dal - mild and easy on the stomach.",
     prepTime: "Approx. 40 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1019,8 +1029,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Creamy rice pudding slow-simmered in sweetened milk, fragrant with cardamom and topped with toasted nuts.",
     prepTime: "Approx. 45 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1089,7 +1100,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 6,
         instruction:
-          "Add cardamom powder and saffron if using, and stir through.",
+          "Add cardamom powder and saffron strands, and stir through.",
       },
       {
         step: 7,
@@ -1119,8 +1130,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Sweet grated carrots slow-cooked in milk and ghee until rich and fudgy, finished with nuts - a winter classic.",
     prepTime: "Approx. 50 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1215,8 +1227,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Nutty, melt-in-the-mouth sweet balls made from roasted gram flour, ghee and sugar - no frying needed.",
     prepTime: "Approx. 35 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1301,8 +1314,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A glossy, saffron-scented semolina dessert made in one pan in under 20 minutes.",
     prepTime: "Approx. 20 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1355,7 +1369,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 3,
         instruction:
-          "In a separate pot, bring the water to a boil. Add saffron or orange food color if using.",
+          "In a separate pot, bring the water to a boil with saffron or food color.",
       },
       {
         step: 4,
@@ -1397,8 +1411,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, spongy fried milk dumplings soaked in warm cardamom-rose sugar syrup.",
     prepTime: "Approx. 45 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1466,7 +1481,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 4,
         instruction:
-          "Meanwhile, boil sugar and water together for 8 to 10 minutes until lightly sticky. Add cardamom powder and rose water if using, then keep the syrup warm.",
+          "Meanwhile, boil sugar and water together for 8 to 10 minutes until lightly sticky. Add cardamom powder and rose water and keep warm.",
       },
       {
         step: 5,
@@ -1512,9 +1527,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft paneer cubes simmered in a silky, vibrant green spinach gravy, gently spiced and utterly comforting.",
     prepTime: "Approx. 35 minutes",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1637,8 +1653,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Spiced chickpeas simmered in a tangy onion-tomato gravy - a hearty, protein-rich staple.",
     prepTime: "Approx. 40 minutes (using boiled/canned chickpeas)",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1742,9 +1759,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Red kidney beans simmered in a thick, spiced onion-tomato gravy - the classic pair to steamed rice.",
     prepTime: "Approx. 50 minutes (plus overnight soaking)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1857,8 +1875,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crisp-tender okra sautéed with onions and spices - a simple, everyday dry sabzi.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -1922,7 +1941,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 4,
         instruction:
-          "Mix the onion and okra together. Add turmeric, red chilli powder, coriander powder and salt. Add tomato if using.",
+          "Mix the onion and okra together. Add turmeric, red chilli powder, coriander powder and salt.",
       },
       {
         step: 5,
@@ -1951,8 +1970,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Tender mushrooms and green peas cooked in a lightly spiced onion-tomato masala - a comforting everyday North Indian curry.",
     prepTime: "Approx. 35 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2091,8 +2112,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Fire-roasted eggplant mashed and cooked with onions, tomatoes and spices - smoky and rustic.",
     prepTime: "Approx. 40 minutes",
     equipment: [
+
       { item: "stove", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2210,9 +2233,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A rich, mildly spiced chicken curry made creamy with cashews and browned onions - comfort food at its finest.",
     prepTime: "Approx. 50 minutes",
     equipment: [
-      { item: "grinder", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2240,9 +2264,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
         commonName: "Adrak-Lehsun Paste",
         englishName: "ginger-garlic paste",
       },
-      { amount: "1 inch", commonName: "Dalchini", englishName: "cinnamon stick" },
-      { amount: "2", commonName: "Elaichi", englishName: "green cardamom" },
-      { amount: "4", commonName: "Laung", englishName: "cloves" },
+      {
+        amount: "1 inch, 2, 4",
+        commonName: "Dalchini, Elaichi, Laung",
+        englishName: "cinnamon stick, green cardamom, cloves",
+      },
       {
         amount: "1",
         commonName: "Tej Patta",
@@ -2338,9 +2364,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Tender chicken in a velvety, buttery tomato-cashew gravy - India's most beloved chicken curry.",
     prepTime: "Approx. 50 minutes (plus 30 min marination)",
     equipment: [
+
+      { item: "pan", isSpecialized: false, alternative: null },
       { item: "grinder", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2465,9 +2492,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A comforting everyday chicken curry with a spiced onion-tomato gravy - simple, no fancy ingredients needed.",
     prepTime: "Approx. 45 minutes",
     equipment: [
-      { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2587,8 +2614,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Charred spiced chicken chunks simmered in a creamy tomato gravy - done entirely on the stovetop, no tandoor needed.",
     prepTime: "Approx. 1 hour (plus 30 min marination)",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2710,8 +2738,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crispy, spicy deep-fried chicken bites with a tangy curry-leaf tempering - a popular South Indian starter.",
     prepTime: "Approx. 40 minutes (plus 30 min marination)",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -2830,8 +2860,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, pillowy homemade naan bubbled with garlic butter - made entirely on a tawa, no tandoor needed.",
     prepTime: "Approx. 2.5 hours (mostly resting time)",
     equipment: [
+
+      { item: "oven", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 cups", commonName: "Maida", englishName: "all-purpose flour" },
@@ -2919,7 +2951,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 10,
         instruction:
-          "Brush generously with melted garlic butter. Sprinkle coriander if using and serve hot.",
+          "Brush generously with melted garlic butter and sprinkle coriander leaves. Serve hot.",
       },
     ],
     notes: [
@@ -2934,8 +2966,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Fragrant basmati rice tempered with roasted cumin seeds - the simplest, most comforting rice side dish.",
     prepTime: "Approx. 25 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3020,8 +3053,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Whole wheat flatbread stuffed with a spiced mashed potato filling, cooked golden on a tawa.",
     prepTime: "Approx. 45 minutes",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3079,12 +3113,12 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 1,
         instruction:
-          "Knead the flour with water and salt into a soft dough. Cover and rest for 15 to 20 minutes.",
+          "Knead the whole wheat flour with water and a pinch of salt into a soft dough. Cover and rest for 15 to 20 minutes.",
       },
       {
         step: 2,
         instruction:
-          "For the filling, mix mashed potatoes with onion if using, green chilli, ginger, red chilli powder, amchur, coriander leaves and salt.",
+          "For the filling, mix mashed potatoes with onion, green chilli, ginger, red chilli powder, amchur, coriander leaves and salt.",
       },
       {
         step: 3,
@@ -3136,8 +3170,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A flaky, multi-layered whole wheat flatbread with crisp folds - cooked entirely on a tawa.",
     prepTime: "Approx. 40 minutes",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3217,8 +3252,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Tangy, lightly spiced rice tempered with peanuts, curry leaves and fresh lemon juice - perfect for lunchboxes.",
     prepTime: "Approx. 20 minutes (using pre-cooked rice)",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3342,9 +3378,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft paneer cubes in a luxuriously creamy, buttery tomato gravy - a restaurant favourite made simple at home.",
     prepTime: "Approx. 35 minutes",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3454,9 +3491,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Fragrant basmati rice layered with spiced, marinated chicken and slow-cooked to perfection - a true celebration dish.",
     prepTime: "Approx. 1.5 hours (plus 30 mins marination)",
     equipment: [
-      { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3494,10 +3531,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
         commonName: "Lal Mirch Powder",
         englishName: "red chilli powder",
       },
-      { amount: "1 inch", commonName: "Dalchini", englishName: "cinnamon" },
-      { amount: "3", commonName: "Elaichi", englishName: "cardamom pods" },
-      { amount: "4", commonName: "Laung", englishName: "cloves" },
-      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      {
+        amount: "1 inch, 3, 4, 1",
+        commonName: "Dalchini, Elaichi, Laung, Tej Patta",
+        englishName: "cinnamon, cardamom, cloves, bay leaf",
+      },
       {
         amount: "small handful",
         commonName: "Pudina aur Hara Dhaniya",
@@ -3589,9 +3627,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A crisp, golden fermented rice-and-lentil crepe, filled with a lightly spiced potato masala - a South Indian classic.",
     prepTime: "Approx. 45 minutes (plus 8–12 hours fermentation)",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3705,8 +3744,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A simple, everyday dry sabzi of potatoes and cauliflower, lightly spiced and cooked until tender.",
     prepTime: "Approx. 30 minutes",
     equipment: [
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3824,9 +3864,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Slow-cooked black lentils in a rich, buttery, creamy gravy - deeply comforting and full of flavour.",
     prepTime: "Approx. 1 hour (plus overnight soaking)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -3944,8 +3985,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crispy, golden pastry triangles stuffed with a spiced potato and pea filling - the ultimate Indian tea-time snack.",
     prepTime: "Approx. 1 hour",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       {
@@ -4088,9 +4130,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft kidney beans in a thick, homely onion-tomato gravy served over fluffy rice - the ultimate comfort meal.",
     prepTime: "Approx. 1 hour (plus overnight soaking)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Rajma", englishName: "kidney beans, soaked overnight" },
@@ -4117,7 +4161,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 2,
         instruction:
-          "While the rajma cooks, rinse the basmati rice. Add it to a kadai with 2 cups water and a pinch of salt. Cover and cook on low for 12 to 15 minutes, then keep covered.",
+          "While that cooks, rinse the basmati until the water runs almost clear. Cook it in a pot with 2 cups water and a pinch of salt, covered, on low heat for 12 to 15 minutes. Leave it covered and off the heat until you're ready to serve.",
       },
       {
         step: 3,
@@ -4178,9 +4222,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Tangy, spicy chickpea curry with puffy, golden fried bread - the Punjabi weekend breakfast everyone loves.",
     prepTime: "Approx. 1.5 hours (plus overnight soaking and 2 hours dough rest)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
@@ -4207,7 +4252,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 1,
         instruction:
-          "Make the dough first. Mix maida, suji, baking soda, sugar and salt. Add yogurt, oil and a little warm water. Knead into a soft, slightly sticky dough.",
+          "Make the dough first, since it needs time. In a bowl, mix maida, suji, baking soda, sugar and 1/2 tsp salt. Add yogurt and 1 tablespoon oil, then knead with a little warm water into a soft, slightly sticky dough.",
       },
       {
         step: 2,
@@ -4217,7 +4262,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 3,
         instruction:
-          "Drain the soaked chickpeas. Pressure cook them with the tea bag, salt and 3 cups water for 8 to 10 whistles. Remove the tea bag and keep the chickpeas in their water.",
+          "Drain the soaked chickpeas and put them in a pressure cooker with the tea bag, 1/2 tsp salt and 3 cups water. Cook for 8 to 10 whistles, until soft enough to mash with a fingertip. Remove the tea bag and keep the chickpeas in their water.",
         tip: {
           title: "The dhaba colour trick",
           content:
@@ -4288,9 +4333,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Spicy, tangy chickpea curry served with soft, tawa-cooked kulchas - the classic street-food pairing, made at home.",
     prepTime: "Approx. 1.5 hours (plus overnight soaking and 1 hour dough rest)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
+      { item: "kadai", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
@@ -4317,7 +4364,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 1,
         instruction:
-          "Make the kulcha dough first. Mix maida, baking powder, baking soda, sugar and salt. Add yogurt, oil and a little water. Knead into a soft, smooth dough.",
+          "Make the kulcha dough first. Mix maida, baking powder, baking soda, sugar and 1/2 tsp salt. Add yogurt and 1 tablespoon oil, then knead with a little water into a soft, smooth dough.",
       },
       {
         step: 2,
@@ -4327,7 +4374,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 3,
         instruction:
-          "Drain the soaked chickpeas. Pressure cook them with the tea bag, salt and 3 cups water for 8 to 10 whistles. Remove the tea bag and keep the chickpeas in their water.",
+          "Drain the soaked chickpeas and pressure cook them with the tea bag, 1/2 tsp salt and 3 cups water for 8 to 10 whistles, until very soft. Remove the tea bag and keep the chickpeas in their water.",
       },
       {
         step: 4,
@@ -4387,9 +4434,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft paneer cubes in a rich, creamy, mildly sweet gravy made from onions, tomatoes and cashews - a proper special-occasion sabzi.",
     prepTime: "Approx. 40 minutes",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "250 g", commonName: "Paneer", englishName: "paneer, cubed" },
@@ -4474,9 +4523,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Everyday yellow dal, cooked soft and finished with a sizzling garlic-cumin tadka - simple, comforting and goes with everything.",
     prepTime: "Approx. 35 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1/2 cup", commonName: "Toor Dal", englishName: "split pigeon peas" },
@@ -4503,7 +4553,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 2,
         instruction:
-          "Cook for 4 to 5 whistles until the dal is soft. Let the pressure release, then whisk the dal until creamy. Add hot water if it is too thick.",
+          "Cook for 4 to 5 whistles, until the dal is completely soft. Once the pressure is gone, open the lid and whisk the dal with a spoon until creamy. Add a little hot water if it feels too thick.",
       },
       {
         step: 3,
@@ -4528,7 +4578,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 7,
         instruction:
-          "Heat the remaining ghee for the tadka. Add cumin, garlic and dried red chillies. Fry for about 30 seconds until the garlic is light golden.",
+          "For the final tadka, heat the remaining ghee in a small pan. Add the remaining cumin, then the garlic and dried red chillies. Fry for about 30 seconds until the garlic turns light golden.",
         tip: {
           title: "Don't burn the garlic",
           content:
@@ -4558,9 +4608,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft paneer and sweet green peas in a spiced onion-tomato gravy - a north Indian favourite that goes with roti or rice.",
     prepTime: "Approx. 35 minutes",
     equipment: [
-      { item: "grinder", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "200 g", commonName: "Paneer", englishName: "paneer, cubed" },
@@ -4622,7 +4673,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 8,
         instruction:
-          "Crush kasuri methi between your palms and add it if using, along with the garam masala. Mix gently.",
+          "Crush the kasuri methi between your palms and add it with the garam masala. Mix gently.",
       },
       {
         step: 9,
@@ -4642,10 +4693,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Buttery, spicy mashed vegetable curry served with toasted pav - Mumbai's most loved street food, easy to make at home.",
     prepTime: "Approx. 45 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "3 medium", commonName: "Aloo", englishName: "potatoes, peeled and cubed" },
@@ -4734,9 +4786,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Boiled eggs simmered in a spiced onion-tomato gravy - quick, filling and perfect with rice or roti.",
     prepTime: "Approx. 35 minutes",
     equipment: [
-      { item: "cooker", isSpecialized: false, alternative: null },
+
+      { item: "pan", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "5", commonName: "Ande", englishName: "eggs" },
@@ -4821,9 +4874,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, fluffy steamed rice-lentil cakes served with a tangy, spiced lentil-and-vegetable sambar - a light South Indian breakfast.",
     prepTime: "Approx. 50 minutes (using ready idli batter)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "3 cups", commonName: "Idli Batter", englishName: "fermented idli batter" },
@@ -4867,7 +4921,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       {
         step: 4,
         instruction:
-          "For the sambar, cook carrot, onion, tomato and optional bottle gourd or drumstick pieces with 2 cups water and a pinch of salt for 8 to 10 minutes, until tender.",
+          "For the sambar, put the chopped carrot, onion, tomato and other vegetables in a pot with 2 cups water and a pinch of salt. Cook for 8 to 10 minutes until tender.",
       },
       {
         step: 5,
@@ -4908,8 +4962,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Thin, crisp, golden dosa made from fermented rice-lentil batter - simple, light and great with chutney and sambar.",
     prepTime: "Approx. 30 minutes (using ready dosa batter)",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 cups", commonName: "Dosa Batter", englishName: "fermented dosa batter" },
@@ -4978,8 +5033,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Bread dipped in a spiced egg mixture with onion, green chilli and coriander, then pan-fried golden - a quick desi-style breakfast.",
     prepTime: "Approx. 15 minutes",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "4 slices", commonName: "Bread", englishName: "bread slices" },
@@ -5051,8 +5107,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Tender, lightly spiced dry french beans with onion and cumin - a quick everyday sabzi that goes with roti or dal-rice.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "250 g", commonName: "French Beans", englishName: "french beans, trimmed and chopped small" },
@@ -5094,8 +5151,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, juicy soya chunks simmered in a spiced onion-tomato gravy - a protein-packed sabzi that goes well with roti or rice.",
     prepTime: "Approx. 35 minutes",
     equipment: [
+
+      { item: "pan", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Nutrela / Soya Chunks", englishName: "soya chunks" },
@@ -5143,8 +5202,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Warm, ghee-rich halwa made from roasted whole wheat flour and sugar - the same comforting taste as gurudwara prasad, ready in 20 minutes.",
     prepTime: "Approx. 20 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1/2 cup", commonName: "Atta", englishName: "whole wheat flour" },
@@ -5167,7 +5228,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
       { step: 4, instruction: "Stand back a little and carefully pour in the hot syrup while stirring. It will splutter and bubble, which is normal." },
       { step: 5, instruction: "Keep stirring for 2 to 3 minutes until the halwa thickens, turns glossy and leaves the sides of the pan." },
-      { step: 6, instruction: "Turn off the heat, top with almonds if using and serve warm." },
+      { step: 6, instruction: "Turn off the heat, top with almonds and serve warm." },
     ],
     notes: [
       "Always add hot syrup to the roasted atta. Cold water causes lumps.",
@@ -5181,9 +5242,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Nutty, thick split chickpea dal with a garlicky onion-tomato tadka - hearty and best with hot rice or roti.",
     prepTime: "Approx. 45 minutes (plus 1 hour soaking)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "pan", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Chana Dal", englishName: "split chickpeas, soaked 1 hour" },
@@ -5229,10 +5291,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Mild, pale chickpea curry in a smooth onion-ginger gravy with yogurt - lighter than the usual dark chole and lovely with kulche or rice.",
     prepTime: "Approx. 1 hour (plus overnight soaking)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "grinder", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
@@ -5252,7 +5315,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     method: [
       { step: 1, instruction: "Drain the soaked chickpeas and pressure cook with 3 cups water and 1/2 tsp salt for 8 to 10 whistles, until very soft. Keep them in their water." },
-      { step: 2, instruction: "Blend the onions, ginger and green chillies. Add the cashews if using, plus a few tablespoons of water, and blend to a smooth pale paste." },
+      { step: 2, instruction: "Blend the onions, ginger, green chillies and cashews with a few tablespoons of water into a smooth, pale paste." },
       { step: 3, instruction: "Heat ghee in a kadai and add the cumin seeds and bay leaf. Let them sizzle for 10 seconds." },
       {
         step: 4,
@@ -5279,8 +5342,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Desi-style red sauce pasta with onion, capsicum and a little garam masala - tangy, a little spicy and ready in 25 minutes.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
+      { item: "pan", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1.5 cups", commonName: "Pasta", englishName: "penne or any short pasta" },
@@ -5326,8 +5391,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Loaded masala Maggi with onion, tomato and green chilli - a fast, comforting favourite for rainy evenings and late-night hunger.",
     prepTime: "Approx. 10 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 packets", commonName: "Maggi Noodles", englishName: "instant noodles with tastemaker" },
@@ -5342,7 +5408,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     method: [
       { step: 1, instruction: "Heat butter or oil in a pan. Add the onion and green chilli and cook for 1 to 2 minutes until soft." },
-      { step: 2, instruction: "Add the tomato and vegetables if using. Cook for 2 minutes." },
+      { step: 2, instruction: "Add the tomato and any vegetables and cook for 2 minutes." },
       { step: 3, instruction: "Add the water and both tastemaker sachets. Stir and bring it to a boil." },
       { step: 4, instruction: "Break the noodle cakes into the boiling water. Cook for 2 to 3 minutes, gently pushing the noodles down and turning them, until they turn soft." },
       {
@@ -5367,8 +5433,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Street-style masala macaroni tossed with veggies, tomato and Indian spices - tangy and slightly spicy, and kids love it.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
+      { item: "pan", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1.5 cups", commonName: "Macaroni", englishName: "elbow macaroni" },
@@ -5413,7 +5481,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A soft, fluffy eggless vanilla sponge made with curd and basic pantry ingredients - easy for beginners and great with tea.",
     prepTime: "Approx. 50 minutes",
     equipment: [
+
       { item: "oven", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1.5 cups", commonName: "Maida", englishName: "all-purpose flour" },
@@ -5456,8 +5526,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crispy, golden onion and potato fritters made with gram flour and spices - the ultimate monsoon snack with chai.",
     prepTime: "Approx. 30 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 large", commonName: "Pyaaz", englishName: "onions, thinly sliced" },
@@ -5475,7 +5546,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     method: [
       {
         step: 1,
-        instruction: "In a bowl, mix the sliced onion and potato if using with 1/2 teaspoon salt. Rub with your hands and leave for 10 minutes. The vegetables will release water.",
+        instruction: "In a bowl, mix the sliced onion, potato and 1/2 teaspoon salt. Rub with your hands and leave for 10 minutes. The vegetables will release water.",
         tip: {
           title: "Little or no water",
           content: "The water from the salted onions is usually enough to make the batter. Too much added water makes soggy pakode.",
@@ -5501,8 +5572,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Strong, milky Indian tea simmered with ginger and cardamom - the everyday cup that starts most Indian mornings. Makes 2 cups.",
     prepTime: "Approx. 10 minutes",
     equipment: [
+
       { item: "pan", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Paani", englishName: "water" },
@@ -5542,9 +5614,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Paneer and capsicum tossed in a punchy, freshly ground kadai masala with onion and tomato - drier and spicier than a paneer gravy, not to be confused with palak paneer's smooth spinach base.",
     prepTime: "Approx. 30 minutes",
     equipment: [
-      { item: "grinder", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "200 g", commonName: "Paneer", englishName: "paneer, cubed" },
@@ -5593,8 +5666,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Chicken marinated in spiced, tangy yogurt and roasted until charred at the edges and smoky inside - the tandoor flavour, made entirely in a home oven.",
     prepTime: "Approx. 50 minutes (plus 4+ hours marination)",
     equipment: [
+
       { item: "oven", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "800 g", commonName: "Chicken", englishName: "chicken leg pieces, skin removed, slit deeply" },
@@ -5624,7 +5699,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 4, instruction: "Take the chicken out 20 minutes before cooking so it isn't fridge-cold. Preheat the oven to 220°C (425°F)." },
       { step: 5, instruction: "Arrange the pieces on a wire rack over a tray (or directly on a greased tray) and roast for 25 to 30 minutes, turning once halfway through." },
       { step: 6, instruction: "Switch the oven to grill/broil mode for the last 3 to 5 minutes to get charred spots on top. Watch closely so it doesn't burn." },
-      { step: 7, instruction: "Brush generously with melted butter, squeeze over some fresh lemon and serve hot with mint chutney and sliced onions." },
+      {
+        step: 7,
+        instruction: "For a smoky finish, place a small piece of hot charcoal in a steel bowl, set it in the centre of the tray, pour a few drops of oil on it and cover the tray tightly with foil for 2 minutes. This is optional but authentic.",
+      },
+      { step: 8, instruction: "Brush generously with melted butter, squeeze over some fresh lemon and serve hot with mint chutney and sliced onions." },
     ],
     notes: [
       "No wire rack? Just flip the pieces once or twice during roasting so both sides colour evenly.",
@@ -5638,9 +5717,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Fragrant basmati rice layered with a spiced mixed-vegetable masala and slow-cooked on dum - a full celebration meal in one pot.",
     prepTime: "Approx. 1 hour",
     equipment: [
-      { item: "cooker", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "cooker", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1.5 cups", commonName: "Basmati Chawal", englishName: "basmati rice, soaked 30 minutes" },
@@ -5651,17 +5732,14 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
       { amount: "2 tbsp", commonName: "Biryani Masala", englishName: "biryani masala powder" },
       { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
-      { amount: "1 inch", commonName: "Dalchini", englishName: "cinnamon" },
-      { amount: "3", commonName: "Elaichi", englishName: "cardamom pods" },
-      { amount: "4", commonName: "Laung", englishName: "cloves" },
-      { amount: "1", commonName: "Tej Patta", englishName: "bay leaf" },
+      { amount: "1 inch, 3, 4, 1", commonName: "Dalchini, Elaichi, Laung, Tej Patta", englishName: "cinnamon, cardamom, cloves, bay leaf" },
       { amount: "a small handful", commonName: "Pudina aur Hara Dhaniya", englishName: "mint and coriander leaves, chopped" },
       { amount: "a few strands in 2 tbsp warm milk", commonName: "Kesar Doodh", englishName: "saffron soaked in warm milk" },
       { amount: "3 tbsp", commonName: "Ghee ya Tel", englishName: "ghee or oil" },
       { amount: "to taste", commonName: "Namak", englishName: "salt" },
     ],
     method: [
-      { step: 1, instruction: "Boil water with the whole spices and salt. Add the soaked rice and cook until about 70% done. The centre should still feel slightly firm." },
+      { step: 1, instruction: "Boil a large pot (or cooker, uncovered) of water with the whole spices and salt. Add the soaked rice and cook until about 70% done - still a bit firm at the centre when you bite one grain." },
       { step: 2, instruction: "Drain the rice immediately and spread it on a plate so it doesn't keep cooking." },
       { step: 3, instruction: "Heat ghee in the kadai. Add the ginger-garlic paste and cook for 1 minute." },
       { step: 4, instruction: "Add the potato and mixed vegetables and stir-fry for 4 to 5 minutes." },
@@ -5691,10 +5769,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Spiced mashed potato dumplings, deep fried in a gram flour batter and packed into a soft pav with chutneys - Mumbai's favourite quick bite.",
     prepTime: "Approx. 40 minutes",
     equipment: [
-      { item: "grinder", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "tawa", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "4 medium", commonName: "Aloo", englishName: "potatoes, boiled and mashed" },
@@ -5713,7 +5792,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { amount: "to taste", commonName: "Namak", englishName: "salt" },
     ],
     method: [
-      { step: 1, instruction: "For the dry garlic chutney, roast garlic and coconut on low heat until lightly golden. Cool, then grind with red chilli powder and a pinch of salt." },
+      { step: 1, instruction: "For the dry garlic chutney, dry roast the garlic cloves and coconut in a pan on low heat until light golden and fragrant. Cool, then grind coarsely with red chilli powder and a pinch of salt. Set aside." },
       { step: 2, instruction: "Heat 1 tablespoon oil in the kadai. Add mustard seeds and let them pop, then add curry leaves and the ginger-garlic-chilli paste. Cook for 30 seconds." },
       { step: 3, instruction: "Add turmeric and the mashed potato, along with salt. Mix everything together well and cook for 2 minutes. Let it cool slightly." },
       { step: 4, instruction: "Shape the potato mixture into round balls, about the size of a small lemon." },
@@ -5728,7 +5807,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
       { step: 7, instruction: "Fry in batches for 4 to 5 minutes, turning occasionally, until deep golden and crisp all over. Drain on paper towels." },
       { step: 8, instruction: "Slit each pav and toast it lightly on the tawa with a little oil or butter until warm." },
-      { step: 9, instruction: "Spread green chutney on one side of the pav and garlic chutney on the other. Place a hot vada inside and press gently. Serve with fried green chilli if you like." },
+      { step: 9, instruction: "Spread green chutney on one side of the pav and a pinch of dry garlic chutney on the other. Place a hot vada inside and press gently. Serve immediately, with a fried green chilli on the side if you like it spicy." },
     ],
     notes: [
       "The batter should coat the back of a spoon and drip off slowly. Too thin and it won't stick; too thick and it turns doughy.",
@@ -5742,9 +5821,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Thin, tangy, peppery South Indian lentil-tomato soup, finished with a sizzling tadka - light, comforting, and great with rice or on its own.",
     prepTime: "Approx. 30 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1/4 cup", commonName: "Toor Dal", englishName: "split pigeon peas" },
@@ -5791,9 +5871,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, comforting rice and moong dal cooked together with mild spices - the classic simple, easy-to-digest one-pot meal.",
     prepTime: "Approx. 30 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
-      { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1/2 cup", commonName: "Chawal", englishName: "rice, rinsed" },
@@ -5837,7 +5918,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Thick, chilled, sweetened yogurt drink blended till frothy - the classic cooling companion to a spicy meal or a hot afternoon.",
     prepTime: "Approx. 10 minutes",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 cups", commonName: "Dahi (gaadha, thanda)", englishName: "thick, chilled yogurt" },
@@ -5860,7 +5943,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
         },
       },
       { step: 4, instruction: "Taste and add a little more sugar if needed, then blend for 5 more seconds to mix it in." },
-      { step: 5, instruction: "Pour into tall glasses. Top with saffron and cream if using, and serve immediately." },
+      { step: 5, instruction: "Pour into tall glasses. Top with a few saffron strands and a small spoon of fresh cream if using, and serve immediately." },
     ],
     notes: [
       "Use thick, full-fat yogurt - thin or watery yogurt makes a runny lassi no matter how much you blend it.",
@@ -5875,8 +5958,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft everyday Indian flatbread made from whole wheat flour, cooked on a tawa and finished directly over the stove for a light puff.",
     prepTime: "Approx. 30 minutes (plus 15 minutes resting)",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 cups", commonName: "Gehu ka Atta", englishName: "whole wheat flour" },
@@ -5912,9 +5997,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A comforting one-pot South Indian rice dish cooked with toor dal, vegetables, tamarind and sambar spices for an easy home meal.",
     prepTime: "Approx. 40 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1/2 cup", commonName: "Chawal", englishName: "rice, rinsed" },
@@ -5961,9 +6048,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crispy puris filled with spiced potato, tangy tamarind water and mint water, prepared easily at home with ready-made puris.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "24", commonName: "Puri", englishName: "ready-made pani puri shells" },
@@ -6005,8 +6093,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft milk dumplings soaked in sweet, cardamom-scented milk, finished with saffron and nuts for an easy homemade dessert.",
     prepTime: "Approx. 45 minutes (plus 1 hour chilling)",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "8", commonName: "Rasmalai Pieces", englishName: "ready-made rasgulla pieces" },
@@ -6043,9 +6133,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A homestyle Indian mutton curry made with onions, tomatoes and everyday spices, cooked until the meat is tender and the gravy is rich.",
     prepTime: "Approx. 1 hour 15 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "500 g", commonName: "Mutton", englishName: "mutton curry-cut pieces" },
@@ -6092,9 +6184,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crisp outside and soft inside South Indian lentil fritters made from urad dal, perfect with sambar or coconut chutney.",
     prepTime: "Approx. 35 minutes (plus 4 hours soaking)",
     equipment: [
+
       { item: "grinder", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1 cup", commonName: "Urad Dal", englishName: "split black gram, soaked 4 hours" },
@@ -6133,8 +6227,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A simple everyday North Indian sabzi of tender tinda cooked with onion and basic spices in a kadai.",
     prepTime: "Approx. 30 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "500 g", commonName: "Tinda", englishName: "round gourd, peeled and chopped" },
@@ -6176,8 +6272,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A simple winter sabzi of sweet carrots and green peas cooked with cumin and mild spices, ideal for everyday home meals.",
     prepTime: "Approx. 25 minutes",
     equipment: [
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "3 medium", commonName: "Gajar", englishName: "carrots, peeled and chopped" },
@@ -6218,9 +6316,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A spicy, smoky-style chicken curry made at home with onions, tomatoes, capsicum and freshly crushed whole spices.",
     prepTime: "Approx. 50 minutes",
     equipment: [
-      { item: "grinder", isSpecialized: false, alternative: null },
+
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "500 g", commonName: "Chicken", englishName: "boneless or curry-cut chicken" },
@@ -6267,9 +6367,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A home-style mutton biryani made with tender spiced mutton, basmati rice, yogurt and whole spices, finished together on the stove.",
     prepTime: "Approx. 1 hour 30 minutes (plus 30 minutes marination)",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
       { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "500 g", commonName: "Mutton", englishName: "mutton curry-cut pieces" },
@@ -6323,8 +6425,10 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft, thick South Indian savory pancakes topped with onion, tomato and green chilli, cooked on a tawa at home.",
     prepTime: "Approx. 20 minutes",
     equipment: [
+
       { item: "tawa", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "2 cups", commonName: "Dosa Batter", englishName: "ready dosa batter" },
@@ -6362,9 +6466,11 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soft steamed dumplings filled with finely chopped vegetables, made with simple wrappers and steamed at home in a covered cooker.",
     prepTime: "Approx. 45 minutes",
     equipment: [
+
       { item: "cooker", isSpecialized: false, alternative: null },
-      { item: "kadai", isSpecialized: false, alternative: null },
       { item: "stove", isSpecialized: false, alternative: null },
+      { item: "kadai", isSpecialized: false, alternative: null },
+    
     ],
     ingredients: [
       { amount: "1.5 cups", commonName: "Maida", englishName: "all-purpose flour" },
@@ -6400,4 +6506,660 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "You can add finely chopped paneer to the vegetable filling for a richer home-style version.",
     ],
   },
+  // ============================================================
+  // MORE HOME CLASSICS
+  // ============================================================
+
+  "egg omelette": {
+    dishName: "Egg Omelette",
+    description:
+      "A simple Indian-style omelette with eggs, onion, green chilli and coriander, ready in minutes.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "2", commonName: "Ande", englishName: "eggs" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, finely chopped" },
+      { amount: "2 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+      { amount: "1/4 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "1 tsp", commonName: "Tel", englishName: "cooking oil" },
+    ],
+    method: [
+      { step: 1, instruction: "Crack the eggs into a bowl and beat them until smooth." },
+      { step: 2, instruction: "Mix in onion, green chilli, coriander, red chilli powder and salt." },
+      { step: 3, instruction: "Heat the tawa on medium heat and spread the oil." },
+      { step: 4, instruction: "Pour in the egg mixture and spread it gently into an even layer." },
+      { step: 5, instruction: "Cook for 1 to 2 minutes until the edges set, then loosen them with a spatula." },
+      { step: 6, instruction: "Fold the omelette and cook for another 30 seconds. Serve hot." },
+    ],
+    notes: ["Add chopped tomato or grated cheese for a different home-style omelette."]
+  },
+
+  "boiled eggs": {
+    dishName: "Boiled Eggs",
+    description:
+      "Simple boiled eggs with a soft, medium or hard centre, made on the stove in one pot.",
+    prepTime: "Approx. 12 minutes",
+    equipment: [
+
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "4", commonName: "Ande", englishName: "eggs" },
+      { amount: "as needed", commonName: "Paani", englishName: "water" },
+      { amount: "optional", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Place the eggs in a pan and add enough water to cover them by about 2 cm." },
+      { step: 2, instruction: "Bring the water to a full boil over medium-high heat." },
+      { step: 3, instruction: "For hard-boiled eggs, boil for 9 to 10 minutes after the water starts boiling." },
+      { step: 4, instruction: "Turn off the stove and place the eggs in cool water for 5 minutes." },
+      { step: 5, instruction: "Tap the shells gently, peel the eggs and serve." },
+    ],
+    notes: ["For softer yolks, reduce the boiling time by 2 to 3 minutes."]
+  },
+
+  "veg sandwich": {
+    dishName: "Veg Sandwich",
+    description:
+      "An easy Indian vegetable sandwich with chutney, cucumber, tomato, onion and lightly toasted bread.",
+    prepTime: "Approx. 15 minutes",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "4 slices", commonName: "Bread", englishName: "bread" },
+      { amount: "2 tbsp", commonName: "Hari Chutney", englishName: "green chutney" },
+      { amount: "1 small", commonName: "Kheera", englishName: "cucumber, thinly sliced" },
+      { amount: "1 small", commonName: "Tamatar", englishName: "tomato, thinly sliced" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, thinly sliced" },
+      { amount: "1 small", commonName: "Aloo", englishName: "boiled potato, sliced" },
+      { amount: "1/2 tsp", commonName: "Chaat Masala", englishName: "chaat masala" },
+      { amount: "1 tbsp", commonName: "Makhan", englishName: "butter" },
+    ],
+    method: [
+      { step: 1, instruction: "Spread green chutney on one side of each bread slice." },
+      { step: 2, instruction: "Layer potato, cucumber, tomato and onion on two slices." },
+      { step: 3, instruction: "Sprinkle chaat masala over the vegetables and close the sandwiches." },
+      { step: 4, instruction: "Heat the tawa and melt a little butter." },
+      { step: 5, instruction: "Toast the sandwiches on both sides until lightly crisp and golden." },
+      { step: 6, instruction: "Cut and serve hot with chutney or ketchup." },
+    ],
+    notes: []
+  },
+
+  "paneer sandwich": {
+    dishName: "Paneer Sandwich",
+    description:
+      "A quick toasted sandwich filled with crumbled paneer, onion, capsicum and mild Indian spices.",
+    prepTime: "Approx. 20 minutes",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "4 slices", commonName: "Bread", englishName: "bread" },
+      { amount: "150 g", commonName: "Paneer", englishName: "crumbled paneer" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1/2", commonName: "Shimla Mirch", englishName: "capsicum, finely chopped" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Chaat Masala", englishName: "chaat masala" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "1 tbsp", commonName: "Makhan", englishName: "butter" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat oil in a kadai and cook onion and capsicum for 2 to 3 minutes." },
+      { step: 2, instruction: "Add paneer, turmeric, red chilli powder, chaat masala and salt. Mix well." },
+      { step: 3, instruction: "Cook for 2 minutes, then turn off the stove." },
+      { step: 4, instruction: "Butter the bread slices and place the paneer filling between two slices." },
+      { step: 5, instruction: "Toast the sandwiches on a hot tawa until crisp and golden on both sides." },
+      { step: 6, instruction: "Cut and serve hot." },
+    ],
+    notes: ["Add grated cheese if you want a richer sandwich."]
+  },
+
+  "besan chila": {
+    dishName: "Besan Chila",
+    description:
+      "A quick savoury pancake made with gram flour, onion, green chilli and spices, cooked on a tawa.",
+    prepTime: "Approx. 20 minutes",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Besan", englishName: "gram flour" },
+      { amount: "1", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, finely chopped" },
+      { amount: "2 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Ajwain", englishName: "carom seeds" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "as needed", commonName: "Paani", englishName: "water" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix besan, turmeric, ajwain, salt, onion, chilli and coriander in a bowl." },
+      { step: 2, instruction: "Add water little by little and make a smooth, medium-thick batter." },
+      { step: 3, instruction: "Heat the tawa on medium heat and lightly grease it with oil." },
+      { step: 4, instruction: "Pour a ladle of batter and spread it into a thin round chila." },
+      { step: 5, instruction: "Cook until the top looks set and the bottom is golden." },
+      { step: 6, instruction: "Flip, cook the other side for 1 to 2 minutes and serve hot." },
+    ],
+    notes: ["Add grated carrot, tomato or spinach for extra vegetables."]
+  },
+
+  "pongal (ven pongal)": {
+    dishName: "Pongal (Ven Pongal)",
+    description:
+      "A soft South Indian rice and moong dal dish cooked with ginger, pepper, cumin and ghee.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+
+      { item: "cooker", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "1/2 cup", commonName: "Chawal", englishName: "rice" },
+      { amount: "1/2 cup", commonName: "Moong Dal", englishName: "split yellow moong dal" },
+      { amount: "4 cups", commonName: "Paani", englishName: "water" },
+      { amount: "1 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1 tsp", commonName: "Kali Mirch", englishName: "whole black peppercorns" },
+      { amount: "1 inch", commonName: "Adrak", englishName: "ginger, chopped" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "2 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Rinse the rice and moong dal together until the water is mostly clear." },
+      { step: 2, instruction: "Add rice, dal, water and salt to the cooker." },
+      { step: 3, instruction: "Cook for 3 to 4 whistles until the rice and dal are very soft." },
+      { step: 4, instruction: "Heat ghee in the cooker after opening it. Add cumin, pepper, ginger, curry leaves and hing." },
+      { step: 5, instruction: "Cook for 30 seconds, then mix the tempering into the soft rice and dal." },
+      { step: 6, instruction: "Add a little hot water if needed, mix until creamy and serve hot." },
+    ],
+    notes: ["Pongal should be soft and moist, not dry. Add a little hot water before serving if it thickens."]
+  },
+
+  "chole chawal": {
+    dishName: "Chole Chawal",
+    description:
+      "Spiced Punjabi-style chickpeas served with fluffy basmati rice, made simply in one home kitchen.",
+    prepTime: "Approx. 50 minutes (plus overnight soaking)",
+    equipment: [
+
+      { item: "cooker", isSpecialized: false, alternative: null },
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Kabuli Chana", englishName: "white chickpeas, soaked overnight" },
+      { amount: "1 cup", commonName: "Basmati Chawal", englishName: "basmati rice" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "2 tsp", commonName: "Chole Masala", englishName: "chole masala powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "3 cups", commonName: "Paani", englishName: "water" },
+    ],
+    method: [
+      { step: 1, instruction: "Pressure cook the soaked chickpeas with 2 cups water and a little salt for 5 to 6 whistles." },
+      { step: 2, instruction: "Rinse the rice. Add it to a pot with 2 cups water and a little salt, then cook covered until fluffy." },
+      { step: 3, instruction: "Heat oil in a kadai. Add cumin and let it sizzle." },
+      { step: 4, instruction: "Add onion and cook until golden. Add ginger-garlic paste and cook for 30 seconds." },
+      { step: 5, instruction: "Add tomatoes, turmeric and chole masala. Cook until the tomatoes turn soft." },
+      { step: 6, instruction: "Add the cooked chickpeas with some cooking water and simmer for 10 minutes." },
+      { step: 7, instruction: "Taste for salt, turn off the stove and serve the chole with the cooked rice." },
+    ],
+    notes: []
+  },
+
+  "kadhi chawal": {
+    dishName: "Kadhi Chawal",
+    description:
+      "A comforting North Indian yogurt and gram flour kadhi served with simple steamed rice.",
+    prepTime: "Approx. 45 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Dahi", englishName: "plain yogurt" },
+      { amount: "3 tbsp", commonName: "Besan", englishName: "gram flour" },
+      { amount: "3 cups", commonName: "Paani", englishName: "water" },
+      { amount: "1 cup", commonName: "Chawal", englishName: "rice" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/2 tsp", commonName: "Rai", englishName: "mustard seeds" },
+      { amount: "1/4 tsp", commonName: "Methi", englishName: "fenugreek seeds" },
+      { amount: "1 pinch", commonName: "Hing", englishName: "asafoetida" },
+      { amount: "1", commonName: "Sukhi Lal Mirch", englishName: "dried red chilli" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Whisk yogurt, besan, turmeric, salt and water until completely smooth." },
+      { step: 2, instruction: "Pour the mixture into a kadai and cook on medium heat, stirring often." },
+      { step: 3, instruction: "Let it come to a gentle simmer, then cook for 20 to 25 minutes until slightly thick." },
+      { step: 4, instruction: "Cook the rice separately until soft and fluffy." },
+      { step: 5, instruction: "For the tadka, heat oil and add mustard, cumin, fenugreek, hing, dried chilli and curry leaves." },
+      { step: 6, instruction: "Sizzle for a few seconds and pour the tadka into the kadhi." },
+      { step: 7, instruction: "Serve the hot kadhi over steamed rice." },
+    ],
+    notes: ["Keep the kadhi simmering gently. Hard boiling can make the yogurt split." ]
+  },
+
+  "bread pakoda": {
+    dishName: "Bread Pakoda",
+    description:
+      "Crispy bread slices coated in a simple besan batter and shallow or deep fried at home.",
+    prepTime: "Approx. 25 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "6 slices", commonName: "Bread", englishName: "bread" },
+      { amount: "1 cup", commonName: "Besan", englishName: "gram flour" },
+      { amount: "1/2 tsp", commonName: "Ajwain", englishName: "carom seeds" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "as needed", commonName: "Paani", englishName: "water" },
+      { amount: "as needed", commonName: "Tel", englishName: "cooking oil, for frying" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "optional", commonName: "Aloo", englishName: "boiled potato filling" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix besan, ajwain, chilli powder, turmeric and salt." },
+      { step: 2, instruction: "Add water little by little to make a smooth batter that coats the bread." },
+      { step: 3, instruction: "Spread the optional potato filling on bread and close with another slice." },
+      { step: 4, instruction: "Heat oil in a kadai on medium heat." },
+      { step: 5, instruction: "Dip each sandwich or bread slice in the batter and gently lower it into the hot oil." },
+      { step: 6, instruction: "Fry until crisp and golden on both sides, then drain and serve hot." },
+    ],
+    notes: ["For a lighter version, cook the battered bread on a lightly oiled tawa instead of deep frying."]
+  },
+
+  "kachori (moong dal kachori)": {
+    dishName: "Kachori (Moong Dal Kachori)",
+    description:
+      "Crisp flaky kachori filled with a mildly spiced roasted moong dal mixture, made at home with a kadai.",
+    prepTime: "Approx. 1 hour",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "2 cups", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "1/2 cup", commonName: "Moong Dal", englishName: "yellow moong dal, soaked 1 hour" },
+      { amount: "1 tsp", commonName: "Saunf", englishName: "fennel seeds" },
+      { amount: "1 tsp", commonName: "Dhaniya", englishName: "coriander seeds" },
+      { amount: "1/2 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Amchur", englishName: "dry mango powder" },
+      { amount: "4 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "as needed", commonName: "Paani", englishName: "water" },
+      { amount: "as needed", commonName: "Tel", englishName: "cooking oil, for frying" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix maida, 3 tablespoons ghee and salt. Add water gradually and make a firm dough. Rest for 20 minutes." },
+      { step: 2, instruction: "Drain the soaked dal and grind it coarsely in a grinder without making a smooth paste." },
+      { step: 3, instruction: "Heat 1 tablespoon ghee in a kadai. Add cumin, fennel and coriander seeds." },
+      { step: 4, instruction: "Add the ground dal, chilli powder and amchur. Cook until the mixture is dry and fragrant. Cool it." },
+      { step: 5, instruction: "Divide the dough and filling into small portions. Flatten each dough ball, fill and seal." },
+      { step: 6, instruction: "Gently flatten each kachori and keep the edges slightly thicker." },
+      { step: 7, instruction: "Fry the kachoris in medium-hot oil on low to medium heat until puffed and golden." },
+      { step: 8, instruction: "Drain well and serve warm." },
+    ],
+    notes: ["Keep the oil at medium heat. Very hot oil can brown the outside before the kachori cooks through."]
+  },
+
+  "bhel puri": {
+    dishName: "Bhel Puri",
+    description:
+      "A crunchy Mumbai-style snack made with puffed rice, vegetables, chutneys and sev, easy to assemble at home.",
+    prepTime: "Approx. 10 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "4 cups", commonName: "Murmura", englishName: "puffed rice" },
+      { amount: "1/2 cup", commonName: "Sev", englishName: "sev" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1 small", commonName: "Tamatar", englishName: "tomato, finely chopped" },
+      { amount: "1 small", commonName: "Aloo", englishName: "boiled potato, chopped" },
+      { amount: "2 tbsp", commonName: "Hari Chutney", englishName: "green chutney" },
+      { amount: "2 tbsp", commonName: "Imli Chutney", englishName: "tamarind chutney" },
+      { amount: "1/2 tsp", commonName: "Chaat Masala", englishName: "chaat masala" },
+      { amount: "1", commonName: "Nimbu", englishName: "lemon" },
+    ],
+    method: [
+      { step: 1, instruction: "Dry roast the puffed rice in a kadai on low heat for 2 to 3 minutes so it stays crisp." },
+      { step: 2, instruction: "Let it cool for a minute, then add onion, tomato and boiled potato." },
+      { step: 3, instruction: "Add green chutney, tamarind chutney and chaat masala." },
+      { step: 4, instruction: "Squeeze in lemon juice and toss everything quickly." },
+      { step: 5, instruction: "Top with sev and serve immediately." },
+    ],
+    notes: ["Mix the chutneys just before eating so the puffed rice stays crunchy."]
+  },
+
+  "paneer tikka": {
+    dishName: "Paneer Tikka",
+    description:
+      "Easy home-style paneer tikka marinated in yogurt and spices, then cooked on a hot tawa until lightly charred.",
+    prepTime: "Approx. 30 minutes (plus 20 minutes marination)",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "250 g", commonName: "Paneer", englishName: "paneer, cubed" },
+      { amount: "1/2 cup", commonName: "Dahi", englishName: "thick yogurt" },
+      { amount: "1/2", commonName: "Shimla Mirch", englishName: "capsicum, cubed" },
+      { amount: "1", commonName: "Pyaaz", englishName: "onion, cubed" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1 tsp", commonName: "Nimbu Ras", englishName: "lemon juice" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix yogurt, chilli powder, turmeric, garam masala, coriander powder, lemon juice and salt." },
+      { step: 2, instruction: "Add paneer, capsicum and onion. Mix gently and rest for 20 minutes." },
+      { step: 3, instruction: "Heat the tawa and spread a little oil." },
+      { step: 4, instruction: "Place the marinated paneer and vegetables on the hot tawa." },
+      { step: 5, instruction: "Cook on medium-high heat, turning gently, until the paneer and vegetables get light char marks." },
+      { step: 6, instruction: "Serve hot with lemon wedges or chutney." },
+    ],
+    notes: ["Do not cook paneer for too long or it can become firm and chewy."]
+  },
+
+  "rasam rice": {
+    dishName: "Rasam Rice",
+    description:
+      "Comforting steamed rice mixed with a thin, tangy tomato rasam and a simple South Indian tempering.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "1 cup", commonName: "Chawal", englishName: "rice" },
+      { amount: "2", commonName: "Tamatar", englishName: "tomatoes" },
+      { amount: "1/2 tsp", commonName: "Jeera", englishName: "cumin seeds" },
+      { amount: "1/2 tsp", commonName: "Kali Mirch", englishName: "black pepper, crushed" },
+      { amount: "1/2 tsp", commonName: "Rasam Powder", englishName: "rasam powder" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1/2 tsp", commonName: "Rai", englishName: "mustard seeds" },
+      { amount: "a few", commonName: "Kadi Patta", englishName: "curry leaves" },
+      { amount: "1", commonName: "Sukhi Lal Mirch", englishName: "dried red chilli" },
+      { amount: "1 tsp", commonName: "Imli", englishName: "tamarind pulp" },
+      { amount: "1 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "3 cups", commonName: "Paani", englishName: "water" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Cook the rice until soft and keep it warm." },
+      { step: 2, instruction: "Crush the tomatoes and add them to a kadai with water, turmeric, rasam powder and salt." },
+      { step: 3, instruction: "Simmer for 8 to 10 minutes until the tomatoes soften and the rasam smells fragrant." },
+      { step: 4, instruction: "Add tamarind pulp, cumin and crushed pepper. Simmer for 2 more minutes." },
+      { step: 5, instruction: "Heat ghee in a small kadai and add mustard, dried chilli and curry leaves." },
+      { step: 6, instruction: "Pour the tadka into the rasam and turn off the stove." },
+      { step: 7, instruction: "Mix hot rice with rasam and serve immediately." },
+    ],
+    notes: ["Keep rasam thin and pourable. Add hot water if it gets too concentrated."]
+  },
+
+  "chicken kabab": {
+    dishName: "Chicken Kabab",
+    description:
+      "Juicy home-style chicken kababs marinated in yogurt and spices, then cooked on a tawa until lightly charred.",
+    prepTime: "Approx. 35 minutes (plus 30 minutes marination)",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "500 g", commonName: "Chicken", englishName: "boneless chicken, small pieces" },
+      { amount: "1/2 cup", commonName: "Dahi", englishName: "yogurt" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1 tbsp", commonName: "Nimbu Ras", englishName: "lemon juice" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix yogurt, ginger-garlic paste, chilli powder, turmeric, garam masala, coriander, lemon and salt." },
+      { step: 2, instruction: "Add chicken and coat well. Marinate for 30 minutes." },
+      { step: 3, instruction: "Heat the tawa and spread a little oil." },
+      { step: 4, instruction: "Place the chicken pieces on the hot tawa without crowding them." },
+      { step: 5, instruction: "Cook on medium heat, turning every few minutes, until browned and fully cooked inside." },
+      { step: 6, instruction: "Serve hot with lemon and onion." },
+    ],
+    notes: ["Cut the chicken into similar sizes so all pieces cook evenly."]
+  },
+
+  "seekh kabab": {
+    dishName: "Seekh Kabab",
+    description:
+      "Juicy spiced minced-meat seekh kababs made at home without a tandoor, shaped and cooked on a tawa.",
+    prepTime: "Approx. 40 minutes (plus 20 minutes resting)",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "500 g", commonName: "Chicken Keema", englishName: "chicken mince" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, finely chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1/2 tsp", commonName: "Jeera", englishName: "cumin powder" },
+      { amount: "1 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "2 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves, chopped" },
+      { amount: "1 tbsp", commonName: "Nimbu Ras", englishName: "lemon juice" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix chicken mince, onion, chilli, ginger-garlic paste, spices, coriander, lemon and salt." },
+      { step: 2, instruction: "Mix firmly until the mixture becomes sticky, then rest it for 20 minutes." },
+      { step: 3, instruction: "Wet your hands and shape the mixture into long, flat kababs." },
+      { step: 4, instruction: "Heat a tawa and lightly oil it." },
+      { step: 5, instruction: "Place the kababs on the hot tawa and cook on medium heat, turning gently." },
+      { step: 6, instruction: "Cook until browned outside and fully cooked inside. Serve hot." },
+    ],
+    notes: ["Keep the mixture cold and handle it gently so the kababs hold their shape."]
+  },
+
+  "mutton kabab": {
+    dishName: "Mutton Kabab",
+    description:
+      "Simple home-style minced mutton kababs seasoned with ginger, chilli and warm spices, cooked on a tawa.",
+    prepTime: "Approx. 45 minutes (plus 20 minutes resting)",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "500 g", commonName: "Mutton Keema", englishName: "mutton mince" },
+      { amount: "1 small", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, finely chopped" },
+      { amount: "1 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "2 tbsp", commonName: "Hara Dhaniya", englishName: "coriander leaves" },
+      { amount: "1 tbsp", commonName: "Nimbu Ras", englishName: "lemon juice" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Mix mutton mince with onion, ginger-garlic paste, chilli, spices, coriander, lemon and salt." },
+      { step: 2, instruction: "Grind the mixture briefly so it becomes sticky and binds well. Rest for 20 minutes." },
+      { step: 3, instruction: "Shape the mixture into small flat kababs with wet hands." },
+      { step: 4, instruction: "Heat the tawa on medium heat and lightly oil it." },
+      { step: 5, instruction: "Cook the kababs slowly, turning carefully, until browned and cooked through." },
+      { step: 6, instruction: "Serve hot with onion and lemon." },
+    ],
+    notes: ["Mutton mince should be cooked completely before serving. Keep the heat moderate so the centre cooks without burning the outside."]
+  },
+
+  "chicken salami (home style)": {
+    dishName: "Chicken Salami (Home-Style)",
+    description:
+      "A quick home-style spiced chicken slice inspired by deli salami, cooked fully on a tawa rather than cured.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+
+      { item: "tawa", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "grinder", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "300 g", commonName: "Chicken", englishName: "boneless chicken" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1/2 tsp", commonName: "Kali Mirch", englishName: "black pepper" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1 tbsp", commonName: "Nimbu Ras", englishName: "lemon juice" },
+      { amount: "1 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "1 tbsp", commonName: "Cornflour", englishName: "cornflour" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Grind the chicken with ginger-garlic paste, pepper, chilli, coriander, lemon and salt until finely minced." },
+      { step: 2, instruction: "Mix in cornflour until the mixture becomes firm enough to shape." },
+      { step: 3, instruction: "Shape the mixture into a short thick log and chill for 10 minutes." },
+      { step: 4, instruction: "Slice the log into thin rounds." },
+      { step: 5, instruction: "Heat a lightly oiled tawa and cook the slices on medium heat." },
+      { step: 6, instruction: "Turn them until browned on both sides and fully cooked through. Serve hot or use in sandwiches." },
+    ],
+    notes: ["This is a quick home-style chicken preparation, not cured salami. Cook it completely before eating."]
+  },
+
+  "paneer curry": {
+    dishName: "Paneer Curry",
+    description:
+      "An easy everyday paneer curry with onion, tomato, ginger, garlic and mild spices in a simple gravy.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "250 g", commonName: "Paneer", englishName: "paneer, cubed" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1/2 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "1 cup", commonName: "Paani", englishName: "water" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat oil in a kadai. Add onion and cook until soft and lightly golden." },
+      { step: 2, instruction: "Add ginger-garlic paste and cook for 30 seconds." },
+      { step: 3, instruction: "Add tomatoes, turmeric, chilli powder, coriander powder and salt." },
+      { step: 4, instruction: "Cook until the tomatoes are soft and the oil begins to separate." },
+      { step: 5, instruction: "Add water and simmer for 5 minutes to make a smooth gravy." },
+      { step: 6, instruction: "Add paneer and garam masala. Simmer gently for 3 to 4 minutes." },
+      { step: 7, instruction: "Turn off the stove and serve hot with roti, naan or rice." },
+    ],
+    notes: ["Do not boil the paneer for too long. A short simmer keeps it soft."]
+  },
+
+  "chicken keema": {
+    dishName: "Chicken Keema",
+    description:
+      "A simple dry-style minced chicken dish cooked with onion, tomato, ginger, garlic and everyday spices.",
+    prepTime: "Approx. 30 minutes",
+    equipment: [
+
+      { item: "kadai", isSpecialized: false, alternative: null },
+      { item: "stove", isSpecialized: false, alternative: null },
+    
+    ],
+    ingredients: [
+      { amount: "500 g", commonName: "Chicken Keema", englishName: "chicken mince" },
+      { amount: "1 medium", commonName: "Pyaaz", englishName: "onion, finely chopped" },
+      { amount: "2 medium", commonName: "Tamatar", englishName: "tomatoes, chopped" },
+      { amount: "1 tbsp", commonName: "Adrak-Lehsun Paste", englishName: "ginger-garlic paste" },
+      { amount: "1", commonName: "Hari Mirch", englishName: "green chilli, chopped" },
+      { amount: "1/4 tsp", commonName: "Haldi", englishName: "turmeric" },
+      { amount: "1 tsp", commonName: "Dhaniya Powder", englishName: "coriander powder" },
+      { amount: "1/2 tsp", commonName: "Lal Mirch Powder", englishName: "red chilli powder" },
+      { amount: "1/2 tsp", commonName: "Garam Masala", englishName: "garam masala" },
+      { amount: "2 tbsp", commonName: "Tel", englishName: "cooking oil" },
+      { amount: "1/2 cup", commonName: "Paani", englishName: "water" },
+      { amount: "to taste", commonName: "Namak", englishName: "salt" },
+      { amount: "as needed", commonName: "Hara Dhaniya", englishName: "coriander leaves" },
+    ],
+    method: [
+      { step: 1, instruction: "Heat oil in a kadai and cook onion until lightly golden." },
+      { step: 2, instruction: "Add ginger-garlic paste and green chilli. Cook for 30 seconds." },
+      { step: 3, instruction: "Add tomatoes, turmeric, coriander powder, chilli powder and salt." },
+      { step: 4, instruction: "Cook until the tomatoes become soft and the oil starts to separate." },
+      { step: 5, instruction: "Add chicken keema and break it up with the spoon as it cooks." },
+      { step: 6, instruction: "Cook for 8 to 10 minutes, then add water and simmer until the keema is fully cooked." },
+      { step: 7, instruction: "Add garam masala and coriander. Cook for 1 minute and serve hot." },
+    ],
+    notes: ["Keep breaking up the mince while cooking so the keema stays loose and evenly cooked."]
+  },
+
 };
