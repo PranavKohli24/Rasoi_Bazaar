@@ -15,6 +15,8 @@ import {
 } from "../services/swiggyService";
 import SwiggyActionModal from "./SwiggyActionModal";
 
+import NutritionInfo from "./NutrionInfo";
+
 interface RecipeDisplayProps {
   recipe: Recipe;
   onFinishCooking: () => void;
@@ -681,6 +683,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
             <ClockIcon className="h-4 w-4 text-orange-200" />
             {recipe.prepTime}
+          </li>
+          <li>
+            <NutritionInfo nutrition={recipe.nutrition} />
           </li>
         </ul>
 

@@ -21,6 +21,13 @@ export interface MethodStep {
   tip?: Tip;
 }
 
+export interface Nutrition {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
 export interface Recipe {
   dishName: string;
   description: string;
@@ -29,4 +36,5 @@ export interface Recipe {
   ingredients: Ingredient[];
   method: MethodStep[];
   notes: string[];
+  nutrition?: Nutrition;
 }

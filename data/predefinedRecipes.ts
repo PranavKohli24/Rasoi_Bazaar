@@ -80,6 +80,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Add chopped coriander leaves at the end for extra freshness.",
       "Adjust the green chilli and red chilli powder to your spice preference.",
     ],
+    nutrition: { calories: 255, protein: 14, carbs: 8, fat: 19 },
   },
 
   "poha (kanda batata poha)": {
@@ -204,6 +205,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Rinsing instead of soaking keeps the poha light and fluffy.",
     ],
+    nutrition: { calories: 375, protein: 7, carbs: 53, fat: 15 },
   },
 
   "vegetable upma": {
@@ -321,6 +323,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 325, protein: 8, carbs: 47, fat: 11 },
   },
 
   "egg bhurji (anda bhurji)": {
@@ -390,6 +393,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 315, protein: 14, carbs: 9, fat: 25 },
   },
 
   "quick vegetable pulao": {
@@ -503,6 +507,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 345, protein: 5, carbs: 57, fat: 11 },
   },
 
   // ============================================================
@@ -597,6 +602,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soaking the dal for at least 2 hours makes grinding much easier. You can soak it the night before if you're short on time.",
       "Add grated carrot or finely chopped spinach to the batter for extra nutrition.",
     ],
+    nutrition: { calories: 325, protein: 16, carbs: 44, fat: 11 },
   },
 
   "vegetable dalia (broken wheat porridge)": {
@@ -697,6 +703,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Great for breakfast or a light dinner. Keep it slightly soupy for easier digestion.",
     ],
+    nutrition: { calories: 250, protein: 8, carbs: 43, fat: 6 },
   },
 
   "curd rice (thayir sadam)": {
@@ -801,6 +808,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Add the milk if you're not eating right away. It helps keep curd rice from becoming too sour or dry.",
     ],
+    nutrition: { calories: 245, protein: 7, carbs: 33, fat: 9 },
   },
 
   "sprouts chaat": {
@@ -899,6 +907,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "To sprout moong at home, soak overnight, then keep wrapped in a damp cloth for a day.",
     ],
+    nutrition: { calories: 55, protein: 4, carbs: 11, fat: 0 },
   },
 
   "lauki chana dal (bottle gourd with split chickpea lentils)": {
@@ -1122,6 +1131,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "The kheer will continue to thicken as it cools, so take it off the heat while it is still slightly thinner than you want the final texture to be.",
       "For a shortcut version, use leftover cooked rice and simmer it in the milk for about 15 minutes instead of 30.",
     ],
+    nutrition: { calories: 205, protein: 8, carbs: 28, fat: 7 },
   },
 
   "gajar halwa (carrot halwa)": {
@@ -1645,6 +1655,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Skip the cream for a lighter everyday version.",
       "A small piece of ginger and a pinch of sugar in the puree helps balance bitterness from the spinach.",
     ],
+    nutrition: { calories: 275, protein: 14, carbs: 8, fat: 21 },
   },
 
   "chana masala": {
@@ -1751,6 +1762,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 395, protein: 17, carbs: 56, fat: 13 },
   },
 
   "rajma (red kidney bean curry)": {
@@ -1867,6 +1879,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 330, protein: 15, carbs: 45, fat: 11 },
   },
 
   "bhindi masala (okra stir-fry)": {
@@ -1962,6 +1975,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Never cover the pan while cooking okra. Trapped steam is what makes it slimy.",
     ],
+    nutrition: { calories: 290, protein: 4, carbs: 21, fat: 23 },
   },
 
   "mutter mushroom": {
@@ -2104,6 +2118,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Frozen peas can go straight into the pan. Fresh peas may need a few extra minutes to become tender.",
       "For a drier version, use less water and simmer uncovered until the masala coats the mushrooms and peas.",
     ],
+    nutrition: { calories: 180, protein: 6, carbs: 17, fat: 11 },
   },
 
   "baingan bharta (smoky roasted eggplant mash)": {
@@ -2221,6 +2236,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "No gas flame? Roast the eggplant covered on the stovetop in a pan, turning often, or grill it.",
     ],
+    nutrition: { calories: 260, protein: 2, carbs: 13, fat: 23 },
   },
 
   // ============================================================
@@ -2356,6 +2372,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Korma is meant to be mild. Go easy on the red chilli powder if you prefer a gentler flavour.",
       "Frying the onions until truly deep golden is key to the classic korma flavour.",
     ],
+    nutrition: { calories: 545, protein: 49, carbs: 12, fat: 32 },
   },
 
   "butter chicken (murgh makhani)": {
@@ -2484,6 +2501,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 560, protein: 50, carbs: 13, fat: 34 },
   },
 
   "home-style chicken curry": {
@@ -2606,6 +2624,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 505, protein: 47, carbs: 12, fat: 29 },
   },
 
   "chicken tikka masala (stovetop)": {
@@ -2730,6 +2749,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "This version is designed entirely for stovetop cooking and does not require a tandoor.",
     ],
+    nutrition: { calories: 590, protein: 49, carbs: 12, fat: 38 },
   },
 
   "chicken 65": {
@@ -2848,6 +2868,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 430, protein: 48, carbs: 9, fat: 21 },
   },
 
   // ============================================================
@@ -2958,6 +2979,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "The dough must feel soft and slightly sticky. This is what makes the naan fluffy.",
       "Naan is best eaten fresh and hot, straight off the tawa.",
     ],
+    nutrition: { calories: 495, protein: 10, carbs: 67, fat: 20 },
   },
 
   "jeera rice": {
@@ -3045,6 +3067,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 320, protein: 5, carbs: 50, fat: 11 },
   },
 
   "aloo paratha": {
@@ -3162,6 +3185,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 445, protein: 14, carbs: 86, fat: 7 },
   },
 
   "laccha paratha (multi-layered flatbread)": {
@@ -3244,6 +3268,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 405, protein: 11, carbs: 58, fat: 17 },
   },
 
   "lemon rice (chitranna)": {
@@ -3366,6 +3391,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       },
     ],
     notes: [],
+    nutrition: { calories: 320, protein: 7, carbs: 40, fat: 15 },
   },
 
   // ============================================================
@@ -3483,6 +3509,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Crushing the kasuri methi between your palms before adding releases much more of its aroma.",
       "For a lighter version, reduce the butter and cream slightly.",
     ],
+    nutrition: { calories: 380, protein: 15, carbs: 11, fat: 32 },
   },
 
   "chicken biryani": {
@@ -3619,6 +3646,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "If the lid is not fully sealed, seal the edges with dough or a damp cloth so steam does not escape.",
       "A heavy base or a tawa underneath the pot helps prevent the bottom layer from burning.",
     ],
+    nutrition: { calories: 725, protein: 42, carbs: 82, fat: 23 },
   },
 
   "masala dosa": {
@@ -3736,6 +3764,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "A well-fermented batter is the secret to a crisp dosa.",
       "Keep the tawa hot but not smoking.",
     ],
+    nutrition: { calories: 350, protein: 8, carbs: 54, fat: 12 },
   },
 
   "aloo gobi": {
@@ -3856,6 +3885,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Avoid adding water. Aloo gobi is meant to be a dry sabzi cooked in its own steam.",
       "Cutting both vegetables roughly the same size helps them cook evenly.",
     ],
+    nutrition: { calories: 270, protein: 4, carbs: 30, fat: 16 },
   },
 
   "dal makhani": {
@@ -3977,6 +4007,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Soaking the dal and rajma overnight significantly cuts down cooking time.",
       "For a richer flavour, let the dal simmer on very low heat for an extra 30 minutes.",
     ],
+    nutrition: { calories: 470, protein: 21, carbs: 57, fat: 18 },
   },
 
   "samosa": {
@@ -4214,6 +4245,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "In a hurry? Use 2 cups of canned rajma (rinsed) and simmer for 15 minutes. You can skip step 1.",
       "Serve with sliced raw onion, a wedge of lemon and a little pickle on the side.",
     ],
+    nutrition: { calories: 475, protein: 15, carbs: 76, fat: 13 },
   },
 
   "chole bhature": {
@@ -4325,6 +4357,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "No time for the 2-hour rest? Rest the dough for 30 minutes with a pinch more baking soda. It'll still work, just slightly less fluffy.",
       "The chole can be made a day ahead and reheated with a splash of water.",
     ],
+    nutrition: { calories: 570, protein: 18, carbs: 91, fat: 16 },
   },
 
   "chole kulche": {
@@ -4426,6 +4459,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "The dough should feel soft and a little sticky. Add a little flour only if it really sticks to your hands.",
       "The chole can be made a day ahead and gets tastier overnight.",
     ],
+    nutrition: { calories: 575, protein: 18, carbs: 87, fat: 19 },
   },
 
   "shahi paneer": {
@@ -4515,6 +4549,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Shahi paneer is meant to be mild and slightly sweet. Add more chilli only if you like it spicy.",
       "Rub the kasuri methi between your palms before adding so it releases its aroma.",
     ],
+    nutrition: { calories: 465, protein: 20, carbs: 17, fat: 36 },
   },
 
   "dal tadka": {
@@ -4600,6 +4635,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Mixing moong dal with toor dal makes it cook faster and taste creamier.",
       "Dal thickens as it sits, so add a little hot water when you reheat it.",
     ],
+    nutrition: { calories: 290, protein: 12, carbs: 38, fat: 11 },
   },
 
   "matar paneer": {
@@ -4685,6 +4721,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Frozen peas work perfectly. Add them straight from the freezer.",
       "If you like a richer gravy, add 2 tablespoons of cream or a spoon of cashew paste at the end.",
     ],
+    nutrition: { calories: 375, protein: 17, carbs: 22, fat: 25 },
   },
 
   "pav bhaji": {
@@ -4778,6 +4815,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Chopped raw onion and lemon on the side are what make pav bhaji taste like the real thing.",
       "Leftover bhaji tastes even better the next day. Add a splash of water when reheating.",
     ],
+    nutrition: { calories: 560, protein: 15, carbs: 91, fat: 17 },
   },
 
   "egg curry (anda curry)": {
@@ -4866,6 +4904,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Don't boil the eggs for longer than 10 minutes, or the yolks turn grey and chalky.",
       "Want a thicker, restaurant-style gravy? Blend the onion-tomato masala before adding the water.",
     ],
+    nutrition: { calories: 315, protein: 13, carbs: 13, fat: 24 },
   },
 
   "idli sambar": {
@@ -4954,6 +4993,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Sambar is better the next day. Add a little water when reheating.",
       "Dip leftover idlis in the sambar the next morning. They're just as good.",
     ],
+    nutrition: { calories: 320, protein: 11, carbs: 49, fat: 10 },
   },
 
   "dosa (plain crispy dosa)": {
@@ -5025,6 +5065,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Thin batter makes a crisp dosa. Slightly thicker batter makes a softer one.",
       "Want a filling? Look up our Masala Dosa recipe for the classic potato masala.",
     ],
+    nutrition: { calories: 180, protein: 4, carbs: 26, fat: 7 },
   },
 
   "french toast (anda bread)": {
@@ -5095,6 +5136,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Slightly stale bread works best because it absorbs the egg without falling apart.",
       "Prefer sweet? Skip the onion, chilli, coriander and pepper. Add 1 tablespoon sugar and a pinch of cardamom powder or cinnamon to the egg mixture instead.",
     ],
+    nutrition: { calories: 325, protein: 11, carbs: 27, fat: 19 },
   },
 
     // ============================================================
@@ -5143,6 +5185,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "To check if it's done, bite one piece. It should be soft with a slight bite, not mushy.",
       "Add a diced potato with the beans for a heartier sabzi. It will need 3 to 4 extra minutes.",
     ],
+    nutrition: { calories: 140, protein: 1, carbs: 6, fat: 13 },
   },
 
   "nutrela (soya chunks curry)": {
@@ -5194,6 +5237,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "For a dry sabzi, add only 1/4 cup water and cook uncovered until the masala clings to the chunks.",
       "Add a cup of green peas or cubed potato with the water for a heartier curry.",
     ],
+    nutrition: { calories: 205, protein: 3, carbs: 14, fat: 17 },
   },
 
   "atta halwa (wheat flour halwa)": {
@@ -5283,6 +5327,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "In a hurry? Soak the dal for at least 30 minutes and add 1 extra whistle.",
       "A squeeze of lemon at the end brightens the taste.",
     ],
+    nutrition: { calories: 365, protein: 15, carbs: 47, fat: 14 },
   },
 
   "white chole (safed chole)": {
@@ -5334,6 +5379,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "This is a mild chole. For more heat, add an extra green chilli or a pinch of white pepper.",
       "Serve with kulche, bhature, jeera rice or plain roti.",
     ],
+    nutrition: { calories: 365, protein: 13, carbs: 44, fat: 16 },
   },
 
   "pasta (indian masala pasta)": {
@@ -5383,6 +5429,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Add sweet corn, boiled peas or chopped carrot for a veggie-loaded version.",
       "Swap the garam masala for a pinch of chaat masala for extra tang.",
     ],
+    nutrition: { calories: 450, protein: 13, carbs: 71, fat: 14 },
   },
 
   "maggi (masala maggi noodles)": {
@@ -5425,6 +5472,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "For extra protein, crack an egg into the boiling water before adding the noodles and stir gently.",
       "Want a soupy Maggi? Use 3 cups water instead of 2.5.",
     ],
+    nutrition: { calories: 340, protein: 7, carbs: 47, fat: 15 },
   },
 
   "macaroni (masala macaroni)": {
@@ -5473,6 +5521,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Add a handful of grated cheese at the end and cover for a minute for a cheesy version.",
       "Sweet corn and boiled peas are also great additions.",
     ],
+    nutrition: { calories: 440, protein: 12, carbs: 69, fat: 14 },
   },
 
   "cake (simple eggless vanilla cake)": {
@@ -5602,6 +5651,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Like it stronger? Add an extra 1/2 teaspoon of tea leaves. Like it milkier? Use 1/2 cup water and 1.5 cups milk.",
       "In winter, add a pinch of black pepper or a small piece of cinnamon for a warming chai.",
     ],
+    nutrition: { calories: 180, protein: 8, carbs: 19, fat: 8 },
   },
 
     // ============================================================
@@ -5658,6 +5708,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "This is meant to be a semi-dry dish, not a gravy. If it looks too dry, splash in a couple tablespoons of water rather than making it a curry.",
       "Adding the capsicum and onion back in near the end keeps them crunchy, which is the real texture difference from a soft paneer gravy like palak paneer.",
     ],
+    nutrition: { calories: 355, protein: 14, carbs: 11, fat: 29 },
   },
 
   "tandoori chicken (oven-style)": {
@@ -5709,6 +5760,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "No wire rack? Just flip the pieces once or twice during roasting so both sides colour evenly.",
       "The char on top is from high heat, not from burning - keep an eye on it in the last few minutes under the grill.",
     ],
+    nutrition: { calories: 700, protein: 76, carbs: 7, fat: 39 },
   },
 
   "veg biryani": {
@@ -5761,6 +5813,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Cut all the vegetables roughly the same size so they cook evenly.",
       "A tawa placed under the kadai during the dum step helps stop the bottom layer from catching.",
     ],
+    nutrition: { calories: 445, protein: 9, carbs: 73, fat: 13 },
   },
 
   "vada pav": {
@@ -5813,6 +5866,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "The batter should coat the back of a spoon and drip off slowly. Too thin and it won't stick; too thick and it turns doughy.",
       "Vada pav is best eaten fresh and hot, right after frying.",
     ],
+    nutrition: { calories: 280, protein: 9, carbs: 48, fat: 7 },
   },
 
   "rasam": {
@@ -5863,6 +5917,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Rasam should be thin and soupy, not thick like sambar. Add more water if it looks too concentrated.",
       "A ripe, slightly squashed tomato added whole while simmering, then mashed in, gives extra body and flavour.",
     ],
+    nutrition: { calories: 265, protein: 8, carbs: 23, fat: 17 },
   },
 
   "khichdi (moong dal khichdi)": {
@@ -5910,6 +5965,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "For a version that's easy on the stomach when unwell, skip the vegetables and tempering and just simmer rice, dal, turmeric and salt together.",
       "Leftover khichdi thickens as it cools - loosen it with a little hot water or milk when reheating.",
     ],
+    nutrition: { calories: 385, protein: 11, carbs: 50, fat: 16 },
   },
 
   "lassi (sweet lassi)": {
@@ -5949,6 +6005,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Use thick, full-fat yogurt - thin or watery yogurt makes a runny lassi no matter how much you blend it.",
       "For mango lassi, blend in 1 cup of chopped ripe mango and reduce the sugar to taste.",
     ],
+    nutrition: { calories: 625, protein: 21, carbs: 89, fat: 22 },
   },
 
 
@@ -5989,6 +6046,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "Use slightly warm water for a softer dough.",
       "Keep the dough covered while rolling so it does not dry out.",
     ],
+    nutrition: { calories: 285, protein: 11, carbs: 58, fat: 4 },
   },
 
   "sambar chawal": {
@@ -6040,6 +6098,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "You can use any quick-cooking vegetables you already have, such as bottle gourd, pumpkin or peas.",
     ],
+    nutrition: { calories: 290, protein: 9, carbs: 45, fat: 9 },
   },
 
   "pani puri (golgappe)": {
@@ -6176,6 +6235,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Cooking time can vary with the size and cut of the mutton. Cook until the meat is tender before serving.",
     ],
+    nutrition: { calories: 635, protein: 44, carbs: 14, fat: 45 },
   },
 
   "medu vada": {
@@ -6219,6 +6279,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Do not add too much water while grinding. A thick batter is easier to shape and gives softer vadas.",
     ],
+    nutrition: { calories: 280, protein: 16, carbs: 40, fat: 6 },
   },
 
   "tinda sabzi": {
@@ -6264,6 +6325,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Choose small, firm tinda for a more tender sabzi.",
     ],
+    nutrition: { calories: 145, protein: 2, carbs: 12, fat: 11 },
   },
 
   "gajar matar": {
@@ -6308,6 +6370,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add garam masala, cook uncovered for 1 minute and garnish with coriander." },
     ],
     notes: [],
+    nutrition: { calories: 210, protein: 6, carbs: 29, fat: 9 },
   },
 
   "kadai chicken": {
@@ -6359,6 +6422,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "The freshly roasted and crushed whole spices give the dish its characteristic kadai-style flavour.",
     ],
+    nutrition: { calories: 490, protein: 48, carbs: 17, fat: 25 },
   },
 
   "mutton biryani": {
@@ -6417,6 +6481,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Use tender curry-cut mutton and make sure it is fully cooked before serving.",
     ],
+    nutrition: { calories: 705, protein: 39, carbs: 67, fat: 31 },
   },
 
   "uttapam": {
@@ -6458,6 +6523,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "A slightly thick, pourable dosa batter works best. If your batter is very thick, loosen it with a little water.",
     ],
+    nutrition: { calories: 195, protein: 5, carbs: 29, fat: 7 },
   },
 
   "momos (veg momos)": {
@@ -6538,7 +6604,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook for 1 to 2 minutes until the edges set, then loosen them with a spatula." },
       { step: 6, instruction: "Fold the omelette and cook for another 30 seconds. Serve hot." },
     ],
-    notes: ["Add chopped tomato or grated cheese for a different home-style omelette."]
+    notes: ["Add chopped tomato or grated cheese for a different home-style omelette."],
+    nutrition: { calories: 115, protein: 7, carbs: 6, fat: 7 },
   },
 
   "boiled eggs": {
@@ -6563,7 +6630,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 4, instruction: "Turn off the stove and place the eggs in cool water for 5 minutes." },
       { step: 5, instruction: "Tap the shells gently, peel the eggs and serve." },
     ],
-    notes: ["For softer yolks, reduce the boiling time by 2 to 3 minutes."]
+    notes: ["For softer yolks, reduce the boiling time by 2 to 3 minutes."],
+    nutrition: { calories: 145, protein: 13, carbs: 1, fat: 10 },
   },
 
   "veg sandwich": {
@@ -6595,7 +6663,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Toast the sandwiches on both sides until lightly crisp and golden." },
       { step: 6, instruction: "Cut and serve hot with chutney or ketchup." },
     ],
-    notes: []
+    notes: [],
+    nutrition: { calories: 280, protein: 7, carbs: 46, fat: 8 },
   },
 
   "paneer sandwich": {
@@ -6629,7 +6698,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Toast the sandwiches on a hot tawa until crisp and golden on both sides." },
       { step: 6, instruction: "Cut and serve hot." },
     ],
-    notes: ["Add grated cheese if you want a richer sandwich."]
+    notes: ["Add grated cheese if you want a richer sandwich."],
+    nutrition: { calories: 325, protein: 13, carbs: 22, fat: 21 },
   },
 
   "besan chila": {
@@ -6662,7 +6732,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook until the top looks set and the bottom is golden." },
       { step: 6, instruction: "Flip, cook the other side for 1 to 2 minutes and serve hot." },
     ],
-    notes: ["Add grated carrot, tomato or spinach for extra vegetables."]
+    notes: ["Add grated carrot, tomato or spinach for extra vegetables."],
+    nutrition: { calories: 225, protein: 7, carbs: 21, fat: 12 },
   },
 
   "pongal (ven pongal)": {
@@ -6696,7 +6767,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook for 30 seconds, then mix the tempering into the soft rice and dal." },
       { step: 6, instruction: "Add a little hot water if needed, mix until creamy and serve hot." },
     ],
-    notes: ["Pongal should be soft and moist, not dry. Add a little hot water before serving if it thickens."]
+    notes: ["Pongal should be soft and moist, not dry. Add a little hot water before serving if it thickens."],
+    nutrition: { calories: 315, protein: 10, carbs: 45, fat: 11 },
   },
 
   "chole chawal": {
@@ -6733,7 +6805,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the cooked chickpeas with some cooking water and simmer for 10 minutes." },
       { step: 7, instruction: "Taste for salt, turn off the stove and serve the chole with the cooked rice." },
     ],
-    notes: []
+    notes: [],
+    nutrition: { calories: 420, protein: 13, carbs: 70, fat: 11 },
   },
 
   "kadhi chawal": {
@@ -6771,7 +6844,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Sizzle for a few seconds and pour the tadka into the kadhi." },
       { step: 7, instruction: "Serve the hot kadhi over steamed rice." },
     ],
-    notes: ["Keep the kadhi simmering gently. Hard boiling can make the yogurt split." ]
+    notes: ["Keep the kadhi simmering gently. Hard boiling can make the yogurt split." ],
+    nutrition: { calories: 315, protein: 8, carbs: 46, fat: 11 },
   },
 
   "bread pakoda": {
@@ -6804,7 +6878,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Dip each sandwich or bread slice in the batter and gently lower it into the hot oil." },
       { step: 6, instruction: "Fry until crisp and golden on both sides, then drain and serve hot." },
     ],
-    notes: ["For a lighter version, cook the battered bread on a lightly oiled tawa instead of deep frying."]
+    notes: ["For a lighter version, cook the battered bread on a lightly oiled tawa instead of deep frying."],
+    nutrition: { calories: 450, protein: 17, carbs: 64, fat: 13 },
   },
 
   "kachori (moong dal kachori)": {
@@ -6907,7 +6982,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook on medium-high heat, turning gently, until the paneer and vegetables get light char marks." },
       { step: 6, instruction: "Serve hot with lemon wedges or chutney." },
     ],
-    notes: ["Do not cook paneer for too long or it can become firm and chewy."]
+    notes: ["Do not cook paneer for too long or it can become firm and chewy."],
+    nutrition: { calories: 325, protein: 18, carbs: 10, fat: 24 },
   },
 
   "rasam rice": {
@@ -6945,7 +7021,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Pour the tadka into the rasam and turn off the stove." },
       { step: 7, instruction: "Mix hot rice with rasam and serve immediately." },
     ],
-    notes: ["Keep rasam thin and pourable. Add hot water if it gets too concentrated."]
+    notes: ["Keep rasam thin and pourable. Add hot water if it gets too concentrated."],
+    nutrition: { calories: 290, protein: 6, carbs: 53, fat: 6 },
   },
 
   "chicken kabab": {
@@ -6979,7 +7056,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook on medium heat, turning every few minutes, until browned and fully cooked inside." },
       { step: 6, instruction: "Serve hot with lemon and onion." },
     ],
-    notes: ["Cut the chicken into similar sizes so all pieces cook evenly."]
+    notes: ["Cut the chicken into similar sizes so all pieces cook evenly."],
+    nutrition: { calories: 400, protein: 47, carbs: 5, fat: 20 },
   },
 
   "seekh kabab": {
@@ -7015,7 +7093,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Place the kababs on the hot tawa and cook on medium heat, turning gently." },
       { step: 6, instruction: "Cook until browned outside and fully cooked inside. Serve hot." },
     ],
-    notes: ["Keep the mixture cold and handle it gently so the kababs hold their shape."]
+    notes: ["Keep the mixture cold and handle it gently so the kababs hold their shape."],
+    nutrition: { calories: 380, protein: 46, carbs: 6, fat: 19 },
   },
 
   "mutton kabab": {
@@ -7051,7 +7130,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Cook the kababs slowly, turning carefully, until browned and cooked through." },
       { step: 6, instruction: "Serve hot with onion and lemon." },
     ],
-    notes: ["Mutton mince should be cooked completely before serving. Keep the heat moderate so the centre cooks without burning the outside."]
+    notes: ["Mutton mince should be cooked completely before serving. Keep the heat moderate so the centre cooks without burning the outside."],
+    nutrition: { calories: 500, protein: 42, carbs: 5, fat: 34 },
   },
 
   "chicken salami (home style)": {
@@ -7085,7 +7165,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 5, instruction: "Heat a lightly oiled tawa and cook the slices on medium heat." },
       { step: 6, instruction: "Turn them until browned on both sides and fully cooked through. Serve hot or use in sandwiches." },
     ],
-    notes: ["This is a quick home-style chicken preparation, not cured salami. Cook it completely before eating."]
+    notes: ["This is a quick home-style chicken preparation, not cured salami. Cook it completely before eating."],
+    nutrition: { calories: 240, protein: 27, carbs: 1, fat: 13 },
   },
 
   "paneer curry": {
@@ -7121,7 +7202,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add paneer and garam masala. Simmer gently for 3 to 4 minutes." },
       { step: 7, instruction: "Turn off the stove and serve hot with roti, naan or rice." },
     ],
-    notes: ["Do not boil the paneer for too long. A short simmer keeps it soft."]
+    notes: ["Do not boil the paneer for too long. A short simmer keeps it soft."],
+    nutrition: { calories: 350, protein: 17, carbs: 9, fat: 28 },
   },
 
   "chicken keema": {
@@ -7159,7 +7241,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook for 8 to 10 minutes, then add water and simmer until the keema is fully cooked." },
       { step: 7, instruction: "Add garam masala and coriander. Cook for 1 minute and serve hot." },
     ],
-    notes: ["Keep breaking up the mince while cooking so the keema stays loose and evenly cooked."]
+    notes: ["Keep breaking up the mince while cooking so the keema stays loose and evenly cooked."],
+    nutrition: { calories: 435, protein: 46, carbs: 8, fat: 24 },
   },
 
 
@@ -7195,7 +7278,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Lightly mash a few potatoes to thicken the gravy. Add garam masala." },
       { step: 7, instruction: "Garnish with coriander and serve hot with roti, puri or rice." },
     ],
-    notes: ["Mash a few cooked potatoes into the gravy for a naturally thicker curry without adding flour."]
+    notes: ["Mash a few cooked potatoes into the gravy for a naturally thicker curry without adding flour."],
+    nutrition: { calories: 260, protein: 6, carbs: 43, fat: 8 },
   },
 
   "kadhi": {
@@ -7231,7 +7315,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Bring to a gentle boil, then simmer for 20 to 25 minutes. Stir every few minutes." },
       { step: 7, instruction: "Add salt, garnish with coriander and serve hot with rice or roti.", tip: { title: "Prevent curdling", content: "Keep stirring until the kadhi starts simmering. Avoid high heat at the beginning." } },
     ],
-    notes: ["This is a plain kadhi without pakoras, so it is faster and easier for an everyday meal."]
+    notes: ["This is a plain kadhi without pakoras, so it is faster and easier for an everyday meal."],
+    nutrition: { calories: 145, protein: 5, carbs: 13, fat: 9 },
   },
 
   "mushroom masala": {
@@ -7267,7 +7352,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the mushrooms and simmer for 5 minutes so they absorb the masala." },
       { step: 7, instruction: "Add garam masala, garnish with coriander and serve hot." },
     ],
-    notes: ["Do not overcook mushrooms. They should stay tender instead of becoming rubbery."]
+    notes: ["Do not overcook mushrooms. They should stay tender instead of becoming rubbery."],
+    nutrition: { calories: 125, protein: 4, carbs: 11, fat: 8 },
   },
 
   "palak mushroom": {
@@ -7302,7 +7388,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Simmer for 5 minutes, then add mushrooms and garam masala." },
       { step: 7, instruction: "Cook for 2 more minutes, turn off the stove and add lemon juice." },
     ],
-    notes: ["A quick blend keeps the spinach bright and makes the gravy easy to follow and eat."]
+    notes: ["A quick blend keeps the spinach bright and makes the gravy easy to follow and eat."],
+    nutrition: { calories: 125, protein: 6, carbs: 10, fat: 8 },
   },
 
   "aloo matar": {
@@ -7337,7 +7424,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Mash one or two potato pieces into the gravy to thicken it." },
       { step: 7, instruction: "Add garam masala and serve hot with roti, puri or rice." },
     ],
-    notes: ["Frozen peas work well when fresh peas are not available."]
+    notes: ["Frozen peas work well when fresh peas are not available."],
+    nutrition: { calories: 425, protein: 11, carbs: 62, fat: 16 },
   },
 
   "dal palak": {
@@ -7372,7 +7460,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the cooked dal and simmer for 4 to 5 minutes." },
       { step: 7, instruction: "Turn off the stove, add lemon juice and serve with rice or roti." },
     ],
-    notes: ["Spinach cooks quickly, so add it near the end to keep its fresh flavor."]
+    notes: ["Spinach cooks quickly, so add it near the end to keep its fresh flavor."],
+    nutrition: { calories: 180, protein: 9, carbs: 24, fat: 6 },
   },
 
   "lobia masala": {
@@ -7408,7 +7497,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cover and simmer for 10 minutes until the gravy thickens." },
       { step: 7, instruction: "Add garam masala and lemon juice. Serve hot with rice or roti." },
     ],
-    notes: ["Lobia should be fully soft before you add it to the masala."]
+    notes: ["Lobia should be fully soft before you add it to the masala."],
+    nutrition: { calories: 295, protein: 15, carbs: 42, fat: 9 },
   },
 
   "aloo methi": {
@@ -7440,7 +7530,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook uncovered for 5 to 7 minutes until the potatoes are tender and the methi is cooked." },
       { step: 7, instruction: "Taste, adjust salt and serve hot with roti or paratha." },
     ],
-    notes: ["Do not add much water. Aloo methi is meant to be a dry sabzi.", "A pinch of sugar can balance very bitter methi if needed."]
+    notes: ["Do not add much water. Aloo methi is meant to be a dry sabzi.", "A pinch of sugar can balance very bitter methi if needed."],
+    nutrition: { calories: 365, protein: 11, carbs: 53, fat: 13 },
   },
 
   "gobi masala": {
@@ -7475,7 +7566,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the cauliflower, cover and simmer until tender." },
       { step: 7, instruction: "Add garam masala and optional kasuri methi. Serve hot." },
     ],
-    notes: ["You can skip the initial cauliflower sauté for a lighter version and simmer it directly in the masala."]
+    notes: ["You can skip the initial cauliflower sauté for a lighter version and simmer it directly in the masala."],
+    nutrition: { calories: 245, protein: 6, carbs: 22, fat: 17 },
   },
 
   "kofta curry (lauki kofta)": {
@@ -7510,7 +7602,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the koftas and simmer gently for 4 to 5 minutes." },
       { step: 7, instruction: "Turn off the stove and serve hot with roti or rice.", tip: { title: "Keep koftas light", content: "Squeeze out as much water as possible from the grated lauki before adding besan." } },
     ],
-    notes: ["Do not boil the koftas hard after adding them, or they can break apart."]
+    notes: ["Do not boil the koftas hard after adding them, or they can break apart."],
+    nutrition: { calories: 240, protein: 5, carbs: 19, fat: 17 },
   },
 
   "malai kofta": {
@@ -7550,7 +7643,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Add cream, kasuri methi and salt. Gently add koftas and simmer for 2 minutes." },
       { step: 8, instruction: "Serve hot with roti, naan or rice.", tip: { title: "Optional nuts", content: "Skip cashews for a simpler gravy. The curry will still be creamy from the malai." } },
     ],
-    notes: ["Keep the koftas slightly firm before adding them to the gravy so they hold their shape."]
+    notes: ["Keep the koftas slightly firm before adding them to the gravy so they hold their shape."],
+    nutrition: { calories: 435, protein: 16, carbs: 19, fat: 34 },
   },
 
   "dum aloo": {
@@ -7588,7 +7682,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Add water and potatoes. Cover and simmer for 8 to 10 minutes." },
       { step: 8, instruction: "Add garam masala, adjust salt and serve hot." },
     ],
-    notes: ["If the yogurt is very sour, use a little less and balance the gravy with a pinch of sugar."]
+    notes: ["If the yogurt is very sour, use a little less and balance the gravy with a pinch of sugar."],
+    nutrition: { calories: 530, protein: 11, carbs: 61, fat: 29 },
   },
 
   "tori sabzi": {
@@ -7621,7 +7716,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook uncovered for 2 to 3 minutes if excess water remains." },
       { step: 7, instruction: "Add garam masala and serve hot with roti." },
     ],
-    notes: ["Tori releases water as it cooks, so add extra water only if the kadai becomes dry."]
+    notes: ["Tori releases water as it cooks, so add extra water only if the kadai becomes dry."],
+    nutrition: { calories: 130, protein: 2, carbs: 14, fat: 8 },
   },
 
   "moong dal": {
@@ -7656,7 +7752,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Pour the tadka over the dal and simmer for 2 minutes." },
       { step: 7, instruction: "Serve hot with rice, roti or jeera rice." },
     ],
-    notes: ["Moong dal cooks quickly, so avoid overcooking it into a very thick paste."]
+    notes: ["Moong dal cooks quickly, so avoid overcooking it into a very thick paste."],
+    nutrition: { calories: 280, protein: 16, carbs: 42, fat: 6 },
   },
 
   "masoor dal": {
@@ -7692,7 +7789,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Pour the tadka into the dal. Add optional kasuri methi and simmer for 2 minutes." },
       { step: 7, instruction: "Serve hot with rice or roti." },
     ],
-    notes: ["Masoor dal is naturally quick-cooking, so it is a good option when you need dinner fast."]
+    notes: ["Masoor dal is naturally quick-cooking, so it is a good option when you need dinner fast."],
+    nutrition: { calories: 300, protein: 17, carbs: 47, fat: 6 },
   },
 
   "dal baati": {
@@ -7732,7 +7830,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 8, instruction: "Crack the hot baatis slightly and pour ghee over them." },
       { step: 9, instruction: "Serve baati with dal and extra ghee if desired." },
     ],
-    notes: ["The oven gives a crisp outer crust while keeping the baati soft inside. Serve immediately for the best texture."]
+    notes: ["The oven gives a crisp outer crust while keeping the baati soft inside. Serve immediately for the best texture."],
+    nutrition: { calories: 475, protein: 17, carbs: 59, fat: 21 },
   },
 
   "dahi vada": {
@@ -7768,7 +7867,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Top with chaat masala, roasted cumin, and optional chutneys." },
       { step: 8, instruction: "Serve chilled.", tip: { title: "Keep them soft", content: "Do not make the batter watery. A thick, fluffy batter gives softer vadas." } },
     ],
-    notes: ["The chutneys are optional for a simpler home version."]
+    notes: ["The chutneys are optional for a simpler home version."],
+    nutrition: { calories: 380, protein: 22, carbs: 48, fat: 12 },
   },
 
   "thepla": {
@@ -7802,7 +7902,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook the other side until golden spots appear. Drizzle a little oil on both sides." },
       { step: 7, instruction: "Serve hot with yogurt or pickle.", tip: { title: "Keep them soft", content: "Do not roll the thepla too thin, and keep the tawa at medium heat." } },
     ],
-    notes: ["You can skip methi to make a plain spiced thepla."]
+    notes: ["You can skip methi to make a plain spiced thepla."],
+    nutrition: { calories: 430, protein: 14, carbs: 56, fat: 19 },
   },
 
   "matar pulao": {
@@ -7836,7 +7937,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Cover, lower the heat and cook for 12 to 15 minutes." },
       { step: 8, instruction: "Rest covered for 5 minutes, then fluff gently and serve." },
     ],
-    notes: ["Do not stir the rice while it cooks. This helps keep the grains separate."]
+    notes: ["Do not stir the rice while it cooks. This helps keep the grains separate."],
+    nutrition: { calories: 345, protein: 7, carbs: 60, fat: 8 },
   },
 
   "kothu parotta": {
@@ -7871,7 +7973,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add the shredded parotta and toss well on medium heat." },
       { step: 7, instruction: "Cook for 2 to 3 minutes, add coriander and serve hot." },
     ],
-    notes: ["Leftover roti, paratha or parotta works very well for this recipe."]
+    notes: ["Leftover roti, paratha or parotta works very well for this recipe."],
+    nutrition: { calories: 340, protein: 7, carbs: 39, fat: 17 },
   },
 
   "patta gobhi sabzi": {
@@ -7904,7 +8007,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add coriander powder and garam masala. Cook for 2 minutes." },
       { step: 7, instruction: "Serve hot with roti or dal-rice." },
     ],
-    notes: ["Keep the lid off most of the time so the cabbage stays dry instead of watery."]
+    notes: ["Keep the lid off most of the time so the cabbage stays dry instead of watery."],
+    nutrition: { calories: 145, protein: 3, carbs: 17, fat: 8 },
   },
 
   "paneer lababdar": {
@@ -7943,7 +8047,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Add cream, garam masala and kasuri methi. Mix gently and turn off the stove." },
       { step: 8, instruction: "Serve hot with roti, naan or rice.", tip: { title: "Keep paneer soft", content: "Do not boil the paneer for long. Two minutes in the hot gravy is enough." } },
     ],
-    notes: ["This version keeps the richer restaurant-style flavor while using straightforward home steps."]
+    notes: ["This version keeps the richer restaurant-style flavor while using straightforward home steps."],
+    nutrition: { calories: 350, protein: 15, carbs: 12, fat: 28 },
   },
 
   "matar korma": {
@@ -7981,7 +8086,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add peas and water. Cover and simmer until peas are tender." },
       { step: 7, instruction: "Add garam masala, taste and serve with roti, paratha or rice." },
     ],
-    notes: ["For a simpler version, skip cashews and use an extra 2 tablespoons of yogurt."]
+    notes: ["For a simpler version, skip cashews and use an extra 2 tablespoons of yogurt."],
+    nutrition: { calories: 240, protein: 8, carbs: 22, fat: 14 },
   },
 
   "amritsari chole": {
@@ -8017,7 +8123,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add chickpeas with 1 cup cooking water and simmer for 10 to 12 minutes." },
       { step: 7, instruction: "Add amchur and black salt. Serve hot with kulcha, bhatura or rice." },
     ],
-    notes: ["Tea adds the deep colour commonly associated with Amritsari chole. Remove the tea bag before simmering."]
+    notes: ["Tea adds the deep colour commonly associated with Amritsari chole. Remove the tea bag before simmering."],
+    nutrition: { calories: 315, protein: 12, carbs: 43, fat: 11 },
   },
 
   "sarson ka saag": {
@@ -8056,7 +8163,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 8, instruction: "Simmer for 5 more minutes, then add garam masala." },
       { step: 9, instruction: "Serve hot with makki di roti.", tip: { title: "Keep it rustic", content: "Do not blend the greens completely smooth. A slightly coarse texture feels more homestyle." } },
     ],
-    notes: ["Bathua is optional and can be replaced with extra spinach."]
+    notes: ["Bathua is optional and can be replaced with extra spinach."],
+    nutrition: { calories: 180, protein: 8, carbs: 20, fat: 9 },
   },
 
   "makki di roti": {
@@ -8082,7 +8190,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook both sides until brown spots appear. Press the edges gently so they cook evenly." },
       { step: 7, instruction: "Brush with optional ghee and serve hot with sarson ka saag.", tip: { title: "Prevent cracks", content: "Use warm water and make the dough soft. A dry dough will crack while shaping." } },
     ],
-    notes: ["Makki dough has no gluten, so shaping it by hand is easier than trying to roll it thin."]
+    notes: ["Makki dough has no gluten, so shaping it by hand is easier than trying to roll it thin."],
+    nutrition: { calories: 315, protein: 11, carbs: 58, fat: 7 },
   },
 
   "mooli ki sabzi": {
@@ -8115,7 +8224,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add garam masala and mix well." },
       { step: 7, instruction: "Serve hot with roti or paratha." },
     ],
-    notes: ["Young radishes cook faster and are milder in taste."]
+    notes: ["Young radishes cook faster and are milder in taste."],
+    nutrition: { calories: 90, protein: 1, carbs: 4, fat: 8 },
   },
 
   "lauki sabzi": {
@@ -8150,7 +8260,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Cook uncovered if there is too much water. Add garam masala and optional fennel powder." },
       { step: 7, instruction: "Garnish with coriander if using and serve hot with roti or rice." },
     ],
-    notes: ["Lauki releases its own water, so add liquid gradually."]
+    notes: ["Lauki releases its own water, so add liquid gradually."],
+    nutrition: { calories: 120, protein: 2, carbs: 12, fat: 8 },
   },
 
   "arbi masala": {
@@ -8184,7 +8295,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 6, instruction: "Add amchur and garam masala. Toss for 30 seconds." },
       { step: 7, instruction: "Garnish with coriander and serve hot." },
     ],
-    notes: ["Cooling the boiled arbi before peeling reduces stickiness and helps it crisp in the kadai."]
+    notes: ["Cooling the boiled arbi before peeling reduces stickiness and helps it crisp in the kadai."],
+    nutrition: { calories: 335, protein: 1, carbs: 59, fat: 10 },
   },
 
   "soya chaap": {
@@ -8222,7 +8334,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
       { step: 7, instruction: "Add water and soya chaap. Cover and simmer for 8 minutes." },
       { step: 8, instruction: "Add garam masala and kasuri methi. Serve hot with roti or paratha." },
     ],
-    notes: ["Use ready-made soya chaap sticks or pieces. The recipe itself is fully cooked on the stovetop."]
+    notes: ["Use ready-made soya chaap sticks or pieces. The recipe itself is fully cooked on the stovetop."],
+    nutrition: { calories: 265, protein: 5, carbs: 15, fat: 22 },
   },
 
   "papdi chaat": {
@@ -8357,6 +8470,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Tamarind can be added for extra tang if you like a more coastal-style curry.",
     ],
+    nutrition: { calories: 350, protein: 42, carbs: 9, fat: 17 },
   },
   "fish fingers": {
     dishName: "Fish Fingers",
@@ -8426,6 +8540,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 330, protein: 11, carbs: 27, fat: 21 },
   },
   "keema matar": {
     dishName: "Keema Matar",
@@ -8463,6 +8578,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 605, protein: 46, carbs: 17, fat: 39 },
   },
   "karela sabzi": {
     dishName: "Karela Sabzi",
@@ -8495,6 +8611,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 145, protein: 2, carbs: 12, fat: 11 },
   },
   "toor dal": {
     dishName: "Toor Dal",
@@ -8529,6 +8646,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 300, protein: 16, carbs: 49, fat: 7 },
   },
   "aloo tikki": {
     dishName: "Aloo Tikki",
@@ -8559,6 +8677,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 370, protein: 6, carbs: 54, fat: 16 },
   },
   "dhokla (besan dhokla)": {
     dishName: "Dhokla",
@@ -8596,6 +8715,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 300, protein: 13, carbs: 33, fat: 13 },
   },
   "tomato rice": {
     dishName: "Tomato Rice",
@@ -8631,6 +8751,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 400, protein: 8, carbs: 66, fat: 12 },
   },
   "parotta": {
     dishName: "Parotta",
@@ -8660,6 +8781,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 440, protein: 9, carbs: 65, fat: 16 },
   },
   "achari paneer": {
     dishName: "Achari Paneer",
@@ -8696,6 +8818,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 330, protein: 18, carbs: 11, fat: 25 },
   },
   "vegetable kurma": {
     dishName: "Vegetable Kurma",
@@ -8732,6 +8855,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 325, protein: 8, carbs: 41, fat: 16 },
   },
   "aloo shimla mirch": {
     dishName: "Aloo Shimla Mirch",
@@ -8765,6 +8889,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 375, protein: 7, carbs: 53, fat: 16 },
   },
   "pindi chole": {
     dishName: "Pindi Chole",
@@ -8801,6 +8926,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 305, protein: 11, carbs: 36, fat: 14 },
   },
   "rogan josh": {
     dishName: "Rogan Josh",
@@ -8837,6 +8963,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 595, protein: 49, carbs: 5, fat: 42 },
   },
   "kulfi": {
     dishName: "Kulfi",
@@ -8899,6 +9026,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Soy sauce, pickled ginger or wasabi can be served on the side if you have them.",
     ],
+    nutrition: { calories: 420, protein: 7, carbs: 82, fat: 6 },
   },
   "vangi bath": {
     dishName: "Vangi Bath",
@@ -8938,6 +9066,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 405, protein: 8, carbs: 61, fat: 15 },
   },
   "sambar": {
     dishName: "Sambar",
@@ -8976,6 +9105,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 200, protein: 10, carbs: 33, fat: 5 },
   },
   "parippu curry": {
     dishName: "Parippu Curry",
@@ -9012,6 +9142,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 345, protein: 18, carbs: 45, fat: 12 },
   },
   "benne dosa": {
     dishName: "Benne Dosa",
@@ -9038,6 +9169,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "For benne masala dosa, add a spoonful of potato masala before folding.",
     ],
+    nutrition: { calories: 235, protein: 4, carbs: 24, fat: 14 },
   },
   "rava dosa": {
     dishName: "Rava Dosa",
@@ -9068,6 +9200,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 435, protein: 10, carbs: 72, fat: 11 },
   },
   "thatte idli": {
     dishName: "Thatte Idli",
@@ -9093,6 +9226,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 120, protein: 4, carbs: 24, fat: 1 },
   },
   "bisi bele bath": {
     dishName: "Bisi Bele Bath",
@@ -9129,6 +9263,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 270, protein: 10, carbs: 43, fat: 8 },
   },
   "khara bath": {
     dishName: "Khara Bath",
@@ -9163,6 +9298,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 325, protein: 8, carbs: 47, fat: 11 },
   },
   "puliyogare": {
     dishName: "Puliyogare",
@@ -9198,6 +9334,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 310, protein: 6, carbs: 45, fat: 11 },
   },
   "aloo palya": {
     dishName: "Aloo Palya",
@@ -9230,6 +9367,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 405, protein: 7, carbs: 56, fat: 18 },
   },
 
 
@@ -9268,6 +9406,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Add a squeeze of lemon if you like a brighter dal.",
     ],
+    nutrition: { calories: 410, protein: 13, carbs: 77, fat: 7 },
   },
 
   "aloo sabzi": {
@@ -9299,6 +9438,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 250, protein: 4, carbs: 36, fat: 11 },
   },
 
   "bread butter": {
@@ -9385,6 +9525,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Use a spoonful of fresh plain curd as the starter for the next batch.",
     ],
+    nutrition: { calories: 155, protein: 8, carbs: 12, fat: 8 },
   },
 
   "mutter poha (peas poha)": {
@@ -9418,6 +9559,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 350, protein: 8, carbs: 47, fat: 15 },
   },
 
   "mixed veg sabzi": {
@@ -9453,6 +9595,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 165, protein: 3, carbs: 17, fat: 11 },
   },
 
   "shukto": {
@@ -9493,6 +9636,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "Shukto should be mildly bitter, creamy and light rather than spicy.",
     ],
+    nutrition: { calories: 335, protein: 7, carbs: 25, fat: 25 },
   },
 
   "vermicelli (masala seviyan)": {
@@ -9529,6 +9673,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: [
       "This is the savory Indian breakfast-style version.",
     ],
+    nutrition: { calories: 310, protein: 8, carbs: 38, fat: 15 },
   },
 
   "chocolate cake": {
@@ -9661,6 +9806,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 525, protein: 24, carbs: 69, fat: 20 },
   },
 
   "gobhi paratha": {
@@ -9695,6 +9841,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 385, protein: 12, carbs: 63, fat: 12 },
   },
 
   "mooli paratha": {
@@ -9729,6 +9876,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ],
     notes: [
     ],
+    nutrition: { calories: 380, protein: 11, carbs: 62, fat: 12 },
   },
 
   "paneer momos": {
