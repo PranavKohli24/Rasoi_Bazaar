@@ -90,10 +90,28 @@ const IngredientsIcon: IconC = ({ className }) => (
   </Icon>
 );
 const MethodIcon: IconC = ({ className }) => (
-  <Icon className={className}><path d="M4 6h16M4 12h16M4 18h10" /></Icon>
+  <Icon className={className}>
+    <circle cx="5" cy="6" r="1" fill="currentColor" stroke="none" />
+    <path d="M9 6h11" />
+    <circle cx="5" cy="12" r="1" fill="currentColor" stroke="none" />
+    <path d="M9 12h11" />
+    <circle cx="5" cy="18" r="1" fill="currentColor" stroke="none" />
+    <path d="M9 18h11" />
+  </Icon>
 );
 const NotesIcon: IconC = ({ className }) => (
-  <Icon className={className}><circle cx="12" cy="12" r="9" /><path d="M12 16v-4M12 8h.01" /></Icon>
+  <Icon className={className}>
+    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z" />
+    <path d="M14 3v6h6" />
+    <path d="M9 13h6" />
+    <path d="M9 17h4" />
+  </Icon>
+);
+const EquipmentIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <circle cx="10" cy="14" r="7" />
+    <path d="M15 9l6-6" />
+  </Icon>
 );
 
 /* Pictures reused from the kitchen selector, matched by equipment name */
@@ -798,7 +816,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         <div className="flex flex-col gap-12 lg:col-span-3">
           {/* Equipment */}
           <section aria-labelledby="equipment-heading">
-            <SectionTitle id="equipment-heading" title="Equipment" icon={<UtensilsIcon className="h-6 w-6" />} />
+            <SectionTitle id="equipment-heading" title="Equipment" icon={<EquipmentIcon className="h-6 w-6" />} />
 
             <ul className="grid items-start gap-3 sm:grid-cols-2">
               {recipe.equipment.map((tool, index) => {
@@ -819,7 +837,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                         ) : isPotLike(tool.item) ? (
                           <PotIcon className="h-6 w-6 text-orange-200" />
                         ) : (
-                          <UtensilsIcon className="h-6 w-6 text-orange-200" />
+                          <EquipmentIcon className="h-6 w-6 text-orange-200" />
                         )}
                       </span>
 
