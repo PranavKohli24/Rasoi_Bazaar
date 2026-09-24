@@ -312,6 +312,7 @@ const MANUAL_ALIASES: Record<string, string> = {
 
   // earlier
   "chole": "chana masala",
+  "chole masala": "chana masala",
   "chickpea curry": "chana masala",
   "chole bature": "chole bhature",
   "chole batura": "chole bhature",
