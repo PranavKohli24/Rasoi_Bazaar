@@ -21038,21 +21038,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "description": "No-churn chocolate ice cream made with cream, condensed milk and cocoa.",
     "prepTime": "Approx. 15 minutes (plus freezing time)",
     "equipment": [
-      {
-        "item": "bowl",
-        "isSpecialized": false,
-        "alternative": null
-      },
-      {
-        "item": "whisk",
-        "isSpecialized": false,
-        "alternative": "use a hand whisk if you do not have a beater"
-      },
-      {
-        "item": "freezer-safe container",
-        "isSpecialized": false,
-        "alternative": null
-      }
     ],
     "ingredients": [
       {
@@ -21125,21 +21110,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "description": "No-churn vanilla ice cream made with cream, condensed milk and vanilla.",
     "prepTime": "Approx. 15 minutes (plus freezing time)",
     "equipment": [
-      {
-        "item": "bowl",
-        "isSpecialized": false,
-        "alternative": null
-      },
-      {
-        "item": "whisk",
-        "isSpecialized": false,
-        "alternative": "use a hand whisk if you do not have a beater"
-      },
-      {
-        "item": "freezer-safe container",
-        "isSpecialized": false,
-        "alternative": null
-      }
     ],
     "ingredients": [
       {
@@ -21205,21 +21175,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "description": "No-churn strawberry ice cream made with fresh strawberries, cream and condensed milk.",
     "prepTime": "Approx. 20 minutes (plus freezing time)",
     "equipment": [
-      {
-        "item": "bowl",
-        "isSpecialized": false,
-        "alternative": null
-      },
-      {
-        "item": "whisk",
-        "isSpecialized": false,
-        "alternative": "use a hand whisk if you do not have a beater"
-      },
-      {
-        "item": "freezer-safe container",
-        "isSpecialized": false,
-        "alternative": null
-      }
     ],
     "ingredients": [
       {
