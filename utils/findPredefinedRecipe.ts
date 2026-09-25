@@ -123,6 +123,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "egg omlette": "egg omelette",
   "boiled egg": "boiled eggs",
   "boiled eggs recipe": "boiled eggs",
+  "sandwich" : "veg sandwich",
   "vegetable sandwich": "veg sandwich",
   "veggie sandwich": "veg sandwich",
   "paneer toast": "paneer sandwich",
