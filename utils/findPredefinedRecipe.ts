@@ -650,6 +650,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "orea shake": "easy oreo milkshake",
   "milk shake": "easy vanilla milkshake",
   "milkshake": "easy vanilla milkshake",
+  "shake": "easy vanilla milkshake",
   "coffee": "hot coffee",
   "hot coffee": "hot coffee",
   "hot coffee recipe": "hot coffee",

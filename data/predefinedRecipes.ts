@@ -9846,6 +9846,109 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 20
     }
   },
+  "cheese sandwich": {
+    "dishName": "Cheese Sandwich",
+    "description": "A simple toasted sandwich filled with melted cheese, onion, capsicum and mild seasoning.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "4 slices",
+        "commonName": "Bread",
+        "englishName": "bread"
+      },
+      {
+        "amount": "100 g",
+        "commonName": "Cheese",
+        "englishName": "grated cheese"
+      },
+      {
+        "amount": "1/2 small",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1/2",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, finely chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Hari Chutney",
+        "englishName": "green chutney"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Oregano",
+        "englishName": "dried oregano"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Chilli Flakes",
+        "englishName": "red chilli flakes, optional"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix grated cheese, onion, capsicum, oregano, chilli flakes and a little salt in a bowl."
+      },
+      {
+        "step": 2,
+        "instruction": "Spread green chutney on one side of each bread slice."
+      },
+      {
+        "step": 3,
+        "instruction": "Place the cheese mixture between two slices to make two sandwiches."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat the tawa on low to medium heat and melt a little butter."
+      },
+      {
+        "step": 5,
+        "instruction": "Toast the sandwiches on both sides until the bread is golden and the cheese melts.",
+        "tip": {
+          "title": "Melt the cheese evenly",
+          "content": "Keep the heat low to medium so the bread browns without burning before the cheese melts."
+        }
+      },
+      {
+        "step": 6,
+        "instruction": "Cut in half and serve hot."
+      }
+    ],
+    "notes": [
+      "Use any easily available melting cheese such as processed cheese, mozzarella or a cheese blend."
+    ],
+    "nutrition": {
+      "calories": 390,
+      "protein": 16,
+      "carbs": 38,
+      "fat": 20
+    }
+  },
   "besan chila": {
     "dishName": "Besan Chila",
     "description": "A quick savoury pancake made with gram flour, onion, green chilli and spices,.",
@@ -23111,6 +23214,7 @@ export const predefinedRecipeServings: Record<string, number> = {
   "boiled eggs": 2,
   "veg sandwich": 4,
   "paneer sandwich": 4,
+  "cheese sandwich": 2,
   "besan chila": 4,
   "pongal (ven pongal)": 4,
   "chole chawal": 4,
