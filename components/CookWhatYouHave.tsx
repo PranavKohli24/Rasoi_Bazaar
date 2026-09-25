@@ -782,23 +782,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                         ))}
                       </div>
 
-                      <div className="mt-6 flex items-center justify-center gap-1">
-                        <button
-                          type="button"
-                          onClick={goToIngredients}
-                          className={ghostButton}
-                        >
-                          Edit ingredients
-                        </button>
-                        <button
-                          type="button"
-                          onClick={startOver}
-                          className={ghostButton}
-                        >
-                          Start over
-                        </button>
-                      </div>
-                      
                       {recipe.equipmentUsed?.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1.5">
                           <span className="mr-1 text-xs text-stone-500">
@@ -826,6 +809,24 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                   </article>
                 ))}
               </div>
+
+              
+                      <div className="mt-6 flex items-center justify-center gap-1">
+                        <button
+                          type="button"
+                          onClick={goToIngredients}
+                          className={ghostButton}
+                        >
+                          Edit ingredients
+                        </button>
+                        <button
+                          type="button"
+                          onClick={startOver}
+                          className={ghostButton}
+                        >
+                          Start over
+                        </button>
+                      </div>
             </div>
           </div>
         )}
