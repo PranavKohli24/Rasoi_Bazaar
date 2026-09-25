@@ -716,18 +716,11 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
                 <button
                   type="button"
-                  onClick={handleFindRecipes}
-                  className={primaryButton}
-                >
-                  Try again
-                </button>
-                <button
-                  type="button"
                   onClick={() => {
                     setError(null);
                     setStep(2);
                   }}
-                  className={ghostButton}
+                  className={primaryButton}
                 >
                   Edit ingredients
                 </button>
