@@ -204,11 +204,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   );
   
   const [flashIndex, setFlashIndex] = useState<number | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    setImageLoaded(false);
-  }, [recipe.image]);
 
   // The ingredients card stays pinned on desktop only if it fits on screen.
   const ingredientsCardRef = useRef<HTMLElement>(null);
@@ -692,15 +687,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
     {recipe.image && (
   <div className="relative w-40 shrink-0 sm:w-44">
-    <img
+  <img
   src={recipe.image}
   alt={recipe.dishName}
-  loading="eager"
-  decoding="async"
-  onLoad={() => setImageLoaded(true)}
-  className={`aspect-[4/3] w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-200 ease-out hover:-translate-y-1 ${
-    imageLoaded ? "opacity-100" : "opacity-0"
-  }`}
+  className="aspect-[4/3] w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] animate-fade-in-up transition-transform duration-300 ease-out hover:-translate-y-1"
   onError={(e) => {
     e.currentTarget.style.display = "none";
   }}
