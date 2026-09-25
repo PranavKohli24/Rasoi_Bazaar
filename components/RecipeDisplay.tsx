@@ -684,6 +684,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
       {/* Header */}
       <header className="max-w-3xl">
+        {recipe.image && (
+          <img
+            src={recipe.image}
+            alt=""
+            className="mb-5 h-40 w-40 rounded-2xl object-cover shadow-md sm:h-48 sm:w-48"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        )}
+
         <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
           {recipe.dishName}
         </h1>

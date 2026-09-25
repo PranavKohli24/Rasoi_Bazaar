@@ -37,4 +37,5 @@ export interface Recipe {
   method: MethodStep[];
   notes: string[];
   nutrition?: Nutrition;
+  image?: string;
 }
