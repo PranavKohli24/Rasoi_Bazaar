@@ -165,6 +165,65 @@ const MANUAL_ALIASES: Record<string, string> = {
   "chicken qeema": "chicken keema",
   "biryani": "chicken biryani",
 
+  // regional India specials
+  "rajma gogji": "rajma gogji",
+  "rajma shalgam": "rajma gogji",
+  "gogji rajma": "rajma gogji",
+  "siddu": "siddu",
+  "himachali siddu": "siddu",
+  "aloo ke gutke": "aloo ke gutke",
+  "aloo gutke": "aloo ke gutke",
+  "gatte ki sabzi": "gatte ki sabzi",
+  "gatte sabzi": "gatte ki sabzi",
+  "gatte curry": "gatte ki sabzi",
+  "sev tameta": "sev tameta",
+  "sev tameta nu shaak": "sev tameta",
+  "bharli vangi": "bharli vangi",
+  "bharli baingan": "bharli vangi",
+  "stuffed brinjal maharashtrian": "bharli vangi",
+  "ros omelette": "ros omelette",
+  "ros omlette": "ros omelette",
+  "goan ros omelette": "ros omelette",
+  "beef ularthiyathu": "beef ularthiyathu",
+  "beef ularthiyathu recipe": "beef ularthiyathu",
+  "beef fry ularthiyathu": "beef ularthiyathu",
+  "gutti vankaya": "gutti vankaya",
+  "gutti vankaya kura": "gutti vankaya",
+  "gutti vankaya curry": "gutti vankaya",
+  "bagara baingan": "bagara baingan",
+  "baghare baingan": "bagara baingan",
+  "bagara baingan curry": "bagara baingan",
+  "dalma": "dalma",
+  "dalma recipe": "dalma",
+  "dalma odia": "dalma",
+  "litti chokha": "litti chokha",
+  "litti": "litti chokha",
+  "dhuska": "dhuska",
+  "dhuskha": "dhuska",
+  "jharkhand dhuska": "dhuska",
+  "khar": "khar",
+  "assamese khar": "khar",
+  "papaya khar": "khar",
+  "eromba": "eromba",
+  "eromba recipe": "eromba",
+  "manipuri eromba": "eromba",
+  "dohneiihong": "dohneiihong",
+  "dohneiiong": "dohneiihong",
+  "doh neiihong": "dohneiihong",
+  "doh neiiong": "dohneiihong",
+  "axone pork": "axone pork",
+  "akhuni pork": "axone pork",
+  "pork with axone": "axone pork",
+  "bai": "bai",
+  "mizo bai": "bai",
+  "bai mizoram": "bai",
+  "fara": "fara",
+  "chhattisgarhi fara": "fara",
+  "fara recipe": "fara",
+  "poha jalebi": "poha jalebi",
+  "indori poha jalebi": "poha jalebi",
+  "indore poha jalebi": "poha jalebi",
+
   // latest everyday sabzis, dals and breads
   "aloo tamatar": "aloo tamatar sabzi",
   "aloo tamatar ki sabzi": "aloo tamatar sabzi",
@@ -230,6 +289,8 @@ const MANUAL_ALIASES: Record<string, string> = {
   "korma": "classic chicken korma",
   "chicken korma": "classic chicken korma",
   "amritsari chole": "amritsari chole",
+  "amritsari pindi chole": "pindi chole",
+  "amritsari pindi chana": "pindi chole",
   "amritsari chana": "amritsari chole",
   "rajma masala": "rajma (red kidney bean curry)",
   "sarson ka saag": "sarson ka saag",
@@ -299,6 +360,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "momo": "momos (veg momos)",
   "veg momos": "momos (veg momos)",
   "vegetable momos": "momos (veg momos)",
+
   // bharta / bhindi
   "bharta": "baingan bharta (smoky roasted eggplant mash)",
   "baingan bharta": "baingan bharta (smoky roasted eggplant mash)",
@@ -377,8 +439,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "adrak chai": "chai (masala chai)",
   "cutting chai": "chai (masala chai)",
 
-
-    // kadai paneer, tandoori chicken, biryani, vada pav, rasam, khichdi, lassi
+  // kadai paneer, tandoori chicken, biryani, vada pav, rasam, khichdi, lassi
   "karahi paneer": "kadai paneer",
   "tandoori murgh": "tandoori chicken (oven-style)",
   "chicken tandoori": "tandoori chicken (oven-style)",
@@ -547,6 +608,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "veg burger": "home style burger",
   "vegetable burger": "home style burger",
   "homemade burger": "home style burger",
+
   // ice cream
   "icecream": "easy chocolate ice cream",
   "ice cream": "easy chocolate ice cream",
@@ -638,13 +700,13 @@ const MANUAL_ALIASES: Record<string, string> = {
   "mutton curry recipe": "mutton curry",
   "mutton biryani recipe": "mutton biryani",
   "south indian thali rice": "sambar chawal",
-
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
   const recipe = predefinedRecipes[targetKey];
   if (recipe) register(byKey, matchKey(alias), recipe);
 }
+
 /* ------------------------------------------------------------------ */
 /* Fuzzy matching: catches typos and small variations ("rajma chawl"  */
 /* -> "rajma chawal", "chiken biryani" -> "chicken biryani") without  */
@@ -667,9 +729,9 @@ const levenshtein = (a: string, b: string): number => {
     for (let j = 1; j <= blen; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
       curRow[j] = Math.min(
-        curRow[j - 1] + 1, // insertion
-        prevRow[j] + 1, // deletion
-        prevRow[j - 1] + cost // substitution
+        curRow[j - 1] + 1,
+        prevRow[j] + 1,
+        prevRow[j - 1] + cost
       );
     }
     [prevRow, curRow] = [curRow, prevRow];
@@ -711,33 +773,46 @@ const fuzzyFindKey = (query: string): Recipe | null => {
   for (const key of allKeys) {
     // Cheap length pre-filter: two strings that differ wildly in length
     // can't be within a small edit distance of each other.
-    if (Math.abs(key.length - query.length) > maxAllowedDistance(Math.max(key.length, query.length)) + 3) {
+    if (
+      Math.abs(key.length - query.length) >
+      maxAllowedDistance(Math.max(key.length, query.length)) + 3
+    ) {
       continue;
     }
 
     // Signal 1: direct edit distance on the whole string.
     const directDist = levenshtein(query, key);
-    const directOk = directDist <= maxAllowedDistance(Math.max(query.length, key.length));
+    const directOk =
+      directDist <= maxAllowedDistance(Math.max(query.length, key.length));
     const directScore = similarity(query, key);
 
     // Signal 2: same words, different order/spacing ("biryani chicken").
     const keySorted = sortedWords(key);
     const sortedDist = levenshtein(querySorted, keySorted);
-    const sortedOk = sortedDist <= maxAllowedDistance(Math.max(querySorted.length, keySorted.length));
+    const sortedOk =
+      sortedDist <=
+      maxAllowedDistance(Math.max(querySorted.length, keySorted.length));
     const sortedScore = similarity(querySorted, keySorted);
 
     // Signal 3: token overlap - handles a missing/extra word ("chana masala
     // curry" vs "chana masala") and per-word typos.
     const keyWords = key.split(" ");
     let matchedWords = 0;
+
     for (const qw of queryWords) {
       const hasMatch = keyWords.some((kw) => {
         if (qw === kw) return true;
         if (qw.length < 3 || kw.length < 3) return false;
-        return levenshtein(qw, kw) <= maxAllowedDistance(Math.max(qw.length, kw.length));
+
+        return (
+          levenshtein(qw, kw) <=
+          maxAllowedDistance(Math.max(qw.length, kw.length))
+        );
       });
+
       if (hasMatch) matchedWords++;
     }
+
     const tokenScore =
       matchedWords / Math.max(queryWords.length, keyWords.length);
 
