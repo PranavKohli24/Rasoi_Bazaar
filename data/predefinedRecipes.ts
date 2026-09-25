@@ -9,6 +9,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "dishName": "Paneer Bhurji",
     "description": "A quick, spicy and comforting Indian paneer dish made with crumbled paneer, onions,.",
     "prepTime": "Approx. 20 minutes",
+    "image": "/dishes/paneer-bhurji.png",
     "equipment": [
       {
         "item": "pan",
@@ -3487,6 +3488,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "dishName": "Paneer Butter Masala",
     "description": "Soft paneer cubes in a luxuriously creamy, buttery tomato gravy.",
     "prepTime": "Approx. 35 minutes",
+    "image": "/dishes/paneer-butter-masala.png",
     "equipment": [
       {
         "item": "grinder",
@@ -4776,6 +4778,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "dishName": "Shahi Paneer",
     "description": "Soft paneer cubes in a rich, creamy, mildly sweet gravy made from onions,.",
     "prepTime": "Approx. 40 minutes",
+    "image": "/dishes/paneer-butter-masala.png",
     "equipment": [
       {
         "item": "grinder",
