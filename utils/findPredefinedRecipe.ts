@@ -126,6 +126,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "sandwich" : "veg sandwich",
   "vegetable sandwich": "veg sandwich",
   "veggie sandwich": "veg sandwich",
+  "paneer":"shahi paneer",
   "paneer toast": "paneer sandwich",
   "besan chilla": "besan chila",
   "besan cheela": "besan chila",
