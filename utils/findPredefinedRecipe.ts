@@ -329,6 +329,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "chapatti": "roti (chapati)",
   "chappati": "roti (chapati)",
   "phulka": "roti (chapati)",
+  "khichdi chawal": "khichdi",
   "sambar chawal": "sambar chawal",
   "sambar rice": "sambar chawal",
   "sambhar chawal": "sambar chawal",
