@@ -732,35 +732,16 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
         {step === 3 && !isLoading && !error && results.length > 0 && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
-                    You can make {results.length === 1 ? "this" : "these"}
-                  </h3>
-                  <p className="mt-2 text-sm text-stone-400">
-                    {resultSource === "predefined"
-                      ? "Matched from our recipe collection using "
-                      : "Found by our kitchen assistant using "}
-                    {ingredients.length} ingredients and {equipment.length} pieces of equipment you picked.
-                  </p>
-                </div>
-
-                <div className="flex shrink-0 items-center gap-1 self-start sm:self-auto">
-                  <button
-                    type="button"
-                    onClick={goToIngredients}
-                    className={ghostButton}
-                  >
-                    Edit ingredients
-                  </button>
-                  <button
-                    type="button"
-                    onClick={startOver}
-                    className={ghostButton}
-                  >
-                    Start over
-                  </button>
-                </div>
+                            <div>
+                <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+                  You can make {results.length === 1 ? "this" : "these"}
+                </h3>
+                <p className="mt-2 text-sm text-stone-400">
+                  {resultSource === "predefined"
+                    ? "Matched from our recipe collection using "
+                    : "Found by our kitchen assistant using "}
+                  {ingredients.length} ingredients and {equipment.length} pieces of equipment you picked.
+                </p>
               </div>
 
               <div className="mt-6 grid gap-4">
@@ -801,6 +782,23 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                         ))}
                       </div>
 
+                      <div className="mt-6 flex items-center justify-center gap-1">
+                        <button
+                          type="button"
+                          onClick={goToIngredients}
+                          className={ghostButton}
+                        >
+                          Edit ingredients
+                        </button>
+                        <button
+                          type="button"
+                          onClick={startOver}
+                          className={ghostButton}
+                        >
+                          Start over
+                        </button>
+                      </div>
+                      
                       {recipe.equipmentUsed?.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1.5">
                           <span className="mr-1 text-xs text-stone-500">
