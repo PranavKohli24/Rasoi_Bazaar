@@ -1,40 +1,55 @@
 import React, { useEffect, useRef, useState } from "react";
 import KitchenEquipmentSelector from "./KitchenEquipmentSelector";
-import {
-  findRecipesFromIngredients,
-  RecipeMatch,
-} from "../services/cookWhatYouHaveService";
+import { findRecipesFromIngredients } from "../services/cookWhatYouHaveService";
+import type { RecipeMatch } from "../services/cookWhatYouHaveService";
 
 interface CookWhatYouHaveProps {
   onSelectDish: (dish: string) => void;
 }
 
 const QUICK_INGREDIENTS = [
-  "Onion", "Tomato", "Potato", "Paneer", "Rice", "Atta", "Dal", "Eggs", "Milk",
-  "Curd", "Green chilli", "Ginger", "Garlic", "Salt", "Oil", "Ghee", "Turmeric", "Cumin",
+  "Onion",
+  "Tomato",
+  "Potato",
+  "Paneer",
+  "Rice",
+  "Atta",
+  "Dal",
+  "Eggs",
+  "Milk",
+  "Curd",
+  "Green chilli",
+  "Ginger",
+  "Garlic",
+  "Salt",
+  "Oil",
+  "Ghee",
+  "Turmeric",
+  "Cumin",
 ];
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
 
-// Shown instead of any technical error text.
 const FRIENDLY_ERROR =
-  "Our kitchen got a little too busy just now. Your ingredients are safe, so give it another go in a moment.";
+  "We couldn't find a recipe for that combination. Try adding another ingredient or piece of equipment.";
 
-// Keep progress so the browser back button from a recipe returns to results.
-const STORAGE_KEY = "rasoi:cook-what-you-have";
+const STORAGE_KEY = "rasoi:cook-what-you-have:v3";
 
 interface SavedState {
   equipment: string[];
   ingredients: string[];
   results: RecipeMatch[];
   step: 1 | 2 | 3;
+  resultSource?: "predefined" | "ai";
 }
 
 const loadSaved = (): SavedState | null => {
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
+
     const parsed = JSON.parse(raw);
+
     if (
       !Array.isArray(parsed.equipment) ||
       !Array.isArray(parsed.ingredients) ||
@@ -42,6 +57,7 @@ const loadSaved = (): SavedState | null => {
     ) {
       return null;
     }
+
     return parsed as SavedState;
   } catch {
     return null;
@@ -49,9 +65,9 @@ const loadSaved = (): SavedState | null => {
 };
 
 const LOADING_MESSAGES = [
-  "Checking your pantry…",
-  "Matching dishes to your appliances…",
-  "Picking the simplest options…",
+  "Checking our recipe collection…",
+  "Matching your ingredients…",
+  "Checking what your kitchen can make…",
   "Almost ready…",
 ];
 
@@ -69,10 +85,11 @@ const ghostButton =
 const footerBar =
   "sticky bottom-0 z-40 flex items-center justify-between gap-3 rounded-b-3xl border-t border-stone-700 bg-stone-900/95 px-5 py-4 backdrop-blur-md sm:px-12";
 
-/* ---------- Small pieces ---------- */
-
 const Stepper: React.FC<{ current: number }> = ({ current }) => (
-  <ol className="mx-auto flex w-full max-w-md items-center" aria-label="Progress">
+  <ol
+    className="mx-auto flex w-full max-w-md items-center"
+    aria-label="Progress"
+  >
     {STEPS.map((label, index) => {
       const number = index + 1;
       const done = number < current;
@@ -97,7 +114,11 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
             </span>
             <span
               className={`text-xs font-medium sm:text-sm ${
-                active ? "text-orange-100" : done ? "text-stone-300" : "text-stone-500"
+                active
+                  ? "text-orange-100"
+                  : done
+                  ? "text-stone-300"
+                  : "text-stone-500"
               }`}
             >
               {label}
@@ -117,10 +138,10 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
   </ol>
 );
 
-const Chip: React.FC<{ label: string; onRemove: () => void }> = ({
-  label,
-  onRemove,
-}) => (
+const Chip: React.FC<{
+  label: string;
+  onRemove: () => void;
+}> = ({ label, onRemove }) => (
   <button
     type="button"
     onClick={onRemove}
@@ -128,7 +149,12 @@ const Chip: React.FC<{ label: string; onRemove: () => void }> = ({
     className="inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
   >
     {label}
-    <span className="text-base leading-none text-orange-300" aria-hidden="true">×</span>
+    <span
+      className="text-base leading-none text-orange-300"
+      aria-hidden="true"
+    >
+      ×
+    </span>
   </button>
 );
 
@@ -145,7 +171,6 @@ const ResultSkeleton: React.FC = () => (
   </div>
 );
 
-/** A pot with a rattling lid and rising steam, shown while dishes are being found. */
 const SteamingPot: React.FC = () => (
   <span className="shrink-0" aria-hidden="true">
     <svg
@@ -164,7 +189,10 @@ const SteamingPot: React.FC = () => (
         <path d="M15 31h34" />
         <path d="M29 31a3 3 0 0 1 6 0" />
       </g>
-      <path d="M17 34h30v11a7 7 0 0 1-7 7H24a7 7 0 0 1-7-7V34Z" fill="#FFE8D6" />
+      <path
+        d="M17 34h30v11a7 7 0 0 1-7 7H24a7 7 0 0 1-7-7V34Z"
+        fill="#FFE8D6"
+      />
       <path d="M17 38h-5M47 38h5" />
     </svg>
     <style>{`
@@ -180,7 +208,11 @@ const SteamingPot: React.FC = () => (
       .pot-steam { animation: pot-steam 1.8s ease-in-out infinite; }
       .pot-steam-2 { animation-delay: 0.3s; }
       .pot-steam-3 { animation-delay: 0.6s; }
-      .pot-lid { transform-box: fill-box; transform-origin: center; animation: pot-lid 0.5s ease-in-out infinite; }
+      .pot-lid {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: pot-lid 0.5s ease-in-out infinite;
+      }
       @media (prefers-reduced-motion: reduce) {
         .pot-steam, .pot-lid { animation: none; }
         .pot-steam { opacity: 0.8; }
@@ -189,9 +221,9 @@ const SteamingPot: React.FC = () => (
   </span>
 );
 
-/* ---------- Main component ---------- */
-
-const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
+const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
+  onSelectDish,
+}) => {
   const [saved] = useState(loadSaved);
 
   const [step, setStep] = useState<1 | 2 | 3>(() => {
@@ -201,69 +233,96 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
     return saved.step === 1 ? 1 : 2;
   });
 
-  const [equipment, setEquipment] = useState<string[]>(saved?.equipment ?? []);
-  const [ingredients, setIngredients] = useState<string[]>(saved?.ingredients ?? []);
+  const [equipment, setEquipment] = useState<string[]>(
+    saved?.equipment ?? []
+  );
+  const [ingredients, setIngredients] = useState<string[]>(
+    saved?.ingredients ?? []
+  );
   const [ingredientInput, setIngredientInput] = useState("");
-  const [results, setResults] = useState<RecipeMatch[]>(saved?.results ?? []);
+  const [results, setResults] = useState<RecipeMatch[]>(
+    saved?.results ?? []
+  );
   const [isLoading, setIsLoading] = useState(false);
+  const [resultSource, setResultSource] = useState<
+    "predefined" | "ai"
+  >(saved?.resultSource ?? "predefined");
   const [error, setError] = useState<string | null>(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
 
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
 
-  // Save progress (not while a request is in flight)
   useEffect(() => {
     if (isLoading) return;
+
     try {
       sessionStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ equipment, ingredients, results, step })
+        JSON.stringify({
+          equipment,
+          ingredients,
+          results,
+          step,
+          resultSource,
+        })
       );
     } catch {
-      /* ignore storage problems */
+      /* Ignore storage failures. */
     }
-  }, [equipment, ingredients, results, step, isLoading]);
+  }, [equipment, ingredients, results, step, resultSource, isLoading]);
 
-  // Rotate the loading message so the wait feels active
   useEffect(() => {
     if (!isLoading) {
       setLoadingMessageIndex(0);
       return;
     }
+
     const id = window.setInterval(() => {
-      setLoadingMessageIndex((i) => (i + 1) % LOADING_MESSAGES.length);
+      setLoadingMessageIndex(
+        (index) => (index + 1) % LOADING_MESSAGES.length
+      );
     }, 1800);
+
     return () => window.clearInterval(id);
   }, [isLoading]);
 
-  // Bring the top of the card into view when the user moves between steps
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
     }
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     sectionRef.current?.scrollIntoView({
       behavior: reduce ? "auto" : "smooth",
       block: "start",
     });
   }, [step]);
 
-  /* ----- Ingredient helpers ----- */
-
   const addIngredients = (raw: string) => {
-    const newItems = raw.split(",").map((item) => item.trim()).filter(Boolean);
+    const newItems = raw
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
     if (!newItems.length) return;
 
     setIngredients((current) => {
-      const seen = new Set(current.map((item) => item.toLowerCase()));
+      const seen = new Set(
+        current.map((item) => item.toLowerCase())
+      );
+
       const additions = newItems.filter((item) => {
         const key = item.toLowerCase();
         if (seen.has(key)) return false;
         seen.add(key);
         return true;
       });
+
       return [...current, ...additions];
     });
   };
@@ -274,12 +333,16 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
   };
 
   const removeIngredient = (ingredient: string) =>
-    setIngredients((current) => current.filter((item) => item !== ingredient));
+    setIngredients((current) =>
+      current.filter((item) => item !== ingredient)
+    );
 
   const toggleQuickIngredient = (item: string) => {
     const existing = ingredients.find(
-      (current) => current.toLowerCase() === item.toLowerCase()
+      (current) =>
+        current.toLowerCase() === item.toLowerCase()
     );
+
     if (existing) removeIngredient(existing);
     else addIngredients(item);
   };
@@ -293,11 +356,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
     }
   };
 
-  /* ----- Actions ----- */
-
   const handleFindRecipes = async () => {
-    // Include anything typed but not yet added
     const pending = ingredientInput.trim();
+
     const finalIngredients = pending
       ? [
           ...ingredients,
@@ -307,7 +368,10 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
             .filter(
               (item) =>
                 item &&
-                !ingredients.some((i) => i.toLowerCase() === item.toLowerCase())
+                !ingredients.some(
+                  (existing) =>
+                    existing.toLowerCase() === item.toLowerCase()
+                )
             ),
         ]
       : ingredients;
@@ -316,6 +380,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
       setError("Pick at least one piece of equipment.");
       return;
     }
+
     if (!finalIngredients.length) {
       setError("Add at least one ingredient to continue.");
       return;
@@ -328,8 +393,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
 
     setError(null);
     setResults([]);
+    setResultSource("predefined");
     setIsLoading(true);
-    setStep(3); // move on immediately; the wait happens on the next screen
+    setStep(3);
 
     try {
       const response = await findRecipesFromIngredients({
@@ -338,16 +404,18 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
       });
 
       if (!response.recipes.length) {
-        setError(
-          "No dishes match this exact combination. Try adding a few more ingredients, like salt, oil or spices."
-        );
+        setError(FRIENDLY_ERROR);
       } else {
         setResults(response.recipes);
+        setResultSource(response.source);
       }
     } catch (err) {
-      // The real error goes to the console for debugging, never to the user.
       console.error("Cook what you have failed:", err);
-      setError(FRIENDLY_ERROR);
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : FRIENDLY_ERROR
+      );
     } finally {
       setIsLoading(false);
     }
@@ -359,16 +427,17 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
     setIngredients([]);
     setIngredientInput("");
     setError(null);
+    setIsLoading(false);
+    setResultSource("predefined");
     setStep(1);
   };
 
   const goToIngredients = () => {
     setResults([]);
     setError(null);
+    setResultSource("predefined");
     setStep(2);
   };
-
-  /* ----- Render ----- */
 
   return (
     <section
@@ -377,7 +446,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
       className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20"
     >
       <div className="rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_12px_40px_rgba(120,70,30,0.10)]">
-        {/* Header */}
         <header className="px-5 pb-6 pt-8 text-center sm:px-12 sm:pb-8 sm:pt-12">
           <h2 className="font-serif text-3xl font-black tracking-tight text-orange-50 sm:text-4xl">
             Cook what you have
@@ -393,7 +461,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
 
         <div className="border-t border-stone-700" />
 
-        {/* STEP 1: Equipment */}
         {step === 1 && (
           <>
             <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
@@ -409,7 +476,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                   "Select at least one"
                 ) : (
                   <>
-                    <span className="font-semibold text-orange-200">{equipment.length}</span>{" "}
+                    <span className="font-semibold text-orange-200">
+                      {equipment.length}
+                    </span>{" "}
                     selected
                   </>
                 )}
@@ -417,7 +486,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
 
               <button
                 type="button"
-                disabled={equipment.length === 0}
+                disabled={!equipment.length}
                 onClick={() => {
                   setError(null);
                   setStep(2);
@@ -425,13 +494,17 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 className={`${footerButton} shrink-0 whitespace-nowrap`}
               >
                 Next: ingredients
-                <span aria-hidden="true" className="hidden sm:inline">→</span>
+                <span
+                  aria-hidden="true"
+                  className="hidden sm:inline"
+                >
+                  →
+                </span>
               </button>
             </div>
           </>
         )}
 
-        {/* STEP 2: Ingredients */}
         {step === 2 && (
           <>
             <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
@@ -443,7 +516,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 dishes made from what you list, so include basics like salt and oil.
               </p>
 
-              {/* Equipment recap */}
               <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <span className="text-sm text-stone-500">Cooking with</span>
                 <div className="flex flex-1 flex-wrap gap-1.5">
@@ -468,7 +540,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 </button>
               </div>
 
-              {/* Input */}
               <label
                 htmlFor="ingredient-input"
                 className="mt-7 block text-sm font-semibold text-stone-100"
@@ -500,13 +571,15 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 Separate with commas to add several at once.
               </p>
 
-              {/* Quick add */}
               <div className="mt-6">
-                <p className="text-sm font-semibold text-stone-100">Or tap to add</p>
+                <p className="text-sm font-semibold text-stone-100">
+                  Or tap to add
+                </p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {QUICK_INGREDIENTS.map((item) => {
                     const active = ingredients.some(
-                      (current) => current.toLowerCase() === item.toLowerCase()
+                      (current) =>
+                        current.toLowerCase() === item.toLowerCase()
                     );
 
                     return (
@@ -529,12 +602,13 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                 </div>
               </div>
 
-              {/* Your list */}
               <div className="mt-8 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-4">
                   <h4 className="font-semibold text-stone-100">
                     Your ingredients
-                    <span className="ml-2 text-orange-300">({ingredients.length})</span>
+                    <span className="ml-2 text-orange-300">
+                      ({ingredients.length})
+                    </span>
                   </h4>
 
                   {ingredients.length > 0 && (
@@ -587,7 +661,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
               <button
                 type="button"
                 onClick={handleFindRecipes}
-                disabled={ingredients.length === 0}
+                disabled={ingredients.length === 0 && !ingredientInput.trim()}
                 className={`${footerButton} min-w-[10.5rem] shrink-0 whitespace-nowrap sm:min-w-[12.5rem]`}
               >
                 Find what I can make
@@ -596,7 +670,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
           </>
         )}
 
-        {/* STEP 3: Loading */}
         {step === 3 && isLoading && (
           <div
             className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10"
@@ -625,7 +698,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
           </div>
         )}
 
-        {/* STEP 3: Error */}
         {step === 3 && !isLoading && error && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
@@ -642,7 +714,11 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
               </div>
 
               <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-                <button type="button" onClick={handleFindRecipes} className={primaryButton}>
+                <button
+                  type="button"
+                  onClick={handleFindRecipes}
+                  className={primaryButton}
+                >
                   Try again
                 </button>
                 <button
@@ -660,7 +736,6 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
           </div>
         )}
 
-        {/* STEP 3: Results */}
         {step === 3 && !isLoading && !error && results.length > 0 && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
@@ -670,16 +745,26 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
                     You can make {results.length === 1 ? "this" : "these"}
                   </h3>
                   <p className="mt-2 text-sm text-stone-400">
-                    Based only on the {ingredients.length} ingredients and{" "}
-                    {equipment.length} appliances you picked.
+                    {resultSource === "predefined"
+                      ? "Matched from our recipe collection using "
+                      : "Found by our kitchen assistant using "}
+                    {ingredients.length} ingredients and {equipment.length} pieces of equipment you picked.
                   </p>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-1 self-start sm:self-auto">
-                  <button type="button" onClick={goToIngredients} className={ghostButton}>
+                  <button
+                    type="button"
+                    onClick={goToIngredients}
+                    className={ghostButton}
+                  >
                     Edit ingredients
                   </button>
-                  <button type="button" onClick={startOver} className={ghostButton}>
+                  <button
+                    type="button"
+                    onClick={startOver}
+                    className={ghostButton}
+                  >
                     Start over
                   </button>
                 </div>
@@ -710,7 +795,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
 
                     <div className="mt-5 space-y-3">
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="mr-1 text-xs text-stone-500">Uses</span>
+                        <span className="mr-1 text-xs text-stone-500">
+                          Uses
+                        </span>
                         {recipe.ingredientsUsed.map((ingredient) => (
                           <span
                             key={ingredient}
@@ -723,7 +810,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({ onSelectDish }) => {
 
                       {recipe.equipmentUsed?.length > 0 && (
                         <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="mr-1 text-xs text-stone-500">On</span>
+                          <span className="mr-1 text-xs text-stone-500">
+                            On
+                          </span>
                           {recipe.equipmentUsed.map((item) => (
                             <span
                               key={item}
