@@ -202,6 +202,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [checkedIngredients, setCheckedIngredients] = useState<boolean[]>(
     new Array(recipe.ingredients.length).fill(false)
   );
+  
   const [flashIndex, setFlashIndex] = useState<number | null>(null);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -694,9 +695,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     <img
   src={recipe.image}
   alt={recipe.dishName}
+  loading="eager"
+  decoding="async"
   onLoad={() => setImageLoaded(true)}
-  className={`aspect-[4/3] w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-all duration-500 ease-out hover:-translate-y-1 ${
-    imageLoaded ? "opacity-100 blur-0" : "opacity-0 blur-sm"
+  className={`aspect-[4/3] w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-200 ease-out hover:-translate-y-1 ${
+    imageLoaded ? "opacity-100" : "opacity-0"
   }`}
   onError={(e) => {
     e.currentTarget.style.display = "none";
