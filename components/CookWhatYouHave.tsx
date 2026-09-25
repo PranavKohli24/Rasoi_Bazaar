@@ -769,11 +769,11 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     key={recipe.dishName}
                     className="rounded-2xl border border-stone-700 bg-stone-900 p-5 shadow-sm transition-all hover:border-orange-400/60 hover:shadow-md sm:p-6"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <h4 className="font-serif text-xl font-bold text-orange-50 sm:text-2xl">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <h4 className="min-w-0 font-serif text-xl font-bold text-orange-50 sm:text-2xl">
                         {recipe.dishName}
                       </h4>
-                      <span className="shrink-0 rounded-full bg-[#FFF1C9] px-3 py-1 text-xs font-semibold text-stone-200">
+                      <span className="max-w-full whitespace-normal break-words rounded-full bg-[#FFF1C9] px-3 py-1 text-xs font-semibold text-stone-200">
                         {recipe.prepTime}
                       </span>
                     </div>
