@@ -701,7 +701,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       {/* Header: photo, title, and quick facts share one clear block, with the
           Swiggy shortcut demoted below the facts so it reads as an alternative,
           not competing top-level action. */}
-      <header className="flex flex-col gap-6 border-b border-stone-800 pb-8 sm:flex-row sm:gap-8">
+      <header className="flex flex-row gap-4 border-b border-stone-800 pb-8 sm:gap-8">
         {recipe.image && (
           <div
             className="relative aspect-[4/3] w-32 shrink-0 self-start sm:w-48"
