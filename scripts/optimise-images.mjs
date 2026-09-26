@@ -27,3 +27,6 @@ await Promise.all(files.map(async file => {
 }));
 
 console.log("\n✅ All done! You can now delete the original .png files.\n");
+
+//run this command
+// node scripts/optimise-images.mjs

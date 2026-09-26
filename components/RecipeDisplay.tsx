@@ -207,6 +207,10 @@ const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
 /* ---------- Component ---------- */
 
 const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }) => {
+  if (recipe.image) {
+    const preload = new Image();
+    preload.src = recipe.image;
+  }
   const [checkedIngredients, setCheckedIngredients] = useState<boolean[]>(
     new Array(recipe.ingredients.length).fill(false)
   );
