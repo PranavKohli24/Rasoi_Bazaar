@@ -132,7 +132,16 @@ const STEP_ANIMATION_CSS = `
 @keyframes step-slide-from-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
 .step-slide-from-right { animation: step-slide-from-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .step-slide-from-left { animation: step-slide-from-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
-@media (prefers-reduced-motion: reduce) { .step-slide-from-right, .step-slide-from-left { animation: none; } }
+@keyframes image-bounce-3d {
+  0% { transform: translateZ(0) scale(1); }
+  40% { transform: translateZ(20px) scale(1.025); }
+  70% { transform: translateZ(-4px) scale(0.995); }
+  100% { transform: translateZ(0) scale(1); }
+}
+.animate-image-bounce-3d { animation: image-bounce-3d 0.55s cubic-bezier(0.25, 0.8, 0.35, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .step-slide-from-right, .step-slide-from-left, .animate-image-bounce-3d { animation: none; }
+}
 `;
 
 /* ---------- Shared UI ---------- */
@@ -233,6 +242,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   // Tracks when the header photo has actually finished loading, so it can
   // fade in smoothly instead of popping in abruptly.
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  // Bumped on every tap so the 3D bounce can replay even on repeated clicks.
+  const [imageBounceKey, setImageBounceKey] = useState(0);
 
   const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
@@ -688,24 +700,33 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       {/* Header */}
       <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
         {recipe.image && (
-          <div className="relative aspect-[4/3] w-40 shrink-0 sm:w-44">
+          <div
+            className="relative aspect-[4/3] w-40 shrink-0 sm:w-44"
+            style={{ perspective: "800px" }}
+          >
             {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
             <div
               aria-hidden="true"
-              className={`absolute inset-0 rounded-2xl bg-stone-800 transition-opacity duration-500 ${
+              className={`absolute inset-0 rounded-2xl bg-stone-800 transition-opacity duration-300 ${
                 isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
               }`}
             />
             <img
+              key={imageBounceKey}
               src={recipe.image}
               alt={recipe.dishName}
+              loading="eager"
+              decoding="async"
+              {...{ fetchpriority: "high" }}
               onLoad={() => setIsImageLoaded(true)}
               onError={(e) => {
                 e.currentTarget.style.display = "none";
               }}
-              className={`absolute inset-0 h-full w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-700 ease-out ${
-                isImageLoaded ? "opacity-100" : "opacity-0"
-              }`}
+              onClick={() => setImageBounceKey((key) => key + 1)}
+              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-300 ease-out ${
+                imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+              } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+              style={{ transformStyle: "preserve-3d" }}
             />
             <span
               aria-hidden="true"
