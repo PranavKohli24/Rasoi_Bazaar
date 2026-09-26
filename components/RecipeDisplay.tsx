@@ -1082,7 +1082,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
       {/* Floating so it's reachable from anywhere on the page, not just after
           scrolling past every section. */}
-      <CookingCompanionChat recipe={recipe} />
+      <CookingCompanionChat
+        recipe={recipe}
+        currentStepNumber={isCooking ? currentStepIndex + 1 : null}
+        currentStepInstruction={isCooking ? currentStep.instruction : null}
+        totalSteps={totalSteps}
+      />
     </div>
   );
 };

@@ -8,6 +8,9 @@ import {
 
 interface CookingCompanionProps {
   recipe: Recipe;
+  currentStepNumber: number | null;
+  currentStepInstruction: string | null;
+  totalSteps: number;
 }
 
 const STORAGE_PREFIX = "rasoi:companion:";
@@ -113,8 +116,12 @@ const buildSuggestions = (_recipe: Recipe): string[] => {
 const FRIENDLY_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 
 /* ------------------------------------------------------------ component */
-
-const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
+const CookingCompanion: React.FC<CookingCompanionProps> = ({
+  recipe,
+  currentStepNumber,
+  currentStepInstruction,
+  totalSteps,
+}) => {
   const hasRecipe = !!recipe && typeof recipe.dishName === "string";
 
   const storageKey = `${STORAGE_PREFIX}${
@@ -188,7 +195,14 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
     setIsSending(true);
 
     try {
-      const reply = await askCookingCompanion(recipe, historyForRequest, question);
+      const reply = await askCookingCompanion(
+            recipe,
+            historyForRequest,
+            question,
+            currentStepNumber,
+            currentStepInstruction,
+            totalSteps
+            );
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
       setLastQuestion(null);
     } catch (err) {

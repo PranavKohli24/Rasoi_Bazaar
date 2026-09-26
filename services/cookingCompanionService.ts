@@ -20,7 +20,10 @@ const OFFLINE_ERROR =
 export const askCookingCompanion = async (
   recipe: Recipe,
   history: CompanionMessage[],
-  question: string
+  question: string,
+  currentStepNumber: number | null,
+  currentStepInstruction: string | null,
+  totalSteps: number
 ): Promise<string> => {
   let response: Response;
 
@@ -28,7 +31,14 @@ export const askCookingCompanion = async (
     response = await fetch("/api/cooking-companion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recipe, history, question }),
+      body: JSON.stringify({
+        recipe,
+        history,
+        question,
+        currentStepNumber,
+        currentStepInstruction,
+        totalSteps,
+      }),
     });
   } catch (error) {
     console.error("Cooking companion request failed:", error);
