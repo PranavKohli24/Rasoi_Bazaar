@@ -4,7 +4,6 @@ import { Recipe } from "../types";
 import { fetchRecipe, isRecipe } from "../services/geminiService";
 import CompactHeader from "../components/CompactHeader";
 import RecipeLoading from "../components/RecipeLoading";
-import CookingCompanionChat from "../components/CookingCompanion";
 import ErrorMessage from "../components/ErrorMessage";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
@@ -58,7 +57,7 @@ const RecipePage: React.FC = () => {
 
     setShowCelebration(false);
 
-        // Predefined recipes are matched by full name, dish name and shorter aliases,
+    // Predefined recipes are matched by full name, dish name and shorter aliases,
     // so no API call is needed.
     const predefined = findPredefinedRecipe(dish);
 
@@ -67,18 +66,20 @@ const RecipePage: React.FC = () => {
         const preload = new Image();
         preload.src = predefined.image;
       }
+
       setRecipe(predefined);
       setError(null);
       setIsLoading(false);
       return;
     }
-    
 
     // Reuse a recipe fetched earlier this session (refresh / back button)
     try {
       const cached = sessionStorage.getItem(cacheKey);
       const parsed = cached ? JSON.parse(cached) : null;
-      // A saved copy that is broken or from an older version is ignored and fetched again.
+
+      // A saved copy that is broken or from an older version is ignored and
+      // fetched again.
       if (isRecipe(parsed)) {
         setRecipe(parsed);
         setError(null);
@@ -93,14 +94,17 @@ const RecipePage: React.FC = () => {
     setError(null);
     setIsLoading(true);
 
-        fetchRecipe(dish)
+    fetchRecipe(dish)
       .then((fetched) => {
         if (cancelled) return;
+
         if (fetched.image) {
           const preload = new Image();
           preload.src = fetched.image;
         }
+
         setRecipe(fetched);
+
         try {
           sessionStorage.setItem(cacheKey, JSON.stringify(fetched));
         } catch {
@@ -109,14 +113,23 @@ const RecipePage: React.FC = () => {
       })
       .catch((err) => {
         if (cancelled) return;
-        // geminiService only throws user-safe messages (e.g. "That doesn't look like a
-        // dish - try Paneer Butter Masala"), so those are shown as written. Anything
-        // unexpected falls back to the friendly message. Details go to the console.
+
+        // geminiService only throws user-safe messages (e.g. "That doesn't look
+        // like a dish - try Paneer Butter Masala"), so those are shown as written.
+        // Anything unexpected falls back to the friendly message. Details go
+        // to the console.
         console.error("Recipe fetch failed:", err);
-        setError(err instanceof Error && err.message ? err.message : FRIENDLY_ERROR);
+
+        setError(
+          err instanceof Error && err.message
+            ? err.message
+            : FRIENDLY_ERROR
+        );
       })
       .finally(() => {
-        if (!cancelled) setIsLoading(false);
+        if (!cancelled) {
+          setIsLoading(false);
+        }
       });
 
     return () => {
@@ -135,14 +148,15 @@ const RecipePage: React.FC = () => {
       <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
         <div className="mx-auto w-full max-w-6xl">
           {isLoading && <RecipeLoading />}
+
           {error && <ErrorMessage message={error} />}
+
           {recipe && !isLoading && (
             <div className="animate-fade-in-up">
               <RecipeDisplay
                 recipe={recipe}
                 onFinishCooking={() => setShowCelebration(true)}
               />
-              <CookingCompanionChat recipe={recipe} />
             </div>
           )}
         </div>

@@ -237,10 +237,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
     <>
       {!isOpen && (
         <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full bg-[#FFF3E2] py-2.5 pl-2.5 pr-5 shadow-lg shadow-black/10 ring-1 ring-[#F0DFC2] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
-        >
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="mt-6 flex items-center gap-2.5 rounded-full bg-[#FFF3E2] py-2.5 pl-2.5 pr-5 shadow-lg shadow-black/10 ring-1 ring-[#F0DFC2] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
+            >
           <CompanionCharacter className="h-9 w-9" />
           <span className="text-sm font-semibold text-[#5C4A38]">
             Ask your Cooking Companion

@@ -16,6 +16,7 @@ import {
 import SwiggyActionModal from "./SwiggyActionModal";
 
 import NutritionInfo from "./NutritionInfo";
+import CookingCompanionChat from "./CookingCompanion";
 
 interface RecipeDisplayProps {
   recipe: Recipe;
@@ -1041,6 +1042,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </ul>
             </section>
           )}
+
+          {/* Cooking Companion */}
+          <CookingCompanionChat recipe={recipe} />
         </div>
       </div>
 
