@@ -120,6 +120,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "poha (kanda batata poha)": {
     "dishName": "Poha (Kanda Batata Poha)",
+    "image": "/dishes/poha.webp",
     "description": "A light, tangy flattened-rice breakfast tempered with mustard seeds, curry leaves, peanuts and.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -455,6 +456,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "quick vegetable pulao": {
     "dishName": "Quick Vegetable Pulao",
+    "image": "/dishes/veg-pulao.webp",
     "description": "A fragrant one-pot rice dish loaded with mixed vegetables and whole spices, ready.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -679,6 +681,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "vegetable dalia (broken wheat porridge)": {
     "dishName": "Vegetable Dalia (Broken Wheat Porridge)",
+    "image": "/dishes/veg-dalia.webp",
     "description": "A light, fiber-rich savory porridge made from broken wheat and vegetables.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -781,6 +784,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "curd rice (thayir sadam)": {
     "dishName": "Curd Rice (Thayir Sadam)",
+    "image": "/dishes/curd-rice.webp",
     "description": "Cool, comforting rice mixed with yogurt and a light tempering.",
     "prepTime": "Approx. 15 minutes (plus cooked rice)",
     "equipment": [
@@ -1297,6 +1301,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "besan ladoo": {
     "dishName": "Besan Ladoo",
+    "image": "/dishes/besan-ladoo.webp",
     "description": "Nutty, melt-in-the-mouth sweet balls made from roasted gram flour, ghee and sugar.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -1381,6 +1386,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rava kesari (semolina halwa)": {
     "dishName": "Rava Kesari (Semolina Halwa)",
+    "image": "/dishes/rava-kesari.webp",
     "description": "A glossy, saffron-scented semolina dessert made in one pan in under 20 minutes.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -1475,6 +1481,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "gulab jamun (home-style, with milk powder)": {
     "dishName": "Gulab Jamun",
+    "image": "/dishes/gulab_jamun.webp",
     "description": "Soft, spongy fried milk dumplings soaked in warm cardamom-rose sugar syrup.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -2333,6 +2340,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "classic chicken korma": {
     "dishName": "Chicken Korma",
+    "image": "/dishes/chicken-korma.webp",
     "description": "A rich, mildly spiced chicken curry made creamy with cashews and browned onions.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -3186,6 +3194,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo paratha": {
     "dishName": "Aloo Paratha",
+    "image": "/dishes/aloo-paratha.webp",
     "description": "Whole wheat flatbread stuffed with a spiced mashed potato filling, cooked golden on a tawa.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -3777,7 +3786,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "masala dosa": {
     "dishName": "Masala Dosa",
-    "image": "/dishes/plain-dosa.webp",
     "description": "A crisp, golden fermented rice-and-lentil crepe, filled with a lightly spiced potato masala.",
     "prepTime": "Approx. 45 minutes (plus 8–12 hours fermentation)",
     "equipment": [
@@ -4797,7 +4805,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "shahi paneer": {
     "dishName": "Shahi Paneer",
-    "image": "/dishes/paneer-butter-masala.webp",
     "description": "Soft paneer cubes in a rich, creamy, mildly sweet gravy made from onions,.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -5097,6 +5104,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "matar paneer": {
     "dishName": "Matar Paneer",
+    "image": "/dishes/matar-paneer.webp",
     "description": "Soft paneer and sweet green peas in a spiced onion-tomato gravy.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -5238,6 +5246,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pav bhaji": {
     "dishName": "Pav Bhaji",
+    "image": "/dishes/pav bhaji.webp",
     "description": "Buttery, spicy mashed vegetable curry served with toasted pav.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -5994,6 +6003,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "nutrela (soya chunks curry)": {
     "dishName": "Nutrela (Soya Chunks Curry)",
+    "image": "/dishes/soya-chunks.webp",
     "description": "Soft, juicy soya chunks simmered in a spiced onion-tomato gravy.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -6134,6 +6144,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "atta halwa (wheat flour halwa)": {
     "dishName": "Atta Halwa (Wheat Flour Halwa)",
+    "image": "/dishes/atta-halwa.webp",
     "description": "Warm, ghee-rich halwa made from roasted whole wheat flour and sugar.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -6223,7 +6234,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chana dal (chana dal tadka)": {
     "dishName": "Chana Dal (Chana Dal Tadka)",
-    "image": "/dishes/dal-tadka.webp",
     "description": "Nutty, thick split chickpea dal with a garlicky onion-tomato tadka.",
     "prepTime": "Approx. 45 minutes (plus 1 hour soaking)",
     "equipment": [
@@ -6356,6 +6366,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "white chole (safed chole)": {
     "dishName": "White Chole (Safed Chole)",
+    "image": "/dishes/safed-chole.webp",
     "description": "Mild, pale chickpea curry in a smooth onion-ginger gravy with yogurt.",
     "prepTime": "Approx. 1 hour (plus overnight soaking)",
     "equipment": [
@@ -6498,7 +6509,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pasta (indian masala pasta)": {
     "dishName": "Pasta (Indian Masala Pasta)",
-    "image": "/dishes/red-sauce-pasta.webp",
     "description": "Desi-style red sauce pasta with onion, capsicum and a little garam masala.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -6731,7 +6741,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "macaroni (masala macaroni)": {
     "dishName": "Macaroni (Masala Macaroni)",
-    "image": "/dishes/red-sauce-pasta.webp",
+    "image": "/dishes/macroni.webp",
     "description": "Street-style masala macaroni tossed with veggies, tomato and Indian spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -7166,6 +7176,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kadai paneer": {
     "dishName": "Kadai Paneer",
+    "image": "/dishes/kadai-paneer.webp",
     "description": "Paneer and capsicum tossed with freshly ground kadai masala, onion and tomato.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -7426,6 +7437,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "veg biryani": {
     "dishName": "Veg Biryani",
+    "image": "/dishes/veg-biryani.webp",
     "description": "Fragrant basmati rice layered with a spiced mixed-vegetable masala and slow-cooked on dum.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -7571,6 +7583,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "vada pav": {
     "dishName": "Vada Pav",
+    "image": "/dishes/vada-pav.webp",
     "description": "Spiced potato fritter tucked into a soft pav with chutneys.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -7854,7 +7867,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "khichdi (moong dal khichdi)": {
     "dishName": "Khichdi",
-    "image": "/dishes/khichdi-chawal.webp",
     "description": "Soft, comforting rice and moong dal cooked together with mild spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -8083,6 +8095,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "lassi (sweet lassi)": {
     "dishName": "Sweet Lassi",
+    "image": "/dishes/lassi.webp",
     "description": "Thick, chilled, sweetened yogurt drink blended till frothy.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -8168,6 +8181,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "roti (chapati)": {
     "dishName": "Roti (Chapati)",
+    "image": "/dishes/roti.webp",
     "description": "Soft everyday whole-wheat flatbread cooked on a hot tawa and puffed over flame.",
     "prepTime": "Approx. 30 minutes (plus 15 minutes resting)",
     "equipment": [
@@ -8400,6 +8414,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pani puri (golgappe)": {
     "dishName": "Pani Puri (Golgappe)",
+    "image": "/dishes/golgappe.webp",
     "description": "Crispy puris filled with spiced potato, tangy tamarind water and mint water, prepared.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -9521,6 +9536,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "momos (veg momos)": {
     "dishName": "Momos (Veg Momos)",
+    "image": "/dishes/momos.webp",
     "description": "Soft steamed dumplings filled with finely chopped vegetables, made with simple wrappers and.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -9795,6 +9811,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "veg sandwich": {
     "dishName": "Veg Sandwich",
+    "image": "/dishes/veg-sandwich.webp",
     "description": "An easy Indian vegetable sandwich with chutney, cucumber, tomato, onion and lightly toasted bread.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
@@ -10094,6 +10111,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "besan chila": {
     "dishName": "Besan Chila",
+    "image": "/dishes/besan-chila.webp",
     "description": "A quick savoury pancake made with gram flour, onion, green chilli and spices,.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -10848,6 +10866,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "paneer tikka": {
     "dishName": "Paneer Tikka",
+    "image": "/dishes/paneer-tikka.webp",
     "description": "Easy home-style paneer tikka marinated in yogurt and spices, then cooked on a.",
     "prepTime": "Approx. 30 minutes (plus 20 minutes marination)",
     "equipment": [
@@ -11520,7 +11539,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "paneer curry": {
     "dishName": "Paneer Curry",
-    "image": "/dishes/paneer-butter-masala.webp",
     "description": "An easy everyday paneer curry with onion, tomato, ginger, garlic and mild spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -12013,6 +12031,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mushroom masala": {
     "dishName": "Mushroom Masala",
+    "image": "/dishes/mushroom-masala.webp",
     "description": "Mushrooms cooked in a simple onion-tomato masala with everyday Indian spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -13398,7 +13417,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "moong dal": {
     "dishName": "Moong Dal",
-    "image": "/dishes/dal-tadka.webp",
     "description": "A quick yellow moong dal with a simple cumin-garlic tadka, perfect for rice or roti.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -13522,7 +13540,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "masoor dal": {
     "dishName": "Masoor Dal",
-    "image": "/dishes/dal-tadka.webp",
     "description": "A fast red lentil dal made with tomatoes, cumin and garlic using basic pantry ingredients.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -14168,6 +14185,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kothu parotta": {
     "dishName": "Kothu Parotta",
+    "image": "/dishes/kothu-parotta.webp",
     "description": "Shredded parotta stir-fried with onion, tomato, curry leaves and spices in an easy home-style version.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -14291,6 +14309,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "patta gobhi sabzi": {
     "dishName": "Patta Gobhi Sabzi",
+    "image": "/dishes/pata-gobhi.webp",
     "description": "A simple dry cabbage sabzi cooked with cumin, turmeric and everyday Indian spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -14404,7 +14423,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "paneer lababdar": {
     "dishName": "Paneer Lababdar",
-    "image": "/dishes/paneer-butter-masala.webp",
     "description": "Paneer in a tomato-cashew gravy with onion, spices and a little cream, simplified.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -14818,6 +14836,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sarson ka saag": {
     "dishName": "Sarson Ka Saag",
+    "image": "/dishes/sarson-ka-saag.webp",
     "description": "A homestyle Punjabi winter saag made with mustard greens, spinach and simple spices.",
     "prepTime": "Approx. 1 hour 15 minutes",
     "equipment": [
@@ -14963,6 +14982,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "makki di roti": {
     "dishName": "Makki Di Roti",
+    "image": "/dishes/makki-di-roti.webp",
     "description": "A rustic Punjabi cornmeal flatbread cooked on a tawa and traditionally served with saag.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -16496,7 +16516,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "toor dal": {
     "dishName": "Toor Dal",
-    "image": "/dishes/dal-tadka.webp",
+    "image": "/dishes/toor-dal.webp",
     "description": "Everyday yellow lentils cooked until soft and finished with a simple cumin-garlic tadka.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -16616,6 +16636,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo tikki": {
     "dishName": "Aloo Tikki",
+    "image": "/dishes/aloo-tikki.webp",
     "description": "Crispy shallow-fried potato patties made with simple spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -17446,6 +17467,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pindi chole": {
     "dishName": "Pindi Chole",
+    "image": "/dishes/pindi-chole.webp",
     "description": "Dark, tangy Punjabi-style chickpeas made with whole spices and a dry roasted masala.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -17913,6 +17935,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "vangi bath": {
     "dishName": "Vangi Bath",
+    "image": "/dishes/vangi-bath.webp",
     "description": "Karnataka-style brinjal rice made with cooked rice, eggplant and a tangy spice mix.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -18327,7 +18350,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "benne dosa": {
     "dishName": "Benne Dosa",
-    "image": "/dishes/plain-dosa.webp",
+    "image": "/dishes/benne-dosa.webp",
     "description": "Buttery South Indian dosa made from fermented dosa batter and cooked crisp on.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -18407,7 +18430,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rava dosa": {
     "dishName": "Rava Dosa",
-    "image": "/dishes/plain-dosa.webp",
+    "image": "/dishes/rava-dosa.webp",
     "description": "Thin, crisp South Indian dosa made from semolina and rice flour with cumin.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -18587,6 +18610,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "bisi bele bath": {
     "dishName": "Bisi Bele Bath",
+    "image": "/dishes/bisi-bele-bath.webp",
     "description": "Karnataka-style rice and lentils cooked with vegetables, tamarind and a warm spice mix.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -19071,6 +19095,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dal chawal": {
     "dishName": "Dal Chawal",
+    "image": "/dishes/dal chawal.webp",
     "description": "Simple home-style yellow dal served with soft steamed rice.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -19456,6 +19481,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dahi (homemade curd)": {
     "dishName": "Dahi (Homemade Curd)",
+    "image": "/dishes/dahi.webp",
     "description": "Fresh homemade curd made by setting milk with a little existing curd.",
     "prepTime": "Approx. 15 minutes active (plus 6 to 8 hours setting)",
     "equipment": [
@@ -21021,6 +21047,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "home style pizza": {
     "dishName": "Pizza",
+    "image": "/dishes/pizza.webp",
     "description": "An easy homemade vegetable pizza with a crisp base, pizza sauce, cheese and.",
     "prepTime": "Approx. 45 minutes (plus 45 minutes dough resting)",
     "equipment": [
@@ -21152,6 +21179,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "home style burger": {
     "dishName": "Burger",
+    "image": "/dishes/burger.webp",
     "description": "A simple homemade veg burger with a crisp potato-vegetable patty, bun, cheese and.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -23604,7 +23632,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "vada sambar": {
   "dishName": "Vada Sambar",
-    "image": "/dishes/medu-vada.webp",
   "description": "Crisp urad dal vadas soaked or served with hot, tangy sambar.",
   "prepTime": "Approx. 45 minutes (plus soaking)",
   "equipment": [
@@ -24240,7 +24267,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "set dosa": {
   "dishName": "Set Dosa",
-    "image": "/dishes/plain-dosa.webp",
+  "image": "/dishes/set-dosa.webp",
   "description": "Soft, spongy Karnataka dosas made from rice, urad dal and poha.",
   "prepTime": "Approx. 35 minutes (plus soaking and fermentation)",
   "equipment": [
@@ -24335,7 +24362,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "neer dosa": {
   "dishName": "Neer Dosa",
-    "image": "/dishes/plain-dosa.webp",
   "description": "Very thin, soft Mangalorean rice crepes made from an unfermented watery batter.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [
@@ -24938,6 +24964,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "missi roti": {
   "dishName": "Missi Roti",
+  "image": "/dishes/missi-roti.webp",
   "description": "Punjabi-Rajasthani gram-flour flatbread seasoned with onion, chilli and ginger.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -26710,7 +26737,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bhindi fry": {
   "dishName": "Bhindi Fry",
-    "image": "/dishes/bhindi.webp",
   "description": "Crisp okra stir-fry with onion and dry Indian spices.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -28594,7 +28620,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "samosa chaat": {
   "dishName": "Samosa Chaat",
-    "image": "/dishes/samosa.webp",
   "description": "Crisped samosas served with chole or matar ragda, chutneys, yogurt and sev.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [
@@ -29595,6 +29620,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chilli paneer": {
   "dishName": "Chilli Paneer",
+  "image": "/dishes/chili-paneer.webp",
   "description": "Crisp paneer tossed with capsicum, onion, garlic and a light Indo-Chinese sauce.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -30092,6 +30118,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "hakka noodles": {
   "dishName": "Hakka Noodles",
+  "image": "/dishes/hakka-noodles.webp",
   "description": "Indian-Chinese stir-fried noodles tossed with crunchy vegetables and sauces.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -30474,6 +30501,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rasgulla": {
   "dishName": "Rasgulla",
+  "image": "/dishes/rasgulla.webp",
   "description": "Spongy chhena balls gently cooked in a light cardamom sugar syrup.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -31076,6 +31104,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "jalebi": {
   "dishName": "Jalebi",
+  "image": "/dishes/jalebi.webp",
   "description": "Crisp spiral Indian sweet soaked briefly in fragrant sugar syrup.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -31845,6 +31874,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken tikka": {
   "dishName": "Chicken Tikka",
+  "image": "/dishes/chicken-tikka.webp",
   "description": "Juicy spiced chicken pieces cooked on a tawa with a lightly charred surface.",
   "prepTime": "Approx. 40 minutes (plus marinating)",
   "equipment": [
@@ -35532,6 +35562,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "spring rolls": {
     "dishName": "Vegetable Spring Rolls",
+    "image": "/dishes/veg-spring-rolls.webp",
     "description": "Crisp vegetable-filled spring rolls made with a simple cabbage and carrot filling.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
