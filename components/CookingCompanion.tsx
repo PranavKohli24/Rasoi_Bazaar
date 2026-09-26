@@ -105,7 +105,6 @@ const buildSuggestions = (_recipe: Recipe): string[] => {
   return [
     "What can I substitute if I'm missing something?",
     "Am I on track so far?",
-    "How do I know it's done?",
     "What goes well with this?",
   ].slice(0, 3);
 };
@@ -293,8 +292,8 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               {messages.length === 0 && (
                 <div className="space-y-3">
                   <p className="text-sm leading-relaxed text-[#8A7A63]">
-                    Ask me anything about cooking {recipe.dishName} —
-                    substitutions, timing, technique, or troubleshooting.
+                    Ask me anything about cooking {recipe.dishName} -
+                    substitutions, timing, technique, or other cooking doubts.
                   </p>
                   {suggestions.length > 0 && (
                     <div className="flex flex-wrap gap-2">
