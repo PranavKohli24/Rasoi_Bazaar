@@ -716,22 +716,26 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               }`}
             />
             <img
-              key={imageBounceKey}
-              src={recipe.image}
-              alt={recipe.dishName}
-              loading="eager"
-              decoding="async"
-              {...{ fetchpriority: "high" }}
-              onLoad={() => setIsImageLoaded(true)}
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-              onClick={() => setImageBounceKey((key) => key + 1)}
-              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-300 ease-out ${
-                imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-              } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-              style={{ transformStyle: "preserve-3d" }}
-            />
+  key={imageBounceKey}
+  src={recipe.image}
+  alt={recipe.dishName}
+  width={600}
+  height={450}
+  loading="eager"
+  decoding="sync"
+  {...{ fetchpriority: "high" }}
+  onLoad={() => setIsImageLoaded(true)}
+  onError={(e) => {
+    e.currentTarget.style.display = "none";
+  }}
+  onClick={() => setImageBounceKey((key) => key + 1)}
+  onContextMenu={(e) => e.preventDefault()}
+  onDragStart={(e) => e.preventDefault()}
+  className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-300 ease-out select-none ${
+    imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+  } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+  style={{ transformStyle: "preserve-3d", pointerEvents: "auto", userSelect: "none" }}
+/>
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-x-6 -bottom-2 h-3 rounded-full bg-black/40 blur-md"
