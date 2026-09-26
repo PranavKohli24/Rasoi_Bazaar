@@ -12,7 +12,7 @@ const messages = [
   "Your tasty surprise is seconds away...",
 ];
 
-const CookingCompanion: React.FC = () => {
+const RecipeLoading: React.FC = () => {
   const [message, setMessage] = useState(messages[0]);
 
   useEffect(() => {
@@ -140,4 +140,4 @@ const CookingCompanion: React.FC = () => {
   );
 };
 
-export default CookingCompanion;
+export default RecipeLoading;

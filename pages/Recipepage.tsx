@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Recipe } from "../types";
 import { fetchRecipe, isRecipe } from "../services/geminiService";
 import CompactHeader from "../components/CompactHeader";
-import CookingCompanion from "../components/CookingCompanion";
+import RecipeLoading from "../components/RecipeLoading";
+import CookingCompanionChat from "../components/CookingCompanion";
 import ErrorMessage from "../components/ErrorMessage";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
@@ -133,7 +134,7 @@ const RecipePage: React.FC = () => {
 
       <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
         <div className="mx-auto w-full max-w-6xl">
-          {isLoading && <CookingCompanion />}
+          {isLoading && <RecipeLoading />}
           {error && <ErrorMessage message={error} />}
           {recipe && !isLoading && (
             <div className="animate-fade-in-up">
@@ -141,6 +142,7 @@ const RecipePage: React.FC = () => {
                 recipe={recipe}
                 onFinishCooking={() => setShowCelebration(true)}
               />
+              <CookingCompanionChat recipe={recipe} />
             </div>
           )}
         </div>
