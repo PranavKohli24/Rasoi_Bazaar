@@ -6,6 +6,7 @@ import CategoryBrowser from "../components/CategoryBrowser";
 import RecipeSuggestionChips from "../components/RecipeSuggestionChips";
 import SectionDivider from "../components/SectionDivider";
 import { useDishSearch } from "../utils/dishRoutes";
+import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 
 const COOK_STEPS = [
   "Tap the appliances you own",
@@ -15,6 +16,11 @@ const COOK_STEPS = [
 
 const HomePage: React.FC = () => {
   const { term, setTerm, go } = useDishSearch();
+  const goWithPreload = (dish: string) => {
+    const predefined = findPredefinedRecipe(dish);
+    if (predefined?.image) new Image().src = predefined.image;
+    go(dish);
+  };
 
   // Once the big wordmark scrolls out of view, the header wordmark fades in.
   const brandRef = useRef<HTMLHeadingElement>(null);
@@ -67,14 +73,14 @@ const HomePage: React.FC = () => {
             <SearchBar
               searchTerm={term}
               setSearchTerm={setTerm}
-              onSearch={() => go(term)}
+              onSearch={() => goWithPreload(term)}
               isLoading={false}
               compact={false}
             />
           </div>
 
           <div className="mt-6 w-full max-w-2xl">
-            <RecipeSuggestionChips onSelect={go} />
+            <RecipeSuggestionChips onSelect={goWithPreload} />
           </div>
 
           <Link
@@ -92,7 +98,7 @@ const HomePage: React.FC = () => {
         <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24">
           <div className="grid gap-10 lg:grid-cols-5 lg:gap-8">
             <div className="lg:col-span-3">
-              <CategoryBrowser onSelect={go} />
+              <CategoryBrowser onSelect={goWithPreload} />
             </div>
 
             <aside className="flex flex-col lg:col-span-2">
