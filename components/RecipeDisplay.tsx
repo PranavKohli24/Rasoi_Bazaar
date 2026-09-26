@@ -108,7 +108,6 @@ const NotesIcon: IconC = ({ className }) => (
   </Icon>
 );
 
-
 /* Pictures reused from the kitchen selector, matched by equipment name */
 
 const EQUIPMENT_IMAGES: [RegExp, string][] = [
@@ -202,7 +201,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [checkedIngredients, setCheckedIngredients] = useState<boolean[]>(
     new Array(recipe.ingredients.length).fill(false)
   );
-  
   const [flashIndex, setFlashIndex] = useState<number | null>(null);
 
   // The ingredients card stays pinned on desktop only if it fits on screen.
@@ -231,6 +229,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  // Tracks when the header photo has actually finished loading, so it can
+  // fade in smoothly instead of popping in abruptly.
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
@@ -684,55 +686,65 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       <style>{STEP_ANIMATION_CSS}</style>
 
       {/* Header */}
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
-    {recipe.image && (
-  <div className="relative w-40 shrink-0 sm:w-44">
-  <img
-  src={recipe.image}
-  alt={recipe.dishName}
-  className="aspect-[4/3] w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] animate-fade-in-up transition-transform duration-300 ease-out hover:-translate-y-1"
-  onError={(e) => {
-    e.currentTarget.style.display = "none";
-  }}
-/>
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-x-6 -bottom-2 h-3 rounded-full bg-black/40 blur-md"
-    />
-  </div>
-)}
+      <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
+        {recipe.image && (
+          <div className="relative aspect-[4/3] w-40 shrink-0 sm:w-44">
+            {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
+            <div
+              aria-hidden="true"
+              className={`absolute inset-0 rounded-2xl bg-stone-800 transition-opacity duration-500 ${
+                isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
+              }`}
+            />
+            <img
+              src={recipe.image}
+              alt={recipe.dishName}
+              onLoad={() => setIsImageLoaded(true)}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+              className={`absolute inset-0 h-full w-full rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-700 ease-out ${
+                isImageLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-6 -bottom-2 h-3 rounded-full bg-black/40 blur-md"
+            />
+          </div>
+        )}
 
-  <div className="min-w-0">
-    <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
-      {recipe.dishName}
-    </h1>
+        <div className="min-w-0 max-w-3xl">
+          <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
+            {recipe.dishName}
+          </h1>
 
-    <p className="mt-4 font-serif text-lg italic leading-relaxed text-stone-400 sm:text-xl">
-      “{recipe.description}”
-    </p>
+          <p className="mt-4 font-serif text-lg italic leading-relaxed text-stone-400 sm:text-xl">
+            “{recipe.description}”
+          </p>
 
-    <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-200">
-      <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
-        <ClockIcon className="h-4 w-4 text-orange-200" />
-        {recipe.prepTime}
-      </li>
-      <li>
-        <NutritionInfo nutrition={recipe.nutrition} />
-      </li>
-    </ul>
+          <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-200">
+            <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
+              <ClockIcon className="h-4 w-4 text-orange-200" />
+              {recipe.prepTime}
+            </li>
+            <li>
+              <NutritionInfo nutrition={recipe.nutrition} />
+            </li>
+          </ul>
 
-    <div className="mt-5">
-      <button
-        type="button"
-        onClick={handleOrderFromSwiggy}
-        className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
-      >
-        <UtensilsIcon className="h-4 w-4" />
-        Don&apos;t want to cook today? Order from Swiggy
-      </button>
-    </div>
-  </div>
-</header>
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={handleOrderFromSwiggy}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+            >
+              <UtensilsIcon className="h-4 w-4" />
+              Don&apos;t want to cook today? Order from Swiggy
+            </button>
+          </div>
+        </div>
+      </header>
 
       <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:gap-12">
         {/* Ingredients */}
