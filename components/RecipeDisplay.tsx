@@ -316,7 +316,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   // Swipe on the step card: left = next step, right = previous step.
   // Needs a clearly horizontal drag, so normal vertical scrolling is untouched.
-  const SWIPE_MIN_DISTANCE = 50;
+  const SWIPE_MIN_DISTANCE = 35;
 
   const handleTouchStart = (event: React.TouchEvent) => {
     // Ignore pinch / multi-finger gestures
@@ -338,7 +338,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     const dy = touch.clientY - start.y;
 
     if (Math.abs(dx) < SWIPE_MIN_DISTANCE) return;
-    if (Math.abs(dx) < Math.abs(dy) * 1.5) return; // mostly vertical: not a swipe
+    if (Math.abs(dx) < Math.abs(dy) * 1.2) return; // mostly vertical: not a swipe
 
     if (dx < 0) handleNextStep();
     else handlePrevStep();
