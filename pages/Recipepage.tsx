@@ -62,6 +62,10 @@ const RecipePage: React.FC = () => {
     const predefined = findPredefinedRecipe(dish);
 
     if (predefined) {
+      if (predefined.image) {
+        const preload = new Image();
+        preload.src = predefined.image;
+      }
       setRecipe(predefined);
       setError(null);
       setIsLoading(false);
@@ -88,9 +92,13 @@ const RecipePage: React.FC = () => {
     setError(null);
     setIsLoading(true);
 
-    fetchRecipe(dish)
+        fetchRecipe(dish)
       .then((fetched) => {
         if (cancelled) return;
+        if (fetched.image) {
+          const preload = new Image();
+          preload.src = fetched.image;
+        }
         setRecipe(fetched);
         try {
           sessionStorage.setItem(cacheKey, JSON.stringify(fetched));
