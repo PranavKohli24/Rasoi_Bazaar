@@ -2736,7 +2736,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken tikka masala (stovetop)": {
     "dishName": "Chicken Tikka Masala (Stovetop)",
-    "image": "/dishes/butter_chicken.webp",
     "description": "Charred spiced chicken chunks simmered in a creamy tomato gravy.",
     "prepTime": "Approx. 1 hour (plus 30 min marination)",
     "equipment": [
@@ -9266,7 +9265,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mutton biryani": {
     "dishName": "Mutton Biryani",
-    "image": "/dishes/chicken-biryani.webp",
     "description": "Spiced mutton and fragrant basmati rice layered and cooked together on the stove.",
     "prepTime": "Approx. 1 hour 30 minutes (plus 30 minutes marination)",
     "equipment": [
@@ -9913,7 +9911,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "paneer sandwich": {
     "dishName": "Paneer Sandwich",
-    "image": "/dishes/veg-sandwich.webp",
     "description": "A quick toasted sandwich filled with crumbled paneer, onion, capsicum and mild Indian spices.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -10222,7 +10219,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pongal (ven pongal)": {
     "dishName": "Pongal (Ven Pongal)",
-    "image": "/dishes/khichdi-chawal.webp",
     "description": "A soft South Indian rice and moong dal dish cooked with ginger, pepper,.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -18238,7 +18234,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "parippu curry": {
     "dishName": "Parippu Curry",
-    "image": "/dishes/toor-dal.webp",
     "description": "Kerala-style yellow dal cooked with mild spices and coconut for a simple home meal.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -20373,7 +20368,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aamti": {
     "dishName": "Aamti",
-    "image": "/dishes/toor-dal.webp",
     "description": "Maharashtrian-style toor dal with goda masala, tamarind and a little jaggery.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -23799,7 +23793,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pesarattu": {
   "dishName": "Pesarattu",
-  "image": "/dishes/moong-dal-cheela.webp",
   "description": "Andhra-style thin green moong dosa with ginger, chilli and cumin.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [
@@ -23904,7 +23897,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "adai": {
   "dishName": "Adai",
-  "image": "/dishes/moong-dal-cheela.webp",
   "description": "Protein-rich South Indian lentil crepes made with rice, mixed dals and green chilli.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
   "equipment": [
@@ -24881,7 +24873,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kulcha": {
   "dishName": "Kulcha",
-  "image": "/dishes/naan.webp",
   "description": "Soft leavened North Indian flatbread that can be made plain or lightly stuffed on a tawa.",
   "prepTime": "Approx. 45 minutes (plus resting)",
   "equipment": [
@@ -30285,7 +30276,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chilli chicken": {
   "dishName": "Chilli Chicken",
-  "image": "/dishes/chili-paneer.webp",
   "description": "Crisp chicken pieces tossed with capsicum, onion and a spicy Indo-Chinese sauce.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -36373,7 +36363,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pakhala bhata": {
     "dishName": "Pakhala Bhata",
-    "image": "/dishes/curd-rice.webp",
     "description": "Odisha-style fermented rice soaked in lightly salted water and curd, served cool and refreshing.",
     "prepTime": "Approx. 20 minutes, plus chilling",
     "equipment": [
