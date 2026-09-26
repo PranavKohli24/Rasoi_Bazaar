@@ -37858,11 +37858,420 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 13
     }
   },
-};
+
+  "aloo puri": {
+    "dishName": "Aloo Puri",
+    "description": "Crisp, fluffy puris served with a simple spiced potato sabzi, a classic Indian home-style meal.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "4 medium",
+        "commonName": "Aloo",
+        "englishName": "potatoes"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Atta",
+        "englishName": "whole wheat flour"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Ajwain",
+        "englishName": "carom seeds"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Talne Ka Tel",
+        "englishName": "oil for deep frying"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pressure cook the potatoes with enough water until they are soft. Let them cool, peel them and break them into small pieces."
+      },
+      {
+        "step": 2,
+        "instruction": "In a bowl, mix the wheat flour, ajwain, a pinch of salt and 1 tablespoon oil. Add water little by little and knead into a firm dough."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat 1 tablespoon oil in a kadai. Add cumin seeds, then add the potatoes, turmeric, red chilli powder and salt. Mix and cook for 3 to 4 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Divide the dough into small balls and roll each one into a small, slightly thick puri. Keep the rolled puris covered so they do not dry out."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat oil in the kadai on medium-high heat. Slide in one puri and gently press the top with a spoon so it puffs up."
+      },
+      {
+        "step": 6,
+        "instruction": "Flip and fry until both sides are light golden. Drain on a plate and repeat with the remaining puris.",
+        "tip": {
+          "title": "Keep puris puffy",
+          "content": "The dough should be firm, the oil should be properly hot, and the puris should be rolled slightly thick."
+        }
+      },
+      {
+        "step": 7,
+        "instruction": "Serve the hot puris with the aloo sabzi."
+      }
+    ],
+    "notes": [
+      "Do not make the puri dough too soft or the puris may absorb more oil.",
+      "You can add a little chopped green chilli to the potato sabzi for extra heat."
+    ],
+    "nutrition": {
+      "calories": 390,
+      "protein": 8,
+      "carbs": 61,
+      "fat": 13
+    }
+  },
+  "raita": {
+    "dishName": "Raita",
+    "description": "A simple cooling yogurt side made with whisked curd, roasted cumin and fresh coriander.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Dahi",
+        "englishName": "curd / yogurt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Bhuna Jeera Powder",
+        "englishName": "roasted cumin powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2-3 tbsp",
+        "commonName": "Paani",
+        "englishName": "water, if needed"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Whisk the curd until smooth."
+      },
+      {
+        "step": 2,
+        "instruction": "Add roasted cumin powder, salt and red chilli powder. Mix well."
+      },
+      {
+        "step": 3,
+        "instruction": "Add a little water if you want a thinner raita and whisk again."
+      },
+      {
+        "step": 4,
+        "instruction": "Garnish with chopped coriander and serve chilled or at room temperature.",
+        "tip": {
+          "title": "Keep it creamy",
+          "content": "Whisk the curd until completely smooth before adding the spices so the raita stays creamy."
+        }
+      }
+    ],
+    "notes": [
+      "For a fuller raita, you can add chopped cucumber, onion or boondi."
+    ],
+    "nutrition": {
+      "calories": 105,
+      "protein": 7,
+      "carbs": 9,
+      "fat": 4
+    }
+  },
+  "dahi bhale": {
+    "dishName": "Dahi Bhale",
+    "description": "Soft, fluffy lentil dumplings soaked in water and topped with cool seasoned yogurt.",
+    "prepTime": "Approx. 45 minutes (plus 4 hours soaking)",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Dhuli Urad Dal",
+        "englishName": "split skinned urad dal, soaked 4 hours"
+      },
+      {
+        "amount": "1 inch",
+        "commonName": "Adrak",
+        "englishName": "ginger"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Dahi",
+        "englishName": "curd / yogurt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Bhuna Jeera Powder",
+        "englishName": "roasted cumin powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Chaat Masala",
+        "englishName": "chaat masala"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Talne Ka Tel",
+        "englishName": "oil for deep frying"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Drain the soaked urad dal. Grind it with ginger, green chilli and a little water into a thick, smooth batter."
+      },
+      {
+        "step": 2,
+        "instruction": "Transfer the batter to a bowl. Beat it well for 2 to 3 minutes to make it light and fluffy, then mix in a little salt."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a kadai on medium heat. Take small portions of batter and gently drop them into the oil."
+      },
+      {
+        "step": 4,
+        "instruction": "Fry the bhale until evenly golden and cooked through. Drain them on a plate."
+      },
+      {
+        "step": 5,
+        "instruction": "Soak the fried bhale in warm water for 10 minutes. Gently press each one between your palms to remove excess water.",
+        "tip": {
+          "title": "Make them soft",
+          "content": "Do not fry on very high heat. Medium heat lets the inside cook while keeping the bhale soft enough to absorb the yogurt."
+        }
+      },
+      {
+        "step": 6,
+        "instruction": "Whisk the curd until smooth and season it with a little salt. Place the soaked bhale in a serving dish and pour the curd over them."
+      },
+      {
+        "step": 7,
+        "instruction": "Sprinkle roasted cumin powder, red chilli powder and chaat masala on top. Serve chilled or at room temperature."
+      }
+    ],
+    "notes": [
+      "Sweet tamarind chutney and green chutney can be added for a more traditional chaat-style finish.",
+      "The batter should be thick enough to hold its shape when dropped into the oil."
+    ],
+    "nutrition": {
+      "calories": 235,
+      "protein": 11,
+      "carbs": 23,
+      "fat": 10
+    }
+  },
+  "soya granules (soya keema)": {
+    "dishName": "Soya Granules (Soya Keema)",
+    "description": "A simple, protein-rich home-style sabzi made with soya granules, onion, tomato and basic Indian spices.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Soya Granules",
+        "englishName": "dry soya granules"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomatoes, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Boil enough water in a pan, add a little salt and the soya granules. Cook for 5 minutes until they soften. Drain and squeeze out the excess water."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil in the same pan. Add chopped onion and green chilli and cook until the onion turns light golden."
+      },
+      {
+        "step": 3,
+        "instruction": "Add ginger-garlic paste and cook for 30 seconds."
+      },
+      {
+        "step": 4,
+        "instruction": "Add chopped tomatoes, turmeric, red chilli powder and salt. Cook until the tomatoes become soft and the mixture thickens."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the squeezed soya granules and mix well so they are coated with the masala."
+      },
+      {
+        "step": 6,
+        "instruction": "Cook for 4 to 5 minutes, stirring occasionally. Sprinkle garam masala and mix.",
+        "tip": {
+          "title": "Better texture",
+          "content": "Squeeze out as much water as practical before adding the granules. They will absorb the masala better and taste less watery."
+        }
+      },
+      {
+        "step": 7,
+        "instruction": "Serve hot with roti, paratha or rice."
+      }
+    ],
+    "notes": [
+      "You can add peas or finely chopped capsicum if you have them, but the basic version works without them.",
+      "This is a dry sabzi. Add a splash of water only if you prefer it slightly softer."
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein": 22,
+      "carbs": 18,
+      "fat": 7
+    }
+  },
+}
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
 export const predefinedRecipeServings: Record<string, number> = {
-"poori": 4,  "sabudana khichdi": 4,  "rava idli": 4,  "vada sambar": 4,  "pesarattu": 4,  "adai": 4,  "appam": 4,  "puttu": 4,  "paniyaram": 4,  "set dosa": 4,  "neer dosa": 4,  "sabudana vada": 4,  "mysore bonda": 4,  "thalipeeth": 4,  "bhatura": 4,  "kulcha": 4,  "missi roti": 4,  "bajra roti": 4,  "jowar roti": 4,  "bhakri": 4,  "palak paratha": 4,  "methi paratha": 4,  "paneer paratha": 4,  "matar paratha": 4,  "veg kadai": 4,  "veg jalfrezi": 4,  "methi matar malai": 4,  "navratan korma": 4,  "achari aloo": 4,  "pithla": 4,  "ker sangri": 4,  "papad ki sabzi": 4,  "bhindi fry": 4,  "aloo beans": 4,  "palak corn": 4,  "kaju curry": 4,  "misal pav": 4,  "dabeli": 4,  "puran poli": 6,  "khandvi": 4,  "handvo": 4,  "fafda jalebi": 4,  "pyaz ki kachori": 4,  "mirchi vada": 4,  "dal baati churma": 4,  "ragda pattice": 4,  "aloo chaat": 4,  "samosa chaat": 3,  "frankie": 4,  "kathi roll": 4,  "paneer roll": 4,  "bread roll": 4,  "veg cutlet": 4,  "aloo bonda": 4,  "masala vada": 4,  "mirchi bajji": 4,  "chilli paneer": 4,  "gobi manchurian": 4,  "veg manchurian": 4,  "veg fried rice": 4,  "hakka noodles": 4,  "chilli chicken": 4,  "schezwan fried rice": 4,  "rasgulla": 6,  "kaju katli": 10,  "barfi": 8,  "coconut barfi": 8,  "peda": 8,  "shrikhand": 4,  "payasam": 4,  "jalebi": 6,  "gujiya": 6,  "modak": 6,  "malpua": 6,  "kalakand": 8,  "rava laddu": 8,  "soan papdi": 8,  "mysore pak": 8,  "chicken tikka": 4,  "chicken chettinad": 4,  "chicken vindaloo": 4,  "chicken madras": 4,  "pepper chicken": 4,  "nihari": 4,  "haleem": 4,  "yakhni pulao": 4,  "laal maas": 4,  "fish fry": 3,  "prawn curry": 4,  "goan fish curry": 4,  "kerala fish curry": 4,  "prawn biryani": 4,  "mint chutney": 4,  "coconut chutney": 4,  "tomato chutney": 4,  "green chutney": 4,  "tamarind chutney": 6,  "boondi raita": 2,  "cucumber raita": 2,  "onion raita": 2,  "kachumber": 2,  "masala chaas": 2,  "shikanji": 2,  "aam panna": 4,  "sol kadhi": 4,
+"aloo puri": 4,  "raita": 4,  "dahi bhale": 4,  "soya granules (soya keema)": 4,  "poori": 4,  "sabudana khichdi": 4,  "rava idli": 4,  "vada sambar": 4,  "pesarattu": 4,  "adai": 4,  "appam": 4,  "puttu": 4,  "paniyaram": 4,  "set dosa": 4,  "neer dosa": 4,  "sabudana vada": 4,  "mysore bonda": 4,  "thalipeeth": 4,  "bhatura": 4,  "kulcha": 4,  "missi roti": 4,  "bajra roti": 4,  "jowar roti": 4,  "bhakri": 4,  "palak paratha": 4,  "methi paratha": 4,  "paneer paratha": 4,  "matar paratha": 4,  "veg kadai": 4,  "veg jalfrezi": 4,  "methi matar malai": 4,  "navratan korma": 4,  "achari aloo": 4,  "pithla": 4,  "ker sangri": 4,  "papad ki sabzi": 4,  "bhindi fry": 4,  "aloo beans": 4,  "palak corn": 4,  "kaju curry": 4,  "misal pav": 4,  "dabeli": 4,  "puran poli": 6,  "khandvi": 4,  "handvo": 4,  "fafda jalebi": 4,  "pyaz ki kachori": 4,  "mirchi vada": 4,  "dal baati churma": 4,  "ragda pattice": 4,  "aloo chaat": 4,  "samosa chaat": 3,  "frankie": 4,  "kathi roll": 4,  "paneer roll": 4,  "bread roll": 4,  "veg cutlet": 4,  "aloo bonda": 4,  "masala vada": 4,  "mirchi bajji": 4,  "chilli paneer": 4,  "gobi manchurian": 4,  "veg manchurian": 4,  "veg fried rice": 4,  "hakka noodles": 4,  "chilli chicken": 4,  "schezwan fried rice": 4,  "rasgulla": 6,  "kaju katli": 10,  "barfi": 8,  "coconut barfi": 8,  "peda": 8,  "shrikhand": 4,  "payasam": 4,  "jalebi": 6,  "gujiya": 6,  "modak": 6,  "malpua": 6,  "kalakand": 8,  "rava laddu": 8,  "soan papdi": 8,  "mysore pak": 8,  "chicken tikka": 4,  "chicken chettinad": 4,  "chicken vindaloo": 4,  "chicken madras": 4,  "pepper chicken": 4,  "nihari": 4,  "haleem": 4,  "yakhni pulao": 4,  "laal maas": 4,  "fish fry": 3,  "prawn curry": 4,  "goan fish curry": 4,  "kerala fish curry": 4,  "prawn biryani": 4,  "mint chutney": 4,  "coconut chutney": 4,  "tomato chutney": 4,  "green chutney": 4,  "tamarind chutney": 6,  "boondi raita": 2,  "cucumber raita": 2,  "onion raita": 2,  "kachumber": 2,  "masala chaas": 2,  "shikanji": 2,  "aam panna": 4,  "sol kadhi": 4,
 
   "quick 20-minute paneer bhurji": 2,
   "poha (kanda batata poha)": 3,
