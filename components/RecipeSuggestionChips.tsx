@@ -1,4 +1,5 @@
 import React from "react";
+import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 
 interface RecipeSuggestionChipsProps {
   onSelect: (dish: string) => void;
@@ -13,6 +14,14 @@ const suggestions = [
   "Samosa",
 ];
 
+// Preload a dish image as early as possible — on hover (desktop) or
+// touchstart (mobile) — so it's already in the browser cache by the
+// time the recipe page mounts.
+const preloadImage = (dish: string) => {
+  const predefined = findPredefinedRecipe(dish);
+  if (predefined?.image) new Image().src = predefined.image;
+};
+
 const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
   onSelect,
 }) => (
@@ -26,6 +35,8 @@ const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
           key={dish}
           type="button"
           onClick={() => onSelect(dish)}
+          onMouseEnter={() => preloadImage(dish)}
+          onTouchStart={() => preloadImage(dish)}
           className="rounded-full border border-stone-700 bg-stone-900 px-4 py-2 text-sm font-medium text-stone-200 shadow-sm transition-colors duration-200 hover:border-orange-400 hover:bg-orange-400/10 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
         >
           {dish}
