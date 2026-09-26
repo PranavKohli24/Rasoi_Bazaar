@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Recipe } from "../types";
 import {
   askCookingCompanion,
@@ -233,16 +234,26 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
 
   if (!hasRecipe) return null;
 
-  return (
+  // Rendered via portal straight into <body>. If this markup stayed inside
+  // the recipe layout, any transformed ancestor upstream (the header photo
+  // uses `perspective`, page-transition wrappers often use `transform`) would
+  // silently turn `fixed` into something that scrolls with the page instead
+  // of staying pinned to the viewport. Portaling to <body> guarantees there's
+  // nothing above it that can do that.
+  return createPortal(
     <>
+      {/* Reachable from any scroll position. Icon-only on narrow screens to
+          stay out of the way of the thumb; the label appears once there's
+          room for it. */}
       {!isOpen && (
         <button
-            type="button"
-            onClick={() => setIsOpen(true)}
-            className="mt-6 flex items-center gap-2.5 rounded-full bg-[#FFF3E2] py-2.5 pl-2.5 pr-5 shadow-lg shadow-black/10 ring-1 ring-[#F0DFC2] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
-            >
+          type="button"
+          onClick={() => setIsOpen(true)}
+          aria-label="Ask your Cooking Companion"
+          className="fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-[#FFF3E2] p-2.5 shadow-lg shadow-black/20 ring-1 ring-[#F0DFC2] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B] sm:bottom-6 sm:right-6 sm:pr-5"
+        >
           <CompanionCharacter className="h-9 w-9" />
-          <span className="text-sm font-semibold text-[#5C4A38]">
+          <span className="hidden text-sm font-semibold text-[#5C4A38] sm:inline">
             Ask your Cooking Companion
           </span>
         </button>
@@ -250,15 +261,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
 
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 flex items-end justify-end sm:p-6"
-          onClick={() => setIsOpen(false)}
+          role="dialog"
+          aria-label="Cooking companion chat"
+          className="companion-panel-enter fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#F0DFC2] bg-[#FFFBF3] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl"
         >
-          <div
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-label="Cooking companion chat"
-            className="flex h-[80vh] w-full flex-col rounded-t-3xl border border-[#F0DFC2] bg-[#FFFBF3] shadow-2xl sm:h-[560px] sm:w-96 sm:rounded-3xl"
-          >
             <div className="flex items-center justify-between border-b border-[#F0DFC2] px-5 py-4">
               <div className="flex items-center gap-3">
                 <CompanionCharacter thinking={isSending} className="h-9 w-9" />
@@ -379,7 +385,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
                 Enter to send · Shift+Enter for a new line
               </p>
             </div>
-          </div>
         </div>
       )}
 
@@ -412,14 +417,24 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
           50% { transform: rotate(9deg); }
         }
 
+        .companion-panel-enter {
+          animation: companion-panel-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes companion-panel-in {
+          from { transform: translateY(16px); opacity: 0.6; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
         @media (prefers-reduced-motion: reduce) {
           .companion-blink,
-          .companion-spoon.is-stirring {
+          .companion-spoon.is-stirring,
+          .companion-panel-enter {
             animation: none;
           }
         }
       `}</style>
-    </>
+    </>,
+    document.body
   );
 };
 

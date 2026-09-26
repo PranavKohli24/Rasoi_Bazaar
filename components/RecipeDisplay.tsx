@@ -695,14 +695,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       : "animate-fade-in-up";
 
   return (
-    <div className="w-full animate-fade-in-up">
+    <div className="w-full animate-fade-in-up pb-24 sm:pb-8">
       <style>{STEP_ANIMATION_CSS}</style>
 
-      {/* Header */}
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
+      {/* Header: photo, title, and quick facts share one clear block, with the
+          Swiggy shortcut demoted below the facts so it reads as an alternative,
+          not competing top-level action. */}
+      <header className="flex flex-col gap-6 border-b border-stone-800 pb-8 sm:flex-row sm:gap-8">
         {recipe.image && (
           <div
-            className="relative aspect-[4/3] w-40 shrink-0 sm:w-44"
+            className="relative aspect-[4/3] w-32 shrink-0 self-start sm:w-48"
             style={{ perspective: "800px" }}
           >
             {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
@@ -740,39 +742,39 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </div>
         )}
 
-        <div className="min-w-0 max-w-3xl">
-          <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
+        <div className="min-w-0 flex-1">
+          <h1 className="font-serif text-3xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
             {recipe.dishName}
           </h1>
 
-          <p className="mt-4 font-serif text-lg italic leading-relaxed text-stone-400 sm:text-xl">
+          <p className="mt-3 max-w-2xl font-serif text-base italic leading-relaxed text-stone-400 sm:mt-4 sm:text-xl">
             “{recipe.description}”
           </p>
 
-          <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm text-stone-200">
-            <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
-              <ClockIcon className="h-4 w-4 text-orange-200" />
-              {recipe.prepTime}
-            </li>
-            <li>
-              <NutritionInfo nutrition={recipe.nutrition} />
-            </li>
-          </ul>
+          <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6">
+            <ul className="flex flex-wrap items-center gap-2 text-sm text-stone-200">
+              <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
+                <ClockIcon className="h-4 w-4 text-orange-200" />
+                {recipe.prepTime}
+              </li>
+              <li>
+                <NutritionInfo nutrition={recipe.nutrition} />
+              </li>
+            </ul>
 
-          <div className="mt-5">
             <button
               type="button"
               onClick={handleOrderFromSwiggy}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-2 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-1.5 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
             >
               <UtensilsIcon className="h-4 w-4" />
-              Don&apos;t want to cook today? Order from Swiggy
+              Order from Swiggy instead
             </button>
           </div>
         </div>
       </header>
 
-      <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:gap-12">
+      <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:items-start lg:gap-12">
         {/* Ingredients */}
         <aside className={`lg:col-span-2 lg:self-start ${canStick ? "lg:sticky lg:top-24" : ""}`}>
           <section ref={ingredientsCardRef} aria-labelledby="ingredients-heading" className={card}>
@@ -865,10 +867,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </section>
         </aside>
 
-        {/* Equipment, method, notes */}
-        <div className="flex flex-col gap-12 lg:col-span-3">
+        {/* Equipment, method, notes share one consistent rhythm via divide-y,
+            instead of each section inventing its own border/padding combo. */}
+        <div className="flex flex-col divide-y divide-stone-800 lg:col-span-3">
           {/* Equipment */}
-          <section aria-labelledby="equipment-heading">
+          <section aria-labelledby="equipment-heading" className="pb-10 lg:pb-12">
             <SectionTitle id="equipment-heading" title="Equipment" icon={<PotIcon className="h-6 w-6" />} />
 
             <ul className="grid items-start gap-3 sm:grid-cols-2">
@@ -915,7 +918,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </section>
 
           {/* Method */}
-          <section aria-labelledby="method-heading" className="border-t border-stone-700 pt-10">
+          <section aria-labelledby="method-heading" className="py-10 lg:py-12">
             <SectionTitle
               id="method-heading"
               title="Method"
@@ -1029,7 +1032,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
           {/* Notes */}
           {recipe.notes && recipe.notes.length > 0 && (
-            <section aria-labelledby="notes-heading" className="border-t border-stone-700 pt-10">
+            <section aria-labelledby="notes-heading" className="py-10 lg:py-12">
               <SectionTitle id="notes-heading" title="Notes & tips" icon={<NotesIcon className="h-6 w-6" />} />
 
               <ul className="space-y-3 rounded-2xl border border-stone-700 bg-[#FFF1C9]/50 p-5 sm:p-6">
@@ -1042,9 +1045,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </ul>
             </section>
           )}
-
-          {/* Cooking Companion */}
-          <CookingCompanionChat recipe={recipe} />
         </div>
       </div>
 
@@ -1079,6 +1079,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}
       />
+
+      {/* Floating so it's reachable from anywhere on the page, not just after
+          scrolling past every section. */}
+      <CookingCompanionChat recipe={recipe} />
     </div>
   );
 };
