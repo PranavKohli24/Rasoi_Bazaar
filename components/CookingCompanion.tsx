@@ -107,10 +107,9 @@ const buildSuggestions = (_recipe: Recipe): string[] => {
   ].slice(0, 3);
 };
 
-// Shown instead of whatever the service's raw error message says, so the
-// tone always matches the character rather than reading like a system
-// failure notice. Kept general on purpose, since we don't know what actually
-// went wrong from here.
+// Fallback for the rare case the service throws something without a usable
+// message. The service's own errors (offline vs. generic vs. server-sent)
+// are already written in-character, so those are shown as-is.
 const FRIENDLY_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 
 /* ------------------------------------------------------------ component */
@@ -193,10 +192,8 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
       setLastQuestion(null);
     } catch (err) {
-      // The service's raw message isn't shown to the person — logged for us,
-      // replaced with one consistent, in-character line for them.
       console.error("Cooking companion error:", err);
-      setError(FRIENDLY_ERROR);
+      setError(err instanceof Error && err.message ? err.message : FRIENDLY_ERROR);
     } finally {
       setIsSending(false);
     }

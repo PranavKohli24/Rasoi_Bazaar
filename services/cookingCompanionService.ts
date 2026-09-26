@@ -5,10 +5,12 @@ export interface CompanionMessage {
   content: string;
 }
 
+// Written in the companion's own voice rather than as system-failure notices,
+// since this is exactly the text people see when something goes wrong.
 const GENERIC_ERROR =
-  "Your cooking companion is unavailable right now. Please try again.";
+  "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 const OFFLINE_ERROR =
-  "Couldn't reach your cooking companion. Check your connection and try again.";
+  "I can't hear you over the sizzling — looks like your connection dropped. Try again once you're back online?";
 
 /**
  * Asks the cooking companion a question about the given recipe, passing the
