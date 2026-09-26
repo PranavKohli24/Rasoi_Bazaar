@@ -48,23 +48,6 @@ const SendIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const AlertIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-    aria-hidden="true"
-  >
-    <path d="M12 9v4M12 17h.01" />
-    <path d="M10.3 3.9 1.8 18a1.8 1.8 0 0 0 1.5 2.7h17.4a1.8 1.8 0 0 0 1.5-2.7L13.7 3.9a1.8 1.8 0 0 0-3.4 0Z" />
-  </svg>
-);
-
 // The companion itself: a round smiling face in a chef's hat, with a spoon
 // that only moves while it's actually thinking. Flat solid fills only — no
 // gradients — so it stays simple at every size it appears (launcher,
@@ -123,6 +106,12 @@ const buildSuggestions = (_recipe: Recipe): string[] => {
     "What goes well with this?",
   ].slice(0, 3);
 };
+
+// Shown instead of whatever the service's raw error message says, so the
+// tone always matches the character rather than reading like a system
+// failure notice. Kept general on purpose, since we don't know what actually
+// went wrong from here.
+const FRIENDLY_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 
 /* ------------------------------------------------------------ component */
 
@@ -204,9 +193,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
       setLastQuestion(null);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again."
-      );
+      // The service's raw message isn't shown to the person — logged for us,
+      // replaced with one consistent, in-character line for them.
+      console.error("Cooking companion error:", err);
+      setError(FRIENDLY_ERROR);
     } finally {
       setIsSending(false);
     }
@@ -316,43 +306,50 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
                 message.role === "assistant" ? (
                   <div
                     key={index}
-                    className="max-w-[85%] rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#3D3226]"
+                    className="message-bubble-in max-w-[85%] rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#3D3226]"
                   >
                     {message.content}
                   </div>
                 ) : (
                   <div
                     key={index}
-                    className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFD9A6] px-4 py-2.5 text-sm leading-relaxed text-[#5C3A1E]"
+                    className="message-bubble-in ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFD9A6] px-4 py-2.5 text-sm leading-relaxed text-[#5C3A1E]"
                   >
                     {message.content}
                   </div>
                 )
               )}
 
+              {/* Plain typing cue — deliberately not a bubble. The reply gets
+                  its own bubble, freshly created, once it actually arrives;
+                  this never grows into it. */}
               {isSending && (
-                <div className="flex items-center gap-2">
-                  <CompanionCharacter thinking className="h-6 w-6" />
-                  <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-3">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:150ms]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:300ms]" />
-                  </div>
+                <div
+                  className="flex items-center gap-2 py-1 pl-1"
+                  role="status"
+                  aria-label="Cooking companion is typing"
+                >
+                  <CompanionCharacter thinking className="h-6 w-6 shrink-0" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:150ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:300ms]" />
                 </div>
               )}
 
+              {/* Shown as an ordinary message from the companion, not a system
+                  alert — no red, no warning icon. */}
               {error && (
-                <div className="flex items-start gap-2.5 rounded-2xl border border-[#F3B8B3] bg-[#FDE7E5] px-4 py-3 text-sm text-[#B23A32]">
-                  <AlertIcon className="mt-0.5 h-4 w-4 shrink-0" />
-                  <div className="space-y-1.5">
-                    <p className="leading-relaxed">{error}</p>
+                <div className="message-bubble-in flex items-start gap-2">
+                  <CompanionCharacter className="h-6 w-6 shrink-0 opacity-90" />
+                  <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#3D3226]">
+                    <p>{error}</p>
                     {lastQuestion && (
                       <button
                         type="button"
                         onClick={handleRetry}
-                        className="text-xs font-semibold underline decoration-[#B23A32]/50 underline-offset-2 hover:decoration-[#B23A32]"
+                        className="mt-2 inline-flex text-xs font-semibold text-[#B5651D] underline decoration-[#B5651D]/40 underline-offset-2 hover:decoration-[#B5651D]"
                       >
-                        Try again
+                        Ask again
                       </button>
                     )}
                   </div>
@@ -396,6 +393,17 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
           display: none; /* Chrome, Safari, Edge */
         }
 
+        /* A message bubble's one-time arrival, not a repeating effect. Because
+           messages are keyed by index and only ever appended, existing bubbles
+           never remount and never replay this — only a genuinely new one does. */
+        .message-bubble-in {
+          animation: message-bubble-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes message-bubble-in {
+          from { opacity: 0; transform: translateY(6px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .companion-blink {
           animation: companion-blink 6s ease-in-out infinite;
         }
@@ -428,7 +436,8 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({ recipe }) => {
         @media (prefers-reduced-motion: reduce) {
           .companion-blink,
           .companion-spoon.is-stirring,
-          .companion-panel-enter {
+          .companion-panel-enter,
+          .message-bubble-in {
             animation: none;
           }
         }
