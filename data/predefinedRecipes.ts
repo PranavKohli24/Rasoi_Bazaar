@@ -890,6 +890,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sprouts chaat": {
     "dishName": "Sprouts Chaat",
+    "image": "/dishes/sprouts-chaat.webp",
     "description": "A crunchy, protein-rich salad of sprouted moong beans tossed with vegetables, lemon and spices.",
     "prepTime": "Approx. 15 minutes (plus sprouting time)",
     "equipment": [],
@@ -2216,6 +2217,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "baingan bharta (smoky roasted eggplant mash)": {
     "dishName": "Baingan Bharta",
+    "image": "/dishes/baigan-bharta.webp",
     "description": "Fire-roasted eggplant mashed and cooked with onions, tomatoes and spices.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -2736,6 +2738,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken tikka masala (stovetop)": {
     "dishName": "Chicken Tikka Masala (Stovetop)",
+    "image": "/dishes/chicken-tikka-masala.webp",
     "description": "Charred spiced chicken chunks simmered in a creamy tomato gravy.",
     "prepTime": "Approx. 1 hour (plus 30 min marination)",
     "equipment": [
@@ -3108,6 +3111,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "jeera rice": {
     "dishName": "Jeera Rice",
+    "image": "/dishes/jeera-rice.webp",
     "description": "Fragrant basmati rice tempered with roasted cumin seeds.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -3310,6 +3314,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "laccha paratha (multi-layered flatbread)": {
     "dishName": "Laccha Paratha",
+    "image": "/dishes/lacha-paratha.webp",
     "description": "A flaky, multi-layered whole wheat flatbread with crisp folds.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -3389,6 +3394,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "lemon rice (chitranna)": {
     "dishName": "Lemon Rice (Chitranna)",
+    "image": "/dishes/lemon-rice.webp",
     "description": "Tangy, lightly spiced rice tempered with peanuts, curry leaves and fresh lemon juice.",
     "prepTime": "Approx. 20 minutes (using pre-cooked rice)",
     "equipment": [
