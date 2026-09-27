@@ -388,9 +388,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                   <SendIcon className="h-[18px] w-[18px]" />
                 </button>
               </div>
-              <p className="mt-1.5 text-[11px] text-[#B8A98C]">
-                Enter to send · Shift+Enter for a new line
-              </p>
             </div>
         </div>
       )}

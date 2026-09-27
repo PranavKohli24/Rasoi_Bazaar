@@ -23,6 +23,26 @@ interface RecipeDisplayProps {
   onFinishCooking: () => void;
 }
 
+/* ---------------------------------------------------------------- palette
+   Saffron carries the brand, every primary action, and "this is done/
+   checked" state. Mustard is reserved for quiet info tags (prep time,
+   notes). Clay marks equipment that needs a workaround, so it doesn't get
+   lost among everything else. No gradients anywhere. */
+
+const COLOR = {
+  page: "#FBF3E8",
+  surface: "#FFFDF9",
+  ink: "#2E2115",
+  inkSoft: "#6B5D4F",
+  border: "#E8D9BE",
+  saffron: "#E07A2C",
+  saffronDark: "#C96A22",
+  saffronTint: "#FBE4CE",
+  mustard: "#FFF1C9",
+  clay: "#C65D42",
+  clayTint: "#F5E1DA",
+} as const;
+
 /* ---------- Icons ---------- */
 
 const Icon: React.FC<{ className?: string; children: React.ReactNode }> = ({
@@ -44,7 +64,7 @@ const Icon: React.FC<{ className?: string; children: React.ReactNode }> = ({
   </svg>
 );
 
-type IconC = React.FC<{ className?: string }>;
+type IconC = React.FC<React.SVGProps<SVGSVGElement>>;
 
 const ClockIcon: IconC = ({ className }) => (
   <Icon className={className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
@@ -65,6 +85,9 @@ const PlayIcon: IconC = ({ className }) => (
   <Icon className={className}>
     <circle cx="12" cy="12" r="9" /><path d="M10 8.5v7l6-3.5-6-3.5Z" fill="currentColor" />
   </Icon>
+);
+const ArrowDownIcon: IconC = ({ className }) => (
+  <Icon className={className}><path d="M12 5v14" /><path d="m6 13 6 6 6-6" /></Icon>
 );
 const ChevronLeftIcon: IconC = ({ className }) => (
   <Icon className={className}><path d="m15 18-6-6 6-6" /></Icon>
@@ -125,9 +148,6 @@ const EQUIPMENT_IMAGES: [RegExp, string][] = [
 const getEquipmentImage = (name: string): string | null =>
   EQUIPMENT_IMAGES.find(([pattern]) => pattern.test(name))?.[1] ?? null;
 
-const isPotLike = (name: string): boolean =>
-  /\b(pan|pot|skillet|saucepan)\b/i.test(name);
-
 const STEP_ANIMATION_CSS = `
 @keyframes step-slide-from-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes step-slide-from-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
@@ -135,8 +155,8 @@ const STEP_ANIMATION_CSS = `
 .step-slide-from-left { animation: step-slide-from-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes image-bounce-3d {
   0% { transform: translateZ(0) scale(1); }
-  40% { transform: translateZ(20px) scale(1.025); }
-  70% { transform: translateZ(-4px) scale(0.995); }
+  40% { transform: translateZ(20px) scale(1.02); }
+  70% { transform: translateZ(-4px) scale(0.996); }
   100% { transform: translateZ(0) scale(1); }
 }
 .animate-image-bounce-3d { animation: image-bounce-3d 0.55s cubic-bezier(0.25, 0.8, 0.35, 1) both; }
@@ -148,12 +168,12 @@ const STEP_ANIMATION_CSS = `
 /* ---------- Shared UI ---------- */
 
 const primaryButton =
-  "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
+  "inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 font-semibold transition-all duration-200 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2";
 
 const secondaryButton =
-  "inline-flex items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-900 px-5 py-3 font-medium text-stone-100 transition-colors duration-200 hover:border-orange-300/70 hover:bg-orange-400/10 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
+  "inline-flex items-center justify-center gap-2 rounded-2xl border px-5 py-3 font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2";
 
-const card = "rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_8px_30px_rgba(120,70,30,0.08)]";
+const card = "rounded-3xl border";
 
 const SectionTitle: React.FC<{
   id: string;
@@ -164,10 +184,17 @@ const SectionTitle: React.FC<{
 }> = ({ id, title, icon, aside, flush = false }) => (
   <div className={`${flush ? "" : "mb-5"} flex items-center justify-between gap-4`}>
     <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FFE8D6] text-orange-200">
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+        style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffron }}
+      >
         {icon}
       </span>
-      <h2 id={id} className="font-serif text-2xl font-black tracking-tight text-orange-50 sm:text-3xl">
+      <h2
+        id={id}
+        className="font-serif text-2xl font-black tracking-tight sm:text-3xl"
+        style={{ color: COLOR.ink }}
+      >
         {title}
       </h2>
     </div>
@@ -184,7 +211,8 @@ const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex max-w-full items-center gap-2 rounded-lg text-left text-sm font-semibold text-orange-200 transition-colors duration-200 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+        className="inline-flex max-w-full items-center gap-2 rounded-lg text-left text-sm font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-2"
+        style={{ color: COLOR.saffronDark }}
         aria-expanded={isOpen}
         aria-controls={tipId}
       >
@@ -195,12 +223,170 @@ const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
       {isOpen && (
         <div
           id={tipId}
-          className="mt-3 animate-fade-in-up rounded-xl border-l-4 border-orange-300 bg-[#FFF1C9] p-4 text-sm leading-relaxed text-stone-200 sm:text-base"
-          style={{ animationDuration: "0.3s" }}
+          className="mt-3 animate-fade-in-up rounded-xl border-l-4 p-4 text-sm leading-relaxed sm:text-base"
+          style={{
+            borderColor: COLOR.saffron,
+            backgroundColor: COLOR.saffronTint,
+            color: COLOR.ink,
+            animationDuration: "0.3s",
+          }}
         >
           <p>{tip.content}</p>
         </div>
       )}
+    </div>
+  );
+};
+
+/* Pulls a cook time out of a step's own words ("simmer for 10 minutes",
+   "bake 20-25 mins", "rest 30 seconds") so a timer can offer itself without
+   the recipe data needing a separate, hand-authored duration field. */
+const DURATION_REGEX = /(\d+)(?:\s*(?:-|to)\s*(\d+))?\s*(hours?|hrs?|minutes?|mins?|seconds?|secs?)\b/i;
+
+const parseDurationSeconds = (text: string): number | null => {
+  const match = text.match(DURATION_REGEX);
+  if (!match) return null;
+
+  const first = parseInt(match[1], 10);
+  const second = match[2] ? parseInt(match[2], 10) : null;
+  const value = second ? Math.max(first, second) : first; // longer end of a range
+  const unit = match[3].toLowerCase();
+
+  if (unit.startsWith("hour") || unit.startsWith("hr")) return value * 3600;
+  if (unit.startsWith("min")) return value * 60;
+  return value;
+};
+
+// A couple of short sine pings — no audio file to ship, so this still works
+// the moment the page loads.
+const playChime = () => {
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const ctx = new AudioCtx();
+    const ping = (frequency: number, startAt: number) => {
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime + startAt);
+      gain.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + startAt + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + startAt + 0.5);
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start(ctx.currentTime + startAt);
+      oscillator.stop(ctx.currentTime + startAt + 0.55);
+    };
+    ping(880, 0);
+    ping(1108, 0.18);
+  } catch {
+    /* Web Audio unavailable — the visual "Time's up" state still shows. */
+  }
+};
+
+const StepTimer: React.FC<{ seconds: number; stepKey: number }> = ({ seconds, stepKey }) => {
+  const [remaining, setRemaining] = useState(seconds);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef<number | null>(null);
+
+  // A fresh step (or a step whose parsed duration changed) gets a fresh timer.
+  useEffect(() => {
+    setRemaining(seconds);
+    setIsRunning(false);
+    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seconds, stepKey]);
+
+  useEffect(() => {
+    if (!isRunning) return;
+    intervalRef.current = window.setInterval(() => {
+      setRemaining((prev) => {
+        if (prev <= 1) {
+          if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+          setIsRunning(false);
+          playChime();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => {
+      if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+    };
+  }, [isRunning]);
+
+  const isDone = remaining === 0;
+  const hasStarted = remaining !== seconds;
+  const progressPct = seconds === 0 ? 0 : ((seconds - remaining) / seconds) * 100;
+  const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
+  const secs = (remaining % 60).toString().padStart(2, "0");
+
+  const radius = 21;
+  const circumference = 2 * Math.PI * radius;
+  const dashOffset = circumference * (1 - progressPct / 100);
+
+  const reset = () => {
+    setRemaining(seconds);
+    setIsRunning(false);
+  };
+
+  const minuteLabel = Math.max(1, Math.round(seconds / 60));
+
+  return (
+    <div
+      className="mt-6 inline-flex items-center gap-3.5 rounded-2xl border px-4 py-3"
+      style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+    >
+      <div className="relative h-12 w-12 shrink-0">
+        <svg viewBox="0 0 52 52" className="h-12 w-12 -rotate-90">
+          <circle cx="26" cy="26" r={radius} fill="none" stroke={COLOR.border} strokeWidth="5" />
+          <circle
+            cx="26"
+            cy="26"
+            r={radius}
+            fill="none"
+            stroke={COLOR.saffron}
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={dashOffset}
+            style={{ transition: "stroke-dashoffset 1s linear" }}
+          />
+        </svg>
+        <span
+          className="absolute inset-0 flex items-center justify-center text-[11px] font-bold tabular-nums"
+          style={{ color: COLOR.ink }}
+        >
+          {minutes}:{secs}
+        </span>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        {isDone ? (
+          <span className="text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
+            Time&apos;s up!
+          </span>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsRunning((running) => !running)}
+            className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors"
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+          >
+            {isRunning ? "Pause" : hasStarted ? "Resume" : `Start ${minuteLabel}-min timer`}
+          </button>
+        )}
+
+        {(hasStarted || isDone) && (
+          <button
+            type="button"
+            onClick={reset}
+            className="text-xs font-semibold underline underline-offset-2"
+            style={{ color: COLOR.inkSoft }}
+          >
+            Reset
+          </button>
+        )}
+      </div>
     </div>
   );
 };
@@ -238,13 +424,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [isCooking, setIsCooking] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
+  // When the current step has a running/relevant timer, "Next" asks for a
+  // confirmation tap first instead of advancing immediately.
+  const [showNextStepConfirm, setShowNextStepConfirm] = useState(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+  const methodHeadingRef = useRef<HTMLHeadingElement>(null);
 
   // Tracks when the header photo has actually finished loading, so it can
   // fade in smoothly instead of popping in abruptly.
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Bumped on every tap so the 3D bounce can replay even on repeated clicks.
+  // Bumped on every tap so the bounce can replay even on repeated clicks.
   const [imageBounceKey, setImageBounceKey] = useState(0);
 
   const [modalType, setModalType] = useState<"instamart" | "swiggy" | null>(null);
@@ -301,12 +491,36 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     setCurrentStepIndex(0);
   };
 
-  const handleNextStep = () => {
-    if (currentStepIndex < recipe.method.length - 1) {
-      setStepDirection("next");
-      setCurrentStepIndex((prev) => prev + 1);
-    }
+  // Lets someone jump straight to the method from the header without
+  // committing to step-by-step mode yet.
+  const handleJumpToMethod = () => {
+    methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // A fresh step always starts with no pending confirmation.
+  useEffect(() => {
+    setShowNextStepConfirm(false);
+  }, [currentStepIndex]);
+
+  const handleNextStep = () => {
+    if (currentStepIndex >= recipe.method.length - 1) return;
+
+    const currentHasTimer =
+      parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
+
+    // First tap on a timed step just asks for confirmation; a second tap
+    // (or a tap on a step with no timer at all) actually advances.
+    if (currentHasTimer && !showNextStepConfirm) {
+      setShowNextStepConfirm(true);
+      return;
+    }
+
+    setShowNextStepConfirm(false);
+    setStepDirection("next");
+    setCurrentStepIndex((prev) => prev + 1);
+  };
+
+  const handleCancelNextStep = () => setShowNextStepConfirm(false);
 
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
@@ -683,8 +897,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   );
 
   const checkedCount = checkedIngredients.filter(Boolean).length;
+  const totalIngredients = recipe.ingredients.length;
   const totalSteps = recipe.method.length;
   const currentStep = recipe.method[currentStepIndex];
+  const stepDurationSeconds = parseDurationSeconds(currentStep.instruction);
   const isLastStep = currentStepIndex >= totalSteps - 1;
 
   const stepAnimationClass =
@@ -695,90 +911,131 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       : "animate-fade-in-up";
 
   return (
-    <div className="w-full animate-fade-in-up pb-24 sm:pb-8">
+    <div
+      className="w-full animate-fade-in-up pb-24 sm:pb-8"
+      style={{ backgroundColor: COLOR.page, color: COLOR.ink }}
+    >
       <style>{STEP_ANIMATION_CSS}</style>
 
-      {/* Header: photo, title, and quick facts share one clear block, with the
-          Swiggy shortcut demoted below the facts so it reads as an alternative,
-          not competing top-level action. */}
-      <header className="flex flex-col gap-6 border-b border-stone-800 pb-8 sm:flex-row sm:gap-8">
+      {/* Header: a generous photo, the dish's own voice in the description,
+          quick facts, and the two ways forward — cook it, or have it
+          delivered — presented as clearly unequal choices. */}
+      <header
+        className={`${card} flex flex-col gap-6 p-5 sm:flex-row sm:gap-8 sm:p-8`}
+        style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+      >
         {recipe.image && (
           <div
-            className="relative aspect-[4/3] w-32 shrink-0 self-start sm:w-48"
+            className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
             style={{ perspective: "800px" }}
           >
             {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
             <div
               aria-hidden="true"
-              className={`absolute inset-0 rounded-2xl bg-stone-800 transition-opacity duration-300 ${
+              className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
                 isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
               }`}
+              style={{ backgroundColor: COLOR.saffronTint }}
             />
             <img
-  key={imageBounceKey}
-  src={recipe.image}
-  alt={recipe.dishName}
-  width={600}
-  height={450}
-  loading="eager"
-  decoding="sync"
-  {...{ fetchpriority: "high" }}
-  onLoad={() => setIsImageLoaded(true)}
-  onError={(e) => {
-    e.currentTarget.style.display = "none";
-  }}
-  onClick={() => setImageBounceKey((key) => key + 1)}
-  onContextMenu={(e) => e.preventDefault()}
-  onDragStart={(e) => e.preventDefault()}
-  className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-contain shadow-[0_2px_6px_rgba(0,0,0,0.3),0_18px_36px_-10px_rgba(0,0,0,0.5)] transition-opacity duration-300 ease-out select-none ${
-    imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-  } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-  style={{ transformStyle: "preserve-3d", pointerEvents: "auto", userSelect: "none" }}
-/>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-6 -bottom-2 h-3 rounded-full bg-black/40 blur-md"
+              key={imageBounceKey}
+              src={recipe.image}
+              alt={recipe.dishName}
+              width={600}
+              height={600}
+              loading="eager"
+              decoding="sync"
+              {...{ fetchpriority: "high" }}
+              onLoad={() => setIsImageLoaded(true)}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+              onClick={() => setImageBounceKey((key) => key + 1)}
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${
+                imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+              } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+              style={{
+                transformStyle: "preserve-3d",
+                pointerEvents: "auto",
+                userSelect: "none",
+                borderColor: COLOR.border,
+              }}
             />
           </div>
         )}
 
         <div className="min-w-0 flex-1">
-          <h1 className="font-serif text-3xl font-black leading-[1.05] tracking-tight text-orange-50 sm:text-5xl lg:text-6xl">
+          <h1
+            className="font-serif text-3xl font-black leading-[1.05] tracking-tight sm:text-5xl"
+            style={{ color: COLOR.ink }}
+          >
             {recipe.dishName}
           </h1>
 
-          <p className="mt-3 max-w-2xl font-serif text-base italic leading-relaxed text-stone-400 sm:mt-4 sm:text-xl">
-            “{recipe.description}”
+          <p
+            className="mt-3 max-w-2xl font-serif text-base italic leading-relaxed sm:mt-4 sm:text-lg"
+            style={{ color: COLOR.inkSoft }}
+          >
+            {recipe.description}
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center gap-3 sm:mt-6">
-            <ul className="flex flex-wrap items-center gap-2 text-sm text-stone-200">
-              <li className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF1C9] px-3 py-1.5 font-medium">
-                <ClockIcon className="h-4 w-4 text-orange-200" />
-                {recipe.prepTime}
-              </li>
-              <li>
-                <NutritionInfo nutrition={recipe.nutrition} />
-              </li>
-            </ul>
+          <ul className="mt-5 flex flex-wrap items-center gap-2 text-sm sm:mt-6">
+            <li
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 font-medium"
+              style={{ backgroundColor: COLOR.mustard, color: COLOR.ink }}
+            >
+              <ClockIcon className="h-4 w-4" style={{ color: COLOR.saffron }} />
+              {recipe.prepTime}
+            </li>
+            <li>
+              <NutritionInfo nutrition={recipe.nutrition} />
+            </li>
+          </ul>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <button
+              type="button"
+              onClick={handleJumpToMethod}
+              className={primaryButton}
+              style={{
+                backgroundColor: COLOR.saffron,
+                color: COLOR.surface,
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+            >
+              <ArrowDownIcon className="h-5 w-5" />
+              Jump to the method
+            </button>
 
             <button
               type="button"
               onClick={handleOrderFromSwiggy}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-orange-400/40 bg-stone-900 px-4 py-1.5 text-sm font-medium text-orange-200 transition-colors duration-150 hover:bg-orange-400/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+              className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2"
+              style={{ borderColor: COLOR.border, color: COLOR.inkSoft }}
             >
               <UtensilsIcon className="h-4 w-4" />
-              Order from Swiggy instead
+              Or order it from Swiggy instead
             </button>
           </div>
         </div>
       </header>
 
-      <div className="mt-10 grid gap-8 lg:mt-12 lg:grid-cols-5 lg:items-start lg:gap-12">
+      <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-5 lg:items-start lg:gap-10">
         {/* Ingredients */}
         <aside className={`lg:col-span-2 lg:self-start ${canStick ? "lg:sticky lg:top-24" : ""}`}>
-          <section ref={ingredientsCardRef} aria-labelledby="ingredients-heading" className={card}>
-            <div className="sticky top-0 z-10 rounded-t-3xl border-b border-stone-700 bg-stone-900/95 px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6">
+          <section
+            ref={ingredientsCardRef}
+            aria-labelledby="ingredients-heading"
+            className={card}
+            style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+          >
+            <div
+              className="sticky top-0 z-10 rounded-t-3xl border-b px-5 pb-4 pt-5 backdrop-blur sm:top-16 sm:px-6 sm:pt-6"
+              style={{ borderColor: COLOR.border, backgroundColor: `${COLOR.surface}f2` }}
+            >
               <SectionTitle
                 flush
                 id="ingredients-heading"
@@ -786,10 +1043,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                 icon={<IngredientsIcon className="h-6 w-6" />}
                 aside={
                   <span
-                    className="rounded-full bg-orange-400/15 px-2.5 py-1 text-xs font-semibold text-orange-100"
-                    aria-label={`${checkedCount} of ${recipe.ingredients.length} ingredients ticked`}
+                    className="rounded-full px-2.5 py-1 text-xs font-semibold"
+                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
+                    aria-label={`${checkedCount} of ${totalIngredients} ingredients ticked`}
                   >
-                    {checkedCount}/{recipe.ingredients.length}
+                    {checkedCount}/{totalIngredients}
                   </span>
                 }
               />
@@ -799,9 +1057,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               {recipe.ingredients.map((ing, index) => (
                 <li key={index}>
                   <label
-                    className={`group flex cursor-pointer items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors duration-300 hover:bg-stone-950 ${
-                      flashIndex === index ? "bg-orange-400/10" : ""
-                    }`}
+                    className="group flex cursor-pointer items-start gap-3.5 rounded-xl px-3 py-2.5 transition-colors duration-300"
+                    style={{
+                      backgroundColor: flashIndex === index ? COLOR.saffronTint : "transparent",
+                    }}
                   >
                     <input
                       type="checkbox"
@@ -811,11 +1070,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     />
 
                     <span
-                      className={`relative mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-orange-300 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-stone-900 ${
-                        checkedIngredients[index]
-                          ? "border-orange-200 bg-orange-200"
-                          : "border-stone-600 bg-stone-900 group-hover:border-orange-300"
-                      }`}
+                      className="relative mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2 transition-all duration-200 peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2"
+                      style={{
+                        borderColor: checkedIngredients[index] ? COLOR.saffron : COLOR.border,
+                        backgroundColor: checkedIngredients[index] ? COLOR.saffron : COLOR.surface,
+                      }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -834,33 +1093,36 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     </span>
 
                     <span
-                      className={`min-w-0 flex-1 transition-colors duration-300 ${
-                        checkedIngredients[index] ? "text-stone-500 line-through" : "text-stone-300"
-                      }`}
+                      className="min-w-0 flex-1 transition-colors duration-300"
+                      style={{ color: checkedIngredients[index] ? COLOR.inkSoft : COLOR.ink }}
                     >
-                      <span className="block leading-snug">
-                        <span
-                          className={`font-semibold ${
-                            checkedIngredients[index] ? "text-stone-500" : "text-stone-100"
-                          }`}
-                        >
-                          {ing.amount}
-                        </span>{" "}
-                        {ing.commonName}
+                      <span
+                        className={`block leading-snug ${
+                          checkedIngredients[index] ? "line-through" : ""
+                        }`}
+                      >
+                        <span className="font-semibold">{ing.amount}</span> {ing.commonName}
                       </span>
-                      <span className="block text-sm text-stone-500">{ing.englishName}</span>
+                      <span className="block text-sm" style={{ color: COLOR.inkSoft }}>
+                        {ing.englishName}
+                      </span>
                     </span>
                   </label>
                 </li>
               ))}
             </ul>
 
-            <div className="border-t border-stone-700 p-5 sm:p-6">
-              <button type="button" onClick={handleBuyFromInstamart} className={`${secondaryButton} w-full`}>
-                <CartIcon className="h-5 w-5 text-orange-200" />
+            <div className="border-t p-5 sm:p-6" style={{ borderColor: COLOR.border }}>
+              <button
+                type="button"
+                onClick={handleBuyFromInstamart}
+                className={`${secondaryButton} w-full`}
+                style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+              >
+                <CartIcon className="h-5 w-5" style={{ color: COLOR.saffron }} />
                 Don&apos;t have these? Buy from Instamart
               </button>
-              <p className="mt-2.5 text-center text-xs text-stone-500">
+              <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
                 We&apos;ll only search for what you haven&apos;t ticked.
               </p>
             </div>
@@ -869,7 +1131,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
         {/* Equipment, method, notes share one consistent rhythm via divide-y,
             instead of each section inventing its own border/padding combo. */}
-        <div className="flex flex-col divide-y divide-stone-800 lg:col-span-3">
+        <div className="flex flex-col divide-y lg:col-span-3" style={{ borderColor: COLOR.border }}>
           {/* Equipment */}
           <section aria-labelledby="equipment-heading" className="pb-10 lg:pb-12">
             <SectionTitle id="equipment-heading" title="Equipment" icon={<PotIcon className="h-6 w-6" />} />
@@ -882,32 +1144,52 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                 return (
                   <li
                     key={index}
-                    className={`rounded-2xl border p-3.5 shadow-sm sm:p-4 ${
-                      special ? "border-orange-400/40 bg-[#FFF1C9]/60" : "border-stone-700 bg-stone-900"
-                    } ${special && tool.alternative ? "sm:col-span-2" : ""}`}
+                    className={`rounded-2xl border p-3.5 sm:p-4 ${
+                      special && tool.alternative ? "sm:col-span-2" : ""
+                    }`}
+                    style={{
+                      borderColor: special ? COLOR.clay : COLOR.border,
+                      backgroundColor: special ? COLOR.clayTint : COLOR.surface,
+                    }}
                   >
                     <div className="flex items-center gap-3.5">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FFE8D6]">
+                      <span
+                        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
+                        style={{ backgroundColor: special ? "#FFFFFF" : COLOR.saffronTint }}
+                      >
                         {image ? (
                           <img src={image} alt="" className="max-h-9 max-w-9 object-contain" draggable={false} />
                         ) : (
-                          <PotIcon className="h-6 w-6 text-orange-200" />
+                          <PotIcon
+                            className="h-6 w-6"
+                            style={{ color: special ? COLOR.clay : COLOR.saffron }}
+                          />
                         )}
                       </span>
 
                       <div className="min-w-0">
-                        <p className="font-medium leading-snug text-stone-100">{tool.item}</p>
+                        <p className="font-medium leading-snug" style={{ color: COLOR.ink }}>
+                          {tool.item}
+                        </p>
                         {special && (
-                          <span className="mt-1 inline-block rounded-full bg-orange-400/20 px-2 py-0.5 text-xs font-semibold text-orange-100">
-                            Heads up
+                          <span
+                            className="mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold"
+                            style={{ backgroundColor: "#FFFFFF", color: COLOR.clay }}
+                          >
+                            Needs a workaround
                           </span>
                         )}
                       </div>
                     </div>
 
                     {special && tool.alternative && (
-                      <p className="mt-3 rounded-xl bg-stone-900 p-3 text-sm leading-relaxed text-stone-300">
-                        <span className="font-semibold text-stone-100">Alternative:</span>{" "}
+                      <p
+                        className="mt-3 rounded-xl p-3 text-sm leading-relaxed"
+                        style={{ backgroundColor: "#FFFFFF", color: COLOR.inkSoft }}
+                      >
+                        <span className="font-semibold" style={{ color: COLOR.ink }}>
+                          Instead, try:
+                        </span>{" "}
                         {tool.alternative}
                       </p>
                     )}
@@ -925,18 +1207,26 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               icon={<MethodIcon className="h-6 w-6" />}
               aside={
                 isCooking ? (
-                  <span className="text-sm text-stone-400">
+                  <span className="text-sm" style={{ color: COLOR.inkSoft }}>
                     Step {currentStepIndex + 1} of {totalSteps}
                   </span>
                 ) : undefined
               }
             />
+            <h2 ref={methodHeadingRef} className="sr-only">
+              Method
+            </h2>
 
             {!isCooking ? (
-              <div className="flex flex-col gap-5 rounded-3xl border border-dashed border-orange-400/50 bg-[#FFE8D6]/50 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+              <div
+                className="flex flex-col gap-5 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+                style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+              >
                 <div>
-                  <p className="font-serif text-xl font-black text-orange-50 sm:text-2xl">Ready when you are</p>
-                  <p className="mt-1 text-sm text-stone-400 sm:text-base">
+                  <p className="font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
+                    Ready when you are
+                  </p>
+                  <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                     We&apos;ll walk you through {totalSteps} steps, one at a time.
                   </p>
                 </div>
@@ -945,6 +1235,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   type="button"
                   onClick={handleStartCooking}
                   className={`${primaryButton} w-full shrink-0 sm:w-auto`}
+                  style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
                 >
                   <PlayIcon className="h-5 w-5" />
                   Start cooking
@@ -960,39 +1253,57 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     touchStart.current = null;
                   }}
                   className={`${card} touch-pan-y overflow-hidden p-5 sm:p-8`}
+                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
                 >
+                  {/* Plain, non-interactive progress indicator — no dragging,
+                      just a read-out of how far through the method we are. */}
                   <div
-                    className="flex gap-1.5"
                     role="progressbar"
+                    aria-valuenow={currentStepIndex + 1}
                     aria-valuemin={1}
                     aria-valuemax={totalSteps}
-                    aria-valuenow={currentStepIndex + 1}
-                    aria-label="Recipe progress"
+                    aria-label={`Step ${currentStepIndex + 1} of ${totalSteps}`}
+                    className="h-1.5 w-full overflow-hidden rounded-full"
+                    style={{ backgroundColor: COLOR.border }}
                   >
-                    {recipe.method.map((_, index) => (
-                      <span
-                        key={index}
-                        className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
-                          index <= currentStepIndex ? "bg-orange-200" : "bg-stone-700"
-                        }`}
-                      />
-                    ))}
+                    <div
+                      className="h-full rounded-full transition-[width] duration-300 ease-out"
+                      style={{
+                        width:
+                          totalSteps > 1
+                            ? `${(currentStepIndex / (totalSteps - 1)) * 100}%`
+                            : "100%",
+                        backgroundColor: COLOR.saffron,
+                      }}
+                    />
                   </div>
 
                   <div key={currentStepIndex} className={stepAnimationClass}>
-                    <p className="mt-6 text-sm font-semibold text-orange-200">Step {currentStepIndex + 1}</p>
+                    <span
+                      className="mt-6 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
+                      style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
+                    >
+                      {currentStepIndex + 1}
+                    </span>
 
-                    <p className="mt-2 text-xl leading-relaxed text-stone-100 sm:text-2xl sm:leading-relaxed">
+                    <p
+                      className="mt-3 text-xl leading-relaxed sm:text-2xl sm:leading-relaxed"
+                      style={{ color: COLOR.ink }}
+                    >
                       {currentStep.instruction}
                     </p>
 
                     {currentStep.tip?.title?.trim() && currentStep.tip?.content?.trim() && (
                       <TipCallout tip={currentStep.tip!} />
                     )}
+
+                    {stepDurationSeconds !== null && (
+                      <StepTimer seconds={stepDurationSeconds} stepKey={currentStepIndex} />
+                    )}
                   </div>
                 </div>
 
-                <p className="mt-3 text-center text-xs text-stone-500 sm:hidden">
+                <p className="mt-3 text-center text-xs sm:hidden" style={{ color: COLOR.inkSoft }}>
                   Swipe left or right to change steps
                 </p>
 
@@ -1002,25 +1313,56 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     onClick={handlePrevStep}
                     disabled={currentStepIndex === 0}
                     className={`${secondaryButton} flex-1 sm:flex-none`}
+                    style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
                   >
                     <ChevronLeftIcon className="h-5 w-5" />
                     Previous
                   </button>
 
                   {!isLastStep ? (
-                    <button
-                      type="button"
-                      onClick={handleNextStep}
-                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-                    >
-                      Next
-                      <ChevronRightIcon className="h-5 w-5" />
-                    </button>
+                    showNextStepConfirm ? (
+                      <div className="flex flex-1 items-center gap-2 sm:flex-none">
+                        <button
+                          type="button"
+                          onClick={handleCancelNextStep}
+                          className={`${secondaryButton} flex-1 sm:flex-none`}
+                          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+                        >
+                          Not yet
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleNextStep}
+                          className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                          style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+                        >
+                          Yes, done
+                          <ChevronRightIcon className="h-5 w-5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleNextStep}
+                        className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+                      >
+                        Next
+                        <ChevronRightIcon className="h-5 w-5" />
+                      </button>
+                    )
                   ) : (
                     <button
                       type="button"
                       onClick={onFinishCooking}
                       className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
                     >
                       I&apos;m done cooking
                     </button>
@@ -1035,10 +1377,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
             <section aria-labelledby="notes-heading" className="py-10 lg:py-12">
               <SectionTitle id="notes-heading" title="Notes & tips" icon={<NotesIcon className="h-6 w-6" />} />
 
-              <ul className="space-y-3 rounded-2xl border border-stone-700 bg-[#FFF1C9]/50 p-5 sm:p-6">
+              <ul
+                className="space-y-3 rounded-2xl border p-5 sm:p-6"
+                style={{ borderColor: COLOR.border, backgroundColor: COLOR.mustard }}
+              >
                 {recipe.notes.map((note, index) => (
-                  <li key={index} className="flex gap-3 leading-relaxed text-stone-200">
-                    <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-200" />
+                  <li key={index} className="flex gap-3 leading-relaxed" style={{ color: COLOR.ink }}>
+                    <span
+                      aria-hidden="true"
+                      className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: COLOR.saffron }}
+                    />
                     <span>{note}</span>
                   </li>
                 ))}
