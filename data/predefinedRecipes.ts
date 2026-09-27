@@ -7323,6 +7323,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "tandoori chicken (oven-style)": {
     "dishName": "Tandoori Chicken",
+    "image": "/dishes/tandoori-chicken.webp",
     "description": "Tangy yogurt-marinated chicken roasted at home until browned and lightly charred.",
     "prepTime": "Approx. 50 minutes (plus 4+ hours marination)",
     "equipment": [
@@ -8280,6 +8281,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sambar chawal": {
     "dishName": "Sambar Chawal",
+    "image": "/dishes/sambar-chawal.webp",
     "description": "A comforting one-pot South Indian rice dish cooked with toor dal, vegetables, tamarind.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -8545,6 +8547,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rasmalai": {
     "dishName": "Rasmalai",
+    "image": "/dishes/rasmalai.webp",
     "description": "Soft milk dumplings soaked in sweet, cardamom-scented milk, finished with saffron and nuts.",
     "prepTime": "Approx. 45 minutes (plus 1 hour chilling)",
     "equipment": [
@@ -9009,6 +9012,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "gajar matar": {
     "dishName": "Gajar Matar",
+    "image": "/dishes/gajar-matar.webp",
     "description": "A simple winter sabzi of sweet carrots and green peas cooked with cumin.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -9130,6 +9134,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kadai chicken": {
     "dishName": "Kadai Chicken",
+    "image": "/dishes/kadai-chicken.webp",
     "description": "A spicy, smoky-style chicken curry made at home with onions, tomatoes, capsicum and.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -9453,6 +9458,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "uttapam": {
     "dishName": "Uttapam",
+    "image": "/dishes/uttapam.webp",
     "description": "Soft, thick South Indian savory pancakes topped with onion, tomato and green chilli,.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -9919,6 +9925,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "paneer sandwich": {
     "dishName": "Paneer Sandwich",
+    "image": "/dishes/paneer-sandwich.webp",
     "description": "A quick toasted sandwich filled with crumbled paneer, onion, capsicum and mild Indian spices.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -10331,7 +10338,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chole chawal": {
     "dishName": "Chole Chawal",
-    "image": "/dishes/rajma_chawal.webp",
+    "image": "/dishes/chole-chawal.webp",
     "description": "Spiced Punjabi-style chickpeas served with fluffy basmati rice, made simply in one home kitchen.",
     "prepTime": "Approx. 50 minutes (plus overnight soaking)",
     "equipment": [
