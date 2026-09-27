@@ -10800,6 +10800,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "bhel puri": {
     "dishName": "Bhel Puri",
+    "image": "/dishes/bhel-puri.webp",
     "description": "A crunchy Mumbai-style snack made with puffed rice, vegetables, chutneys and sev, easy.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -11124,6 +11125,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken kabab": {
     "dishName": "Chicken Kabab",
+    "image": "/dishes/chicken-kabab.webp",
     "description": "Juicy home-style chicken kababs marinated in yogurt and spices, then cooked on a.",
     "prepTime": "Approx. 35 minutes (plus 30 minutes marination)",
     "equipment": [
@@ -11229,6 +11231,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "seekh kabab": {
     "dishName": "Seekh Kabab",
+    "image": "/dishes/seekh-kabab.webp",
     "description": "Juicy spiced minced-meat seekh kababs made at home without a tandoor, shaped and.",
     "prepTime": "Approx. 40 minutes (plus 20 minutes resting)",
     "equipment": [
@@ -11459,6 +11462,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken salami (home style)": {
     "dishName": "Chicken Salami (Home-Style)",
+    "image": "/dishes/chicken-salami.webp",
     "description": "Home-style spiced chicken slices, cooked and steamed rather than cured.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -11677,6 +11681,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken keema": {
     "dishName": "Chicken Keema",
+    "image": "/dishes/chicken-keema.webp",
     "description": "A simple dry-style minced chicken dish cooked with onion, tomato, ginger, garlic and everyday spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -11924,6 +11929,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kadhi": {
     "dishName": "Kadhi",
+    "image": "/dishes/kadhi-chawal.webp",
     "description": "A simple Punjabi-style yogurt and gram-flour curry with a tangy, creamy texture and gentle spices.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -12682,6 +12688,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo methi": {
     "dishName": "Aloo Methi",
+    "image": "/dishes/aloo-methi.webp",
     "description": "A dry everyday sabzi of potatoes and fresh fenugreek leaves with simple spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -12791,6 +12798,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "gobi masala": {
     "dishName": "Gobi Masala",
+    "image": "/dishes/gobhi-masala.webp",
     "description": "Cauliflower cooked in a simple onion-tomato masala for an easy home-style curry.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -13566,6 +13574,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "masoor dal": {
     "dishName": "Masoor Dal",
+    "image": "/dishes/masoor-dal.webp",
     "description": "A fast red lentil dal made with tomatoes, cumin and garlic using basic pantry ingredients.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -13971,6 +13980,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "thepla": {
     "dishName": "Thepla",
+    "image": "/dishes/thepla.webp",
     "description": "Soft Gujarati methi flatbreads made with atta, spices and fresh fenugreek leaves.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -14735,6 +14745,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "amritsari chole": {
     "dishName": "Amritsari Chole",
+    "image": "/dishes/pindi-chole.webp",
     "description": "Dark, tangy chickpeas cooked with tea, whole spices and a punchy onion-tomato masala.",
     "prepTime": "Approx. 1 hour (plus soaking)",
     "equipment": [
@@ -15702,6 +15713,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sev puri": {
     "dishName": "Sev Puri",
+    "image": "/dishes/sev-puri.webp",
     "description": "A quick Mumbai-style chaat of crisp puris, potato, chutneys, onion, spices and fine sev.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
