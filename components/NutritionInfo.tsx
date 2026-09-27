@@ -124,7 +124,7 @@ const NutritionInfo: React.FC<NutritionInfoProps> = ({ nutrition }) => {
         aria-expanded={isOpen}
         aria-controls={panelId}
         aria-label="Nutrition info"
-        className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFE8D6] text-orange-200 transition-colors duration-150 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+        className="flex h-6 w-6 items-center justify-center rounded-full bg-[##FFE3C2] text-orange-200 transition-colors duration-150 hover:text-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
       >
         <InfoIcon className="h-3.5 w-3.5" />
       </button>

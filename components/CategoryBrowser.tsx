@@ -11,7 +11,7 @@ const categories = [
         name: 'Quick Meals',
         description: 'Under 30 minutes',
         icon: '/quick-meals.svg',
-        tint: '#FFE8D6',
+        tint: '#FFE3C2',
         searchTerms: [
             'Quick 20-minute Paneer Bhurji',
             'Poha (Kanda Batata Poha)',

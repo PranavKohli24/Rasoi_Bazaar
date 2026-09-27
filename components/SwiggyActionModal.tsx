@@ -131,7 +131,7 @@ const RestaurantCard: React.FC<{
         aria-label={`Order ${restaurant.name} on Swiggy`}
         className="flex w-full gap-3.5 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:cursor-not-allowed"
       >
-        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-[#FFE8D6]">
+        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-[#FFE3C2]">
           {restaurant.imageUrl && !imageFailed ? (
             <img
               src={restaurant.imageUrl}
@@ -246,7 +246,7 @@ const StepProgress: React.FC<{
 
 const EmptyAddresses: React.FC = () => (
   <div className="py-10 text-center">
-    <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFE8D6] text-orange-200">
+    <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFE3C2] text-orange-200">
       <PinIcon className="h-6 w-6" />
     </span>
     <h4 className="mt-4 text-base font-medium text-stone-100">No delivery address found</h4>
@@ -458,7 +458,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
           {error && (
             <div
               role="alert"
-              className="mb-5 flex gap-3 rounded-2xl border border-orange-400/30 bg-[#FFE8D6]/60 px-4 py-3 text-sm leading-relaxed text-stone-200"
+              className="mb-5 flex gap-3 rounded-2xl border border-orange-400/30 bg-[#FFE3C2]/60 px-4 py-3 text-sm leading-relaxed text-stone-200"
             >
               <InfoIcon className="mt-0.5 h-5 w-5 shrink-0 text-orange-200" />
               <p>{error}</p>
@@ -492,7 +492,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                 </>
               ) : noItemsAtAll ? (
                 <div className="py-10 text-center">
-                  <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFE8D6] text-orange-200">
+                  <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#FFE3C2] text-orange-200">
                     <InfoIcon className="h-6 w-6" />
                   </span>
                   <h4 className="mt-4 font-serif text-xl font-black text-orange-50">
