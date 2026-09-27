@@ -17040,6 +17040,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "parotta": {
     "dishName": "Parotta",
+    "image": "/dishes/parotta.webp",
     "description": "Flaky South Indian flatbread made at home on a tawa with a simple soft dough.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -17134,6 +17135,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "achari paneer": {
     "dishName": "Achari Paneer",
+    "image": "/dishes/achari-paneer.webp",
     "description": "Paneer cooked with tangy pickling spices, onion, tomato and yogurt for a bright,.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -17770,6 +17772,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kulfi": {
     "dishName": "Kulfi",
+    "image": "/dishes/kulfi.webp",
     "description": "Creamy homemade cardamom-pistachio kulfi made by reducing milk and freezing it.",
     "prepTime": "Approx. 45 minutes plus freezing",
     "equipment": [
@@ -17864,6 +17867,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sushi (veg sushi)": {
     "dishName": "Sushi",
+    "image": "/dishes/sushi.webp",
     "description": "Simple homemade vegetable sushi using seasoned rice, nori and crunchy vegetables.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -18122,6 +18126,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "sambar": {
     "dishName": "Sambar",
+    "image": "/dishes/sambar.webp",
     "description": "Everyday South Indian sambar made with toor dal, vegetables, tamarind and a simple tempering.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -18573,6 +18578,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "thatte idli": {
     "dishName": "Thatte Idli",
+    "image": "/dishes/thatte-idli.webp",
     "description": "Soft, flat Karnataka-style idli made from fermented rice and urad dal batter and.",
     "prepTime": "Approx. 30 minutes plus fermentation",
     "equipment": [
@@ -18780,6 +18786,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "khara bath": {
     "dishName": "Khara Bath",
+    "image": "/dishes/khara-bath.webp",
     "description": "Savory Karnataka-style semolina breakfast made with vegetables, spices and a simple tempering.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -18899,6 +18906,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "puliyogare": {
     "dishName": "Puliyogare",
+    "image": "/dishes/puliyogare.webp",
     "description": "Tangy Karnataka-style tamarind rice made with peanuts, sesame and a simple spice mix.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -19135,7 +19143,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dal chawal": {
     "dishName": "Dal Chawal",
-    "image": "/dishes/dal chawal.webp",
+    "image": "/dishes/dal-chawal.webp",
     "description": "Simple home-style yellow dal served with soft steamed rice.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -34198,6 +34206,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "boondi raita": {
   "dishName": "Boondi Raita",
+  "image": "/dishes/boondi-raita.webp",
   "description": "Cool yogurt raita mixed with boondi, roasted cumin, chilli and coriander.",
   "prepTime": "Approx. 5 minutes",
   "equipment": [],
@@ -34273,6 +34282,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "cucumber raita": {
   "dishName": "Cucumber Raita",
+  "image": "/dishes/cucumber-raita.webp",
   "description": "Cooling yogurt raita mixed with fresh cucumber, cumin and coriander.",
   "prepTime": "Approx. 10 minutes",
   "equipment": [],
@@ -34339,6 +34349,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "onion raita": {
   "dishName": "Onion Raita",
+  "image": "/dishes/onion-raita.webp",
   "description": "Simple South Indian-style yogurt raita with sliced onion, chilli, coriander and salt.",
   "prepTime": "Approx. 5 minutes",
   "equipment": [],
@@ -38027,6 +38038,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "raita": {
     "dishName": "Raita",
+    "image": "/dishes/boondi-raita.webp",
     "description": "A simple cooling yogurt side made with whisked curd, roasted cumin and fresh coriander.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [],
