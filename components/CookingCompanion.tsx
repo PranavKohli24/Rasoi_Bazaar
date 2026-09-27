@@ -807,14 +807,14 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 message.role === "assistant" ? (
                   <div
                     key={index}
-                    className="message-bubble-in max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]"
+                    className="message-bubble-in w-fit max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]"
                   >
                     {message.content}
                   </div>
                 ) : (
                   <div
                     key={index}
-                    className="message-bubble-in ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFDCC0] px-4 py-2.5 text-sm leading-relaxed text-[#5A2E12]"
+                    className="message-bubble-in ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFDCC0] px-4 py-2.5 text-sm leading-relaxed text-[#5A2E12]"
                   >
                     {message.content}
                   </div>
@@ -842,7 +842,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               {error && (
                 <div className="message-bubble-in flex items-start gap-2">
                   <CompanionCharacter className="h-6 w-6 shrink-0 opacity-90" />
-                  <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]">
+                  <div className="max-w-[85%] w-fit rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]">
                     <p>{error}</p>
                     {lastQuestion && (
                       <button
