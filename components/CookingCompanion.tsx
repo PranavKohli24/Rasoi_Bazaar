@@ -16,6 +16,10 @@ interface CookingCompanionProps {
 const STORAGE_PREFIX = "rasoi:companion:";
 const PANEL_TRANSITION_MS = 200;
 
+// How far down the sheet must be pulled before it counts as a deliberate
+// "close" rather than a stray touch or the start of a scroll.
+const DRAG_CLOSE_THRESHOLD = 90;
+
 /* ---------------------------------------------------------------- icons */
 
 const ChatIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -146,6 +150,19 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // ---- drag-to-close ----
+  // Tracked separately from scrolling: these handlers are only ever attached
+  // to the drag handle and the header bar, never to the scrollable message
+  // list, so a finger dragging through the chat log just scrolls it as
+  // normal. Only a pull that starts on the handle/header and travels past
+  // DRAG_CLOSE_THRESHOLD closes the panel; anything shorter snaps back.
+  const dragStartYRef = useRef<number | null>(null);
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  // Lets the CSS enter-animation play once on open, then gets out of the
+  // way so it doesn't fight the live drag transform on every re-render.
+  const [hasMounted, setHasMounted] = useState(false);
+
   const suggestions = useMemo(
     () => (hasRecipe ? buildSuggestions(recipe) : []),
     [recipe, hasRecipe]
@@ -162,6 +179,12 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   useEffect(() => {
     if (isOpen) {
       window.setTimeout(() => textareaRef.current?.focus(), PANEL_TRANSITION_MS);
+    } else {
+      // Reset drag state so the next open starts from a clean slate.
+      setHasMounted(false);
+      setDragY(0);
+      setIsDragging(false);
+      dragStartYRef.current = null;
     }
   }, [isOpen]);
 
@@ -182,6 +205,36 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen]);
+
+  const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    // A tap on the minimize button is a tap, not a swipe — let its onClick
+    // handle it instead of starting a drag.
+    if (event.target instanceof HTMLElement && event.target.closest("button")) {
+      return;
+    }
+    dragStartYRef.current = event.clientY;
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handleDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartYRef.current === null) return;
+    const delta = event.clientY - dragStartYRef.current;
+    // Only downward pulls move the sheet; an upward wiggle stays put at 0.
+    setDragY(Math.max(0, delta));
+  };
+
+  const handleDragEnd = () => {
+    if (dragStartYRef.current === null) return;
+    dragStartYRef.current = null;
+    setIsDragging(false);
+
+    if (dragY > DRAG_CLOSE_THRESHOLD) {
+      setIsOpen(false);
+    } else {
+      setDragY(0); // wasn't pulled far enough — snap back open
+    }
+  };
 
   const sendQuestion = async (question: string) => {
     if (!question || isSending) return;
@@ -263,9 +316,34 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         <div
           role="dialog"
           aria-label="Cooking companion chat"
-          className="companion-panel-enter fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl"
+          onAnimationEnd={() => setHasMounted(true)}
+          className={`${hasMounted ? "" : "companion-panel-enter"} fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl`}
+          style={{
+            transform: `translateY(${dragY}px)`,
+            transition: isDragging ? "none" : "transform 0.2s ease",
+            opacity: 1 - Math.min(dragY / 400, 0.5),
+          }}
         >
-            <div className="flex items-center justify-between border-b border-[#EAD9AE] px-5 py-4">
+            {/* Drag handle — the only other surface, besides the header, that
+                starts a close-drag. Deliberately outside the scrollable
+                message list below. */}
+            <div
+              className="flex touch-none justify-center pb-1 pt-2.5 cursor-grab active:cursor-grabbing"
+              onPointerDown={handleDragStart}
+              onPointerMove={handleDragMove}
+              onPointerUp={handleDragEnd}
+              onPointerCancel={handleDragEnd}
+            >
+              <span className="h-1.5 w-10 rounded-full bg-[#EAD9AE]" aria-hidden="true" />
+            </div>
+
+            <div
+              className="flex touch-none items-center justify-between border-b border-[#EAD9AE] px-5 py-4"
+              onPointerDown={handleDragStart}
+              onPointerMove={handleDragMove}
+              onPointerUp={handleDragEnd}
+              onPointerCancel={handleDragEnd}
+            >
               <div className="flex items-center gap-3">
                 <CompanionCharacter thinking={isSending} className="h-9 w-9" />
                 <div>
