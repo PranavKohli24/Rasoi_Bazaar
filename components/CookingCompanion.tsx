@@ -245,6 +245,20 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       setDragY(0);
       setIsDragging(false);
       dragStartYRef.current = null;
+
+      // Closing the panel (swipe-to-close, the minimize button, Escape,
+      // whatever) shouldn't leave the mic listening in the background.
+      if (isListeningRef.current) {
+        userRequestedStopRef.current = true;
+        isListeningRef.current = false;
+        try {
+          recognitionRef.current?.stop();
+        } catch {
+          /* already stopped */
+        }
+        setIsListening(false);
+      }
+      setMicBlockedNotice(false);
     }
   }, [isOpen]);
 
