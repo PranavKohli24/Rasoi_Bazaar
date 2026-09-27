@@ -5417,6 +5417,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "egg curry (anda curry)": {
     "dishName": "Egg Curry (Anda Curry)",
+    "image": "/dishes/egg-curry.webp",
     "description": "Boiled eggs simmered in a spiced onion-tomato gravy.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -5905,6 +5906,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "french beans (beans ki sabzi)": {
     "dishName": "French Beans Sabzi (Beans ki Sabzi)",
+    "image": "/dishes/french-beans.webp",
     "description": "Tender, lightly spiced dry french beans with onion and cumin.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -38188,6 +38190,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "soya granules (soya keema)": {
     "dishName": "Soya Granules (Soya Keema)",
+    "image": "/dishes/soya-granules.webp",
     "description": "A simple, protein-rich home-style sabzi made with soya granules, onion, tomato and basic Indian spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
