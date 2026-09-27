@@ -150,6 +150,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Whether the message list is scrolled down enough that older messages are
+  // hidden above the fold — drives the top fade/blur that hints "more above".
+  const [isScrolledFromTop, setIsScrolledFromTop] = useState(false);
+
   // ---- drag-to-close ----
   // Tracked separately from scrolling: these handlers are only ever attached
   // to the drag handle and the header bar, never to the scrollable message
@@ -194,8 +198,17 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         top: scrollRef.current.scrollHeight,
         behavior: "smooth",
       });
+      // New content can change whether we're "at the top" even without a
+      // manual scroll (e.g. a reply pushes the list down past the fold).
+      window.requestAnimationFrame(() => {
+        setIsScrolledFromTop((scrollRef.current?.scrollTop ?? 0) > 4);
+      });
     }
   }, [messages, isOpen, isSending]);
+
+  const handleMessagesScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolledFromTop(event.currentTarget.scrollTop > 4);
+  };
 
   useEffect(() => {
     if (!isOpen) return;
@@ -366,7 +379,30 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               </button>
             </div>
 
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
+            <div className="relative min-h-0 flex-1">
+              {/* Hints that there's more chat scrolled above — fades and
+                  softly blurs the top edge of the list, ChatGPT-style. Only
+                  shown once the list has actually been scrolled down, and it
+                  sits on its own layer so it never intercepts scroll/drag
+                  gestures meant for the messages underneath. */}
+              <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-10 backdrop-blur-[2px] transition-opacity duration-200 ${
+                  isScrolledFromTop ? "opacity-100" : "opacity-0"
+                }`}
+                style={{
+                  background:
+                    "linear-gradient(to bottom, #FFFEFA 0%, rgba(255,254,250,0.6) 55%, rgba(255,254,250,0) 100%)",
+                  maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+                }}
+              />
+
+              <div
+                ref={scrollRef}
+                onScroll={handleMessagesScroll}
+                className="h-full space-y-3 overflow-y-auto px-5 py-4"
+              >
               {messages.length === 0 && (
                 <div className="space-y-3">
                   <p className="text-sm leading-relaxed text-[#6B5238]">
@@ -443,6 +479,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                   </div>
                 </div>
               )}
+              </div>
             </div>
 
             <div className="border-t border-[#EAD9AE] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
