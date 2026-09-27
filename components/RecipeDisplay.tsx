@@ -30,16 +30,15 @@ interface RecipeDisplayProps {
    lost among everything else. No gradients anywhere. */
 
 const COLOR = {
-  page: "#FBF3E8",
-  surface: "#FFFDF9",
-  ink: "#2E2115",
-  inkSoft: "#6B5D4F",
-  border: "#E8D9BE",
-  saffron: "#E07A2C",
-  saffronDark: "#C96A22",
-  saffronTint: "#FBE4CE",
-  mustard: "#FFF1C9",
-  clay: "#C65D42",
+  surface: "#FFFEFA",
+  ink: "#2B1A0C",
+  inkSoft: "#6B5238",
+  border: "#EAD9AE",
+  saffron: "#FC6C26",
+  saffronDark: "#D1560F",
+  saffronTint: "#FFE3C2",
+  mustard: "#FFEFC0",
+  clay: "#C65D42",      
   clayTint: "#F5E1DA",
 } as const;
 
@@ -913,7 +912,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   return (
     <div
       className="w-full animate-fade-in-up pb-24 sm:pb-8"
-      style={{ backgroundColor: COLOR.page, color: COLOR.ink }}
+      style={{ color: COLOR.ink }}
     >
       <style>{STEP_ANIMATION_CSS}</style>
 

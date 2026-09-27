@@ -86,7 +86,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 <span
                   className={`pointer-events-none absolute inset-[-6%] rounded-2xl border-2 transition-all duration-300 ${
                     selected
-                      ? 'border-orange-400 bg-orange-400/15 shadow-[0_0_24px_rgba(249,115,22,0.6)]'
+                      ? 'border-orange-400 bg-orange-400/15 shadow-[0_0_24px_rgba(252,108,38,0.6)]'
                       : 'border-transparent group-hover:border-orange-300/70 group-hover:bg-orange-300/10'
                   }`}
                 />
@@ -97,7 +97,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   draggable={false}
                   className={`pointer-events-none relative block h-auto w-full select-none transition-all duration-300 ${
                     selected
-                      ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(249,115,22,0.7)]'
+                      ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(252,108,38,0.7)]'
                       : 'group-hover:scale-[1.025]'
                   }`}
                 />
@@ -161,7 +161,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                       : 'border-stone-700 bg-stone-900 text-stone-300 hover:border-orange-300/70 hover:text-stone-100'
                   }`}
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#FFE8D6] sm:h-10 sm:w-10">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#FFE3C2] sm:h-10 sm:w-10">
                     <img
                       src={item.src}
                       alt=""

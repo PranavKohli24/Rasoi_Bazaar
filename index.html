@@ -13,7 +13,7 @@
     <meta property="og:image:alt" content="Rasoi Bazaar - Indian Kitchen Guide" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://rasoi-bazaar.vercel.app/" />
-    <meta name="theme-color" content="#FFF8F1" />
+    <meta name="theme-color" content="#FFF4D6" />
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,15 +29,12 @@
           extend: {
             colors: {
               stone: {
-                50: '#24180F', 100: '#2E2119', 200: '#3E2E23', 300: '#5A4638',
-                400: '#7A6353', 500: '#9A8270', 600: '#CDB39A', 700: '#E3CDB6',
-                800: '#F0DFCC', 900: '#FFFFFF', 950: '#FFF8F1',
+                50: '#2B1A0C', 100: '#33210F', 200: '#402A15', 300: '#5E4423',
+                400: '#7E6038', 500: '#9C7C4E', 600: '#D9BE8E', 700: '#EAD9AE',
+                800: '#F5E9C6', 900: '#FFFEFA', 950: '#FFF4D6',
               },
               orange: {
-                50: '#2B1A10',   // headings
-                100: '#B94A08',  // hover / strong accent
-                200: '#DD5E0B',  // brand orange (buttons, links)
-                300: '#D9600D',  // icons, small accents
+                50: '#2B1608', 100: '#D1560F', 200: '#FC6C26', 300: '#FF8C4B',
               },
             },
           },
@@ -67,7 +64,7 @@
       body {
         font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
         color: #3E2E23;
-        background-color: #FFF8F1;
+        background-color: #FFF4D6;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
       }
@@ -90,7 +87,7 @@
         position: absolute;
         width: 10px;
         height: 10px;
-        background: #F59E0B;
+        background: #FC6C26;
         clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
         animation: sparkle-animation 1s ease-out forwards;
       }
@@ -99,7 +96,7 @@
       ::-webkit-scrollbar { width: 10px; }
       ::-webkit-scrollbar-track { background: transparent; }
       ::-webkit-scrollbar-thumb { background-color: rgba(154, 130, 112, 0.35); border-radius: 20px; }
-      ::-webkit-scrollbar-thumb:hover { background-color: rgba(221, 94, 11, 0.7); }
+      ::-webkit-scrollbar-thumb:hover { background-color: rgba(252, 108, 38, 0.7); }
 
       /* Autofill stays on-theme */
       input:-webkit-autofill,
@@ -122,7 +119,7 @@
       /* Handwritten note on the home page */
       .cook-note {
         font-family: 'Caveat', cursive;
-        color: #B94A08;
+        color: #D1560F;
         font-size: 22px;
         line-height: 1.02;
         font-weight: 600;
@@ -141,7 +138,7 @@
       }
       .cook-note-arrow path {
         fill: none;
-        stroke: #B94A08;
+        stroke: #D1560F;
         stroke-width: 2.4;
         stroke-linecap: round;
         stroke-linejoin: round;

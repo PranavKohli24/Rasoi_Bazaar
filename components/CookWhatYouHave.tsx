@@ -191,7 +191,7 @@ const SteamingPot: React.FC = () => (
       </g>
       <path
         d="M17 34h30v11a7 7 0 0 1-7 7H24a7 7 0 0 1-7-7V34Z"
-        fill="#FFE8D6"
+        fill="#FFE3C2"
       />
       <path d="M17 38h-5M47 38h5" />
     </svg>
@@ -522,7 +522,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                   {equipment.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full bg-[#FFE8D6] px-2.5 py-1 text-xs font-medium text-stone-200"
+                      className="rounded-full bg-[#FFE3C2] px-2.5 py-1 text-xs font-medium text-stone-200"
                     >
                       {item}
                     </span>
@@ -703,7 +703,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
             <div className="mx-auto max-w-3xl">
               <div
                 role="alert"
-                className="rounded-2xl border border-orange-400/30 bg-[#FFE8D6]/60 p-5 sm:p-6"
+                className="rounded-2xl border border-orange-400/30 bg-[#FFE3C2]/60 p-5 sm:p-6"
               >
                 <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
                   Couldn&apos;t find dishes this time
@@ -754,7 +754,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                       <h4 className="min-w-0 font-serif text-xl font-bold text-orange-50 sm:text-2xl">
                         {recipe.dishName}
                       </h4>
-                      <span className="max-w-full whitespace-normal break-words rounded-full bg-[#FFF1C9] px-3 py-1 text-xs font-semibold text-stone-200">
+                      <span className="max-w-full whitespace-normal break-words rounded-full bg-[#FFEFC0] px-3 py-1 text-xs font-semibold text-stone-200">
                         {recipe.prepTime}
                       </span>
                     </div>
@@ -790,7 +790,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                           {recipe.equipmentUsed.map((item) => (
                             <span
                               key={item}
-                              className="rounded-full bg-[#FFE8D6] px-2.5 py-1 text-xs font-medium text-stone-200"
+                              className="rounded-full bg-[#FFE3C2] px-2.5 py-1 text-xs font-medium text-stone-200"
                             >
                               {item}
                             </span>

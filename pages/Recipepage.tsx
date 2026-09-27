@@ -18,7 +18,6 @@ const FRIENDLY_ERROR =
 
 // Flat ivory — no background image, no gradient. Matches the surface tones
 // used inside RecipeDisplay and CookingCompanion.
-const PAGE_BACKGROUND = "#FBF3E8";
 
 const readLastDish = (): string => {
   try {
@@ -146,7 +145,7 @@ const RecipePage: React.FC = () => {
   }, [recipe, dish]);
 
   return (
-    <div className="relative z-10 w-full" style={{ backgroundColor: PAGE_BACKGROUND }}>
+    <div className="relative z-10 w-full">
       <CompactHeader />
 
       <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">

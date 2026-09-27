@@ -250,10 +250,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
           type="button"
           onClick={() => setIsOpen(true)}
           aria-label="Ask your Cooking Companion"
-          className="fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-[#FFF3E2] p-2.5 shadow-lg shadow-black/20 ring-1 ring-[#F0DFC2] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B] sm:bottom-6 sm:right-6 sm:pr-5"
+          className="fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-[#FFEAC4] p-2.5 shadow-lg shadow-black/20 ring-1 ring-[#EAD9AE] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] sm:bottom-6 sm:right-6 sm:pr-5"
         >
           <CompanionCharacter className="h-9 w-9" />
-          <span className="hidden text-sm font-semibold text-[#5C4A38] sm:inline">
+          <span className="hidden text-sm font-semibold text-[#2B1A0C] sm:inline">
             Ask your Cooking Companion
           </span>
         </button>
@@ -263,16 +263,16 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         <div
           role="dialog"
           aria-label="Cooking companion chat"
-          className="companion-panel-enter fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#F0DFC2] bg-[#FFFBF3] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl"
+          className="companion-panel-enter fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl"
         >
-            <div className="flex items-center justify-between border-b border-[#F0DFC2] px-5 py-4">
+            <div className="flex items-center justify-between border-b border-[#EAD9AE] px-5 py-4">
               <div className="flex items-center gap-3">
                 <CompanionCharacter thinking={isSending} className="h-9 w-9" />
                 <div>
-                  <p className="text-[15px] font-bold leading-tight text-[#3D3226]">
+                  <p className="text-[15px] font-bold leading-tight text-[#2B1A0C]">
                     Cooking Companion
                   </p>
-                  <p className="text-xs text-[#8A7A63]">
+                  <p className="text-xs text-[#6B5238]">
                     Ask about {recipe.dishName}
                   </p>
                 </div>
@@ -282,7 +282,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 onClick={() => setIsOpen(false)}
                 aria-label="Minimize cooking companion"
                 title="Minimize"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-[#8A7A63] transition-colors hover:bg-[#F5EBD8] hover:text-[#3D3226] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E9C6] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
               >
                 <ChatIcon className="h-5 w-5" />
               </button>
@@ -291,7 +291,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
               {messages.length === 0 && (
                 <div className="space-y-3">
-                  <p className="text-sm leading-relaxed text-[#8A7A63]">
+                  <p className="text-sm leading-relaxed text-[#6B5238]">
                     Ask me anything about cooking {recipe.dishName} -
                     substitutions, timing, technique, or other cooking doubts.
                   </p>
@@ -302,7 +302,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                           key={question}
                           type="button"
                           onClick={() => handleSuggestion(question)}
-                          className="rounded-full border border-[#F0DFC2] bg-[#FFF3E2] px-3.5 py-2 text-left text-xs leading-snug text-[#5C4A38] transition-colors hover:border-[#F2A66B] hover:bg-[#FFE9CC] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
+                          className="rounded-full border border-[#EAD9AE] bg-[#FFEAC4] px-3.5 py-2 text-left text-xs leading-snug text-[#5A2E12] transition-colors hover:border-[#FC6C26] hover:bg-[#FFDCC0] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                         >
                           {question}
                         </button>
@@ -316,14 +316,14 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 message.role === "assistant" ? (
                   <div
                     key={index}
-                    className="message-bubble-in max-w-[85%] rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#3D3226]"
+                    className="message-bubble-in max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]"
                   >
                     {message.content}
                   </div>
                 ) : (
                   <div
                     key={index}
-                    className="message-bubble-in ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFD9A6] px-4 py-2.5 text-sm leading-relaxed text-[#5C3A1E]"
+                    className="message-bubble-in ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-[#FFDCC0] px-4 py-2.5 text-sm leading-relaxed text-[#5A2E12]"
                   >
                     {message.content}
                   </div>
@@ -340,9 +340,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                   aria-label="Cooking companion is typing"
                 >
                   <CompanionCharacter thinking className="h-6 w-6 shrink-0" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:150ms]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9C7A8] [animation-delay:300ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E] [animation-delay:150ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E] [animation-delay:300ms]" />
                 </div>
               )}
 
@@ -351,13 +351,13 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               {error && (
                 <div className="message-bubble-in flex items-start gap-2">
                   <CompanionCharacter className="h-6 w-6 shrink-0 opacity-90" />
-                  <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-[#F0DFC2] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#3D3226]">
+                  <div className="max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]">
                     <p>{error}</p>
                     {lastQuestion && (
                       <button
                         type="button"
                         onClick={handleRetry}
-                        className="mt-2 inline-flex text-xs font-semibold text-[#B5651D] underline decoration-[#B5651D]/40 underline-offset-2 hover:decoration-[#B5651D]"
+                        className="mt-2 inline-flex text-xs font-semibold text-[#D1560F] underline decoration-[#D1560F]/40 underline-offset-2 hover:decoration-[#D1560F]"
                       >
                         Ask again
                       </button>
@@ -367,7 +367,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               )}
             </div>
 
-            <div className="border-t border-[#F0DFC2] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <div className="border-t border-[#EAD9AE] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               <div className="flex items-end gap-2">
                 <textarea
                   ref={textareaRef}
@@ -376,14 +376,14 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                   onKeyDown={handleKeyDown}
                   placeholder="e.g. Can I skip the yogurt?"
                   rows={1}
-                  className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#F0DFC2] bg-white px-3.5 py-2.5 text-sm text-[#3D3226] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2A66B]"
+                  className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                 />
                 <button
                   type="button"
                   onClick={handleSend}
                   disabled={isSending || !input.trim()}
                   aria-label="Send"
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F2A66B] text-white transition-colors hover:bg-[#E8985A] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <SendIcon className="h-[18px] w-[18px]" />
                 </button>

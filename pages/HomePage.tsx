@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
             <aside className="flex flex-col lg:col-span-2">
               <SectionDivider label="or start from your kitchen" />
 
-              <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-[#FFE8D6] p-6 shadow-sm sm:p-7">
+              <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 shadow-sm sm:p-7">
                 <div className="flex items-start justify-between gap-4">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
                     <svg

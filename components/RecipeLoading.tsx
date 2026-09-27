@@ -32,7 +32,7 @@ const RecipeLoading: React.FC = () => {
       aria-live="polite"
     >
       {/* Soft peach circle behind the animated dog butler */}
-      <div className="mb-6 flex h-52 w-52 items-center justify-center rounded-full bg-[#FFE8D6]">
+      <div className="mb-6 flex h-52 w-52 items-center justify-center rounded-full bg-[#FFE3C2]">
         <div className="dog-butler relative h-44 w-44">
           <svg className="h-full w-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>

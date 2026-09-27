@@ -28,11 +28,11 @@ interface Sparkle {
 
 // Warm, soft colours that read well on the dark-brown scrim.
 const CONFETTI_COLORS = [
-  "#F97316", // brand orange
-  "#FB923C", // light orange
-  "#FBBF24", // amber
-  "#F9A8A0", // soft coral
-  "#A7C99A", // sage
+  "#FC6C26", // brand burnt orange
+  "#FF8C4B", // light orange
+  "#D1560F", // dark orange
+  "#F9A8A0", // soft coral — unchanged, keeps confetti from looking one-note
+  "#A7C99A", // sage — unchanged, same reason
 ];
 
 const CONFETTI_COUNT = 60;

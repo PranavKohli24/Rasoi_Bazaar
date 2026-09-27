@@ -9,7 +9,7 @@ import { buildLayout, makeRng } from "../utils/backgroundLayout";
 
 const doodleProps = {
   fill: "none",
-  stroke: "#C9722E",
+  stroke: "#FC6C26",
   strokeOpacity: 0.22,
   strokeWidth: 1.5,
   strokeLinecap: "round" as const,

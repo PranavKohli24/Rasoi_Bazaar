@@ -13,7 +13,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
       <div className="flex items-start gap-4 p-5 sm:p-6">
         {/* Icon */}
         <div className="shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFE8D6]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFE3C2]">
             <svg
               className="h-5 w-5 text-orange-200"
               xmlns="http://www.w3.org/2000/svg"
