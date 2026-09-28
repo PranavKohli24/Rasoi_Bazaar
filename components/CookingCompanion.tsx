@@ -882,23 +882,23 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                   overlaps more of the chat above it instead of pushing or
                   reserving its own row. */}
               <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pt-10 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-md"
-                style={{
-                  // Fixed px fade, not a %, so the solid/blurred zone always
-                  // covers whatever controls are stacked here (idle button,
-                  // or the taller voice-stack + "Listening..." row) — only a
-                  // thin strip right at the very top ever fades out, instead
-                  // of the fade zone growing with the overlay's height and
-                  // eating into the buttons themselves.
-                  background:
-                    "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 28px), rgba(255,254,250,0) 100%)",
-                  maskImage:
-                    "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
-                  WebkitMaskImage:
-                    "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
-                }}
-              >
-                <div className="pointer-events-auto flex items-end gap-2">
+  className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pt-10 pb-[max(1rem,env(safe-area-inset-bottom))]"
+>
+  {/* Background layer: blur + tint + fade live here, behind the controls */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-md"
+    style={{
+      background:
+        "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 28px), rgba(255,254,250,0) 100%)",
+      maskImage:
+        "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+      WebkitMaskImage:
+        "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+    }}
+  />
+
+  <div className="pointer-events-auto flex items-end gap-2">
                   <textarea
                     ref={textareaRef}
                     value={input}
@@ -909,7 +909,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                     maxLength={MAX_INPUT_CHARS}
                     className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                   />
-
+                <div className={`relative h-10 shrink-0 ${isListening ? "w-12" : "w-10"}`}>
                   {!isListening && (
                     <button
                       ref={micButtonRef}
@@ -917,7 +917,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                       onClick={() => (input.trim() ? handleSend() : startVoiceRecording())}
                       disabled={isSending}
                       aria-label={input.trim() ? "Send" : "Start voice recording"}
-                      className="companion-action-btn relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
+                      className="companion-action-btn relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       <MicIcon
                         className={`companion-action-icon h-[18px] w-[18px] ${
@@ -931,9 +931,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                       />
                     </button>
                   )}
-
+                
                   {isListening && (
-                    <div className="companion-voice-controls flex flex-col gap-1.5 rounded-2xl border border-[#EAD9AE] bg-white/95 p-1.5 shadow-lg">
+                    <div className="companion-voice-controls absolute right-0 bottom-0 z-20 flex flex-col gap-1.5 rounded-2xl border border-[#EAD9AE] bg-white/95 p-1.5 shadow-lg">
                       <button
                         type="button"
                         onClick={sendVoiceMessage}
@@ -955,6 +955,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                       </button>
                     </div>
                   )}
+                </div>
                 </div>
 
                 {isListening && (
