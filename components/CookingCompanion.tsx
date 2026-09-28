@@ -780,12 +780,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               </button>
             </div>
 
-            <div className="relative min-h-0 flex-1">
+                        <div className="relative min-h-0 flex-1">
               {/* Hints that there's more chat scrolled above — fades and
-                  softly blurs the top edge of the list, ChatGPT-style. Only
-                  shown once the list has actually been scrolled down, and it
-                  sits on its own layer so it never intercepts scroll/drag
-                  gestures meant for the messages underneath. */}
+                  softly blurs the top edge of the list, ChatGPT-style. */}
               <div
                 aria-hidden="true"
                 className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-10 backdrop-blur-[2px] transition-opacity duration-200 ${
@@ -802,7 +799,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               <div
                 ref={scrollRef}
                 onScroll={handleMessagesScroll}
-                className="h-full space-y-3 overflow-y-auto overscroll-y-contain px-5 py-4"
+                className="h-full space-y-3 overflow-y-auto overscroll-y-contain px-5 pb-28 pt-4"
               >
               {messages.length === 0 && (
                 <div className="space-y-3">
@@ -845,9 +842,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 )
               )}
 
-              {/* Plain typing cue — deliberately not a bubble. The reply gets
-                  its own bubble, freshly created, once it actually arrives;
-                  this never grows into it. */}
               {isSending && (
                 <div
                   className="flex items-center gap-2 py-1 pl-1"
@@ -861,8 +855,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 </div>
               )}
 
-              {/* Shown as an ordinary message from the companion, not a system
-                  alert — no red, no warning icon. */}
               {error && (
                 <div className="message-bubble-in flex items-start gap-2">
                   <CompanionCharacter className="h-6 w-6 shrink-0 opacity-90" />
@@ -881,86 +873,101 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 </div>
               )}
               </div>
-            </div>
 
-            <div className="border-t border-[#EAD9AE] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-              <div className="flex items-end gap-2">
-                <textarea
-                  ref={textareaRef}
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="e.g. Can I skip the yogurt?"
-                  rows={1}
-                  maxLength={MAX_INPUT_CHARS}
-                  className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
-                />
+              {/* The whole input area is ONE absolutely-positioned overlay,
+                  the sole other child of this `relative` container besides
+                  the scrollable messages. Because it's `absolute`, it never
+                  occupies space in the flex layout — so when it grows taller
+                  (e.g. the voice-recording button stack appears), it simply
+                  overlaps more of the chat above it instead of pushing or
+                  reserving its own row. */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pt-10 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-md"
+                style={{
+                  // Fixed px fade, not a %, so the solid/blurred zone always
+                  // covers whatever controls are stacked here (idle button,
+                  // or the taller voice-stack + "Listening..." row) — only a
+                  // thin strip right at the very top ever fades out, instead
+                  // of the fade zone growing with the overlay's height and
+                  // eating into the buttons themselves.
+                  background:
+                    "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 28px), rgba(255,254,250,0) 100%)",
+                  maskImage:
+                    "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+                }}
+              >
+                <div className="pointer-events-auto flex items-end gap-2">
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="e.g. Can I skip the yogurt?"
+                    rows={1}
+                    maxLength={MAX_INPUT_CHARS}
+                    className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                  />
 
-                {/* Mic <-> Send: one button, two icons cross-fading, exactly
-                    like the digital-twin chat's action button. Hidden while
-                    actively recording — the floating stack below takes over. */}
-                {!isListening && (
-                  <button
-                    ref={micButtonRef}
-                    type="button"
-                    onClick={() => (input.trim() ? handleSend() : startVoiceRecording())}
-                    disabled={isSending}
-                    aria-label={input.trim() ? "Send" : "Start voice recording"}
-                    className="companion-action-btn relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    <MicIcon
-                      className={`companion-action-icon h-[18px] w-[18px] ${
-                        input.trim() ? "companion-action-icon-out-left" : "companion-action-icon-in"
-                      }`}
-                    />
-                    <SendIcon
-                      className={`companion-action-icon h-[18px] w-[18px] ${
-                        input.trim() ? "companion-action-icon-in" : "companion-action-icon-out-right"
-                      }`}
-                    />
-                  </button>
-                )}
+                  {!isListening && (
+                    <button
+                      ref={micButtonRef}
+                      type="button"
+                      onClick={() => (input.trim() ? handleSend() : startVoiceRecording())}
+                      disabled={isSending}
+                      aria-label={input.trim() ? "Send" : "Start voice recording"}
+                      className="companion-action-btn relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      <MicIcon
+                        className={`companion-action-icon h-[18px] w-[18px] ${
+                          input.trim() ? "companion-action-icon-out-left" : "companion-action-icon-in"
+                        }`}
+                      />
+                      <SendIcon
+                        className={`companion-action-icon h-[18px] w-[18px] ${
+                          input.trim() ? "companion-action-icon-in" : "companion-action-icon-out-right"
+                        }`}
+                      />
+                    </button>
+                  )}
 
-                {/* Recording: a small vertical stack, same shape as the
-                    digital-twin chat's floating send/stop controls. */}
+                  {isListening && (
+                    <div className="companion-voice-controls flex flex-col gap-1.5 rounded-2xl border border-[#EAD9AE] bg-white/95 p-1.5 shadow-lg">
+                      <button
+                        type="button"
+                        onClick={sendVoiceMessage}
+                        disabled={!input.trim()}
+                        aria-label="Send voice message"
+                        title="Send"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
+                      >
+                        <SendIcon className="h-[15px] w-[15px]" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={stopVoiceRecording}
+                        aria-label="Stop recording"
+                        title="Stop recording"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F]"
+                      >
+                        <StopSquareIcon className="h-[13px] w-[13px]" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {isListening && (
-                  <div className="companion-voice-controls flex flex-col gap-1.5 rounded-2xl border border-[#EAD9AE] bg-white/95 p-1.5 shadow-lg">
-                    <button
-                      type="button"
-                      onClick={sendVoiceMessage}
-                      disabled={!input.trim()}
-                      aria-label="Send voice message"
-                      title="Send"
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F] disabled:cursor-not-allowed disabled:opacity-40"
-                    >
-                      <SendIcon className="h-[15px] w-[15px]" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={stopVoiceRecording}
-                      aria-label="Stop recording"
-                      title="Stop recording"
-                      className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FC6C26] text-white transition-colors hover:bg-[#D1560F]"
-                    >
-                      <StopSquareIcon className="h-[13px] w-[13px]" />
-                    </button>
+                  <div
+                    className="pointer-events-auto mt-2.5 flex items-center justify-center gap-2 text-xs font-semibold"
+                    style={{ color: "#D1560F" }}
+                  >
+                    <span className="companion-recording-dot h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: "#E5484D" }} />
+                    Listening...
                   </div>
                 )}
               </div>
-
-              {/* Listening indicator — a plain pulsing dot + label, same
-                  language as the digital-twin chat's "Listening voice..." row. */}
-              {isListening && (
-                <div
-                  className="mt-2.5 flex items-center justify-center gap-2 text-xs font-semibold"
-                  style={{ color: "#D1560F" }}
-                >
-                  <span className="companion-recording-dot h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: "#E5484D" }} />
-                  Listening...
-                </div>
-              )}
             </div>
-
             {/* Mic-blocked note — anchored from the viewport bottom off the
                 mic button's own position, so it grows upward without ever
                 needing to measure its own height first. */}
