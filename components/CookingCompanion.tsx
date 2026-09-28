@@ -14,6 +14,7 @@ interface CookingCompanionProps {
 }
 
 const STORAGE_PREFIX = "rasoi:companion:";
+const VOICE_REPLY_KEY = "rasoi:companion-voice-replies";
 const PANEL_TRANSITION_MS = 200;
 
 // How far down the sheet must be pulled before it counts as a deliberate
@@ -23,6 +24,16 @@ const DRAG_CLOSE_THRESHOLD = 90;
 // Caps how long a dictated transcript can grow the input, same ceiling the
 // text field itself uses.
 const MAX_INPUT_CHARS = 500;
+
+// Shown one after another while the companion is working on an answer, so
+// the wait feels like someone thinking rather than a spinner.
+const THINKING_PHRASES = [
+  "Hmm, let me think…",
+  "Checking the recipe…",
+  "One sec, almost there…",
+];
+
+type Mood = "idle" | "thinking" | "listening" | "talking";
 
 /* ---------------------------------------------------------------- icons */
 
@@ -93,12 +104,46 @@ const StopSquareIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-// The companion itself: a round smiling face in a chef's hat, with a spoon
-// that only moves while it's actually thinking. Flat solid fills only — no
-// gradients — so it stays simple at every size it appears (launcher,
-// header, loading row).
-const CompanionCharacter: React.FC<{ thinking?: boolean; className?: string }> = ({
-  thinking = false,
+const SpeakerIcon: React.FC<{ className?: string; on?: boolean }> = ({
+  className,
+  on = true,
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M11 5 6 9H2v6h4l5 4V5z" />
+    {on ? (
+      <>
+        <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+        <path d="M19 5a10 10 0 0 1 0 14" />
+      </>
+    ) : (
+      <>
+        <line x1="22" y1="9" x2="16" y2="15" />
+        <line x1="16" y1="9" x2="22" y2="15" />
+      </>
+    )}
+  </svg>
+);
+
+// The companion itself: a round face in a chef's hat, with a spoon. It has
+// four moods so the person can *see* what it's doing:
+//   idle      – calm smile
+//   thinking  – flat mouth, spoon stirring
+//   listening – wide eyes, open mouth, little sound arcs beside the head
+//   talking   – mouth opens and closes
+// Flat solid fills only — no gradients — so it stays simple at every size it
+// appears (launcher, header).
+const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
+  mood = "idle",
   className,
 }) => (
   <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
@@ -109,9 +154,17 @@ const CompanionCharacter: React.FC<{ thinking?: boolean; className?: string }> =
     <rect x="18" y="13" width="28" height="9" rx="4.5" fill="#FFFFFF" />
     <rect x="18" y="19" width="28" height="4" rx="2" fill="#EDE4D3" />
 
+    {/* Sound arcs, only while listening */}
+    {mood === "listening" && (
+      <g stroke="#D1560F" strokeWidth="2" fill="none" strokeLinecap="round">
+        <path className="companion-hear-1" d="M9 32q-3 6 0 12" />
+        <path className="companion-hear-2" d="M4 28q-6 10 0 20" />
+      </g>
+    )}
+
     {/* Spoon, animated only while thinking */}
     <g
-      className={`companion-spoon${thinking ? " is-stirring" : ""}`}
+      className={`companion-spoon${mood === "thinking" ? " is-stirring" : ""}`}
       stroke="#5C4A38"
       strokeWidth="2"
       strokeLinecap="round"
@@ -122,33 +175,100 @@ const CompanionCharacter: React.FC<{ thinking?: boolean; className?: string }> =
 
     {/* Face */}
     <circle cx="32" cy="38" r="19" fill="#F2A66B" />
+    <circle cx="21.5" cy="42" r="3.2" fill="#EB8B57" opacity="0.55" />
+    <circle cx="42.5" cy="42" r="3.2" fill="#EB8B57" opacity="0.55" />
     <g className="companion-blink" style={{ transformOrigin: "32px 35px" }}>
-      <circle cx="25" cy="35" r="2.5" fill="#5C4A38" />
-      <circle cx="39" cy="35" r="2.5" fill="#5C4A38" />
+      <circle cx="25" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
+      <circle cx="39" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
     </g>
-    <path
-      d={thinking ? "M25 45q7 3 14 0" : "M24 44q8 6 16 0"}
-      stroke="#5C4A38"
-      strokeWidth="2"
-      fill="none"
-      strokeLinecap="round"
-    />
+
+    {mood === "talking" && (
+      <ellipse className="companion-talk" cx="32" cy="45.5" rx="4.5" ry="3.5" fill="#5C4A38" />
+    )}
+    {mood === "listening" && <ellipse cx="32" cy="46" rx="2.6" ry="3" fill="#5C4A38" />}
+    {(mood === "idle" || mood === "thinking") && (
+      <path
+        d={mood === "thinking" ? "M25 45q7 3 14 0" : "M24 44q8 6 16 0"}
+        stroke="#5C4A38"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+      />
+    )}
   </svg>
 );
+
+/* ------------------------------------------------------------- helpers */
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+// Reveals a reply a couple of words at a time, so it reads like the
+// companion is saying it rather than a wall of text landing at once. Tap the
+// text to skip straight to the end. Older replies (and anyone with reduced
+// motion on) show in full immediately.
+const SpeechText: React.FC<{
+  text: string;
+  animate: boolean;
+  onProgress?: () => void;
+  onDone?: () => void;
+}> = ({ text, animate, onProgress, onDone }) => {
+  const tokens = useMemo(() => text.split(/(\s+)/), [text]);
+  const [count, setCount] = useState(() =>
+    animate && !prefersReducedMotion() ? 0 : tokens.length
+  );
+
+  useEffect(() => {
+    if (count >= tokens.length) {
+      if (animate) onDone?.();
+      return;
+    }
+    if (!animate) {
+      setCount(tokens.length);
+      return;
+    }
+    const step = tokens.length > 160 ? 4 : 2;
+    const id = window.setTimeout(() => {
+      setCount((current) => Math.min(tokens.length, current + step));
+      onProgress?.();
+    }, 55);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count, tokens.length, animate]);
+
+  const isRevealing = animate && count < tokens.length;
+
+  return (
+    <span
+      className="whitespace-pre-line"
+      onClick={isRevealing ? () => setCount(tokens.length) : undefined}
+      title={isRevealing ? "Tap to show everything" : undefined}
+    >
+      {tokens.slice(0, count).join("")}
+    </span>
+  );
+};
 
 /* --------------------------------------------------------- suggestions */
 
 // A few tappable starter questions, so someone with wet or masala-covered
-// hands can get useful help in one tap instead of typing. Kept generic
-// rather than built from a specific ingredient/equipment match, so they're
-// always relevant regardless of what this particular recipe calls for.
-const buildSuggestions = (_recipe: Recipe): string[] => {
+// hands can get useful help in one tap instead of typing. Once they're at a
+// specific step the questions are about *that moment* in the cook.
+const buildSuggestions = (_recipe: Recipe, stepNumber: number | null): string[] => {
   void _recipe; // kept for future recipe-aware personalization
+  if (stepNumber !== null) {
+    return [
+      "How do I know this step is done?",
+      "What if I'm missing an ingredient?",
+      "Am I on track so far?",
+    ];
+  }
   return [
+    "Any tips before I start?",
     "What can I substitute if I'm missing something?",
-    "Am I on track so far?",
     "What goes well with this?",
-  ].slice(0, 3);
+  ];
 };
 
 // Fallback for the rare case the service throws something without a usable
@@ -188,6 +308,32 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const isOpenRef = useRef(false);
+  isOpenRef.current = isOpen;
+
+  // ---- companion presence ----
+  // Index of the reply currently being "said" (word-by-word reveal).
+  const [talkingIndex, setTalkingIndex] = useState<number | null>(null);
+  // Rotates the "Hmm, let me think…" lines while a reply is on its way.
+  const [phraseIndex, setPhraseIndex] = useState(0);
+  // The little "Stuck? Ask me." note next to the launcher, shown briefly.
+  const [showNudge, setShowNudge] = useState(true);
+
+  // ---- spoken replies (text-to-speech) ----
+  const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
+  const [speakReplies, setSpeakReplies] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem(VOICE_REPLY_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
+  const speakRepliesRef = useRef(speakReplies);
+  speakRepliesRef.current = speakReplies;
+  const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
+  // Bumped on every speak/stop so a cancelled utterance's late `onend`
+  // can't clear the state of the one that replaced it.
+  const speakTokenRef = useRef(0);
 
   // ---- voice input (speech-to-text) ----
   // The input's own value is the single source of truth while dictating —
@@ -225,9 +371,77 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const [hasMounted, setHasMounted] = useState(false);
 
   const suggestions = useMemo(
-    () => (hasRecipe ? buildSuggestions(recipe) : []),
-    [recipe, hasRecipe]
+    () => (hasRecipe ? buildSuggestions(recipe, currentStepNumber) : []),
+    [recipe, hasRecipe, currentStepNumber]
   );
+
+  const hasStep = currentStepNumber !== null;
+
+  const companionMood: Mood = isSending
+    ? "thinking"
+    : isListening
+    ? "listening"
+    : talkingIndex !== null || speakingIndex !== null
+    ? "talking"
+    : "idle";
+
+  const statusText = isSending
+    ? THINKING_PHRASES[phraseIndex % THINKING_PHRASES.length]
+    : isListening
+    ? "I'm listening…"
+    : companionMood === "talking"
+    ? "Talking…"
+    : "Right here with you";
+
+  /* ------------------------------------------------- spoken replies */
+
+  const stopSpeaking = () => {
+    speakTokenRef.current += 1;
+    try {
+      window.speechSynthesis?.cancel();
+    } catch {
+      /* nothing to cancel */
+    }
+    setSpeakingIndex(null);
+  };
+
+  const speak = (index: number, text: string) => {
+    if (!canSpeak) return;
+    stopSpeaking();
+    const token = speakTokenRef.current;
+
+    const utterance = new SpeechSynthesisUtterance(text.replace(/[*_`#]/g, ""));
+    const voice = window.speechSynthesis
+      .getVoices()
+      .find((v) => v.lang === "en-IN" || v.lang === "en_IN");
+    if (voice) utterance.voice = voice;
+
+    const finish = () => {
+      if (speakTokenRef.current === token) setSpeakingIndex(null);
+    };
+    utterance.onend = finish;
+    utterance.onerror = finish;
+
+    setSpeakingIndex(index);
+    // Chrome can drop a speak() that lands in the same tick as a cancel().
+    window.setTimeout(() => {
+      if (speakTokenRef.current !== token) return;
+      window.speechSynthesis.speak(utterance);
+    }, 60);
+  };
+
+  const toggleSpeakReplies = () => {
+    const next = !speakReplies;
+    setSpeakReplies(next);
+    try {
+      localStorage.setItem(VOICE_REPLY_KEY, next ? "1" : "0");
+    } catch {
+      /* ignore storage problems */
+    }
+    if (!next) stopSpeaking();
+  };
+
+  /* ---------------------------------------------------------- effects */
 
   useEffect(() => {
     try {
@@ -238,7 +452,22 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   }, [messages, storageKey]);
 
   useEffect(() => {
+    const id = window.setTimeout(() => setShowNudge(false), 9000);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (!isSending) {
+      setPhraseIndex(0);
+      return;
+    }
+    const id = window.setInterval(() => setPhraseIndex((i) => i + 1), 2200);
+    return () => window.clearInterval(id);
+  }, [isSending]);
+
+  useEffect(() => {
     if (isOpen) {
+      setShowNudge(false);
       window.setTimeout(() => textareaRef.current?.focus(), PANEL_TRANSITION_MS);
     } else {
       // Reset drag state so the next open starts from a clean slate.
@@ -247,6 +476,11 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       setIsDragging(false);
       dragStartYRef.current = null;
       panelRef.current?.style.removeProperty("--kb-inset");
+
+      // Closing the panel shouldn't leave the companion talking to an
+      // empty room, or the mic listening in the background.
+      setTalkingIndex(null);
+      stopSpeaking();
 
       // Closing the panel (swipe-to-close, the minimize button, Escape,
       // whatever) shouldn't leave the mic listening in the background.
@@ -262,6 +496,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       }
       setMicBlockedNotice(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {
@@ -280,6 +515,16 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
   const handleMessagesScroll = (event: React.UIEvent<HTMLDivElement>) => {
     setIsScrolledFromTop(event.currentTarget.scrollTop > 4);
+  };
+
+  // While a reply is being revealed, keep the newest words in view — but
+  // only if the person hasn't scrolled up to re-read something.
+  const followTyping = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 140) {
+      el.scrollTop = el.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -315,7 +560,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
     // A tap on the minimize button is a tap, not a swipe — let its onClick
     // handle it instead of starting a drag.
-    if (event.target instanceof HTMLElement && event.target.closest("button")) {
+    // Element (not HTMLElement): a tap on a button's SVG icon targets an
+    // SVGElement, which is not an HTMLElement.
+    if (event.target instanceof Element && event.target.closest("button")) {
       return;
     }
     dragStartYRef.current = event.clientY;
@@ -345,6 +592,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const sendQuestion = async (question: string) => {
     if (!question || isSending) return;
 
+    // Don't talk over the person's next question.
+    stopSpeaking();
+
     const historyForRequest = messages;
     setMessages((current) => [...current, { role: "user", content: question }]);
     setInput("");
@@ -361,8 +611,14 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             currentStepInstruction,
             totalSteps
             );
+      // history + the question just added + this reply
+      const replyIndex = historyForRequest.length + 1;
       setMessages((current) => [...current, { role: "assistant", content: reply }]);
       setLastQuestion(null);
+      if (isOpenRef.current) {
+        setTalkingIndex(replyIndex);
+        if (speakRepliesRef.current) speak(replyIndex, reply);
+      }
     } catch (err) {
       console.error("Cooking companion error:", err);
       setError(err instanceof Error && err.message ? err.message : FRIENDLY_ERROR);
@@ -594,7 +850,8 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     return () => document.removeEventListener("pointerdown", handleOutside, true);
   }, [micBlockedNotice]);
 
-  // Abort any live recognition session if the whole component ever unmounts.
+  // Abort any live recognition session (and any spoken reply) if the whole
+  // component ever unmounts.
   useEffect(() => {
     return () => {
       try {
@@ -602,11 +859,20 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       } catch {
         /* already stopped */
       }
+      try {
+        window.speechSynthesis?.cancel();
+      } catch {
+        /* nothing to cancel */
+      }
     };
   }, []);
 
   const startVoiceRecording = async () => {
     if (isListeningRef.current) return;
+
+    // The person is about to talk — stop talking first so the mic doesn't
+    // pick up the companion's own voice.
+    stopSpeaking();
 
     // Live state, not a cached one — reflects address-bar changes instantly.
     if (micPermissionStatusRef.current?.state === "denied") {
@@ -708,28 +974,34 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   // nothing above it that can do that.
   return createPortal(
     <>
-      {/* Reachable from any scroll position. Icon-only on narrow screens to
-          stay out of the way of the thumb; the label appears once there's
-          room for it. */}
+      {/* Reachable from any scroll position. The companion peeks out with a
+          short note the first time, then settles into just its face. */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
           aria-label="Ask your Cooking Companion"
-          className="fixed bottom-5 right-5 z-[60] flex items-center gap-2.5 rounded-full bg-[#FFEAC4] p-2.5 shadow-lg shadow-black/20 ring-1 ring-[#EAD9AE] transition-transform hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] sm:bottom-6 sm:right-6 sm:pr-5"
+          className="group fixed bottom-5 right-5 z-[60] flex items-end gap-2 focus:outline-none sm:bottom-6 sm:right-6"
         >
-          <CompanionCharacter className="h-9 w-9" />
-          <span className="hidden text-sm font-semibold text-[#2B1A0C] sm:inline">
-            Ask your Cooking Companion
+          {showNudge && messages.length === 0 && (
+            <span
+              aria-hidden="true"
+              className="companion-nudge mb-3 rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
+            >
+              Stuck? Ask me.
+            </span>
+          )}
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFEAC4] shadow-lg shadow-black/20 ring-1 ring-[#EAD9AE] transition-transform group-hover:-translate-y-0.5 group-focus-visible:ring-2 group-focus-visible:ring-[#FC6C26]">
+            <CompanionCharacter className="companion-bob h-10 w-10" />
           </span>
         </button>
       )}
 
-            {isOpen && (
+      {isOpen && (
         <div
           ref={panelRef}
           role="dialog"
-          aria-label="Cooking companion chat"
+          aria-label="Cooking companion"
           onAnimationEnd={() => setHasMounted(true)}
           className={`${hasMounted ? "" : "companion-panel-enter"} fixed inset-x-0 bottom-[var(--kb-inset,0px)] z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-[calc(1.5rem+var(--kb-inset,0px))] sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl`}
           style={{
@@ -738,9 +1010,12 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             opacity: 1 - Math.min(dragY / 400, 0.5),
           }}
         >
-            {/* Drag handle — the only other surface, besides the header, that
-                starts a close-drag. Deliberately outside the scrollable
-                message list below. */}
+          {/* Companion header: the face is the focus. It changes with what the
+              companion is doing, and the strip underneath shows where you are
+              in the recipe so it feels like it's cooking alongside you. */}
+          <div className="rounded-t-3xl bg-[#FFF3DC]">
+            {/* Drag handle — starts a close-drag, like the header below.
+                Deliberately outside the scrollable message list. */}
             <div
               className="flex touch-none justify-center pb-1 pt-2.5 cursor-grab active:cursor-grabbing"
               onPointerDown={handleDragStart}
@@ -752,61 +1027,100 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             </div>
 
             <div
-              className="flex touch-none items-center justify-between border-b border-[#EAD9AE] px-5 py-4"
+              className="touch-none border-b border-[#EAD9AE]"
               onPointerDown={handleDragStart}
               onPointerMove={handleDragMove}
               onPointerUp={handleDragEnd}
               onPointerCancel={handleDragEnd}
             >
-              <div className="flex items-center gap-3">
-                <CompanionCharacter thinking={isSending} className="h-9 w-9" />
-                <div>
-                  <p className="text-[15px] font-bold leading-tight text-[#2B1A0C]">
-                    Cooking Companion
-                  </p>
-                  <p className="text-xs text-[#6B5238]">
-                    Ask about {recipe.dishName}
-                  </p>
+              <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-1">
+                <div className="flex min-w-0 items-center gap-3">
+                  <CompanionCharacter mood={companionMood} className="h-12 w-12 shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[15px] font-bold leading-tight text-[#2B1A0C]">
+                      Cooking Companion
+                    </p>
+                    <p className="truncate text-xs text-[#6B5238]">{statusText}</p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Back to cooking"
+                  title="Back to cooking"
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E3B8] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                >
+                  <ChatIcon className="h-5 w-5" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                aria-label="Minimize cooking companion"
-                title="Minimize"
-                className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E9C6] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
-              >
-                <ChatIcon className="h-5 w-5" />
-              </button>
+
+              <div className="flex items-center gap-2 px-5 pb-3">
+                {hasStep ? (
+                  <>
+                    <span className="shrink-0 rounded-full bg-[#FC6C26] px-2.5 py-0.5 text-[11px] font-bold text-white">
+                      Step {currentStepNumber}
+                      {totalSteps ? `/${totalSteps}` : ""}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-xs text-[#6B5238]">
+                      {currentStepInstruction || recipe.dishName}
+                    </span>
+                  </>
+                ) : (
+                  <span className="min-w-0 flex-1 truncate text-xs text-[#6B5238]">
+                    Cooking {recipe.dishName}
+                  </span>
+                )}
+
+                {canSpeak && (
+                  <button
+                    type="button"
+                    onClick={toggleSpeakReplies}
+                    aria-pressed={speakReplies}
+                    aria-label="Read replies aloud"
+                    title={speakReplies ? "Replies are read aloud" : "Read replies aloud"}
+                    className={`flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] ${
+                      speakReplies
+                        ? "bg-[#FC6C26] text-white"
+                        : "bg-white/70 text-[#6B5238] ring-1 ring-[#EAD9AE] hover:bg-white"
+                    }`}
+                  >
+                    <SpeakerIcon on={speakReplies} className="h-4 w-4" />
+                    {speakReplies ? "Voice on" : "Voice off"}
+                  </button>
+                )}
+              </div>
             </div>
+          </div>
 
-                        <div className="relative min-h-0 flex-1">
-              {/* Hints that there's more chat scrolled above — fades and
-                  softly blurs the top edge of the list, ChatGPT-style. */}
-              <div
-                aria-hidden="true"
-                className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-10 backdrop-blur-[2px] transition-opacity duration-200 ${
-                  isScrolledFromTop ? "opacity-100" : "opacity-0"
-                }`}
-                style={{
-                  background:
-                    "linear-gradient(to bottom, #FFFEFA 0%, rgba(255,254,250,0.6) 55%, rgba(255,254,250,0) 100%)",
-                  maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-                  WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
-                }}
-              />
+          <div className="relative min-h-0 flex-1">
+            {/* Hints that there's more chat scrolled above — fades and
+                softly blurs the top edge of the list, ChatGPT-style. */}
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-10 backdrop-blur-[2px] transition-opacity duration-200 ${
+                isScrolledFromTop ? "opacity-100" : "opacity-0"
+              }`}
+              style={{
+                background:
+                  "linear-gradient(to bottom, #FFFEFA 0%, rgba(255,254,250,0.6) 55%, rgba(255,254,250,0) 100%)",
+                maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+                WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
+              }}
+            />
 
-              <div
-                ref={scrollRef}
-                onScroll={handleMessagesScroll}
-                className="h-full space-y-3 overflow-y-auto overscroll-y-contain px-5 pb-28 pt-4"
-              >
+            <div
+              ref={scrollRef}
+              onScroll={handleMessagesScroll}
+              className="h-full space-y-4 overflow-y-auto overscroll-y-contain px-5 pb-28 pt-4"
+            >
+              {/* The companion speaks first. */}
               {messages.length === 0 && (
                 <div className="space-y-3">
-                  <p className="text-sm leading-relaxed text-[#6B5238]">
-                    Ask me anything about cooking {recipe.dishName} -
-                    substitutions, timing, technique, or other cooking doubts.
-                  </p>
+                  <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                    Hi, I'm right here with you. Making {recipe.dishName}? Ask me
+                    about swaps, timing, or whether something looks right. You can
+                    also tap the mic and just talk, so your hands can stay busy.
+                  </div>
                   {suggestions.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {suggestions.map((question) => (
@@ -814,7 +1128,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                           key={question}
                           type="button"
                           onClick={() => handleSuggestion(question)}
-                          className="rounded-full border border-[#EAD9AE] bg-[#FFEAC4] px-3.5 py-2 text-left text-xs leading-snug text-[#5A2E12] transition-colors hover:border-[#FC6C26] hover:bg-[#FFDCC0] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                          className="rounded-full border border-[#EAD9AE] bg-white px-3.5 py-2 text-left text-[13px] leading-snug text-[#5A2E12] transition-colors hover:border-[#FC6C26] hover:bg-[#FFF1D6] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                         >
                           {question}
                         </button>
@@ -826,11 +1140,31 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
               {messages.map((message, index) =>
                 message.role === "assistant" ? (
-                  <div
-                    key={index}
-                    className="message-bubble-in w-fit max-w-[85%] rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]"
-                  >
-                    {message.content}
+                  <div key={index} className="message-bubble-in w-fit max-w-[92%]">
+                    <div className="rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                      <SpeechText
+                        text={message.content}
+                        animate={talkingIndex === index}
+                        onProgress={followTyping}
+                        onDone={() =>
+                          setTalkingIndex((current) => (current === index ? null : current))
+                        }
+                      />
+                    </div>
+                    {canSpeak && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          speakingIndex === index
+                            ? stopSpeaking()
+                            : speak(index, message.content)
+                        }
+                        className="mt-1.5 ml-1 inline-flex items-center gap-1.5 rounded-full py-1 pr-2 text-xs font-semibold text-[#B24A12] transition-colors hover:text-[#8F3A0D] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                      >
+                        <SpeakerIcon on className="h-3.5 w-3.5" />
+                        {speakingIndex === index ? "Stop" : "Hear it"}
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div
@@ -844,71 +1178,66 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
               {isSending && (
                 <div
-                  className="flex items-center gap-2 py-1 pl-1"
+                  className="message-bubble-in w-fit rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-2.5 text-sm italic text-[#8A6B4A]"
                   role="status"
-                  aria-label="Cooking companion is typing"
                 >
-                  <CompanionCharacter thinking className="h-6 w-6 shrink-0" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E] [animation-delay:150ms]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-[#D9BE8E] [animation-delay:300ms]" />
+                  <span className="companion-pulse">
+                    {THINKING_PHRASES[phraseIndex % THINKING_PHRASES.length]}
+                  </span>
                 </div>
               )}
 
               {error && (
-                <div className="message-bubble-in flex items-start gap-2">
-                  <CompanionCharacter className="h-6 w-6 shrink-0 opacity-90" />
-                  <div className="max-w-[85%] w-fit rounded-2xl rounded-bl-sm border border-[#EAD9AE] bg-white px-4 py-2.5 text-sm leading-relaxed text-[#2B1A0C]">
-                    <p>{error}</p>
-                    {lastQuestion && (
-                      <button
-                        type="button"
-                        onClick={handleRetry}
-                        className="mt-2 inline-flex text-xs font-semibold text-[#D1560F] underline decoration-[#D1560F]/40 underline-offset-2 hover:decoration-[#D1560F]"
-                      >
-                        Ask again
-                      </button>
-                    )}
-                  </div>
+                <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                  <p>{error}</p>
+                  {lastQuestion && (
+                    <button
+                      type="button"
+                      onClick={handleRetry}
+                      className="mt-2.5 inline-flex rounded-full bg-[#FC6C26] px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#D1560F] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] focus-visible:ring-offset-2"
+                    >
+                      Ask again
+                    </button>
+                  )}
                 </div>
               )}
-              </div>
+            </div>
 
-              {/* The whole input area is ONE absolutely-positioned overlay,
-                  the sole other child of this `relative` container besides
-                  the scrollable messages. Because it's `absolute`, it never
-                  occupies space in the flex layout — so when it grows taller
-                  (e.g. the voice-recording button stack appears), it simply
-                  overlaps more of the chat above it instead of pushing or
-                  reserving its own row. */}
+            {/* The whole input area is ONE absolutely-positioned overlay,
+                the sole other child of this `relative` container besides
+                the scrollable messages. Because it's `absolute`, it never
+                occupies space in the flex layout — so when it grows taller
+                (e.g. the voice-recording button stack appears), it simply
+                overlaps more of the chat above it instead of pushing or
+                reserving its own row. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pt-10 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              {/* Background layer: blur + tint + fade live here, behind the
+                  controls, so the mask never fades the buttons themselves. */}
               <div
-  className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 pt-10 pb-[max(1rem,env(safe-area-inset-bottom))]"
->
-  {/* Background layer: blur + tint + fade live here, behind the controls */}
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-md"
-    style={{
-      background:
-        "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 40px), rgba(255,254,250,0) 100%)",
-      maskImage:
-        "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
-      WebkitMaskImage:
-        "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
-    }}
-  />
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-md"
+                style={{
+                  background:
+                    "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 40px), rgba(255,254,250,0) 100%)",
+                  maskImage:
+                    "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
+                }}
+              />
 
-  <div className="pointer-events-auto flex items-end gap-2">
-                  <textarea
-                    ref={textareaRef}
-                    value={input}
-                    onChange={(event) => setInput(event.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Ask me your doubts while cooking..."
-                    rows={1}
-                    maxLength={MAX_INPUT_CHARS}
-                    className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
-                  />
+              <div className="pointer-events-auto flex items-end gap-2">
+                <textarea
+                  ref={textareaRef}
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask me your doubts while cooking..."
+                  rows={1}
+                  maxLength={MAX_INPUT_CHARS}
+                  className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                />
+
                 <div className={`relative h-10 shrink-0 ${isListening ? "w-12" : "w-10"}`}>
                   {!isListening && (
                     <button
@@ -931,7 +1260,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                       />
                     </button>
                   )}
-                
+
                   {isListening && (
                     <div className="companion-voice-controls absolute right-0 bottom-0 z-20 flex flex-col gap-1.5 rounded-2xl border border-[#EAD9AE] bg-white/95 p-1.5 shadow-lg">
                       <button
@@ -956,41 +1285,42 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                     </div>
                   )}
                 </div>
-                </div>
+              </div>
 
-                {isListening && (
-                  <div
-                    className="pointer-events-auto mt-2.5 flex items-center justify-center gap-2 text-xs font-semibold"
-                    style={{ color: "#D1560F" }}
-                  >
-                    <span className="companion-recording-dot h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: "#E5484D" }} />
-                    Listening...
-                  </div>
-                )}
-              </div>
-            </div>
-            {/* Mic-blocked note — anchored from the viewport bottom off the
-                mic button's own position, so it grows upward without ever
-                needing to measure its own height first. */}
-            {micBlockedNotice && micNoticePos && (
-              <div
-                role="alert"
-                className="companion-mic-notice"
-                style={{ left: micNoticePos.left, bottom: micNoticePos.bottom }}
-              >
-                <p className="companion-mic-notice-title">Microphone access is blocked</p>
-                <p className="companion-mic-notice-desc">
-                  To use dictation, open your browser&apos;s site settings and allow the microphone.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => setMicBlockedNotice(false)}
-                  className="companion-mic-notice-btn"
+              {isListening && (
+                <div
+                  className="pointer-events-auto mt-2.5 flex items-center justify-center gap-2 text-xs font-semibold"
+                  style={{ color: "#D1560F" }}
                 >
-                  Got it
-                </button>
-              </div>
-            )}
+                  <span className="companion-recording-dot h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: "#E5484D" }} />
+                  Listening...
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Mic-blocked note — anchored from the viewport bottom off the
+              mic button's own position, so it grows upward without ever
+              needing to measure its own height first. */}
+          {micBlockedNotice && micNoticePos && (
+            <div
+              role="alert"
+              className="companion-mic-notice"
+              style={{ left: micNoticePos.left, bottom: micNoticePos.bottom }}
+            >
+              <p className="companion-mic-notice-title">Microphone access is blocked</p>
+              <p className="companion-mic-notice-desc">
+                To use dictation, open your browser&apos;s site settings and allow the microphone.
+              </p>
+              <button
+                type="button"
+                onClick={() => setMicBlockedNotice(false)}
+                className="companion-mic-notice-btn"
+              >
+                Got it
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -1002,9 +1332,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
           display: none; /* Chrome, Safari, Edge */
         }
 
-        /* A message bubble's one-time arrival, not a repeating effect. Because
-           messages are keyed by index and only ever appended, existing bubbles
-           never remount and never replay this — only a genuinely new one does. */
+        /* A message's one-time arrival, not a repeating effect. Because
+           messages are keyed by index and only ever appended, existing
+           messages never remount and never replay this — only a genuinely
+           new one does. */
         .message-bubble-in {
           animation: message-bubble-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
@@ -1032,6 +1363,54 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         @keyframes companion-stir {
           0%, 100% { transform: rotate(-6deg); }
           50% { transform: rotate(9deg); }
+        }
+
+        /* Mouth opens and closes while the companion is talking. */
+        .companion-talk {
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: companion-talk 0.32s ease-in-out infinite;
+        }
+        @keyframes companion-talk {
+          0%, 100% { transform: scaleY(1); }
+          50% { transform: scaleY(0.35); }
+        }
+
+        /* Sound arcs beside the head while it's listening. */
+        .companion-hear-1 {
+          animation: companion-hear 1.1s ease-in-out infinite;
+        }
+        .companion-hear-2 {
+          animation: companion-hear 1.1s ease-in-out 0.25s infinite;
+        }
+        @keyframes companion-hear {
+          0%, 100% { opacity: 0.25; }
+          50% { opacity: 1; }
+        }
+
+        /* Gentle idle bob on the launcher face. */
+        .companion-bob {
+          animation: companion-bob 3.2s ease-in-out infinite;
+        }
+        @keyframes companion-bob {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
+        }
+
+        .companion-nudge {
+          animation: companion-nudge-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes companion-nudge-in {
+          from { opacity: 0; transform: translateX(8px) scale(0.96); }
+          to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        .companion-pulse {
+          animation: companion-pulse 1.4s ease-in-out infinite;
+        }
+        @keyframes companion-pulse {
+          0%, 100% { opacity: 0.55; }
+          50% { opacity: 1; }
         }
 
         .companion-panel-enter {
@@ -1126,6 +1505,12 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         @media (prefers-reduced-motion: reduce) {
           .companion-blink,
           .companion-spoon.is-stirring,
+          .companion-talk,
+          .companion-hear-1,
+          .companion-hear-2,
+          .companion-bob,
+          .companion-nudge,
+          .companion-pulse,
           .companion-panel-enter,
           .message-bubble-in,
           .companion-action-icon,
