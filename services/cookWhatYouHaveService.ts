@@ -2,7 +2,7 @@ import { predefinedRecipes } from "../data/predefinedRecipes";
 import type { Recipe } from "../types";
 
 /* ------------------------------------------------------------------ */
-/* Public API (unchanged so the component doesn't need edits)          */
+/* Public API                                                               */
 /* ------------------------------------------------------------------ */
 
 export interface CookWhatYouHaveInput {
@@ -21,7 +21,7 @@ export interface RecipeMatch {
 
 export interface CookWhatYouHaveResponse {
   recipes: RecipeMatch[];
-  source: "predefined" | "ai";
+  source: "predefined" | "ai" | "mixed";
 }
 
 /* ------------------------------------------------------------------ */
@@ -30,7 +30,7 @@ export interface CookWhatYouHaveResponse {
 
 const MATCH_CONFIG = {
   maxResults: 3,
-  minRequiredCoverage: 0.55, // recipe must have >= this fraction of core ingredients matched
+  minRequiredCoverage: 1.0, // every required ingredient must be available
   matchThreshold: 0.8, // how confident a fuzzy match must be to "count"
   equipmentMatchThreshold: 0.65,
   weights: {
@@ -209,14 +209,19 @@ const aliasMatchScore = (userTokens: string[], aliasTokens: string[]): number =>
     return 1;
   }
 
-  if (intersectionSize === userSet.size || intersectionSize === aliasSet.size) {
-    const longer = intersectionSize === userSet.size ? aliasSet : userSet;
-    const dropped = [...longer].filter((t) => !intersection.includes(t));
-    // "vanilla" -> "vanilla ice cream" is fine to drop "vanilla" here isn't
-    // possible (that's the alias side dropping nothing); what we're
-    // guarding is e.g. "coconut" -> "coconut milk" dropping "milk".
-    if (dropped.some((t) => IDENTITY_MODIFIERS.has(t))) return 0;
-    return 0.9;
+  // A user can be more specific than a recipe requirement when the extra
+  // words are harmless descriptors: "chopped onion" -> "onion".
+  if (intersectionSize === aliasSet.size && intersectionSize < userSet.size) {
+    const extraUserTokens = [...userSet].filter((t) => !intersection.includes(t));
+    if (extraUserTokens.every((t) => DESCRIPTOR_WORDS.has(t))) return 0.9;
+  }
+
+  // Do not credit a generic user ingredient for a more specific requirement:
+  // "milk" must not satisfy "coconut milk".
+  if (intersectionSize === userSet.size && intersectionSize < aliasSet.size) {
+    const missingRequirementTokens = [...aliasSet].filter((t) => !intersection.includes(t));
+    if (missingRequirementTokens.every((t) => DESCRIPTOR_WORDS.has(t))) return 0.9;
+    return 0;
   }
 
   const unionSize = new Set([...userSet, ...aliasSet]).size;
@@ -628,7 +633,7 @@ export const findMatchingPredefinedRecipes = (input: CookWhatYouHaveInput): Cook
 };
 
 /* ------------------------------------------------------------------ */
-/* AI fallback (unchanged behavior, only used when predefined yields 0) */
+/* AI fallback: only fills recipe slots the predefined collection cannot cover. */
 /* ------------------------------------------------------------------ */
 
 const GENERIC_ERROR = "The kitchen assistant couldn't find recipes right now. Please try again.";
@@ -657,14 +662,46 @@ const cleanAiMatches = (value: unknown): RecipeMatch[] =>
     })
     .slice(0, MATCH_CONFIG.maxResults);
 
-const findRecipesWithOpenRouter = async (input: CookWhatYouHaveInput): Promise<CookWhatYouHaveResponse> => {
+const mergeUniqueRecipes = (
+  predefined: RecipeMatch[],
+  ai: RecipeMatch[],
+  maxResults: number
+): RecipeMatch[] => {
+  const seen = new Set<string>();
+  const merged: RecipeMatch[] = [];
+
+  for (const recipe of [...predefined, ...ai]) {
+    const key = recipe.dishName.trim().toLowerCase();
+    if (!key || seen.has(key)) continue;
+
+    seen.add(key);
+    merged.push(recipe);
+
+    if (merged.length >= maxResults) break;
+  }
+
+  return merged;
+};
+
+const findRecipesWithOpenRouter = async (
+  input: CookWhatYouHaveInput,
+  count: number,
+  excludeDishNames: string[] = []
+): Promise<RecipeMatch[]> => {
+  if (count <= 0) return [];
+
   let response: Response;
 
   try {
     response = await fetch("/api/cook-match", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ equipment: input.equipment, ingredients: input.ingredients }),
+      body: JSON.stringify({
+        equipment: input.equipment,
+        ingredients: input.ingredients,
+        count,
+        excludeDishNames,
+      }),
     });
   } catch (error) {
     console.error("Cook What You Have AI fallback failed:", error);
@@ -688,11 +725,53 @@ const findRecipesWithOpenRouter = async (input: CookWhatYouHaveInput): Promise<C
     throw new Error(GENERIC_ERROR);
   }
 
-  return { recipes: cleanAiMatches(data.recipes), source: "ai" };
+  return cleanAiMatches(data.recipes).slice(0, count);
 };
 
 export const findRecipesFromIngredients = async (input: CookWhatYouHaveInput): Promise<CookWhatYouHaveResponse> => {
   const predefined = findMatchingPredefinedRecipes(input);
-  if (predefined.recipes.length > 0) return predefined;
-  return findRecipesWithOpenRouter(input);
+  const predefinedCount = predefined.recipes.length;
+
+  if (predefinedCount >= MATCH_CONFIG.maxResults) {
+    return {
+      recipes: predefined.recipes.slice(0, MATCH_CONFIG.maxResults),
+      source: "predefined",
+    };
+  }
+
+  const missingCount = MATCH_CONFIG.maxResults - predefinedCount;
+
+  try {
+    const ai = await findRecipesWithOpenRouter(
+      input,
+      missingCount,
+      predefined.recipes.map((recipe) => recipe.dishName)
+    );
+
+    const recipes = mergeUniqueRecipes(
+      predefined.recipes,
+      ai,
+      MATCH_CONFIG.maxResults
+    );
+
+    return {
+      recipes,
+      source:
+        predefinedCount === 0
+          ? "ai"
+          : ai.length > 0
+          ? "mixed"
+          : "predefined",
+    };
+  } catch (error) {
+    if (predefinedCount > 0) {
+      console.error("AI fallback failed; returning predefined matches:", error);
+      return {
+        recipes: predefined.recipes.slice(0, MATCH_CONFIG.maxResults),
+        source: "predefined",
+      };
+    }
+
+    throw error;
+  }
 };

@@ -40,7 +40,7 @@ interface SavedState {
   ingredients: string[];
   results: RecipeMatch[];
   step: 1 | 2 | 3;
-  resultSource?: "predefined" | "ai";
+  resultSource?: "predefined" | "ai" | "mixed";
 }
 
 const loadSaved = (): SavedState | null => {
@@ -245,7 +245,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   );
   const [isLoading, setIsLoading] = useState(false);
   const [resultSource, setResultSource] = useState<
-    "predefined" | "ai"
+    "predefined" | "ai" | "mixed"
   >(saved?.resultSource ?? "predefined");
   const [error, setError] = useState<string | null>(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
@@ -739,6 +739,8 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 <p className="mt-2 text-sm text-stone-400">
                   {resultSource === "predefined"
                     ? "Matched from our recipe collection using "
+                    : resultSource === "mixed"
+                    ? "Matched from our recipe collection and kitchen assistant using "
                     : "Found by our kitchen assistant using "}
                   {ingredients.length} ingredients and {equipment.length} pieces of equipment you picked.
                 </p>

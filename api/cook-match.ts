@@ -1,5 +1,5 @@
 /**
- * POST /api/cook-match   body: { equipment: string[], ingredients: string[] }
+ * POST /api/cook-match   body: { equipment: string[], ingredients: string[], count?: number, excludeDishNames?: string[] }
  *
  * Runs on Vercel, so the OpenRouter key stays on the server. Set
  * OPENROUTER_API_KEY (no VITE_ prefix) in Vercel > Settings > Environment
@@ -33,6 +33,8 @@ const RATE_WINDOW_MS = 60_000; // ... per minute, per visitor
 const MAX_EQUIPMENT = 12;
 const MAX_INGREDIENTS = 40;
 const MAX_ITEM_LENGTH = 40;
+const MAX_RESULTS = 3;
+const MAX_EXCLUDED_DISHES = 10;
 
 const GENERIC_ERROR = "The kitchen assistant couldn't find recipes right now. Please try again.";
 const BUSY_ERROR = "Our kitchen is a little busy right now. Please try again in a moment.";
@@ -120,6 +122,9 @@ const cleanList = (value: unknown, maxItems: number): string[] => {
   return out;
 };
 
+const cleanDishNames = (value: unknown): string[] =>
+  cleanList(value, MAX_EXCLUDED_DISHES);
+
 /* ---------- checking what the model returns ---------- */
 
 const str = (value: unknown): string => (typeof value === "string" ? value.trim() : "");
@@ -145,7 +150,7 @@ const cleanMatches = (value: unknown) =>
 
 /* ---------- prompt (kept on the server) ---------- */
 
-const buildPrompt = (equipment: string[], ingredients: string[]): string => `
+const buildPrompt = (equipment: string[], ingredients: string[], count: number, excludeDishNames: string[]): string => `
 You are the recipe-matching engine for an Indian cooking app.
 
 The user has given us their COMPLETE list of available ingredients and kitchen equipment.
@@ -157,7 +162,7 @@ AVAILABLE INGREDIENTS:
 ${ingredients.map((item) => `- ${item}`).join("\n")}
 
 Your task:
-Find up to 3 real dishes that the user can ACTUALLY cook right now.
+Find up to ${count} real dishes that the user can ACTUALLY cook right now.
 
 STRICT RULES:
 
@@ -170,11 +175,15 @@ STRICT RULES:
 7. Prefer dishes that use several of the ingredients the user already has.
 8. Prefer practical home-style Indian dishes, but dishes from other cuisines are allowed when they genuinely fit.
 9. Do not invent fictional dishes.
-10. Return fewer than 3 results if fewer than 3 valid dishes exist.
-11. Do not return dishes with missing essential ingredients.
-12. Keep every description and explanation to one short sentence.
-13. Do not provide cooking instructions.
-14. Prefer the simplest valid dishes first.
+10. Return no more than ${count} results.
+11. Return fewer than ${count} only if fewer valid dishes genuinely exist.
+12. Do not return dishes with missing essential ingredients.
+13. Keep every description and explanation to one short sentence.
+14. Do not provide cooking instructions.
+15. Prefer the simplest valid dishes first.
+
+Do not recommend any of these dishes because they were already found locally:
+${excludeDishNames.length ? excludeDishNames.map((name) => `- ${name}`).join("\n") : "- None"}
 
 For every result return:
 - dishName
@@ -219,6 +228,13 @@ export default async function handler(req: Req, res: Res) {
   const body = readBody(req);
   const equipment = cleanList(body?.equipment, MAX_EQUIPMENT);
   const ingredients = cleanList(body?.ingredients, MAX_INGREDIENTS);
+  const excludeDishNames = cleanDishNames(body?.excludeDishNames);
+
+  const requestedCount = Number(body?.count);
+  const count =
+    Number.isFinite(requestedCount) && requestedCount > 0
+      ? Math.min(Math.floor(requestedCount), MAX_RESULTS)
+      : MAX_RESULTS;
 
   if (!equipment.length) {
     return fail(res, 400, "INVALID_INPUT", "Please select at least one piece of equipment.");
@@ -249,7 +265,10 @@ export default async function handler(req: Req, res: Res) {
               content:
                 "Match recipes strictly to the provided ingredients and equipment. Return ONLY valid JSON matching the requested structure. Do not write any text outside the JSON.",
             },
-            { role: "user", content: buildPrompt(equipment, ingredients) },
+            {
+              role: "user",
+              content: buildPrompt(equipment, ingredients, count, excludeDishNames),
+            },
           ],
           response_format: { type: "json_object" },
           temperature: 0.2,
@@ -284,7 +303,7 @@ export default async function handler(req: Req, res: Res) {
       continue;
     }
 
-    return res.status(200).json({ recipes: cleanMatches(parsed.recipes) });
+    return res.status(200).json({ recipes: cleanMatches(parsed.recipes).slice(0, count) });
   }
 
   return fail(res, 502, "SERVER", GENERIC_ERROR);
