@@ -187,6 +187,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // ---- voice input (speech-to-text) ----
   // The input's own value is the single source of truth while dictating —
@@ -245,6 +246,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       setDragY(0);
       setIsDragging(false);
       dragStartYRef.current = null;
+      panelRef.current?.style.removeProperty("--kb-inset");
 
       // Closing the panel (swipe-to-close, the minimize button, Escape,
       // whatever) shouldn't leave the mic listening in the background.
@@ -279,6 +281,27 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const handleMessagesScroll = (event: React.UIEvent<HTMLDivElement>) => {
     setIsScrolledFromTop(event.currentTarget.scrollTop > 4);
   };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const panel = panelRef.current;
+    const vv = window.visualViewport;
+    if (!panel || !vv) return;
+
+    const applyInset = () => {
+      const covered = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      panel.style.setProperty("--kb-inset", `${covered}px`);
+    };
+
+    applyInset();
+    vv.addEventListener("resize", applyInset);
+    vv.addEventListener("scroll", applyInset);
+    return () => {
+      vv.removeEventListener("resize", applyInset);
+      vv.removeEventListener("scroll", applyInset);
+      panel.style.removeProperty("--kb-inset");
+    };
+  }, [isOpen])
 
   useEffect(() => {
     if (!isOpen) return;
@@ -702,12 +725,13 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         </button>
       )}
 
-      {isOpen && (
+            {isOpen && (
         <div
+          ref={panelRef}
           role="dialog"
           aria-label="Cooking companion chat"
           onAnimationEnd={() => setHasMounted(true)}
-          className={`${hasMounted ? "" : "companion-panel-enter"} fixed inset-x-0 bottom-0 z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl`}
+          className={`${hasMounted ? "" : "companion-panel-enter"} fixed inset-x-0 bottom-[var(--kb-inset,0px)] z-[70] flex h-[75dvh] w-full flex-col rounded-t-3xl border border-[#EAD9AE] bg-[#FFFEFA] shadow-2xl sm:inset-x-auto sm:bottom-[calc(1.5rem+var(--kb-inset,0px))] sm:right-6 sm:h-[min(560px,80dvh)] sm:w-96 sm:rounded-3xl`}
           style={{
             transform: `translateY(${dragY}px)`,
             transition: isDragging ? "none" : "transform 0.2s ease",
@@ -778,7 +802,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               <div
                 ref={scrollRef}
                 onScroll={handleMessagesScroll}
-                className="h-full space-y-3 overflow-y-auto px-5 py-4"
+                className="h-full space-y-3 overflow-y-auto overscroll-y-contain px-5 py-4"
               >
               {messages.length === 0 && (
                 <div className="space-y-3">
