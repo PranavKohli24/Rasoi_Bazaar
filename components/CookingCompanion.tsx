@@ -904,7 +904,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Ask me if you have doubt while cooking..."
+                    placeholder="Ask me your doubts while cooking..."
                     rows={1}
                     maxLength={MAX_INPUT_CHARS}
                     className="companion-textarea max-h-24 flex-1 resize-none overflow-y-auto rounded-xl border border-[#EAD9AE] bg-white px-3.5 py-2.5 text-sm text-[#2B1A0C] placeholder:text-[#B8A98C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
