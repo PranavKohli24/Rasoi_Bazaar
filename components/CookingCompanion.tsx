@@ -38,9 +38,9 @@ type Mood = "idle" | "thinking" | "listening" | "talking";
 // Chef's hat colours — a light orange with a slightly deeper edge, so the hat
 // stays visible on off-white backgrounds instead of disappearing like a
 // white one.
-const HAT = "#FFD3A6";
-const HAT_BAND = "#FFB675";
-const HAT_EDGE = "#F0A05A";
+const HAT = "#FFDAB3";
+const HAT_BAND = "#FFC08A";
+const HAT_EDGE = "#F2AA68";
 
 /* ---------------------------------------------------------------- icons */
 
@@ -190,8 +190,6 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
 
     {/* Face */}
     <circle cx="32" cy="38" r="19" fill="#F2A66B" />
-    <circle cx="21.5" cy="42" r="3.2" fill="#EB8B57" opacity="0.55" />
-    <circle cx="42.5" cy="42" r="3.2" fill="#EB8B57" opacity="0.55" />
     <g className="companion-blink" style={{ transformOrigin: "32px 35px" }}>
       <circle cx="25" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
       <circle cx="39" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
@@ -1213,7 +1211,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               Stuck? Ask me.
             </span>
           )}
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#FFEAC4] shadow-lg shadow-black/20 ring-1 ring-[#EAD9AE] transition-transform group-hover:-translate-y-0.5 group-focus-visible:ring-2 group-focus-visible:ring-[#FC6C26]">
+          <span className="companion-orb flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
             <CompanionCharacter className="companion-bob h-10 w-10" />
           </span>
         </button>
@@ -1591,6 +1589,17 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             inset 0 1px 0 rgba(255, 255, 255, 0.95),
             0 2px 0 #E7DCC4,
             0 8px 14px -8px rgba(90, 60, 20, 0.28);
+        }
+
+        /* The floating launcher circle: same off-white raised look as the
+           companion's cards, with a slightly deeper lift since it floats. */
+        .companion-orb {
+          background: linear-gradient(180deg, #FFFFFF 0%, #F8F3E7 100%);
+          border: 1px solid #E9DFC9;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            0 3px 0 #E7DCC4,
+            0 10px 18px -6px rgba(90, 60, 20, 0.4);
         }
 
         .companion-hscroll {
