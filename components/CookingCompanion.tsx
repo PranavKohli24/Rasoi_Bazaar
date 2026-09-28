@@ -385,14 +385,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     ? "talking"
     : "idle";
 
-  const statusText = isSending
-    ? THINKING_PHRASES[phraseIndex % THINKING_PHRASES.length]
-    : isListening
-    ? "I'm listening…"
-    : companionMood === "talking"
-    ? "Talking…"
-    : "Right here with you";
-
   /* ------------------------------------------------- spoken replies */
 
   const stopSpeaking = () => {
@@ -526,6 +518,29 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       el.scrollTop = el.scrollHeight;
     }
   };
+
+  // ---- step strip: "is there more to the right?" ----
+  const stepScrollRef = useRef<HTMLDivElement>(null);
+  const [stepCanScrollRight, setStepCanScrollRight] = useState(false);
+
+  const updateStepFade = () => {
+    const el = stepScrollRef.current;
+    if (!el) return;
+    setStepCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 2);
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const el = stepScrollRef.current;
+    if (!el) return;
+    el.scrollLeft = 0; // a new step always starts from its first word
+    updateStepFade();
+    const observer =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateStepFade) : null;
+    observer?.observe(el);
+    return () => observer?.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, currentStepNumber, currentStepInstruction]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -1027,67 +1042,83 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
             </div>
 
             <div
-              className="touch-none border-b border-[#EAD9AE]"
+              className="touch-none"
               onPointerDown={handleDragStart}
               onPointerMove={handleDragMove}
               onPointerUp={handleDragEnd}
               onPointerCancel={handleDragEnd}
             >
-              <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-1">
-                <div className="flex min-w-0 items-center gap-3">
-                  <CompanionCharacter mood={companionMood} className="h-12 w-12 shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-[15px] font-bold leading-tight text-[#2B1A0C]">
-                      Cooking Companion
-                    </p>
-                    <p className="truncate text-xs text-[#6B5238]">{statusText}</p>
-                  </div>
+              <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-0.5">
+                <div className="flex min-w-0 items-center gap-2.5">
+                  <CompanionCharacter mood={companionMood} className="h-10 w-10 shrink-0" />
+                  <p className="truncate text-[15px] font-bold leading-tight text-[#2B1A0C]">
+                    Cooking Companion
+                  </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setIsOpen(false)}
-                  aria-label="Back to cooking"
-                  title="Back to cooking"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E3B8] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
-                >
-                  <ChatIcon className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-2 px-5 pb-3">
-                {hasStep ? (
-                  <>
-                    <span className="shrink-0 rounded-full bg-[#FC6C26] px-2.5 py-0.5 text-[11px] font-bold text-white">
-                      Step {currentStepNumber}
-                      {totalSteps ? `/${totalSteps}` : ""}
-                    </span>
-                    <span className="min-w-0 flex-1 truncate text-xs text-[#6B5238]">
-                      {currentStepInstruction || recipe.dishName}
-                    </span>
-                  </>
-                ) : (
-                  <span className="min-w-0 flex-1 truncate text-xs text-[#6B5238]">
-                    Cooking {recipe.dishName}
-                  </span>
-                )}
-
-                {canSpeak && (
+                <div className="flex shrink-0 items-center gap-1.5">
+                  {canSpeak && (
+                    <button
+                      type="button"
+                      onClick={toggleSpeakReplies}
+                      aria-pressed={speakReplies}
+                      aria-label="Read replies aloud"
+                      title={speakReplies ? "Replies are read aloud" : "Read replies aloud"}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] ${
+                        speakReplies
+                          ? "bg-[#FC6C26] text-white"
+                          : "bg-white/70 text-[#6B5238] ring-1 ring-[#EAD9AE] hover:bg-white"
+                      }`}
+                    >
+                      <SpeakerIcon on={speakReplies} className="h-[18px] w-[18px]" />
+                    </button>
+                  )}
                   <button
                     type="button"
-                    onClick={toggleSpeakReplies}
-                    aria-pressed={speakReplies}
-                    aria-label="Read replies aloud"
-                    title={speakReplies ? "Replies are read aloud" : "Read replies aloud"}
-                    className={`flex h-8 shrink-0 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] ${
-                      speakReplies
-                        ? "bg-[#FC6C26] text-white"
-                        : "bg-white/70 text-[#6B5238] ring-1 ring-[#EAD9AE] hover:bg-white"
-                    }`}
+                    onClick={() => setIsOpen(false)}
+                    aria-label="Back to cooking"
+                    title="Back to cooking"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E3B8] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                   >
-                    <SpeakerIcon on={speakReplies} className="h-4 w-4" />
-                    {speakReplies ? "Voice on" : "Voice off"}
+                    <ChatIcon className="h-5 w-5" />
                   </button>
-                )}
+                </div>
+              </div>
+            </div>
+
+            {/* Step strip. Deliberately NOT inside the drag area above: that
+                area uses touch-action: none, which would block horizontal
+                touch scrolling here. The text scrolls sideways (no
+                scrollbar) and a soft blur on the right edge hints there's
+                more. */}
+            <div className="flex items-center gap-2 border-b border-[#EAD9AE] px-5 pb-2.5">
+              {hasStep && (
+                <span className="shrink-0 rounded-full bg-[#FC6C26] px-2.5 py-0.5 text-[11px] font-bold text-white">
+                  Step {currentStepNumber}
+                  {totalSteps ? `/${totalSteps}` : ""}
+                </span>
+              )}
+              <div className="relative min-w-0 flex-1">
+                <div
+                  ref={stepScrollRef}
+                  onScroll={updateStepFade}
+                  className="companion-hscroll overflow-x-auto whitespace-nowrap text-xs leading-6 text-[#6B5238]"
+                >
+                  {hasStep
+                    ? currentStepInstruction || recipe.dishName
+                    : `Cooking ${recipe.dishName}`}
+                </div>
+                <div
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute inset-y-0 right-0 w-10 backdrop-blur-[2px] transition-opacity duration-200 ${
+                    stepCanScrollRight ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{
+                    background:
+                      "linear-gradient(to left, #FFF3DC 0%, rgba(255,243,220,0.6) 55%, rgba(255,243,220,0) 100%)",
+                    maskImage: "linear-gradient(to left, black 0%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 100%)",
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -1329,6 +1360,13 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
           scrollbar-width: none; /* Firefox */
         }
         .companion-textarea::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Edge */
+        }
+
+        .companion-hscroll {
+          scrollbar-width: none; /* Firefox */
+        }
+        .companion-hscroll::-webkit-scrollbar {
           display: none; /* Chrome, Safari, Edge */
         }
 
