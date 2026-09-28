@@ -890,11 +890,11 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     className="pointer-events-none absolute inset-0 -z-10 backdrop-blur-md"
     style={{
       background:
-        "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 28px), rgba(255,254,250,0) 100%)",
+        "linear-gradient(to top, #FFFEFAf2 0px, #FFFEFAf2 calc(100% - 40px), rgba(255,254,250,0) 100%)",
       maskImage:
-        "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+        "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
       WebkitMaskImage:
-        "linear-gradient(to top, black 0px, black calc(100% - 28px), transparent 100%)",
+        "linear-gradient(to top, black 0px, black calc(100% - 40px), transparent 100%)",
     }}
   />
 
