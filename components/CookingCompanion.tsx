@@ -35,6 +35,13 @@ const THINKING_PHRASES = [
 
 type Mood = "idle" | "thinking" | "listening" | "talking";
 
+// Chef's hat colours — a light orange with a slightly deeper edge, so the hat
+// stays visible on off-white backgrounds instead of disappearing like a
+// white one.
+const HAT = "#FFD3A6";
+const HAT_BAND = "#FFB675";
+const HAT_EDGE = "#F0A05A";
+
 /* ---------------------------------------------------------------- icons */
 
 const ChatIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -146,13 +153,21 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
   mood = "idle",
   className,
 }) => (
-  <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
+  <svg viewBox="0 0 64 64" overflow="visible" className={className} aria-hidden="true">
     {/* Chef's hat */}
-    <circle cx="21" cy="12" r="6.5" fill="#FFFFFF" />
-    <circle cx="32" cy="8" r="7.5" fill="#FFFFFF" />
-    <circle cx="43" cy="12" r="6.5" fill="#FFFFFF" />
-    <rect x="18" y="13" width="28" height="9" rx="4.5" fill="#FFFFFF" />
-    <rect x="18" y="19" width="28" height="4" rx="2" fill="#EDE4D3" />
+    {/* Outline pass first, then the fills on top, so only the hat's outer
+        edge shows (no lines between the overlapping puffs). */}
+    <g fill={HAT_EDGE} stroke={HAT_EDGE} strokeWidth="2" strokeLinejoin="round">
+      <circle cx="21" cy="12" r="6.5" />
+      <circle cx="32" cy="8" r="7.5" />
+      <circle cx="43" cy="12" r="6.5" />
+      <rect x="18" y="13" width="28" height="9" rx="4.5" />
+    </g>
+    <circle cx="21" cy="12" r="6.5" fill={HAT} />
+    <circle cx="32" cy="8" r="7.5" fill={HAT} />
+    <circle cx="43" cy="12" r="6.5" fill={HAT} />
+    <rect x="18" y="13" width="28" height="9" rx="4.5" fill={HAT} />
+    <rect x="18" y="19" width="28" height="4" rx="2" fill={HAT_BAND} />
 
     {/* Sound arcs, only while listening */}
     {mood === "listening" && (
@@ -204,6 +219,186 @@ const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+/* ------------------------------------------------- reply formatting */
+
+// Models often answer in light markdown: **bold**, *italic*, `code`,
+// "- " / "* " / "1. " lists and "#" headings. This turns that into plain
+// React elements (never raw HTML), so the person sees clean text instead of
+// stray asterisks.
+type Seg = { text: string; bold?: boolean; italic?: boolean; code?: boolean };
+type ListBlock = { type: "ul" | "ol"; start: number; items: Seg[][] };
+type Block = { type: "p"; segs: Seg[] } | { type: "h"; segs: Seg[] } | ListBlock;
+
+const INLINE_RE =
+  /(\*\*\*[^*\n]+?\*\*\*|\*\*[^*\n]+?\*\*|__[^_\n]+?__|\*[^*\s][^*\n]*?\*|`[^`\n]+?`)/g;
+
+const parseInline = (input: string): Seg[] =>
+  input
+    .split(INLINE_RE)
+    .map((part, i): Seg | null => {
+      if (!part) return null;
+      // Odd indexes are the matched **...** / *...* / `...` pieces; even
+      // indexes are plain text (with any unmatched asterisks dropped).
+      if (i % 2 === 0) return { text: part.replace(/\*{1,3}|`/g, "") };
+      if (part.startsWith("***")) return { text: part.slice(3, -3), bold: true, italic: true };
+      if (part.startsWith("**")) return { text: part.slice(2, -2), bold: true };
+      if (part.startsWith("__")) return { text: part.slice(2, -2), bold: true };
+      if (part.startsWith("`")) return { text: part.slice(1, -1), code: true };
+      return { text: part.slice(1, -1), italic: true };
+    })
+    .filter((seg): seg is Seg => !!seg && seg.text.length > 0);
+
+const parseBlocks = (raw: string): Block[] => {
+  const blocks: Block[] = [];
+  const state: { para: string[]; list: ListBlock | null } = { para: [], list: null };
+
+  const flushPara = () => {
+    if (state.para.length) {
+      blocks.push({ type: "p", segs: parseInline(state.para.join("\n")) });
+      state.para = [];
+    }
+  };
+  const flushList = () => {
+    if (state.list) {
+      blocks.push(state.list);
+      state.list = null;
+    }
+  };
+
+  for (const line of raw.replace(/\r\n/g, "\n").split("\n")) {
+    const trimmed = line.trim();
+
+    // Blank lines and "---" rules separate blocks.
+    if (!trimmed || /^([-*_])\1{2,}$/.test(trimmed)) {
+      flushPara();
+      flushList();
+      continue;
+    }
+
+    const heading = trimmed.match(/^#{1,6}\s+(.*)$/);
+    if (heading) {
+      flushPara();
+      flushList();
+      blocks.push({ type: "h", segs: parseInline(heading[1]) });
+      continue;
+    }
+
+    const bullet = trimmed.match(/^[-*•]\s+(.*)$/);
+    const numbered = trimmed.match(/^(\d+)[.)]\s+(.*)$/);
+    if (bullet || numbered) {
+      flushPara();
+      const type = bullet ? "ul" : "ol";
+      if (!state.list || state.list.type !== type) {
+        flushList();
+        state.list = { type, start: numbered ? parseInt(numbered[1], 10) : 1, items: [] };
+      }
+      state.list.items.push(parseInline(bullet ? bullet[1] : numbered![2]));
+      continue;
+    }
+
+    flushList();
+    state.para.push(trimmed);
+  }
+
+  flushPara();
+  flushList();
+  return blocks;
+};
+
+const tokenize = (text: string) => text.split(/(\s+)/);
+const segsTokenCount = (segs: Seg[]) =>
+  segs.reduce((n, seg) => n + tokenize(seg.text).length, 0);
+const blockTokenCount = (block: Block) =>
+  block.type === "ul" || block.type === "ol"
+    ? block.items.reduce((n, item) => n + segsTokenCount(item), 0)
+    : "segs" in block
+      ? segsTokenCount(block.segs)
+      : 0;
+
+// Renders only the first `budget.left` tokens, so the same structure can be
+// revealed word by word without ever showing half-typed markdown.
+const renderSegs = (segs: Seg[], budget: { left: number }) =>
+  segs.map((seg, i) => {
+    if (budget.left <= 0) return null;
+    const tokens = tokenize(seg.text);
+    const take = Math.min(tokens.length, budget.left);
+    budget.left -= take;
+
+    let node: React.ReactNode = tokens.slice(0, take).join("");
+    if (seg.code) {
+      node = <code className="rounded bg-black/5 px-1 py-0.5 text-[0.9em]">{node}</code>;
+    }
+    if (seg.italic) node = <em>{node}</em>;
+    if (seg.bold) node = <strong className="font-semibold">{node}</strong>;
+    return <React.Fragment key={i}>{node}</React.Fragment>;
+  });
+
+const renderBlocks = (blocks: Block[], limit: number) => {
+  const budget = { left: limit };
+  const out: React.ReactNode[] = [];
+
+  blocks.forEach((block, bi) => {
+    if (budget.left <= 0) return;
+
+    if (block.type === "p") {
+      out.push(
+        <p key={bi} className="whitespace-pre-line">
+          {renderSegs(block.segs, budget)}
+        </p>
+      );
+    } else if (block.type === "h") {
+      out.push(
+        <p key={bi} className="font-bold">
+          {renderSegs(block.segs, budget)}
+        </p>
+      );
+    } else {
+      const items = block.items.map((item, ii) =>
+        budget.left > 0 ? (
+          <li key={ii} className="pl-0.5">
+            {renderSegs(item, budget)}
+          </li>
+        ) : null
+      );
+      out.push(
+        block.type === "ol" ? (
+          <ol
+            key={bi}
+            start={block.start}
+            className="list-decimal space-y-1 pl-5 marker:font-semibold marker:text-[#D1560F]"
+          >
+            {items}
+          </ol>
+        ) : (
+          <ul key={bi} className="list-disc space-y-1 pl-5 marker:text-[#D1560F]">
+            {items}
+          </ul>
+        )
+      );
+    }
+  });
+
+  return out;
+};
+
+// What the speech synthesizer should read: no asterisks or hashes, and each
+// list item ends with a pause.
+const plainTextForSpeech = (raw: string): string =>
+  parseBlocks(raw)
+    .map((block) => {
+      const join = (segs: Seg[]) => segs.map((seg) => seg.text).join("");
+      if (block.type === "ul" || block.type === "ol") {
+        return block.items
+          .map((item) => {
+            const t = join(item).trim();
+            return /[.!?:;,]$/.test(t) ? t : `${t}.`;
+          })
+          .join(" ");
+      }
+      return "segs" in block ? join(block.segs) : "";
+    })
+    .join("\n");
+
 // Reveals a reply a couple of words at a time, so it reads like the
 // companion is saying it rather than a wall of text landing at once. Tap the
 // text to skip straight to the end. Older replies (and anyone with reduced
@@ -214,39 +409,43 @@ const SpeechText: React.FC<{
   onProgress?: () => void;
   onDone?: () => void;
 }> = ({ text, animate, onProgress, onDone }) => {
-  const tokens = useMemo(() => text.split(/(\s+)/), [text]);
+  const blocks = useMemo(() => parseBlocks(text), [text]);
+  const total = useMemo(
+    () => blocks.reduce((n, block) => n + blockTokenCount(block), 0),
+    [blocks]
+  );
   const [count, setCount] = useState(() =>
-    animate && !prefersReducedMotion() ? 0 : tokens.length
+    animate && !prefersReducedMotion() ? 0 : total
   );
 
   useEffect(() => {
-    if (count >= tokens.length) {
+    if (count >= total) {
       if (animate) onDone?.();
       return;
     }
     if (!animate) {
-      setCount(tokens.length);
+      setCount(total);
       return;
     }
-    const step = tokens.length > 160 ? 4 : 2;
+    const step = total > 160 ? 4 : 2;
     const id = window.setTimeout(() => {
-      setCount((current) => Math.min(tokens.length, current + step));
+      setCount((current) => Math.min(total, current + step));
       onProgress?.();
     }, 55);
     return () => window.clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count, tokens.length, animate]);
+  }, [count, total, animate]);
 
-  const isRevealing = animate && count < tokens.length;
+  const isRevealing = animate && count < total;
 
   return (
-    <span
-      className="whitespace-pre-line"
-      onClick={isRevealing ? () => setCount(tokens.length) : undefined}
+    <div
+      className="space-y-2"
+      onClick={isRevealing ? () => setCount(total) : undefined}
       title={isRevealing ? "Tap to show everything" : undefined}
     >
-      {tokens.slice(0, count).join("")}
-    </span>
+      {renderBlocks(blocks, count)}
+    </div>
   );
 };
 
@@ -402,7 +601,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     stopSpeaking();
     const token = speakTokenRef.current;
 
-    const utterance = new SpeechSynthesisUtterance(text.replace(/[*_`#]/g, ""));
+    const utterance = new SpeechSynthesisUtterance(plainTextForSpeech(text));
     const voice = window.speechSynthesis
       .getVoices()
       .find((v) => v.lang === "en-IN" || v.lang === "en_IN");
@@ -522,10 +721,12 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   // ---- step strip: "is there more to the right?" ----
   const stepScrollRef = useRef<HTMLDivElement>(null);
   const [stepCanScrollRight, setStepCanScrollRight] = useState(false);
+  const [stepCanScrollLeft, setStepCanScrollLeft] = useState(false);
 
   const updateStepFade = () => {
     const el = stepScrollRef.current;
     if (!el) return;
+    setStepCanScrollLeft(el.scrollLeft > 1);
     setStepCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 2);
   };
 
@@ -535,10 +736,16 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     if (!el) return;
     el.scrollLeft = 0; // a new step always starts from its first word
     updateStepFade();
+    // Listen natively too, so the edge blurs follow every scroll — drag,
+    // flick and momentum — without depending on React's synthetic event.
+    el.addEventListener("scroll", updateStepFade, { passive: true });
     const observer =
       typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateStepFade) : null;
     observer?.observe(el);
-    return () => observer?.disconnect();
+    return () => {
+      el.removeEventListener("scroll", updateStepFade);
+      observer?.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, currentStepNumber, currentStepInstruction]);
 
@@ -1028,7 +1235,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
           {/* Companion header: the face is the focus. It changes with what the
               companion is doing, and the strip underneath shows where you are
               in the recipe so it feels like it's cooking alongside you. */}
-          <div className="rounded-t-3xl bg-[#FFF3DC]">
+          <div className="rounded-t-3xl bg-[#F8F3E8]">
             {/* Drag handle — starts a close-drag, like the header below.
                 Deliberately outside the scrollable message list. */}
             <div
@@ -1077,7 +1284,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                     onClick={() => setIsOpen(false)}
                     aria-label="Back to cooking"
                     title="Back to cooking"
-                    className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#F5E3B8] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#EDE4CF] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                   >
                     <ChatIcon className="h-5 w-5" />
                   </button>
@@ -1100,7 +1307,6 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               <div className="relative min-w-0 flex-1">
                 <div
                   ref={stepScrollRef}
-                  onScroll={updateStepFade}
                   className="companion-hscroll overflow-x-auto whitespace-nowrap text-xs leading-6 text-[#6B5238]"
                 >
                   {hasStep
@@ -1109,12 +1315,24 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                 </div>
                 <div
                   aria-hidden="true"
-                  className={`pointer-events-none absolute inset-y-0 right-0 w-10 backdrop-blur-[2px] transition-opacity duration-200 ${
+                  className={`pointer-events-none absolute inset-y-0 left-0 w-12 backdrop-blur-[2px] transition-opacity duration-200 ${
+                    stepCanScrollLeft ? "opacity-100" : "opacity-0"
+                  }`}
+                  style={{
+                    background:
+                      "linear-gradient(to right, #F8F3E8 0%, rgba(248,243,232,0.6) 55%, rgba(248,243,232,0) 100%)",
+                    maskImage: "linear-gradient(to right, black 0%, transparent 100%)",
+                    WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 100%)",
+                  }}
+                />
+                <div
+                  aria-hidden="true"
+                  className={`pointer-events-none absolute inset-y-0 right-0 w-12 backdrop-blur-[2px] transition-opacity duration-200 ${
                     stepCanScrollRight ? "opacity-100" : "opacity-0"
                   }`}
                   style={{
                     background:
-                      "linear-gradient(to left, #FFF3DC 0%, rgba(255,243,220,0.6) 55%, rgba(255,243,220,0) 100%)",
+                      "linear-gradient(to left, #F8F3E8 0%, rgba(248,243,232,0.6) 55%, rgba(248,243,232,0) 100%)",
                     maskImage: "linear-gradient(to left, black 0%, transparent 100%)",
                     WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 100%)",
                   }}
@@ -1147,7 +1365,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               {/* The companion speaks first. */}
               {messages.length === 0 && (
                 <div className="space-y-3">
-                  <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                  <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl companion-card rounded-tl-md px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
                     Hi, I'm right here with you. Making {recipe.dishName}? Ask me
                     about swaps, timing, or whether something looks right. You can
                     also tap the mic and just talk, so your hands can stay busy.
@@ -1159,7 +1377,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                           key={question}
                           type="button"
                           onClick={() => handleSuggestion(question)}
-                          className="rounded-full border border-[#EAD9AE] bg-white px-3.5 py-2 text-left text-[13px] leading-snug text-[#5A2E12] transition-colors hover:border-[#FC6C26] hover:bg-[#FFF1D6] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+                          className="rounded-full border border-[#EAD9AE] bg-white px-3.5 py-2 text-left text-[13px] leading-snug text-[#5A2E12] transition-colors hover:border-[#FC6C26] hover:bg-[#F8F3E7] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                         >
                           {question}
                         </button>
@@ -1172,7 +1390,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               {messages.map((message, index) =>
                 message.role === "assistant" ? (
                   <div key={index} className="message-bubble-in w-fit max-w-[92%]">
-                    <div className="rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                    <div className="rounded-2xl companion-card rounded-tl-md px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
                       <SpeechText
                         text={message.content}
                         animate={talkingIndex === index}
@@ -1209,7 +1427,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
               {isSending && (
                 <div
-                  className="message-bubble-in w-fit rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-2.5 text-sm italic text-[#8A6B4A]"
+                  className="message-bubble-in w-fit rounded-2xl companion-card rounded-tl-md px-4 py-2.5 text-sm italic text-[#8A6B4A]"
                   role="status"
                 >
                   <span className="companion-pulse">
@@ -1219,7 +1437,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
               )}
 
               {error && (
-                <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl rounded-tl-md bg-[#FFF1D6] px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
+                <div className="message-bubble-in w-fit max-w-[92%] rounded-2xl companion-card rounded-tl-md px-4 py-3 text-[15px] leading-relaxed text-[#2B1A0C]">
                   <p>{error}</p>
                   {lastQuestion && (
                     <button
@@ -1361,6 +1579,18 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
         }
         .companion-textarea::-webkit-scrollbar {
           display: none; /* Chrome, Safari, Edge */
+        }
+
+        /* Off-white "raised" card for the companion's speech: a soft sheen,
+           a thin warm edge, and a small bottom lip + shadow so it sits just
+           above the page instead of lying flat. */
+        .companion-card {
+          background: linear-gradient(180deg, #FFFFFF 0%, #F8F3E7 100%);
+          border: 1px solid #E9DFC9;
+          box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.95),
+            0 2px 0 #E7DCC4,
+            0 8px 14px -8px rgba(90, 60, 20, 0.28);
         }
 
         .companion-hscroll {
