@@ -1311,16 +1311,20 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     type="button"
                     onClick={handlePrevStep}
                     disabled={currentStepIndex === 0}
-                    className={`${secondaryButton} flex-1 sm:flex-none`}
+                    className={`${secondaryButton} ${
+                      showNextStepConfirm ? "flex-none px-3.5" : "flex-1 sm:flex-none"
+                    }`}
                     style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
                   >
                     <ChevronLeftIcon className="h-5 w-5" />
-                    Previous
+                    <span className={showNextStepConfirm ? "sr-only sm:not-sr-only" : undefined}>
+                      Previous
+                    </span>
                   </button>
 
                   {!isLastStep ? (
                     showNextStepConfirm ? (
-                      <div className="flex flex-1 items-center gap-2 sm:flex-none">
+                      <div className="flex flex-1 items-center gap-2">
                         <button
                           type="button"
                           onClick={handleCancelNextStep}
