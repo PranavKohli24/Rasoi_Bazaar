@@ -1127,7 +1127,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       showMicBlockedNoticeIfDenied();
     }
   };
-
+ 
   // Stops listening but keeps whatever was transcribed in the input, so it
   // can still be edited or sent normally.
   const stopVoiceRecording = () => {
