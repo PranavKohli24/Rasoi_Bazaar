@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { displayDishName } from '../utils/displayDishName';
 
-const messages = [
-  "Stirring up your recipe magic...",
-  "Adding a pinch of secret masala...",
-  "Your rasoi is heating up...",
-  "Smells good already, right?",
-  "Just a tad more salt of patience...",
-  "Plating your dish with love...",
-  "Sprinkling the final garnish...",
-  "Almost ready to serve, chef!",
-  "Your tasty surprise is seconds away...",
+interface RecipeLoadingProps {
+  /** What the person searched for, so they can see what is being prepared */
+  dishName?: string;
+}
+
+const buildMessages = (dish: string) => [
+  dish ? `Stirring up your ${dish}...` : 'Stirring up your recipe magic...',
+  'Adding a pinch of secret masala...',
+  'Your rasoi is heating up...',
+  'Smells good already, right?',
+  'Just a tad more salt of patience...',
+  dish ? `Plating your ${dish} with love...` : 'Plating your dish with love...',
+  'Sprinkling the final garnish...',
+  'Almost ready to serve, chef!',
+  'Your tasty surprise is seconds away...',
 ];
 
-const RecipeLoading: React.FC = () => {
+const RecipeLoading: React.FC<RecipeLoadingProps> = ({ dishName = '' }) => {
+  const dish = useMemo(() => displayDishName(dishName), [dishName]);
+  const messages = useMemo(() => buildMessages(dish), [dish]);
   const [message, setMessage] = useState(messages[0]);
 
   useEffect(() => {
     let index = 0;
+    setMessage(messages[0]);
     const intervalId = setInterval(() => {
       index = (index + 1) % messages.length;
       setMessage(messages[index]);
     }, 2500); // Change message every 2.5 seconds
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [messages]);
+
 
   return (
     <div
@@ -101,9 +111,16 @@ const RecipeLoading: React.FC = () => {
         </div>
       </div>
 
-      <h2 className="mb-2 max-w-xl font-serif text-2xl font-bold text-orange-200">
-        Your Culinary Butler is on the Job (just few seconds, and recipe would be ready)
+      {dish && (
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          Preparing your recipe for
+        </p>
+      )}
+      <h2 className="mb-1 max-w-xl break-words font-serif text-3xl font-black text-orange-200 sm:text-4xl">
+        {dish || 'Your Culinary Butler is on the Job'}
       </h2>
+      <p className="mb-4 text-sm text-stone-500">Ready in just a few seconds</p>
+
       <p className="min-h-[28px] text-lg text-stone-400 transition-opacity duration-500">{message}</p>
 
       <style>{`

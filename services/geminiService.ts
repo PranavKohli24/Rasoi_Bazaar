@@ -75,7 +75,9 @@ export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
     });
   } catch (error) {
     console.error("Recipe request failed:", error);
-    throw new Error(OFFLINE_ERROR);
+    const offline = new Error(OFFLINE_ERROR);
+    offline.name = "OfflineError";
+    throw offline;
   }
 
   let data: any = null;
@@ -100,8 +102,12 @@ export const fetchRecipe = async (dishName: string): Promise<Recipe> => {
     const error = new Error(message);
 
     // Lets the caller show a custom state for "that isn't a dish".
-    if (data?.error?.code === "NOT_A_DISH") {
+    // Lets the caller show a matching screen ("not a dish" / "kitchen busy").
+    const code = data?.error?.code;
+    if (code === "NOT_A_DISH") {
       error.name = "NotADishError";
+    } else if (code === "RATE_LIMITED" || code === "QUOTA" || code === "BUSY") {
+      error.name = "BusyError";
     }
 
     throw error;

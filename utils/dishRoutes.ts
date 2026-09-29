@@ -26,11 +26,11 @@ export const useDishSearch = () => {
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
 
-  const go = (dish: string) => {
-    if (!toSlug(dish)) return;
-    setTerm("");
-    navigate(RECIPE_PATH, { state: { dish } });
-  };
+  const go = (dish: string, options?: { replace?: boolean }) => {
+  if (!toSlug(dish)) return;
+  setTerm("");
+  navigate(RECIPE_PATH, { state: { dish }, replace: options?.replace });
+};
 
   return { term, setTerm, go };
 };

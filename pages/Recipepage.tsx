@@ -4,11 +4,11 @@ import { Recipe } from "../types";
 import { fetchRecipe, isRecipe } from "../services/geminiService";
 import CompactHeader from "../components/CompactHeader";
 import RecipeLoading from "../components/RecipeLoading";
-import ErrorMessage from "../components/ErrorMessage";
+import RecipeError, { ErrorKind } from "../components/RecipeError";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
-import { toSlug } from "../utils/dishRoutes";
+import { toSlug, useDishSearch } from "../utils/dishRoutes";
 
 const LAST_DISH_KEY = "rasoi:last-dish";
 
@@ -30,6 +30,7 @@ const readLastDish = (): string => {
 const RecipePage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { go } = useDishSearch();
 
   // The dish comes from navigation state. The session fallback keeps refresh
   // and returning from an external login (e.g. Swiggy) working.
@@ -39,7 +40,7 @@ const RecipePage: React.FC = () => {
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{ message: string; kind: ErrorKind } | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
 
   // Load the recipe whenever the URL changes (search, link, refresh, back/forward)
@@ -121,13 +122,21 @@ const RecipePage: React.FC = () => {
         // like a dish - try Paneer Butter Masala"), so those are shown as written.
         // Anything unexpected falls back to the friendly message. Details go
         // to the console.
-        console.error("Recipe fetch failed:", err);
+                console.error("Recipe fetch failed:", err);
 
-        setError(
-          err instanceof Error && err.message
-            ? err.message
-            : FRIENDLY_ERROR
-        );
+        const kind: ErrorKind =
+          err?.name === "NotADishError"
+            ? "not-a-dish"
+            : err?.name === "BusyError"
+            ? "busy"
+            : err?.name === "OfflineError"
+            ? "offline"
+            : "unavailable";
+
+        setError({
+          message: err instanceof Error && err.message ? err.message : FRIENDLY_ERROR,
+          kind,
+        });
       })
       .finally(() => {
         if (!cancelled) {
@@ -150,9 +159,16 @@ const RecipePage: React.FC = () => {
 
       <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
         <div className="mx-auto w-full max-w-6xl">
-          {isLoading && <RecipeLoading />}
+                    {isLoading && <RecipeLoading dishName={dish} />}
 
-          {error && <ErrorMessage message={error} />}
+          {error && (
+            <RecipeError
+              kind={error.kind}
+              message={error.message}
+              dishName={dish}
+              onSelectDish={(d) => go(d, { replace: true })}
+            />
+          )}
 
           {recipe && !isLoading && (
             <div className="animate-fade-in-up">
