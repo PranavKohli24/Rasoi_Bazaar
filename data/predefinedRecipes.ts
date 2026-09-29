@@ -42804,6 +42804,956 @@ export const predefinedRecipes: Record<string, Recipe> = {
         "fat": 7
       }
     }
+    ,
+  "sabut moong dal": {
+    "dishName": "Sabut Moong Dal",
+    "image": "/dishes/sabut-moong-dal.webp",
+    "description": "A hearty everyday dal made with whole green moong, onions, tomatoes and simple Indian spices.",
+    "prepTime": "Approx. 40 minutes (plus 4 hours soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Sabut Moong",
+        "englishName": "whole green moong beans, soaked 4 hours"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, chopped"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "3 cups",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the soaked whole moong and drain it well."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the moong, 3 cups water, turmeric and a little salt to a pressure cooker. Cook for about 3 to 4 whistles, until the beans are tender but still hold their shape."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a pan. Add cumin seeds and let them sizzle."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and green chilli. Cook until the onion turns light golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic paste and cook for about 30 seconds. Add tomato and cook until soft and mushy."
+      },
+      {
+        "step": 6,
+        "instruction": "Add red chilli powder, coriander powder and the remaining salt. Mix well."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the cooked moong along with its cooking water. Simmer for 8 to 10 minutes and lightly mash a few beans with the back of a spoon to thicken the dal.",
+        "tip": {
+          "title": "Keep some texture",
+          "content": "Sabut moong is nicest when most of the beans stay whole. Mash only a small portion to thicken the gravy."
+        }
+      },
+      {
+        "step": 8,
+        "instruction": "Add garam masala and coriander. Mix and serve hot with roti or rice."
+      }
+    ],
+    "notes": [
+      "Soaking makes whole moong cook faster and more evenly. You can soak it overnight if convenient."
+    ],
+    "nutrition": {
+      "calories": 235,
+      "protein": 13,
+      "carbs": 36,
+      "fat": 6
+    }
+  },
+
+  "sabut masoor dal": {
+    "dishName": "Sabut Masoor Dal",
+    "image": "/dishes/sabut-masoor-dal.webp",
+    "description": "A comforting dal made with whole brown masoor lentils, onion, tomato and everyday spices.",
+    "prepTime": "Approx. 40 minutes (plus 1 to 2 hours soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Sabut Masoor",
+        "englishName": "whole brown masoor lentils, soaked 1 to 2 hours"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomatoes, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, chopped"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "4 cups",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the soaked whole masoor and drain it."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure cook the masoor with 4 cups water, turmeric and a little salt for about 4 to 5 whistles, or until the lentils are tender."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a pan. Add cumin seeds and let them crackle."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and cook until golden. Add ginger-garlic paste and green chilli and cook for 30 seconds."
+      },
+      {
+        "step": 5,
+        "instruction": "Add tomatoes, red chilli powder and salt. Cook until the tomatoes are soft and the masala looks well cooked."
+      },
+      {
+        "step": 6,
+        "instruction": "Add the cooked masoor with enough cooking water to reach a medium-thick consistency."
+      },
+      {
+        "step": 7,
+        "instruction": "Simmer for 8 to 10 minutes. Lightly mash a spoonful of lentils if you want a creamier texture.",
+        "tip": {
+          "title": "Don't over-mash",
+          "content": "Whole masoor has a pleasant bite. Mash just a little so the dal stays textured."
+        }
+      },
+      {
+        "step": 8,
+        "instruction": "Add garam masala and coriander. Serve with rice, roti or paratha."
+      }
+    ],
+    "notes": [
+      "Sabut masoor is different from the orange split masoor dal. The whole lentils keep their brown skin and take longer to cook."
+    ],
+    "nutrition": {
+      "calories": 245,
+      "protein": 14,
+      "carbs": 36,
+      "fat": 7
+    }
+  },
+
+  "kulthi dal": {
+    "dishName": "Kulthi Dal",
+    "image": "/dishes/kulthi-dal.webp",
+    "description": "A rustic dal made with horse gram, onion, tomato and simple spices, popular across several parts of India.",
+    "prepTime": "Approx. 50 minutes (plus overnight soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Kulthi Dal",
+        "englishName": "horse gram, soaked overnight"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun",
+        "englishName": "ginger-garlic, minced"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "3.5 cups",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Hing",
+        "englishName": "asafoetida"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Drain and rinse the soaked kulthi dal."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure cook the dal with 3.5 cups water, turmeric and salt for about 6 to 8 whistles, until the horse gram is soft."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a pan. Add cumin seeds and hing."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and green chillies. Cook until the onion turns light golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic and tomato. Cook until the tomato becomes soft."
+      },
+      {
+        "step": 6,
+        "instruction": "Add red chilli powder, coriander powder and salt. Mix well."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the cooked kulthi and simmer for 10 minutes. Add a little hot water if it becomes too thick.",
+        "tip": {
+          "title": "Horse gram needs time",
+          "content": "Kulthi is naturally firm. If it is still hard after pressure cooking, add a little water and cook for a few more whistles."
+        }
+      },
+      {
+        "step": 8,
+        "instruction": "Add garam masala and coriander. Serve hot with rice or roti."
+      }
+    ],
+    "notes": [
+      "Kulthi is also called horse gram, kulith, kulath, gahat or muthira in different parts of India."
+    ],
+    "nutrition": {
+      "calories": 255,
+      "protein": 15,
+      "carbs": 38,
+      "fat": 7
+    }
+  },
+
+  "moth dal": {
+    "dishName": "Moth Dal",
+    "image": "/dishes/moth-dal.webp",
+    "description": "A simple, earthy dal made with moth beans, onions, tomatoes and everyday spices.",
+    "prepTime": "Approx. 40 minutes (plus 4 hours soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Moth Dal",
+        "englishName": "moth beans / matki, soaked 4 hours"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "3 cups",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the soaked moth beans and drain them."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure cook the moth beans with 3 cups water, turmeric and salt for about 4 to 5 whistles, until tender."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a pan and add cumin seeds."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and green chilli. Cook until soft and lightly golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic paste and tomato. Cook until the tomato becomes mushy."
+      },
+      {
+        "step": 6,
+        "instruction": "Add red chilli powder and coriander powder. Mix well."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the cooked moth dal and simmer for 8 to 10 minutes. Adjust the water to make the dal as thick or thin as you like.",
+        "tip": {
+          "title": "Use hot water",
+          "content": "When thinning dal after cooking, hot water keeps the simmer steady and helps the dal blend smoothly."
+        }
+      },
+      {
+        "step": 8,
+        "instruction": "Garnish with coriander and serve with roti or rice."
+      }
+    ],
+    "notes": [
+      "Moth beans are also commonly called matki in Maharashtra and western India."
+    ],
+    "nutrition": {
+      "calories": 230,
+      "protein": 14,
+      "carbs": 35,
+      "fat": 6
+    }
+  },
+
+  "amti dal": {
+    "dishName": "Amti Dal",
+    "image": "/dishes/amti-dal.webp",
+    "description": "A Maharashtrian dal with the classic sweet, sour and mildly spicy balance from goda masala, jaggery and tamarind.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Toor Dal",
+        "englishName": "split pigeon peas"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil or ghee"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Rai",
+        "englishName": "mustard seeds"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Hing",
+        "englishName": "asafoetida"
+      },
+      {
+        "amount": "7 to 9",
+        "commonName": "Kadi Patta",
+        "englishName": "curry leaves"
+      },
+      {
+        "amount": "1 to 2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies"
+      },
+      {
+        "amount": "1.5 tsp",
+        "commonName": "Goda Masala",
+        "englishName": "goda masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Imli",
+        "englishName": "tamarind pulp"
+      },
+      {
+        "amount": "1/2 tbsp",
+        "commonName": "Gud",
+        "englishName": "jaggery, grated"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Nariyal",
+        "englishName": "grated coconut, optional"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the toor dal and pressure cook it with turmeric and enough water until soft, about 3 to 4 whistles."
+      },
+      {
+        "step": 2,
+        "instruction": "Mash the cooked dal lightly and add about 1 cup water to get a pourable consistency."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil or ghee in a pan. Add mustard seeds, cumin seeds and hing. Let them sizzle."
+      },
+      {
+        "step": 4,
+        "instruction": "Add curry leaves and green chillies. Sauté for a few seconds."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the mashed dal, goda masala, tamarind pulp, jaggery and salt. Mix well."
+      },
+      {
+        "step": 6,
+        "instruction": "Simmer on low heat for 10 to 12 minutes, stirring occasionally, until the dal tastes balanced and slightly thickens.",
+        "tip": {
+          "title": "Aim for balance",
+          "content": "Amti should have a gentle sweet-sour-spicy taste. Add a little more jaggery or tamarind only after tasting."
+        }
+      },
+      {
+        "step": 7,
+        "instruction": "Add grated coconut and coriander if using. Mix and turn off the heat."
+      },
+      {
+        "step": 8,
+        "instruction": "Serve hot with steamed rice and a little ghee."
+      }
+    ],
+    "notes": [
+      "Kokum can be used instead of tamarind for the sourness. Goda masala is the defining spice blend in this Maharashtrian-style dal."
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein": 9,
+      "carbs": 30,
+      "fat": 7
+    }
+  },
+
+  "chiku juice": {
+    "dishName": "Chikoo Juice",
+    "image": "/dishes/chikoo-juice.webp",
+    "description": "A thick, naturally sweet chikoo drink made by blending ripe sapota with chilled water and a little sweetener.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "strainer",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "4 medium",
+        "commonName": "Chikoo",
+        "englishName": "ripe sapota / chikoo, peeled and deseeded"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Thanda Paani",
+        "englishName": "chilled water"
+      },
+      {
+        "amount": "1 to 2 tbsp",
+        "commonName": "Cheeni ya Shahad",
+        "englishName": "sugar or honey, optional"
+      },
+      {
+        "amount": "2",
+        "commonName": "Khajoor",
+        "englishName": "dates, optional"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Elaichi",
+        "englishName": "cardamom powder, optional"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Baraf",
+        "englishName": "ice cubes"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Peel the chikoo, remove the seeds and chop the fruit."
+      },
+      {
+        "step": 2,
+        "instruction": "Add chikoo, chilled water and optional dates to a mixer grinder."
+      },
+      {
+        "step": 3,
+        "instruction": "Blend until smooth and creamy."
+      },
+      {
+        "step": 4,
+        "instruction": "Taste the juice. Add sugar or honey only if the chikoo is not sweet enough."
+      },
+      {
+        "step": 5,
+        "instruction": "Strain if you want a smoother drink, then add cardamom if using."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour into glasses, add ice and serve immediately.",
+        "tip": {
+          "title": "Use ripe chikoo",
+          "content": "Ripe, soft chikoo gives a naturally sweet and creamy juice, so very little added sugar is usually needed."
+        }
+      }
+    ],
+    "notes": [
+      "For a richer milk-based version, replace part of the water with chilled milk."
+    ],
+    "nutrition": {
+      "calories": 135,
+      "protein": 1,
+      "carbs": 34,
+      "fat": 1
+    }
+  },
+
+  "mosambi juice": {
+    "dishName": "Mosambi Juice",
+    "image": "/dishes/mosambi-juice.webp",
+    "description": "Fresh sweet lime juice made with juicy mosambi and a simple Indian-style finish of black salt and roasted cumin.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "strainer",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "6 to 7",
+        "commonName": "Mosambi",
+        "englishName": "sweet limes"
+      },
+      {
+        "amount": "1 to 2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar, optional"
+      },
+      {
+        "amount": "2 to 3 pinches",
+        "commonName": "Kala Namak",
+        "englishName": "black salt, optional"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Bhuna Jeera Powder",
+        "englishName": "roasted cumin powder, optional"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Chaat Masala",
+        "englishName": "chaat masala, optional"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Baraf",
+        "englishName": "ice cubes"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash, peel and separate the mosambi into segments. Remove as many seeds as you can."
+      },
+      {
+        "step": 2,
+        "instruction": "Blend the segments briefly with a little water, or squeeze them directly using a citrus juicer."
+      },
+      {
+        "step": 3,
+        "instruction": "Strain the juice through a fine strainer and press the pulp gently to extract the remaining juice."
+      },
+      {
+        "step": 4,
+        "instruction": "Add sugar only if needed. Mix well."
+      },
+      {
+        "step": 5,
+        "instruction": "Add black salt, roasted cumin powder and chaat masala if you like the street-style flavour."
+      },
+      {
+        "step": 6,
+        "instruction": "Add ice and serve immediately.",
+        "tip": {
+          "title": "Drink fresh",
+          "content": "Fresh mosambi juice tastes best immediately. It can turn bitter or lose its freshness when left sitting for long."
+        }
+      }
+    ],
+    "notes": [
+      "You can make it in a juicer or with a regular blender and strainer."
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein": 1,
+      "carbs": 20,
+      "fat": 0
+    }
+  },
+
+  "litchi juice": {
+    "dishName": "Litchi Juice",
+    "image": "/dishes/litchi-juice.webp",
+    "description": "A chilled summer drink made with fresh litchi pulp, a little lemon juice and cold water.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "strainer",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "20 to 25",
+        "commonName": "Litchi",
+        "englishName": "fresh litchi / lychee, peeled and deseeded"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Thanda Paani",
+        "englishName": "chilled water"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nimbu Ras",
+        "englishName": "lemon juice"
+      },
+      {
+        "amount": "1 to 2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar, optional"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Baraf",
+        "englishName": "ice cubes"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Pudina",
+        "englishName": "mint leaves, optional"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Peel the litchis and remove all the seeds."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the litchi flesh and chilled water to a mixer grinder."
+      },
+      {
+        "step": 3,
+        "instruction": "Blend until the fruit is mostly smooth."
+      },
+      {
+        "step": 4,
+        "instruction": "Strain the juice if you want a clear, smooth drink."
+      },
+      {
+        "step": 5,
+        "instruction": "Add lemon juice and sugar only if needed. Stir well."
+      },
+      {
+        "step": 6,
+        "instruction": "Add ice and optional mint. Serve chilled.",
+        "tip": {
+          "title": "Keep the litchi flavour fresh",
+          "content": "Litchi is already naturally sweet. Start without sugar and add only a little after tasting."
+        }
+      }
+    ],
+    "notes": [
+      "Litchi juice is also commonly called lychee juice. Fresh litchi gives the best flavour."
+    ],
+    "nutrition": {
+      "calories": 110,
+      "protein": 1,
+      "carbs": 27,
+      "fat": 0
+    }
+  }
 
 }
 
@@ -43099,5 +44049,13 @@ export const predefinedRecipeServings: Record<string, number> = {
   "rabri": 6,
   "ghevar": 6,
   "sandesh": 8,
-  "mishti doi": 4
+  "mishti doi": 4,
+  "sabut moong dal": 4,
+  "sabut masoor dal": 4,
+  "kulthi dal": 4,
+  "moth dal": 4,
+  "amti dal": 4,
+  "chiku juice": 4,
+  "mosambi juice": 4,
+  "litchi juice": 4,
 };
