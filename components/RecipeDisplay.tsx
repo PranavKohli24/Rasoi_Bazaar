@@ -313,24 +313,29 @@ const StepTimer: React.FC<{ seconds: number; stepKey: number; onComplete?: () =>
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds, stepKey]);
 
-  useEffect(() => {
-    if (!isRunning) return;
-    intervalRef.current = window.setInterval(() => {
-      setRemaining((prev) => {
-      if (prev <= 1) {
-        if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-        setIsRunning(false);
-        playChime();
-        onComplete?.();
-        return 0;
-      }
-      return prev - 1;
-    });
-    }, 1000);
-    return () => {
-      if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-    };
-  }, [isRunning]);
+  // Pure countdown — just decrements. No side effects here, so Strict
+// Mode's dev-time double-invoke of updater functions can't double-fire
+// anything.
+useEffect(() => {
+  if (!isRunning) return;
+  intervalRef.current = window.setInterval(() => {
+    setRemaining((prev) => (prev <= 1 ? 0 : prev - 1));
+  }, 1000);
+  return () => {
+    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+  };
+}, [isRunning]);
+
+// Fires exactly once per completed countdown, when `remaining` actually
+// transitions to 0 while the timer was running.
+useEffect(() => {
+  if (remaining !== 0 || !isRunning) return;
+  if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+  setIsRunning(false);
+  playChime();
+  onComplete?.();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [remaining]);
 
   const isDone = remaining === 0;
   const hasStarted = remaining !== seconds;
@@ -1455,6 +1460,16 @@ useEffect(() => {
                         seconds={stepDurationSeconds}
                         stepKey={currentStepIndex}
                         onComplete={() => {
+                          if (isVoiceEnabled && "speechSynthesis" in window) {
+                            window.speechSynthesis.cancel();
+                            // Let the chime's attention-grabbing ping land first, then speak —
+                            // avoids the beep and voice overlapping into a garbled mess.
+                            window.setTimeout(() => {
+                              const utterance = new SpeechSynthesisUtterance("Time's up.");
+                              utterance.rate = 0.95;
+                              window.speechSynthesis.speak(utterance);
+                            }, 450);
+                          }
                           if (!isLastStep) setShowNextStepConfirm(true);
                         }}
                       />
