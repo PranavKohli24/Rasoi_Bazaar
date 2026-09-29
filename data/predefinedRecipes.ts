@@ -7746,6 +7746,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rasam": {
     "dishName": "Rasam",
+    "image": "/dishes/rasam.webp",
     "description": "Thin, tangy South Indian tomato-lentil soup with pepper and a fragrant tadka.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -8638,6 +8639,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mutton curry": {
     "dishName": "Mutton Curry",
+    "image": "/dishes/mutton-curry.webp",
     "description": "Tender mutton simmered in an onion-tomato gravy with everyday Indian spices.",
     "prepTime": "Approx. 1 hour 15 minutes",
     "equipment": [
@@ -8895,6 +8897,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "tinda sabzi": {
     "dishName": "Tinda Sabzi",
+    "image": "/dishes/tinda-sabzi.webp",
     "description": "A simple everyday North Indian sabzi of tender tinda cooked with onion and.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -9279,6 +9282,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mutton biryani": {
     "dishName": "Mutton Biryani",
+    "image": "/dishes/mutton-biryani.webp",
     "description": "Spiced mutton and fragrant basmati rice layered and cooked together on the stove.",
     "prepTime": "Approx. 1 hour 30 minutes (plus 30 minutes marination)",
     "equipment": [
@@ -10235,6 +10239,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pongal (ven pongal)": {
     "dishName": "Pongal (Ven Pongal)",
+    "image": "/dishes/pongal.webp",
     "description": "A soft South Indian rice and moong dal dish cooked with ginger, pepper,.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -10683,6 +10688,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kachori (moong dal kachori)": {
     "dishName": "Kachori (Moong Dal Kachori)",
+    "image": "/dishes/kachori.webp",
     "description": "Crisp flaky kachori filled with a mildly spiced roasted moong dal mixture, made.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -11002,6 +11008,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rasam rice": {
     "dishName": "Rasam Rice",
+    "image": "/dishes/rasam-rice.webp",
     "description": "Comforting steamed rice mixed with a thin, tangy tomato rasam and a simple.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -11348,6 +11355,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mutton kabab": {
     "dishName": "Mutton Kabab",
+    "image": "/dishes/mutton-kabab.webp",
     "description": "Simple home-style minced mutton kababs seasoned with ginger, chilli and warm spices, cooked.",
     "prepTime": "Approx. 45 minutes (plus 20 minutes resting)",
     "equipment": [
@@ -11807,6 +11815,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo tamatar sabzi": {
     "dishName": "Aloo Tamatar Sabzi",
+    "image": "/dishes/aloo-tamatar-sabzi.webp",
     "description": "A simple everyday potato and tomato curry made with basic spices, perfect with.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -12192,6 +12201,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "palak mushroom": {
     "dishName": "Palak Mushroom",
+    "image": "/dishes/palak-mushroom.webp",
     "description": "Tender mushrooms cooked in a smooth spinach gravy with mild Indian spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
