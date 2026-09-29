@@ -78,7 +78,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   // Type and erase example dishes while the input is not focused.
   useEffect(() => {
-    if (compact || searchTerm || isLoading || isInputFocused) return;
+    if (compact || searchTerm || isLoading || isIdentifying || isPhotoMenuOpen || isInputFocused) return;
 
     const currentExample = EXAMPLES[exampleIndex];
     const isFinishedTyping = typedExample.length === currentExample.length;
@@ -100,7 +100,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }, delay);
 
     return () => window.clearTimeout(timer);
-  }, [compact, searchTerm, isLoading, isInputFocused, exampleIndex, typedExample, isDeleting]);
+    }, [compact, searchTerm, isLoading, isIdentifying, isPhotoMenuOpen, isInputFocused, exampleIndex, typedExample, isDeleting]);
 
   // Close the expanded search when clicking outside it.
   useEffect(() => {

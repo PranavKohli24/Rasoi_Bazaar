@@ -1,31 +1,131 @@
 export interface PreparedImage {
   base64: string; // no "data:" prefix
   mediaType: "image/jpeg";
-  previewUrl: string; // data URL for the thumbnail
+  previewUrl: string; // object URL: the caller must URL.revokeObjectURL() it
 }
 
-const MAX_SIDE = 1024;
+/** An error whose message is safe to show to the user. */
+export class PhotoError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "PhotoError";
+  }
+}
+
+const MAX_SIDE = 768;
+const JPEG_QUALITY = 0.8;
+const MAX_FILE_BYTES = 30 * 1024 * 1024;
+
+const UNREADABLE = "Couldn't read that photo. Try taking a new one, or type the dish name.";
+
+interface Decoded {
+  source: CanvasImageSource;
+  width: number;
+  height: number;
+  release: () => void;
+}
+
+// createImageBitmap is fastest, but older Safari versions reject its options,
+// so fall back to a plain <img>. Both apply the photo's EXIF rotation.
+async function decode(file: File): Promise<Decoded> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+      return {
+        source: bitmap,
+        width: bitmap.width,
+        height: bitmap.height,
+        release: () => bitmap.close(), // safe to call more than once
+      };
+    } catch {
+      /* fall through to <img> */
+    }
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+    await img.decode();
+    return {
+      source: img,
+      width: img.naturalWidth,
+      height: img.naturalHeight,
+      release: () => {
+        img.src = "";
+      },
+    };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+const toBlob = (canvas: HTMLCanvasElement): Promise<Blob> =>
+  new Promise((resolve, reject) =>
+    canvas.toBlob(
+      (blob) => (blob ? resolve(blob) : reject(new Error("encode failed"))),
+      "image/jpeg",
+      JPEG_QUALITY
+    )
+  );
+
+const blobToBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1] ?? "");
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
 
 export async function prepareImage(file: File): Promise<PreparedImage> {
-  // imageOrientation applies EXIF rotation so phone photos aren't sideways
-  const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
+  if (!file.type.startsWith("image/")) {
+    throw new PhotoError("That file isn't a photo. Please pick an image.");
+  }
+  if (file.size > MAX_FILE_BYTES) {
+    throw new PhotoError("That photo is too large. Try a smaller one.");
+  }
 
-  const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
-  const width = Math.round(bitmap.width * scale);
-  const height = Math.round(bitmap.height * scale);
-
+  let decoded: Decoded | null = null;
   const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Canvas not supported");
-  ctx.drawImage(bitmap, 0, 0, width, height);
-  bitmap.close();
 
-  const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
-  return {
-    base64: dataUrl.split(",")[1],
-    mediaType: "image/jpeg",
-    previewUrl: dataUrl,
-  };
+  try {
+    try {
+      decoded = await decode(file);
+    } catch {
+      // Most often a HEIC photo the browser can't open
+      throw new PhotoError(UNREADABLE);
+    }
+
+    const longSide = Math.max(decoded.width, decoded.height);
+    if (!longSide) throw new PhotoError(UNREADABLE);
+
+    const scale = Math.min(1, MAX_SIDE / longSide);
+    canvas.width = Math.max(1, Math.round(decoded.width * scale));
+    canvas.height = Math.max(1, Math.round(decoded.height * scale));
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new PhotoError(UNREADABLE);
+    ctx.drawImage(decoded.source, 0, 0, canvas.width, canvas.height);
+
+    // Free the full-size pixels now, before the (async) encoding below
+    decoded.release();
+
+    const blob = await toBlob(canvas);
+    const base64 = await blobToBase64(blob);
+    if (!base64) throw new PhotoError(UNREADABLE);
+
+    return {
+      base64,
+      mediaType: "image/jpeg",
+      previewUrl: URL.createObjectURL(blob),
+    };
+  } catch (error) {
+    throw error instanceof PhotoError ? error : new PhotoError(UNREADABLE);
+  } finally {
+    decoded?.release();
+    // iOS Safari keeps a canvas's memory until it is shrunk to nothing
+    canvas.width = 0;
+    canvas.height = 0;
+  }
 }
