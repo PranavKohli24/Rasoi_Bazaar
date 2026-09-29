@@ -41,6 +41,44 @@ export const normalizeDishQuery = (input: string): string => {
     }
   }
 
+  // Common Hinglish endings people use when asking for a recipe.
+  // Kept conservative so we do not accidentally alter real dish names.
+  const hinglishLeadingFillers = [
+    /^(?:mujhe|mereko|mujhko|mujko|muje)\s+/,
+    /^(?:aaj|abhi|ghar\s+(?:pe|par))\s+/,
+    /^kaise\s+(?:banaye|banayen|banau|banate\s+hain|banani\s+hai|banana\s+hai)\s+/,
+  ];
+
+  const hinglishTrailingFillers = [
+    /\s+(?:chahiye|batao|bata\s+do|bataiye)\s*$/,
+    /\s+(?:banana|banani|khana|khani)\s+hai\s*$/,
+    /\s+kaise\s+(?:banaye|banayen|banau|banate\s+hain)\s*$/,
+    /\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
+    /\s+(?:banane|banaane)\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
+    /\s+recipe\s+(?:batao|bata\s+do|bataiye)\s*$/,
+  ];
+
+  let hinglishChanged = true;
+  while (hinglishChanged) {
+    hinglishChanged = false;
+
+    for (const pattern of hinglishLeadingFillers) {
+      const stripped = text.replace(pattern, "");
+      if (stripped !== text) {
+        text = stripped.trim();
+        hinglishChanged = true;
+      }
+    }
+
+    for (const pattern of hinglishTrailingFillers) {
+      const stripped = text.replace(pattern, "");
+      if (stripped !== text) {
+        text = stripped.trim();
+        hinglishChanged = true;
+      }
+    }
+  }
+
   return text.trim();
 };
 
@@ -309,7 +347,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "whole black gram": "dal makhani",
   "black gram": "dal makhani",
   "whole urad": "dal makhani",
-  "sabut chana": "chana dal (chana dal tadka)",
   "split chickpeas": "chana dal (chana dal tadka)",
   "dhuli moong dal": "moong dal",
   "arhar dal": "toor dal",
@@ -328,7 +365,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "arbi": "arbi masala",
   "arbi masala": "arbi masala",
   "arbi ki sabzi": "arbi masala",
-  "round gourd": "arbi masala",
   "taro root": "arbi masala",
   "colocasia sabzi": "arbi masala",
   "soya chaap": "soya chaap",
@@ -349,8 +385,8 @@ const MANUAL_ALIASES: Record<string, string> = {
   "chapatti": "roti (chapati)",
   "chappati": "roti (chapati)",
   "phulka": "roti (chapati)",
-  "khichdi chawal": "khichdi",
-  "khichdi rice": "khichdi",
+  "khichdi chawal": "khichdi (moong dal khichdi)",
+  "khichdi rice": "khichdi (moong dal khichdi)",
   "sambar chawal": "sambar chawal",
   "sambar rice": "sambar chawal",
   "sambhar chawal": "sambar chawal",
@@ -583,6 +619,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "dal rice": "dal chawal",
   "aloo sabzi": "aloo sabzi",
   "aloo ki sabzi": "aloo sabzi",
+  "aloo samosa" : "samosa",
   "bread butter": "bread butter",
   "butter bread": "bread butter",
   "bread jam": "bread jam",
@@ -632,7 +669,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "whole green moong": "sabut moong dal",
   "green moong dal": "sabut moong dal",
   "hari moong dal": "sabut moong dal",
-  "green dal": "sabut moong dal",
 
   "sabut masoor": "sabut masoor dal",
   "sabut masoor ki dal": "sabut masoor dal",
@@ -642,7 +678,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "brown masoor dal": "sabut masoor dal",
   "brown lentil dal": "sabut masoor dal",
   "whole masoor": "sabut masoor dal",
-  "whole red lentils": "sabut masoor dal",
   "brown lentils": "sabut masoor dal",
 
   "kulthi": "kulthi dal",
@@ -1072,6 +1107,237 @@ const MANUAL_ALIASES: Record<string, string> = {
   "sweet doi": "mishti doi",
   "sweet dahi": "mishti doi",
   "mishti doi recipe": "mishti doi",
+
+  // high-value Indian typing / transliteration variants
+  "daal": "dal tadka",
+  "dal tadka recipe": "dal tadka",
+  "dal fry recipe": "dal tadka",
+  "dal tarka recipe": "dal tadka",
+
+  "subzi": "mixed veg sabzi",
+  "sabji": "mixed veg sabzi",
+  "subji": "mixed veg sabzi",
+  "sabzi recipe": "mixed veg sabzi",
+  "sabji recipe": "mixed veg sabzi",
+  "subzi recipe": "mixed veg sabzi",
+
+  "alu paratha": "aloo paratha",
+  "aloo parantha": "aloo paratha",
+  "alu parantha": "aloo paratha",
+  "aloo paratha recipe": "aloo paratha",
+  "aloo ke parathe": "aloo paratha",
+  "aloo paranthe": "aloo paratha",
+
+  "gobi parantha": "gobhi paratha",
+  "gobhi paratha recipe": "gobhi paratha",
+  "gobi paratha": "gobhi paratha",
+  "alu gobhi": "aloo gobi",
+  "aloo gobhi": "aloo gobi",
+
+  "gobi sabji": "gobi masala",
+  "gobhi sabji": "gobi masala",
+  "gobhi ki sabzi": "gobi masala",
+  "gobhi masala recipe": "gobi masala",
+
+  "bhindi sabji": "bhindi masala (okra stir-fry)",
+  "bhindi ki sabzi": "bhindi masala (okra stir-fry)",
+  "bhendi": "bhindi masala (okra stir-fry)",
+  "bhendi masala": "bhindi masala (okra stir-fry)",
+  "bhindi masala recipe": "bhindi masala (okra stir-fry)",
+
+  "matar": "matar pulao",
+  "mutter": "matar pulao",
+  "mattar": "matar pulao",
+  "matar rice": "matar pulao",
+  "mutter rice": "matar pulao",
+  "matar pulao recipe": "matar pulao",
+
+  "aloo mattar": "aloo matar",
+  "aloo matar sabji": "aloo matar",
+  "aloo matar ki sabzi": "aloo matar",
+  "alu matar": "aloo matar",
+  "alu mutter": "aloo matar",
+
+  "baigan bharta": "baingan bharta (smoky roasted eggplant mash)",
+  "baigan ka bharta": "baingan bharta (smoky roasted eggplant mash)",
+  "baingan bharta recipe": "baingan bharta (smoky roasted eggplant mash)",
+  "baigan bharta recipe": "baingan bharta (smoky roasted eggplant mash)",
+  "brinjal bharta": "baingan bharta (smoky roasted eggplant mash)",
+
+  "aloo gobi": "gobi masala",
+  "alu gobi": "gobi masala",
+
+  "lauki ki sabji": "lauki sabzi",
+  "lauki subzi": "lauki sabzi",
+  "dudhi ki sabzi": "lauki sabzi",
+  "ghiya sabzi": "lauki sabzi",
+  "ghiya ki sabzi": "lauki sabzi",
+
+  "tori sabji": "tori sabzi",
+  "turai sabji": "tori sabzi",
+  "turiya": "tori sabzi",
+  "turiya ki sabzi": "tori sabzi",
+
+  "mooli subzi": "mooli ki sabzi",
+  "muli sabzi": "mooli ki sabzi",
+  "muli ki sabzi": "mooli ki sabzi",
+  "mooli ki subzi": "mooli ki sabzi",
+
+  "karela sabji": "karela sabzi",
+  "karele ki sabzi": "karela sabzi",
+  "karela fry": "karela sabzi",
+  "karela ki subzi": "karela sabzi",
+
+  "dal makhani recipe": "dal makhani",
+  "daal makhani": "dal makhani",
+  "maa ki dal": "dal makhani",
+  "ma ki dal": "dal makhani",
+  "maa daal": "dal makhani",
+  "kaali dal": "dal makhani",
+  "kali dal": "dal makhani",
+
+  "tur daal": "toor dal",
+  "tuvar daal": "toor dal",
+  "arhar dal recipe": "toor dal",
+  "arhar ki dal": "toor dal",
+  "arhar ki daal": "toor dal",
+
+  "chana daal": "chana dal (chana dal tadka)",
+  "chana daal fry": "chana dal (chana dal tadka)",
+  "chana dal recipe": "chana dal (chana dal tadka)",
+  "chana dal tadka": "chana dal (chana dal tadka)",
+
+  "rajma chawl": "rajma chawal",
+  "rajma chaawal": "rajma chawal",
+  "rajma chawal recipe": "rajma chawal",
+  "rajma masala recipe": "rajma (red kidney bean curry)",
+
+  "chole masala recipe": "chana masala",
+  "chana masala recipe": "chana masala",
+  "chana curry": "chana masala",
+  "kabuli chana curry": "chana masala",
+  "chhole": "chana masala",
+  "chhole masala": "chana masala",
+
+  "pindi chana recipe": "pindi chole",
+  "pindi chhole": "pindi chole",
+  "chhole bhature": "chole bhature",
+  "chole bhature recipe": "chole bhature",
+  "chole bhatura recipe": "chole bhature",
+
+  "kadhi chawal": "kadhi chawal",
+  "karhi chawal": "kadhi chawal",
+  "karhi rice": "kadhi chawal",
+  "kadi chawal": "kadhi chawal",
+  "kadhi rice recipe": "kadhi chawal",
+
+  "sambhar recipe": "sambar",
+  "sambar sadam": "sambar chawal",
+  "sambhar sadam": "sambar chawal",
+  "sambar rice recipe": "sambar chawal",
+
+  "idly sambar": "idli sambar",
+  "idli sambhar": "idli sambar",
+  "idly sambhar": "idli sambar",
+
+  "masala dosai": "masala dosa",
+  "masala dose": "masala dosa",
+  "dosa masala": "masala dosa",
+  "dosa batter": "dosa (plain crispy dosa)",
+
+  "pohe": "poha (kanda batata poha)",
+  "poha recipe": "poha (kanda batata poha)",
+  "kanda poha": "poha (kanda batata poha)",
+  "kanda batata pohe": "poha (kanda batata poha)",
+  "batata poha": "poha (kanda batata poha)",
+
+  "khichari": "khichdi (moong dal khichdi)",
+  "khichadi": "khichdi (moong dal khichdi)",
+  "khichdi recipe": "khichdi (moong dal khichdi)",
+  "dal khichari": "khichdi (moong dal khichdi)",
+  "moong dal khichari": "khichdi (moong dal khichdi)",
+
+  "kachauri": "kachori (moong dal kachori)",
+  "dal kachori": "kachori (moong dal kachori)",
+  "dal kachauri": "kachori (moong dal kachori)",
+
+  "jalebi recipe": "jalebi",
+  "jilebi": "jalebi",
+  "jalebi sweet": "jalebi",
+  "rasgulla recipe": "rasgulla",
+  "rasagulla": "rasgulla",
+  "rosogolla": "rasgulla",
+  "rasgulla sweet": "rasgulla",
+
+  "khir": "kheer",
+  "kheer recipe": "kheer",
+  "rice kheer": "kheer",
+  "chawal ki kheer": "kheer",
+  "chawal kheer": "kheer",
+
+  "gajar halwa": "gajar halwa (carrot halwa)",
+  "gajar ka halwa recipe": "gajar halwa (carrot halwa)",
+  "gajrela": "gajar halwa (carrot halwa)",
+
+  "besan ladoo recipe": "besan ladoo",
+  "besan laddu recipe": "besan ladoo",
+  "besan ke ladoo": "besan ladoo",
+  "besan ke laddu": "besan ladoo",
+
+  "gulab jamun recipe": "gulab jamun (home-style, with milk powder)",
+  "gulabjaman": "gulab jamun (home-style, with milk powder)",
+  "gulab jamun sweet": "gulab jamun (home-style, with milk powder)",
+
+  // newly-added whole dals / Amti / juices
+  "sabut mung dal": "sabut moong dal",
+  "sabut mung": "sabut moong dal",
+  "whole mung dal": "sabut moong dal",
+  "whole green gram dal": "sabut moong dal",
+
+  "sabut masoor ki daal": "sabut masoor dal",
+  "whole masoor ki dal": "sabut masoor dal",
+
+  "kulith": "kulthi dal",
+  "kulath": "kulthi dal",
+  "gahat ki dal": "kulthi dal",
+  "gahat ki daal": "kulthi dal",
+  "horse gram": "kulthi dal",
+
+  "matki": "moth dal",
+  "matki ki daal": "moth dal",
+  "moth bean dal": "moth dal",
+  "moth beans": "moth dal",
+  "moth ki daal": "moth dal",
+
+  "aamti dal": "amti dal",
+  "aamti daal": "amti dal",
+  "amti daal recipe": "amti dal",
+  "maharashtrian dal": "amti dal",
+
+  "chikoo juice recipe": "chiku juice",
+  "chiku ka juice": "chiku juice",
+  "chikoo ka juice": "chiku juice",
+  "sapota juice recipe": "chiku juice",
+  "sapota ka juice": "chiku juice",
+
+  "mausambi juice": "mosambi juice",
+  "mausambi ka juice": "mosambi juice",
+  "mausambi juice recipe": "mosambi juice",
+  "sweet lime ka juice": "mosambi juice",
+
+  "lychee": "litchi juice",
+  "lychee ka juice": "litchi juice",
+
+  // common food-order / casual query wording
+  "ghar ki dal": "dal tadka",
+  "ghar wali dal": "dal tadka",
+  "ghar ki sabzi": "mixed veg sabzi",
+  "ghar wali sabzi": "mixed veg sabzi",
+  "simple dal": "dal tadka",
+  "simple sabzi": "mixed veg sabzi",
+  "daily dal": "dal tadka",
+  "everyday dal": "dal tadka",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
