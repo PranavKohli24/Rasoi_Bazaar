@@ -11,6 +11,7 @@ interface CookingCompanionProps {
   currentStepNumber: number | null;
   currentStepInstruction: string | null;
   totalSteps: number;
+  checkInMessage?: { id: string; text: string } | null;
 }
 
 const STORAGE_PREFIX = "rasoi:companion:";
@@ -479,6 +480,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   currentStepNumber,
   currentStepInstruction,
   totalSteps,
+  checkInMessage,
 }) => {
   const hasRecipe = !!recipe && typeof recipe.dishName === "string";
 
@@ -515,6 +517,11 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const [phraseIndex, setPhraseIndex] = useState(0);
   // The little "Stuck? Ask me." note next to the launcher, shown briefly.
   const [showNudge, setShowNudge] = useState(true);
+
+  // A companion check-in that arrived while the panel was closed, shown as
+  // a nudge bubble instead of the generic "Stuck? Ask me." one.
+  const [checkInNudgeText, setCheckInNudgeText] = useState<string | null>(null);
+  const lastCheckInIdRef = useRef<string | null>(null);
 
   // ---- spoken replies (text-to-speech) ----
   const canSpeak = typeof window !== "undefined" && "speechSynthesis" in window;
@@ -657,10 +664,29 @@ const focusInputWithoutKeyboard = () => {
     }
   }, [messages, storageKey]);
 
-  useEffect(() => {
+    useEffect(() => {
     const id = window.setTimeout(() => setShowNudge(false), 9000);
     return () => window.clearTimeout(id);
   }, []);
+
+  // A new check-in from RecipeDisplay gets dropped straight into the
+  // conversation, exactly like a normal reply — spoken aloud if the panel
+  // is open and voice replies are on, or surfaced as a nudge bubble if not.
+  useEffect(() => {
+    if (!checkInMessage || checkInMessage.id === lastCheckInIdRef.current) return;
+    lastCheckInIdRef.current = checkInMessage.id;
+
+    const newIndex = messages.length;
+    setMessages((current) => [...current, { role: "assistant", content: checkInMessage.text }]);
+
+    if (isOpenRef.current) {
+      setTalkingIndex(newIndex);
+      if (speakRepliesRef.current) speak(newIndex, checkInMessage.text);
+    } else {
+      setCheckInNudgeText(checkInMessage.text);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [checkInMessage]);
 
   useEffect(() => {
     if (!isSending) {
@@ -671,9 +697,10 @@ const focusInputWithoutKeyboard = () => {
     return () => window.clearInterval(id);
   }, [isSending]);
 
-  useEffect(() => {
+    useEffect(() => {
   if (isOpen) {
     setShowNudge(false);
+    setCheckInNudgeText(null);
     window.setTimeout(focusInputWithoutKeyboard, PANEL_TRANSITION_MS);
   } else {
       // Reset drag state so the next open starts from a clean slate.
@@ -1246,20 +1273,30 @@ const focusInputWithoutKeyboard = () => {
     <>
       {/* Reachable from any scroll position. The companion peeks out with a
           short note the first time, then settles into just its face. */}
-      {!isOpen && (
+            {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
           aria-label="Ask your Cooking Companion"
           className="group fixed bottom-5 right-5 z-[60] flex items-end gap-2 focus:outline-none sm:bottom-6 sm:right-6"
         >
-          {showNudge && messages.length === 0 && (
+          {checkInNudgeText ? (
             <span
               aria-hidden="true"
-              className="companion-nudge mb-3 rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
+              className="companion-nudge mb-3 max-w-[220px] rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
             >
-              Stuck? Ask me.
+              {checkInNudgeText}
             </span>
+          ) : (
+            showNudge &&
+            messages.length === 0 && (
+              <span
+                aria-hidden="true"
+                className="companion-nudge mb-3 rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
+              >
+                Stuck? Ask me.
+              </span>
+            )
           )}
           <span className="companion-orb flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
             <CompanionCharacter className="companion-bob h-10 w-10" />

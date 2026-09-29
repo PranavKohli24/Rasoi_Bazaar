@@ -308,14 +308,28 @@ const playChime = () => {
   }
 };
 
-const StepTimer: React.FC<{ seconds: number; stepKey: number; onComplete?: () => void }> = ({
-  seconds,
-  stepKey,
-  onComplete,
-}) => {
+// Builds the elapsed-time marks worth a check-in: ~18 seconds in (skipped
+// if that's basically the whole timer), then every 5 minutes, always
+// leaving at least 20s of breathing room before the end so a check-in
+// never lands right on top of the "time's up" chime.
+const buildCheckInMarks = (totalSeconds: number): number[] => {
+  const marks: number[] = [];
+  if (totalSeconds >= 35) marks.push(18);
+  for (let t = 300; t < totalSeconds - 20; t += 300) marks.push(t);
+  return marks;
+};
+
+const StepTimer: React.FC<{
+  seconds: number;
+  stepKey: number;
+  onComplete?: () => void;
+  onCheckIn?: (markIndex: number) => void;
+}> = ({ seconds, stepKey, onComplete, onCheckIn }) => {
   const [remaining, setRemaining] = useState(seconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
+  const checkInMarksRef = useRef<number[]>(buildCheckInMarks(seconds));
+  const firedMarksRef = useRef<Set<number>>(new Set());
 
   // A fresh step (or a step whose parsed duration changed) gets a fresh timer.
   useEffect(() => {
@@ -324,6 +338,23 @@ const StepTimer: React.FC<{ seconds: number; stepKey: number; onComplete?: () =>
     if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seconds, stepKey]);
+
+  useEffect(() => {
+  checkInMarksRef.current = buildCheckInMarks(seconds);
+  firedMarksRef.current = new Set();
+}, [seconds, stepKey]);
+
+// Fires once per checkpoint mark as elapsed time crosses it.
+useEffect(() => {
+  if (remaining <= 0) return;
+  const elapsed = seconds - remaining;
+  checkInMarksRef.current.forEach((mark, index) => {
+    if (elapsed >= mark && !firedMarksRef.current.has(mark)) {
+      firedMarksRef.current.add(mark);
+      onCheckIn?.(index);
+    }
+  });
+}, [remaining, seconds, onCheckIn]);
 
   // Pure countdown — just decrements. No side effects here, so Strict
 // Mode's dev-time double-invoke of updater functions can't double-fire
@@ -457,6 +488,25 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   }, []);
 
   const [isCooking, setIsCooking] = useState(false);
+
+  // A check-in the companion should say — bumping the id (not just the text)
+// guarantees CookingCompanion treats repeats on a later long step as new.
+const [companionCheckIn, setCompanionCheckIn] = useState<{ id: string; text: string } | null>(
+  null
+);
+
+// Index 0 always lands around the 1-minute mark (a reassuring "you're off
+// to a good start"), later indexes land every 5 minutes after (a steady
+// "still with you").
+const CHECK_IN_LINES_FIRST = [
+  "Off to a good start — I'll keep an eye on the time for you.",
+  "Looking good so far. I've got the clock, I will remind you once its done",
+];
+const CHECK_IN_LINES_LATER = [
+  "Still going strong in there — I'll let you know when it's ready.",
+  "Simmering away nicely. Hang tight, not long now.",
+  "No rush — good things take their time. I've got an eye on the clock.",
+];
 
   // keeps the screen awake while actively cooking; browsers vary in support,
 // so this fails silently rather than blocking anything
@@ -1480,6 +1530,16 @@ useEffect(() => {
                       <StepTimer
                         seconds={stepDurationSeconds}
                         stepKey={currentStepIndex}
+                        onCheckIn={(markIndex) => {
+                          const line =
+                            markIndex === 0
+                              ? CHECK_IN_LINES_FIRST[currentStepIndex % CHECK_IN_LINES_FIRST.length]
+                              : CHECK_IN_LINES_LATER[(currentStepIndex + markIndex) % CHECK_IN_LINES_LATER.length];
+                          setCompanionCheckIn({
+                            id: `${currentStepIndex}-${markIndex}-${Date.now()}`,
+                            text: line,
+                          });
+                        }}
                         onComplete={() => {
                           if (isVoiceEnabled && "speechSynthesis" in window) {
                             window.speechSynthesis.cancel();
@@ -1658,6 +1718,7 @@ useEffect(() => {
         currentStepNumber={isCooking ? currentStepIndex + 1 : null}
         currentStepInstruction={isCooking ? currentStep.instruction : null}
         totalSteps={totalSteps}
+        checkInMessage={companionCheckIn}
       />
     </div>
   );
