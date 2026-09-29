@@ -21616,6 +21616,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy orange juice": {
     "dishName": "Orange Juice",
+    "image": "/dishes/orange-juice.webp",
     "description": "Fresh homemade orange juice made in minutes with sweet oranges and a little water.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -21683,6 +21684,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fresh apple juice": {
     "dishName": "Apple Juice",
+    "image": "/dishes/apple-juice.webp",
     "description": "Simple homemade apple juice blended with fresh apples and a little chilled water.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -21750,6 +21752,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy mango juice": {
     "dishName": "Mango Juice",
+    "image": "/dishes/mango-juice.webp",
     "description": "A quick homemade mango drink made with ripe mangoes, chilled water and optional sugar.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -21817,6 +21820,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fresh pineapple juice": {
     "dishName": "Pineapple Juice",
+    "image": "/dishes/pineapple-juice.webp",
     "description": "Bright homemade pineapple juice made with fresh pineapple and chilled water.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -21884,6 +21888,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fresh grape juice": {
     "dishName": "Grape Juice",
+    "image": "/dishes/grape-juice.webp",
     "description": "Easy homemade grape juice blended from sweet seedless grapes and chilled water.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -21951,6 +21956,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fresh watermelon juice": {
     "dishName": "Watermelon Juice",
+    "image": "/dishes/watermelon-juice.webp",
     "description": "A refreshing summer drink made by blending juicy watermelon with no cooking required.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22018,6 +22024,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy vanilla milkshake": {
     "dishName": "Vanilla Milkshake",
+    "image": "/dishes/vanilla-milkshake.webp",
     "description": "A simple creamy vanilla milkshake made with chilled milk, vanilla ice cream and.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22081,6 +22088,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy chocolate milkshake": {
     "dishName": "Chocolate Milkshake",
+    "image": "/dishes/chocolate-milkshake.webp",
     "description": "A quick creamy chocolate milkshake made with chilled milk, chocolate ice cream and cocoa.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22144,6 +22152,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy strawberry milkshake": {
     "dishName": "Strawberry Milkshake",
+    "image": "/dishes/strawberry-milkshake.webp",
     "description": "A simple strawberry milkshake made with fresh strawberries, chilled milk and strawberry ice cream.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22207,6 +22216,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy oreo milkshake": {
     "dishName": "Oreo Milkshake",
+    "image": "/dishes/oreo-milkshake.webp",
     "description": "A quick creamy cookie shake made with Oreo biscuits, chilled milk and vanilla ice cream.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22411,6 +22421,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy coffee frappe": {
     "dishName": "Coffee Frappe",
+    "image": "/dishes/coffee-frappe.webp",
     "description": "Thick iced coffee blended with milk, coffee, ice and ice cream.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22483,6 +22494,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy iced latte": {
     "dishName": "Iced Latte",
+    "image": "/dishes/iced-latte.webp",
     "description": "A simple homemade iced latte made with strong coffee, cold milk and ice.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
@@ -22555,6 +22567,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "easy vietnamese coffee": {
     "dishName": "Vietnamese Coffee",
+    "image": "/dishes/coffee-vietnamese.webp",
     "description": "Strong coffee sweetened with condensed milk, served hot or over ice.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
