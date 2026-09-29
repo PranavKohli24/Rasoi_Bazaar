@@ -12,8 +12,10 @@ export class PhotoError extends Error {
   }
 }
 
-const MAX_SIDE = 768;
-const JPEG_QUALITY = 0.8;
+const MAX_SIDE = 1280;
+// Best quality first; step down only if the upload would be too big.
+const JPEG_QUALITIES = [0.88, 0.78, 0.65];
+const MAX_UPLOAD_BYTES = 1_600_000;
 const MAX_FILE_BYTES = 30 * 1024 * 1024;
 
 const UNREADABLE = "Couldn't read that photo. Try taking a new one, or type the dish name.";
@@ -61,12 +63,12 @@ async function decode(file: File): Promise<Decoded> {
   }
 }
 
-const toBlob = (canvas: HTMLCanvasElement): Promise<Blob> =>
+const toBlob = (canvas: HTMLCanvasElement, quality: number): Promise<Blob> =>
   new Promise((resolve, reject) =>
     canvas.toBlob(
       (blob) => (blob ? resolve(blob) : reject(new Error("encode failed"))),
       "image/jpeg",
-      JPEG_QUALITY
+      quality
     )
   );
 
@@ -106,12 +108,19 @@ export async function prepareImage(file: File): Promise<PreparedImage> {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) throw new PhotoError(UNREADABLE);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high"; // less jagged and blurry when shrinking big photos
     ctx.drawImage(decoded.source, 0, 0, canvas.width, canvas.height);
 
     // Free the full-size pixels now, before the (async) encoding below
     decoded.release();
 
-    const blob = await toBlob(canvas);
+    let blob = await toBlob(canvas, JPEG_QUALITIES[0]);
+    for (const quality of JPEG_QUALITIES.slice(1)) {
+      if (blob.size <= MAX_UPLOAD_BYTES) break;
+      blob = await toBlob(canvas, quality);
+    }
+
     const base64 = await blobToBase64(blob);
     if (!base64) throw new PhotoError(UNREADABLE);
 
