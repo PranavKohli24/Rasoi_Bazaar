@@ -141,7 +141,8 @@ const entries = Object.entries(predefinedRecipes);
 for (const [key, recipe] of entries) {
   register(byKey, matchKey(key), recipe);
   register(byKey, matchKey(recipe.dishName), recipe);
-  register(bySlug, toSlug(key), recipe);
+  register(bySlug, toSlug(recipe.dishName), recipe); // canonical — matches what go() navigates to
+  register(bySlug, toSlug(key), recipe);             // fallback for the old key-based slug
 }
 
 // Pass 2: derived aliases (only fill gaps, never override)

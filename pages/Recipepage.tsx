@@ -19,7 +19,8 @@ const FRIENDLY_ERROR =
 
 const RecipePage: React.FC = () => {
   const navigate = useNavigate();
-  const { slug } = useParams<{ slug?: string }>();
+  const { slug: rawSlug } = useParams<{ slug?: string }>();
+  const slug = rawSlug?.toLowerCase();
   const { go } = useDishSearch();
 
   // Predefined dishes resolve instantly from the slug. Anything else needs a
@@ -167,6 +168,7 @@ const RecipePage: React.FC = () => {
           {slug && recipe && !isLoading && (
             <div className="animate-fade-in-up">
               <RecipeDisplay
+                key={slug}
                 recipe={recipe}
                 onFinishCooking={() => setShowCelebration(true)}
               />

@@ -23,7 +23,7 @@ const CompactHeader: React.FC<SiteHeaderProps> = ({
 
   // On a recipe, invite another dish; on other pages (e.g. Cook what you have) use a neutral prompt.
   const searchPlaceholder =
-    pathname === RECIPE_PATH ? "cook another masterpiece?" : "Have a dish in mind?";
+    pathname.startsWith(RECIPE_PATH) ? "cook another masterpiece?" : "Have a dish in mind?";
 
   const position = overlay
     ? "fixed inset-x-0 top-0"
