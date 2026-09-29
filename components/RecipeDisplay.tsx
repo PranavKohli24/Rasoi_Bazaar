@@ -296,7 +296,11 @@ const playChime = () => {
   }
 };
 
-const StepTimer: React.FC<{ seconds: number; stepKey: number }> = ({ seconds, stepKey }) => {
+const StepTimer: React.FC<{ seconds: number; stepKey: number; onComplete?: () => void }> = ({
+  seconds,
+  stepKey,
+  onComplete,
+}) => {
   const [remaining, setRemaining] = useState(seconds);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
@@ -313,14 +317,15 @@ const StepTimer: React.FC<{ seconds: number; stepKey: number }> = ({ seconds, st
     if (!isRunning) return;
     intervalRef.current = window.setInterval(() => {
       setRemaining((prev) => {
-        if (prev <= 1) {
-          if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-          setIsRunning(false);
-          playChime();
-          return 0;
-        }
-        return prev - 1;
-      });
+      if (prev <= 1) {
+        if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+        setIsRunning(false);
+        playChime();
+        onComplete?.();
+        return 0;
+      }
+      return prev - 1;
+    });
     }, 1000);
     return () => {
       if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
@@ -1446,7 +1451,13 @@ useEffect(() => {
                     )}
 
                     {stepDurationSeconds !== null && (
-                      <StepTimer seconds={stepDurationSeconds} stepKey={currentStepIndex} />
+                      <StepTimer
+                        seconds={stepDurationSeconds}
+                        stepKey={currentStepIndex}
+                        onComplete={() => {
+                          if (!isLastStep) setShowNextStepConfirm(true);
+                        }}
+                      />
                     )}
                   </div>
                 </div>
