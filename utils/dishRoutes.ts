@@ -1,24 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { findPredefinedRecipe } from "./findPredefinedRecipe";
+import { toSlug, fromSlug } from "./slug";
 
-/** "Paneer Butter Masala!" -> "paneer-butter-masala" */
-export const toSlug = (dish: string): string =>
-  dish
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+// Re-exported so existing imports from "./dishRoutes" keep working.
+export { toSlug, fromSlug };
 
-/** "paneer-butter-masala" -> "Paneer Butter Masala" */
-export const fromSlug = (slug: string): string =>
-  slug
-    .split("-")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-
-/** The recipe page has one clean URL; the dish travels in the navigation state. */
+/** Every dish gets its own URL: /recipe/<slug>. Bare /recipe has no dish yet. */
 export const RECIPE_PATH = "/recipe";
 
 /** Search box state + "go to the recipe page" action, shared by home and compact header */
@@ -27,10 +15,17 @@ export const useDishSearch = () => {
   const [term, setTerm] = useState("");
 
   const go = (dish: string, options?: { replace?: boolean }) => {
-  if (!toSlug(dish)) return;
-  setTerm("");
-  navigate(RECIPE_PATH, { state: { dish }, replace: options?.replace });
-};
+    const slug = toSlug(dish);
+    if (!slug) return;
+    setTerm("");
+
+    // A predefined dish always gets its own canonical URL, however it was
+    // typed, aliased or misspelled ("rajma chawl" -> /recipe/rajma-chawal).
+    const predefined = findPredefinedRecipe(dish);
+    const targetSlug = predefined ? toSlug(predefined.dishName) : slug;
+
+    navigate(`${RECIPE_PATH}/${targetSlug}`, { replace: options?.replace });
+  };
 
   return { term, setTerm, go };
 };

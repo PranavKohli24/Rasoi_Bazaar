@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Recipe } from "../types";
 import { fetchRecipe, isRecipe } from "../services/geminiService";
 import CompactHeader from "../components/CompactHeader";
@@ -7,65 +7,47 @@ import RecipeLoading from "../components/RecipeLoading";
 import RecipeError, { ErrorKind } from "../components/RecipeError";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
-import { findPredefinedRecipe, findSimilarRecipes } from "../utils/findPredefinedRecipe";
-import { toSlug, useDishSearch } from "../utils/dishRoutes";
-
-const LAST_DISH_KEY = "rasoi:last-dish";
+import {
+  findPredefinedRecipeBySlug,
+  findSimilarRecipes,
+} from "../utils/findPredefinedRecipe";
+import { RECIPE_PATH, toSlug, fromSlug, useDishSearch } from "../utils/dishRoutes";
 
 // Shown instead of any technical error text.
 const FRIENDLY_ERROR =
   "We couldn't cook up this recipe right now. Please try again in a moment, or search for another dish.";
 
-// Flat ivory — no background image, no gradient. Matches the surface tones
-// used inside RecipeDisplay and CookingCompanion.
-
-const readLastDish = (): string => {
-  try {
-    return sessionStorage.getItem(LAST_DISH_KEY) ?? "";
-  } catch {
-    return "";
-  }
-};
-
 const RecipePage: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { slug } = useParams<{ slug?: string }>();
   const { go } = useDishSearch();
 
-  // The dish comes from navigation state. The session fallback keeps refresh
-  // and returning from an external login (e.g. Swiggy) working.
-  const stateDish = (location.state as { dish?: string } | null)?.dish;
-  const dish = stateDish ?? readLastDish();
-  const slug = toSlug(dish);
+  // Predefined dishes resolve instantly from the slug. Anything else needs a
+  // display name to show while loading; the exact match arrives once the
+  // fetch resolves (see the effect below, which corrects the URL to match).
+  const predefined = slug ? findPredefinedRecipeBySlug(slug) : null;
+  const dish = predefined?.dishName ?? (slug ? fromSlug(slug) : "");
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!!slug);
   const [error, setError] = useState<{ message: string; kind: ErrorKind } | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
 
-  // Load the recipe whenever the URL changes (search, link, refresh, back/forward)
   useEffect(() => {
-    if (!dish) {
-      navigate("/", { replace: true });
-      return;
-    }
-
-    try {
-      sessionStorage.setItem(LAST_DISH_KEY, dish);
-    } catch {
-      /* ignore storage problems */
-    }
+    if (!slug) return; // bare /recipe: nothing to load
 
     let cancelled = false;
-    const cacheKey = `rasoi:recipe:${slug}`;
-
     setShowCelebration(false);
 
-    // Predefined recipes are matched by full name, dish name and shorter aliases,
-    // so no API call is needed.
-    const predefined = findPredefinedRecipe(dish);
-
     if (predefined) {
+      // Land on the recipe's own canonical URL even if this slug came from
+      // an alias, a typo, or an old link ("rajma-chawl" -> "rajma-chawal").
+      const canonicalSlug = toSlug(predefined.dishName);
+      if (canonicalSlug !== slug) {
+        navigate(`${RECIPE_PATH}/${canonicalSlug}`, { replace: true });
+        return;
+      }
+
       if (predefined.image) {
         const preload = new Image();
         preload.src = predefined.image;
@@ -77,13 +59,12 @@ const RecipePage: React.FC = () => {
       return;
     }
 
+    const cacheKey = `rasoi:recipe:${slug}`;
+
     // Reuse a recipe fetched earlier this session (refresh / back button)
     try {
       const cached = sessionStorage.getItem(cacheKey);
       const parsed = cached ? JSON.parse(cached) : null;
-
-      // A saved copy that is broken or from an older version is ignored and
-      // fetched again.
       if (isRecipe(parsed)) {
         setRecipe(parsed);
         setError(null);
@@ -107,22 +88,28 @@ const RecipePage: React.FC = () => {
           preload.src = fetched.image;
         }
 
-        setRecipe(fetched);
+        // The URL should reflect the recipe's real name, not the raw search
+        // ("chocolate cake plz" -> /recipe/chocolate-cake). Cache it there and
+        // quietly fix the URL if it doesn't already match.
+        const canonicalSlug = toSlug(fetched.dishName);
 
         try {
-          sessionStorage.setItem(cacheKey, JSON.stringify(fetched));
+          sessionStorage.setItem(`rasoi:recipe:${canonicalSlug}`, JSON.stringify(fetched));
         } catch {
           /* ignore storage problems */
         }
+
+        if (canonicalSlug !== slug) {
+          navigate(`${RECIPE_PATH}/${canonicalSlug}`, { replace: true });
+          return;
+        }
+
+        setRecipe(fetched);
       })
       .catch((err) => {
         if (cancelled) return;
 
-        // geminiService only throws user-safe messages (e.g. "That doesn't look
-        // like a dish - try Paneer Butter Masala"), so those are shown as written.
-        // Anything unexpected falls back to the friendly message. Details go
-        // to the console.
-                console.error("Recipe fetch failed:", err);
+        console.error("Recipe fetch failed:", err);
 
         const kind: ErrorKind =
           err?.name === "NotADishError"
@@ -139,19 +126,19 @@ const RecipePage: React.FC = () => {
         });
       })
       .finally(() => {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
+        if (!cancelled) setIsLoading(false);
       });
 
     return () => {
       cancelled = true;
     };
-  }, [slug, dish, navigate]);
+  }, [slug, navigate]);
 
   useEffect(() => {
-    document.title = `${recipe?.dishName ?? dish} recipe | Rasoi Bazaar`;
-  }, [recipe, dish]);
+    document.title = slug
+      ? `${recipe?.dishName ?? dish} recipe | Rasoi Bazaar`
+      : "Rasoi Bazaar";
+  }, [recipe, dish, slug]);
 
   return (
     <div className="relative z-10 w-full">
@@ -159,9 +146,15 @@ const RecipePage: React.FC = () => {
 
       <main className="mx-auto min-h-[60vh] w-full max-w-6xl px-4 pb-20 pt-8 sm:px-6 sm:pt-10">
         <div className="mx-auto w-full max-w-6xl">
-                    {isLoading && <RecipeLoading dishName={dish} />}
+          {!slug && (
+            <p className="mx-auto mt-10 max-w-md text-center text-stone-400">
+              Search for a dish above to get started.
+            </p>
+          )}
 
-          {error && (
+          {slug && isLoading && <RecipeLoading dishName={dish} />}
+
+          {slug && error && (
             <RecipeError
               kind={error.kind}
               message={error.message}
@@ -171,7 +164,7 @@ const RecipePage: React.FC = () => {
             />
           )}
 
-          {recipe && !isLoading && (
+          {slug && recipe && !isLoading && (
             <div className="animate-fade-in-up">
               <RecipeDisplay
                 recipe={recipe}

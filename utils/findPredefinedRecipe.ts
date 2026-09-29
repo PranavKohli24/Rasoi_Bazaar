@@ -1,6 +1,6 @@
 import { Recipe } from "../types";
 import { predefinedRecipes } from "../data/predefinedRecipes";
-import { toSlug } from "./dishRoutes";
+import { toSlug } from "./slug";
 
 // Strips conversational filler ("i want to eat ... today") from a search.
 export const normalizeDishQuery = (input: string): string => {
@@ -1486,6 +1486,10 @@ export const findPredefinedRecipe = (query: string): Recipe | null => {
     null
   );
 };
+
+/** Direct slug -> predefined recipe lookup, used to resolve /recipe/:slug URLs. */
+export const findPredefinedRecipeBySlug = (slug: string): Recipe | null =>
+  bySlug.get(slug) ?? null;
 
 /* ------------------------------------------------------------------ */
 /* Similar-dish suggestions for the error screen: dishes that share    */
