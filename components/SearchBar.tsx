@@ -77,8 +77,24 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [compact]);
 
   // Type and erase example dishes while the input is not focused.
+    // The typewriter only runs while the box is idle. Otherwise it is paused and
+  // the placeholder falls back to its full default text.
+  const isTypewriterIdle =
+    !compact &&
+    !searchTerm &&
+    !isLoading &&
+    !isIdentifying &&
+    !isPhotoMenuOpen &&
+    !isInputFocused;
+
+  // Type and erase example dishes while idle.
   useEffect(() => {
-    if (compact || searchTerm || isLoading || isIdentifying || isPhotoMenuOpen || isInputFocused) return;
+    if (!isTypewriterIdle) {
+      // Start the next run from an empty word instead of resuming mid-word
+      setTypedExample('');
+      setIsDeleting(false);
+      return;
+    }
 
     const currentExample = EXAMPLES[exampleIndex];
     const isFinishedTyping = typedExample.length === currentExample.length;
@@ -100,7 +116,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }, delay);
 
     return () => window.clearTimeout(timer);
-    }, [compact, searchTerm, isLoading, isIdentifying, isPhotoMenuOpen, isInputFocused, exampleIndex, typedExample, isDeleting]);
+  }, [isTypewriterIdle, exampleIndex, typedExample, isDeleting]);
 
   // Close the expanded search when clicking outside it.
   useEffect(() => {
@@ -172,11 +188,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setIsPhotoMenuOpen(false);
   };
 
-  const placeholder = compact
+    const placeholder = compact
     ? compactPlaceholder
-    : isInputFocused
-      ? 'What masterpiece will you make?'
-      : typedExample;
+    : isTypewriterIdle
+      ? typedExample
+      : 'What masterpiece will you make?';
 
   return (
     <div
