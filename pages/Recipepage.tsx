@@ -7,7 +7,7 @@ import RecipeLoading from "../components/RecipeLoading";
 import RecipeError, { ErrorKind } from "../components/RecipeError";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
-import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
+import { findPredefinedRecipe, findSimilarRecipes } from "../utils/findPredefinedRecipe";
 import { toSlug, useDishSearch } from "../utils/dishRoutes";
 
 const LAST_DISH_KEY = "rasoi:last-dish";
@@ -166,6 +166,7 @@ const RecipePage: React.FC = () => {
               kind={error.kind}
               message={error.message}
               dishName={dish}
+              suggestions={findSimilarRecipes(dish)}
               onSelectDish={(d) => go(d, { replace: true })}
             />
           )}

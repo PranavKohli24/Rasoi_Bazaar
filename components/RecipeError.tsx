@@ -5,15 +5,15 @@ export type ErrorKind = "unavailable" | "not-a-dish" | "busy" | "offline";
 
 interface RecipeErrorProps {
   kind?: ErrorKind;
-  /** Server-written explanation. Shown for "not-a-dish", "busy" and "offline". */
   message?: string;
-  /** What the person searched for */
   dishName?: string;
   onSelectDish?: (dish: string) => void;
+  /** Dishes related to the failed search, e.g. other chocolate desserts. Falls back to DEFAULT_DISHES when empty. */
+  suggestions?: string[];
 }
 
-// Recipes that are already written up, so each of these opens instantly.
-const INSTANT_DISHES = [
+// Fallback when nothing related to the search was found.
+const DEFAULT_DISHES = [
   "Paneer Butter Masala",
   "Shahi Paneer",
   "Chole Bhature",
@@ -68,7 +68,9 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
   message,
   dishName,
   onSelectDish,
+  suggestions,
 }) => {
+  const dishesToShow = suggestions?.length ? suggestions : DEFAULT_DISHES;
   const dish = dishName ? displayDishName(dishName) : "";
   const { title, body } = getCopy(kind, dish, message);
 
@@ -148,12 +150,12 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
         <div className="mt-9">
           <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-stone-500">
             <span className="h-px flex-1 bg-stone-700/70" />
-            Or start with a sure thing
+            {suggestions?.length ? "You might like these instead" : "Or start with a sure thing"}
             <span className="h-px flex-1 bg-stone-700/70" />
           </div>
 
           <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {INSTANT_DISHES.map((name) => (
+            {dishesToShow.map((name) => (
               <button
                 key={name}
                 type="button"

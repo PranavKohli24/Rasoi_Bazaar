@@ -1486,3 +1486,48 @@ export const findPredefinedRecipe = (query: string): Recipe | null => {
     null
   );
 };
+
+/* ------------------------------------------------------------------ */
+/* Similar-dish suggestions for the error screen: dishes that share    */
+/* meaningful words with a failed search ("chocolate" -> chocolate     */
+/* cake, chocolate ice cream, chocolate milkshake).                    */
+/* ------------------------------------------------------------------ */
+
+const allRecipesByDishName = (() => {
+  const seen = new Map<string, Recipe>();
+  for (const recipe of Object.values(predefinedRecipes)) {
+    seen.set(recipe.dishName, recipe); // de-dupe recipes reachable by several keys
+  }
+  return [...seen.values()];
+})();
+
+export const findSimilarRecipes = (query: string, limit = 6): string[] => {
+  const cleaned = matchKey(normalizeDishQuery(query));
+  const words = cleaned.split(" ").filter((w) => w.length >= 3);
+  if (words.length === 0) return [];
+
+  const scored: { name: string; score: number }[] = [];
+
+  for (const recipe of allRecipesByDishName) {
+    const nameKey = matchKey(recipe.dishName);
+    const nameWords = nameKey.split(" ");
+
+    let matchedWords = 0;
+    for (const w of words) {
+      if (nameWords.some((nw) => nw === w || nw.includes(w) || w.includes(nw))) {
+        matchedWords++;
+      }
+    }
+
+    if (matchedWords === 0) continue;
+
+    // Reward dishes where most/all of the search words show up, not just one.
+    const score = matchedWords / words.length;
+    scored.push({ name: recipe.dishName, score });
+  }
+
+  return scored
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.name);
+};
