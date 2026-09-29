@@ -83,95 +83,95 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
   };
 
   return (
-    <div className="mx-auto mt-4 w-full max-w-2xl animate-fade-in-up overflow-hidden rounded-3xl border border-orange-400/30 bg-stone-900 px-5 py-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.25)] sm:px-10 sm:py-10">
-      <style>{STEAM_CSS}</style>
+  <div className="mx-auto mt-4 w-full max-w-2xl animate-fade-in-up overflow-hidden rounded-3xl border border-orange-400/30 bg-stone-900 px-4 py-5 text-center shadow-[0_8px_30px_rgba(0,0,0,0.25)] sm:px-10 sm:py-10">
+    <style>{STEAM_CSS}</style>
 
-      {/* Empty bowl with a little steam */}
-      <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#FFE3C2]">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 64 64"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="h-14 w-14 text-orange-600"
-          aria-hidden="true"
-        >
-          <path d="M10 30h44a22 22 0 0 1-44 0z" />
-          <path d="M24 56h16" />
-          <path className="recipe-error-steam" d="M24 22c-3-3 3-5 0-9" />
-          <path
-            className="recipe-error-steam"
-            style={{ animationDelay: "0.4s" }}
-            d="M32 22c-3-3 3-5 0-9"
-          />
-          <path
-            className="recipe-error-steam"
-            style={{ animationDelay: "0.8s" }}
-            d="M40 22c-3-3 3-5 0-9"
-          />
-        </svg>
-      </div>
-
-      <div role="alert">
-        <h2 className="mt-6 break-words font-serif text-2xl font-black text-orange-100 sm:text-3xl">
-          {title}
-        </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-300 sm:text-base">
-          {body}
-        </p>
-      </div>
-
-      {onSelectDish && (
-        <form
-          onSubmit={handleSearch}
-          className="mx-auto mt-6 flex max-w-md flex-col items-stretch justify-center gap-3 sm:flex-row"
-        >
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Try another dish, e.g. Rajma Chawal"
-            className="w-full flex-1 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 shadow-sm transition-colors focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 sm:text-base"
-          />
-          <button
-            type="submit"
-            disabled={!query.trim()}
-            className="inline-flex items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:hover:translate-y-0"
-          >
-            Search
-          </button>
-        </form>
-      )}
-
-      {onSelectDish && (
-        <div className="mt-9">
-          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-stone-500">
-            <span className="h-px flex-1 bg-stone-700/70" />
-            {suggestions?.length ? "You might like these instead" : "Or start with a sure thing"}
-            <span className="h-px flex-1 bg-stone-700/70" />
-          </div>
-
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {dishesToShow.map((name) => (
-              <button
-                key={name}
-                type="button"
-                onClick={() => onSelectDish(name)}
-                className="rounded-full border border-stone-700 bg-stone-950 px-4 py-2 text-sm text-stone-100 transition-colors hover:border-orange-400 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
-              >
-                {name}
-              </button>
-            ))}
-          </div>
-
-          <p className="mt-3 text-xs text-stone-500">Ready instantly, no waiting.</p>
-        </div>
-      )}
+    {/* Empty bowl with a little steam */}
+    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFE3C2] sm:h-24 sm:w-24">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 64 64"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-9 w-9 text-orange-600 sm:h-14 sm:w-14"
+        aria-hidden="true"
+      >
+        <path d="M10 30h44a22 22 0 0 1-44 0z" />
+        <path d="M24 56h16" />
+        <path className="recipe-error-steam" d="M24 22c-3-3 3-5 0-9" />
+        <path
+          className="recipe-error-steam"
+          style={{ animationDelay: "0.4s" }}
+          d="M32 22c-3-3 3-5 0-9"
+        />
+        <path
+          className="recipe-error-steam"
+          style={{ animationDelay: "0.8s" }}
+          d="M40 22c-3-3 3-5 0-9"
+        />
+      </svg>
     </div>
-  );
+
+    <div role="alert">
+      <h2 className="mt-4 break-words font-serif text-xl font-black text-orange-100 sm:mt-6 sm:text-3xl">
+        {title}
+      </h2>
+      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-stone-300 sm:mt-3 sm:text-base">
+        {body}
+      </p>
+    </div>
+
+    {onSelectDish && (
+      <form
+        onSubmit={handleSearch}
+        className="mx-auto mt-4 flex max-w-md flex-col items-stretch justify-center gap-3 sm:mt-6 sm:flex-row"
+      >
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Try another dish, e.g. Rajma Chawal"
+          className="w-full flex-1 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 shadow-sm transition-colors focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 sm:text-base"
+        />
+        <button
+          type="submit"
+          disabled={!query.trim()}
+          className="inline-flex items-center justify-center rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:hover:translate-y-0"
+        >
+          Search
+        </button>
+      </form>
+    )}
+
+    {onSelectDish && (
+      <div className="mt-5 sm:mt-9">
+        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          <span className="h-px flex-1 bg-stone-700/70" />
+          {suggestions?.length ? "You might like these instead" : "Or start with a sure thing"}
+          <span className="h-px flex-1 bg-stone-700/70" />
+        </div>
+
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {dishesToShow.map((name) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => onSelectDish(name)}
+              className="rounded-full border border-stone-700 bg-stone-950 px-4 py-2 text-sm text-stone-100 transition-colors hover:border-orange-400 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+
+        <p className="mt-2 text-xs text-stone-500 sm:mt-3">Ready instantly, no waiting.</p>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default RecipeError;
