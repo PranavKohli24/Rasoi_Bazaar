@@ -599,6 +599,18 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     setSpeakingIndex(null);
   };
 
+  // Focusing normally pops the mobile keyboard immediately, which can hide
+// the intro message before anyone's read it. Briefly marking the input
+// readonly lets us focus it (cursor lands, no keyboard) and hand control
+// back right after — same trick used in the digital twin chat.
+const focusInputWithoutKeyboard = () => {
+  const el = textareaRef.current;
+  if (!el) return;
+  el.setAttribute("readonly", "readonly");
+  el.focus();
+  window.setTimeout(() => el.removeAttribute("readonly"), 50);
+};
+
   const speak = (index: number, text: string) => {
     if (!canSpeak) return;
     stopSpeaking();
@@ -660,10 +672,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   }, [isSending]);
 
   useEffect(() => {
-    if (isOpen) {
-      setShowNudge(false);
-      window.setTimeout(() => textareaRef.current?.focus(), PANEL_TRANSITION_MS);
-    } else {
+  if (isOpen) {
+    setShowNudge(false);
+    window.setTimeout(focusInputWithoutKeyboard, PANEL_TRANSITION_MS);
+  } else {
       // Reset drag state so the next open starts from a clean slate.
       setHasMounted(false);
       setDragY(0);
