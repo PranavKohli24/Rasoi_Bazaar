@@ -508,6 +508,48 @@ useEffect(() => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [currentStepIndex, isCooking, isVoiceEnabled]);
 
+// Assumes dishName is stable/unique enough per recipe; swap for a real
+// recipe.id if one exists in your data model.
+const progressKey = `recipe-progress:${recipe.dishName}`;
+
+// Restore on mount
+useEffect(() => {
+  try {
+    const saved = localStorage.getItem(progressKey);
+    if (!saved) return;
+    const parsed = JSON.parse(saved);
+
+    if (parsed.isCooking && typeof parsed.currentStepIndex === "number") {
+      setCurrentStepIndex(Math.min(parsed.currentStepIndex, recipe.method.length - 1));
+      setIsCooking(true);
+    }
+    if (
+      Array.isArray(parsed.checkedIngredients) &&
+      parsed.checkedIngredients.length === recipe.ingredients.length
+    ) {
+      setCheckedIngredients(parsed.checkedIngredients);
+    }
+  } catch {
+    // Corrupted or inaccessible — just start fresh.
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+// Persist on every relevant change
+useEffect(() => {
+  try {
+    if (isCooking) {
+      localStorage.setItem(
+        progressKey,
+        JSON.stringify({ isCooking, currentStepIndex, checkedIngredients })
+      );
+    } else {
+      localStorage.removeItem(progressKey);
+    }
+  } catch {
+    // Storage unavailable — progress just won't persist this session.
+  }
+}, [isCooking, currentStepIndex, checkedIngredients, progressKey]);
 
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
   // When the current step has a running/relevant timer, "Next" asks for a
@@ -1468,7 +1510,14 @@ useEffect(() => {
                   ) : (
                     <button
                       type="button"
-                      onClick={onFinishCooking}
+                      onClick={() => {
+                        try {
+                          localStorage.removeItem(progressKey);
+                        } catch {
+                          // ignore
+                        }
+                        onFinishCooking();
+                      }}
                       className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
                       style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
