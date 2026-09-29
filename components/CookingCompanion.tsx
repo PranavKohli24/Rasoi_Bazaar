@@ -567,6 +567,11 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   // way so it doesn't fight the live drag transform on every re-render.
   const [hasMounted, setHasMounted] = useState(false);
 
+  // Tracks whether we've pushed a history entry for the open panel, so a
+  // real back-button press and our own close buttons both go through the
+  // same path instead of stacking history entries or double-firing.
+  const pushedHistoryStateRef = useRef(false);
+
   const suggestions = useMemo(
     () => (hasRecipe ? buildSuggestions(recipe, currentStepNumber) : []),
     [recipe, hasRecipe, currentStepNumber]
@@ -768,14 +773,47 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     };
   }, [isOpen])
 
-  useEffect(() => {
+    useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") closeCompanion();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen]);
+
+  // Opening the panel pushes a throwaway history entry. Pressing back then
+  // just pops it — popstate fires, and we close the panel instead of the
+  // browser navigating away from the page.
+  useEffect(() => {
+    if (isOpen) {
+      window.history.pushState({ __cookingCompanion: true }, "");
+      pushedHistoryStateRef.current = true;
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (pushedHistoryStateRef.current) {
+        pushedHistoryStateRef.current = false;
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  // Single close path for every UI trigger (X button, Escape, drag-to-close).
+  // If we own a pushed history entry, go back through it so the entry we
+  // added gets cleaned up and popstate does the actual setIsOpen(false).
+  // Otherwise (e.g. history got out of sync somehow) just close directly.
+  const closeCompanion = () => {
+    if (pushedHistoryStateRef.current) {
+      window.history.back();
+    } else {
+      setIsOpen(false);
+    }
+  };
 
   const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
     // A tap on the minimize button is a tap, not a swipe — let its onClick
@@ -797,13 +835,13 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
     setDragY(Math.max(0, delta));
   };
 
-  const handleDragEnd = () => {
+    const handleDragEnd = () => {
     if (dragStartYRef.current === null) return;
     dragStartYRef.current = null;
     setIsDragging(false);
 
     if (dragY > DRAG_CLOSE_THRESHOLD) {
-      setIsOpen(false);
+      closeCompanion();
     } else {
       setDragY(0); // wasn't pulled far enough — snap back open
     }
@@ -1277,9 +1315,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
                       <SpeakerIcon on={speakReplies} className="h-[18px] w-[18px]" />
                     </button>
                   )}
-                  <button
+                                    <button
                     type="button"
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeCompanion}
                     aria-label="Back to cooking"
                     title="Back to cooking"
                     className="flex h-9 w-9 items-center justify-center rounded-full text-[#6B5238] transition-colors hover:bg-[#EDE4CF] hover:text-[#2B1A0C] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
