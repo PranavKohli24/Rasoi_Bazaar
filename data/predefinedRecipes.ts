@@ -5256,7 +5256,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pav bhaji": {
     "dishName": "Pav Bhaji",
-    "image": "/dishes/pav bhaji.webp",
+    "image": "/dishes/pav-bhaji.webp",
     "description": "Buttery, spicy mashed vegetable curry served with toasted pav.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -6884,6 +6884,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "cake (simple eggless vanilla cake)": {
     "dishName": "Cake (Simple Eggless Vanilla Cake)",
+    "image": "/dishes/cake.webp",
     "description": "A soft, fluffy eggless vanilla sponge made with curd and basic pantry ingredients.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -20081,6 +20082,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chocolate cake": {
     "dishName": "Chocolate Cake",
+    "image": "/dishes/chocolate-cake.webp",
     "description": "Easy eggless chocolate cake made in a home oven with cocoa and curd.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -20188,6 +20190,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "strawberry cake": {
     "dishName": "Strawberry Cake",
+    "image": "/dishes/strawberry-cake.webp",
     "description": "Simple eggless vanilla cake topped with fresh strawberries and lightly sweetened cream.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -20296,6 +20299,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pineapple cake": {
     "dishName": "Pineapple Cake",
+    "image": "/dishes/pineapple-cake.webp",
     "description": "Easy eggless sponge topped with pineapple pieces and lightly sweetened cream.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
