@@ -38333,6 +38333,375 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 7
     }
   },
+
+  "idiyappam": {
+    "dishName": "Idiyappam (Nool Puttu)",
+    "image": "/dishes/idiyappam.webp",
+    "description": "Delicate steamed rice-flour noodles layered with fresh coconut, a classic South Indian breakfast.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Idiyappam Podi",
+        "englishName": "roasted rice flour"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Nariyal",
+        "englishName": "fresh grated coconut"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for greasing"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2.5 cups",
+        "commonName": "Paani",
+        "englishName": "water, plus more if needed"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Bring the water to a boil with the salt and a little oil."
+      },
+      {
+        "step": 2,
+        "instruction": "Put the rice flour in a bowl. Add the hot water gradually while stirring until a soft, smooth dough forms. Let it cool just enough to handle."
+      },
+      {
+        "step": 3,
+        "instruction": "Knead the dough briefly until smooth and pliable, adding a little warm water if it feels dry."
+      },
+      {
+        "step": 4,
+        "instruction": "Lightly grease an idiyappam or sev press. Fill it with the warm dough and press the dough into loose noodle-shaped circles on a greased steaming tray, sprinkling a little grated coconut between layers."
+      },
+      {
+        "step": 5,
+        "instruction": "Place the tray in a steamer or cooker used as a steamer, without pressure. Steam for 5 to 10 minutes until the noodles are cooked through and firm."
+      },
+      {
+        "step": 6,
+        "instruction": "Carefully remove the idiyappam, add a little more fresh coconut if desired, and serve hot.",
+        "tip": {
+          "title": "Keep the dough soft",
+          "content": "Press the dough while it is still warm and pliable. If it cracks or feels hard in the press, work in a little warm water before piping."
+        }
+      }
+    ],
+    "notes": [
+      "An idiyappam press, also called a sev or nool puttu press, is needed to make the characteristic fine noodle strands.",
+      "Idiyappam is commonly served with coconut milk, vegetable stew or egg curry."
+    ],
+    "nutrition": {
+      "calories": 410,
+      "protein": 6,
+      "carbs": 75,
+      "fat": 8
+    }
+  },
+
+  "shorshe ilish": {
+    "dishName": "Shorshe Ilish",
+    "image": "/dishes/shorshe-ilish.webp",
+    "description": "Tender Bengali hilsa gently cooked in a pungent mustard paste with green chillies and mustard oil.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "750 g",
+        "commonName": "Ilish Machh",
+        "englishName": "hilsa fish, cut into 6 to 7 pieces"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Shorshe",
+        "englishName": "yellow mustard seeds"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Kali Shorshe",
+        "englishName": "black mustard seeds"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Shorsher Tel",
+        "englishName": "mustard oil"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kalonji",
+        "englishName": "nigella seeds"
+      },
+      {
+        "amount": "4",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Soak the mustard seeds in warm water for 30 to 60 minutes. Drain them and grind with 1 green chilli, a little salt and just enough water to make a smooth paste."
+      },
+      {
+        "step": 2,
+        "instruction": "Rub the hilsa pieces with turmeric and salt. Set them aside for 10 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat about 3 tablespoons mustard oil in a pan. Lightly fry the hilsa for about 30 seconds on each side, just until the surface changes colour. Remove and keep aside."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the remaining mustard oil to the pan. Add nigella seeds and let them sizzle briefly. Lower the heat."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the mustard paste and the remaining turmeric. Cook for a few seconds, then add 1 cup water and bring the mustard gravy to a gentle simmer."
+      },
+      {
+        "step": 6,
+        "instruction": "Gently place the fried hilsa into the gravy. Add the remaining green chillies and salt, cover and simmer for 8 to 10 minutes until the fish is just cooked.",
+        "tip": {
+          "title": "Don't make the mustard bitter",
+          "content": "Do not fry or boil the mustard paste aggressively. A brief cook over low heat keeps its pungency balanced instead of harsh and bitter."
+        }
+      },
+      {
+        "step": 7,
+        "instruction": "Drizzle a little raw mustard oil over the top, cover and turn off the heat. Let the fish rest in the covered pan for 5 minutes."
+      },
+      {
+        "step": 8,
+        "instruction": "Serve hot with plain steamed rice."
+      }
+    ],
+    "notes": [
+      "Use fresh mustard paste for the brightest flavour and grind it with salt and green chilli.",
+      "Hilsa has many fine bones, so handle the pieces gently and avoid stirring the curry vigorously."
+    ],
+    "nutrition": {
+      "calories": 630,
+      "protein": 32,
+      "carbs": 4,
+      "fat": 46
+    }
+  },
+
+  "cholar dal": {
+    "dishName": "Cholar Dal",
+    "image": "/dishes/cholar-dal.webp",
+    "description": "A slightly sweet Bengali chana dal flavoured with whole spices, ginger, raisins and fried coconut.",
+    "prepTime": "Approx. 1 hour (plus 1 hour soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Chola Dal",
+        "englishName": "chana dal / split Bengal gram, soaked for 1 hour"
+      },
+      {
+        "amount": "2.5 cups",
+        "commonName": "Paani",
+        "englishName": "water, for pressure cooking"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "2 tsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Kishmish",
+        "englishName": "golden raisins"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Kaju",
+        "englishName": "cashews, optional"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tej Patta",
+        "englishName": "bay leaf"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "2 to 3",
+        "commonName": "Sukhi Lal Mirch",
+        "englishName": "dried red chillies"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Hing",
+        "englishName": "asafoetida"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak",
+        "englishName": "grated ginger"
+      },
+      {
+        "amount": "1 inch",
+        "commonName": "Dalchini",
+        "englishName": "cinnamon"
+      },
+      {
+        "amount": "3",
+        "commonName": "Laung",
+        "englishName": "cloves"
+      },
+      {
+        "amount": "2",
+        "commonName": "Elaichi",
+        "englishName": "green cardamom pods"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Nariyal",
+        "englishName": "fresh coconut, chopped or grated"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "cumin powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Ghee ya Tel",
+        "englishName": "ghee or oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Rinse the chana dal well and soak it in water for 1 hour. Drain."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the soaked dal, turmeric and 2.5 cups water to a pressure cooker. Cook for 4 to 5 whistles on medium heat, then let the pressure release naturally. The grains should be tender but still mostly separate."
+      },
+      {
+        "step": 3,
+        "instruction": "Add salt, sugar, raisins and cashews to the cooked dal. Simmer gently until the dal becomes slightly thick."
+      },
+      {
+        "step": 4,
+        "instruction": "Lightly crush the cinnamon, cloves and cardamom together and keep them aside."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat 1 tablespoon ghee or oil in a pan. Add bay leaf, cumin seeds, ginger, dried red chillies, hing and the crushed whole spices. Fry for a few seconds until fragrant."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour the tempering into the simmering dal. Add cumin powder and red chilli powder, stir gently and simmer for another 1 to 2 minutes."
+      },
+      {
+        "step": 7,
+        "instruction": "In the same pan, heat the remaining ghee or oil and fry the coconut until lightly golden. Add the fried coconut to the dal and mix gently.",
+        "tip": {
+          "title": "Keep the right consistency",
+          "content": "Cholar dal should be fairly thick, but remember that it thickens further as it cools. Add a little hot water if needed just before serving."
+        }
+      },
+      {
+        "step": 8,
+        "instruction": "Serve hot with luchi, kachori or steamed rice."
+      }
+    ],
+    "notes": [
+      "Traditional Bengali cholar dal is made without onion and garlic and has a gentle sweetness.",
+      "For a more festive texture, keep the chana dal cooked through but not completely mashed."
+    ],
+    "nutrition": {
+      "calories": 266,
+      "protein": 8,
+      "carbs": 36,
+      "fat": 11
+    }
+  },
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -38590,4 +38959,7 @@ export const predefinedRecipeServings: Record<string, number> = {
   "red sauce pasta": 4,
   "french fries": 3,
   "chilli potato": 4,
+  "idiyappam": 4,
+  "shorshe ilish": 4,
+  "cholar dal": 4,
 };
