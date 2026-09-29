@@ -641,22 +641,30 @@ useEffect(() => {
   }, [currentStepIndex]);
 
   const handleNextStep = () => {
-    if (currentStepIndex >= recipe.method.length - 1) return;
+  if (currentStepIndex >= recipe.method.length - 1) return;
 
-    const currentHasTimer =
-      parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
+  const currentHasTimer =
+    parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
 
-    // First tap on a timed step just asks for confirmation; a second tap
-    // (or a tap on a step with no timer at all) actually advances.
-    if (currentHasTimer && !showNextStepConfirm) {
-      setShowNextStepConfirm(true);
-      return;
+  // First tap on a timed step just asks for confirmation; a second tap
+  // (or a tap on a step with no timer at all) actually advances.
+  if (currentHasTimer && !showNextStepConfirm) {
+    setShowNextStepConfirm(true);
+    if (isVoiceEnabled && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(
+        "If you're done with this step, press Yes, done."
+      );
+      utterance.rate = 0.95;
+      window.speechSynthesis.speak(utterance);
     }
+    return;
+  }
 
-    setShowNextStepConfirm(false);
-    setStepDirection("next");
-    setCurrentStepIndex((prev) => prev + 1);
-  };
+  setShowNextStepConfirm(false);
+  setStepDirection("next");
+  setCurrentStepIndex((prev) => prev + 1);
+};
 
   const handleCancelNextStep = () => setShowNextStepConfirm(false);
 
@@ -1465,7 +1473,10 @@ useEffect(() => {
                             // Let the chime's attention-grabbing ping land first, then speak —
                             // avoids the beep and voice overlapping into a garbled mess.
                             window.setTimeout(() => {
-                              const utterance = new SpeechSynthesisUtterance("Time's up.");
+                              const message = isLastStep
+                                ? "Time's up."
+                                : "Time's up. If you're done with this step, press Yes, done.";
+                              const utterance = new SpeechSynthesisUtterance(message);
                               utterance.rate = 0.95;
                               window.speechSynthesis.speak(utterance);
                             }, 450);
