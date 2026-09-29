@@ -8,6 +8,10 @@ import SectionDivider from "../components/SectionDivider";
 import { useDishSearch } from "../utils/dishRoutes";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 
+import { useIdentifyDish } from "../utils/useIdentifyDish";
+
+const AUTO_SEARCH_CONFIDENCE = 0.7;
+
 const COOK_STEPS = [
   "Tap the appliances you own",
   "Add what's in your pantry",
@@ -19,7 +23,19 @@ const HomePage: React.FC = () => {
   const goWithPreload = (dish: string) => {
     const predefined = findPredefinedRecipe(dish);
     if (predefined?.image) new Image().src = predefined.image;
-    go(dish);
+        go(dish);
+  };
+
+  const { identify, reset, status, preview, result, error } = useIdentifyDish();
+
+  const handleImage = async (file: File) => {
+    const res = await identify(file);
+    if (!res?.dishName) return;
+
+    // Resolve to your canonical recipe name when we have one
+    const name = findPredefinedRecipe(res.dishName)?.dishName ?? res.dishName;
+    setTerm(name);
+    if (res.confidence >= AUTO_SEARCH_CONFIDENCE) goWithPreload(name);
   };
 
   // Once the big wordmark scrolls out of view, the header wordmark fades in.
@@ -69,14 +85,53 @@ const HomePage: React.FC = () => {
             </span>
           </p>
 
-          <div className="mt-8 w-full max-w-2xl">
+                    <div className="mt-8 w-full max-w-2xl">
             <SearchBar
               searchTerm={term}
               setSearchTerm={setTerm}
               onSearch={() => goWithPreload(term)}
               isLoading={false}
               compact={false}
+              onImageSelected={handleImage}
+              imagePreview={preview}
+              isIdentifying={status === "identifying"}
+              onClearImage={reset}
             />
+
+            {status === "error" && (
+              <p className="mt-3 text-sm text-red-300" role="alert">
+                {error}
+              </p>
+            )}
+
+            {status === "done" && result && !result.dishName && (
+              <p className="mt-3 text-sm text-stone-400" role="status">
+                Couldn&apos;t spot a dish in this photo. Try a closer shot, or type the name above.
+              </p>
+            )}
+
+            {status === "done" &&
+              result?.dishName &&
+              result.confidence < AUTO_SEARCH_CONFIDENCE && (
+                <div className="mt-3 text-left text-sm text-stone-300" role="status">
+                  Not fully sure, but this looks like one of these:
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {[
+                      { dishName: result.dishName, confidence: result.confidence },
+                      ...result.alternatives,
+                    ].map((c) => (
+                      <button
+                        key={c.dishName}
+                        type="button"
+                        onClick={() => goWithPreload(c.dishName)}
+                        className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1 text-stone-100 hover:border-orange-400 hover:text-orange-200"
+                      >
+                        {c.dishName}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
           </div>
 
           <div className="mt-6 w-full max-w-2xl">

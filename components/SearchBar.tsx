@@ -8,6 +8,11 @@ interface SearchBarProps {
   compact?: boolean;
   /** Placeholder used by the compact (header) search box */
   compactPlaceholder?: string;
+  /** Enables the photo button (hero search only) */
+  onImageSelected?: (file: File) => void;
+  imagePreview?: string | null;
+  isIdentifying?: boolean;
+  onClearImage?: () => void;
 }
 
 // Dishes typed out (then erased) in the placeholder while the input is idle.
@@ -44,6 +49,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   isLoading,
   compact = false,
   compactPlaceholder = 'cook another masterpiece?',
+  onImageSelected,
+  imagePreview = null,
+  isIdentifying = false,
+  onClearImage,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -53,6 +62,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canUpload = !compact && !!onImageSelected;
+  const showCamera = canUpload && searchTerm.length === 0;
 
   useEffect(() => {
     if (!compact) setIsExpanded(false);
@@ -178,9 +190,50 @@ const SearchBar: React.FC<SearchBarProps> = ({
               className={`w-full border bg-stone-900 text-stone-100 shadow-sm placeholder-stone-500 transition-all duration-200 focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 disabled:opacity-60 text-ellipsis ${
                 compact
                   ? 'h-11 rounded-full border-stone-700 pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
-                  : 'h-12 rounded-xl border-stone-700 pl-11 pr-3 text-sm sm:h-14 sm:pl-12 sm:pr-4 sm:text-lg'
+                                    : `h-12 rounded-xl border-stone-700 pl-11 text-sm sm:h-14 sm:pl-12 sm:text-lg ${
+                                            showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
+                    }`
               }`}
             />
+
+                        {showCamera  && (
+              <>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) onImageSelected!(file);
+                    e.target.value = ''; // allow re-picking the same photo
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading || isIdentifying}
+                  aria-label="Identify a dish from a photo"
+                  title="Identify a dish from a photo"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-500 transition-colors hover:text-orange-200 focus:outline-none focus-visible:text-orange-200 disabled:opacity-50"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                    <circle cx="12" cy="13" r="3" />
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
 
           <button
@@ -232,7 +285,30 @@ const SearchBar: React.FC<SearchBarProps> = ({
             ) : (
               'Generate Recipe'
             )}
-          </button>
+                    </button>
+        </div>
+      )}
+
+      {canUpload && imagePreview && (
+        <div className="mt-3 flex items-center gap-3 text-left">
+          <div className="relative">
+            <img
+              src={imagePreview}
+              alt="Your photo"
+              className="h-14 w-14 rounded-lg object-cover"
+            />
+            <button
+              type="button"
+              onClick={onClearImage}
+              aria-label="Remove photo"
+              className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-stone-800 text-xs text-stone-200 ring-1 ring-stone-600 hover:bg-stone-700"
+            >
+              ×
+            </button>
+          </div>
+          {isIdentifying && (
+            <span className="text-sm text-stone-400">Identifying your dish…</span>
+          )}
         </div>
       )}
     </div>
