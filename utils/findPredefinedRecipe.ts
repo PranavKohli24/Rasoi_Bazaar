@@ -295,6 +295,11 @@ const MANUAL_ALIASES: Record<string, string> = {
   "amritsari pindi chana": "pindi chole",
   "amritsari chana": "amritsari chole",
   "rajma masala": "rajma (red kidney bean curry)",
+  "kidney beans": "rajma (red kidney bean curry)",
+  "sabut urad dal": "dal makhani",
+  "sabut chana": "chana dal (chana dal tadka)",
+  "dhuli moong dal": "moong dal",
+  "arhar dal": "toor dal",
   "sarson ka saag": "sarson ka saag",
   "sarson da saag": "sarson ka saag",
   "sarson saag": "sarson ka saag",
@@ -704,6 +709,279 @@ const MANUAL_ALIASES: Record<string, string> = {
   "mutton curry recipe": "mutton curry",
   "mutton biryani recipe": "mutton biryani",
   "south indian thali rice": "sambar chawal",
+
+    // yellow dal / dal tadka
+  "yellow dal": "dal tadka",
+  "yellow daal": "dal tadka",
+  "peeli dal": "dal tadka",
+  "peeli daal": "dal tadka",
+  "yellow dal tadka": "dal tadka",
+  "daal tadka": "dal tadka",
+  "dal tarka": "dal tadka",
+  "daal tarka": "dal tadka",
+  "plain yellow dal": "dal tadka",
+
+  // Bedmi Puri
+  "bedmi poori": "bedmi puri",
+  "bedami puri": "bedmi puri",
+  "bedami poori": "bedmi puri",
+  "bedmi puri recipe": "bedmi puri",
+  "bedmi poori recipe": "bedmi puri",
+  "urad dal puri": "bedmi puri",
+
+  // Oats
+  "oats": "quick oats (plain oats)",
+  "plain oats": "quick oats (plain oats)",
+  "quick oats": "quick oats (plain oats)",
+  "quick oat": "quick oats (plain oats)",
+  "plain oatmeal": "quick oats (plain oats)",
+  "oatmeal": "quick oats (plain oats)",
+  "rolled oats": "rolled oats porridge",
+  "rolled oat porridge": "rolled oats porridge",
+  "rolled oats porridge recipe": "rolled oats porridge",
+  "oats porridge": "rolled oats porridge",
+  "oat porridge": "rolled oats porridge",
+  "steel cut oats": "steel cut oats porridge",
+  "steel-cut oats": "steel cut oats porridge",
+  "steel cut oatmeal": "steel cut oats porridge",
+  "steel cut oats porridge": "steel cut oats porridge",
+  "masala oats recipe": "masala oats",
+  "savoury oats": "masala oats",
+  "savory oats": "masala oats",
+  "vegetable masala oats": "masala oats",
+  "oat upma": "oats upma",
+  "oats upma recipe": "oats upma",
+  "oats uppittu": "oats upma",
+
+  // Sattu Paratha
+  "sattu ka paratha": "sattu paratha",
+  "sattu parantha": "sattu paratha",
+  "sattu ka parantha": "sattu paratha",
+  "bihari sattu paratha": "sattu paratha",
+  "sattu paratha recipe": "sattu paratha",
+  "sattu stuffed paratha": "sattu paratha",
+  "chana sattu paratha": "sattu paratha",
+
+  // Amritsari Fish
+  "amritsari machhi": "amritsari fish",
+  "amritsari machli": "amritsari fish",
+  "amritsari macchi": "amritsari fish",
+  "amritsari fish fry": "amritsari fish",
+  "amritsari fried fish": "amritsari fish",
+  "amritsari fish recipe": "amritsari fish",
+  "amritsari machhi fry": "amritsari fish",
+
+  // Bajra Khichdi
+  "bajre ki khichdi": "bajra khichdi",
+  "bajre ki khichri": "bajra khichdi",
+  "bajra khichri": "bajra khichdi",
+  "bajra dal khichdi": "bajra khichdi",
+  "bajra moong dal khichdi": "bajra khichdi",
+  "bajra khichdi recipe": "bajra khichdi",
+
+  // Gujarati Dal / Gujarati Kadhi
+  "gujarati daal": "gujarati dal",
+  "gujarati dal recipe": "gujarati dal",
+  "gujarati tuvar dal": "gujarati dal",
+  "gujarati tuver dal": "gujarati dal",
+  "gujarati toor dal": "gujarati dal",
+  "gujarati tuvar ni dal": "gujarati dal",
+  "gujarati karhi": "gujarati kadhi",
+  "gujarati kadhi recipe": "gujarati kadhi",
+  "gujarati dahi kadhi": "gujarati kadhi",
+  "sweet gujarati kadhi": "gujarati kadhi",
+  "gujarati kadhi karhi": "gujarati kadhi",
+
+  // Usal Pav
+  "usal paav": "usal pav",
+  "usal pao": "usal pav",
+  "usal pav recipe": "usal pav",
+  "matki usal": "usal pav",
+  "matki usal pav": "usal pav",
+  "matki usal paav": "usal pav",
+  "usal bhaji": "usal pav",
+
+  // Kanda Bhaji
+  "kanda bhajji": "kanda bhaji",
+  "kanda bhajiya": "kanda bhaji",
+  "kanda bajji": "kanda bhaji",
+  "kanda pakoda": "kanda bhaji",
+  "kanda pakodi": "kanda bhaji",
+  "onion bhaji": "kanda bhaji",
+  "onion bhajji": "kanda bhaji",
+  "onion bhajiya": "kanda bhaji",
+  "pyaaz pakoda": "kanda bhaji",
+  "pyaz pakoda": "kanda bhaji",
+  "pyaaz pakora": "kanda bhaji",
+  "pyaz pakora": "kanda bhaji",
+
+  // Chana Ghugni
+  "ghugni": "chana ghugni",
+  "ghuguni": "chana ghugni",
+  "chana ghuguni": "chana ghugni",
+  "kala chana ghugni": "chana ghugni",
+  "kala chana ghuguni": "chana ghugni",
+  "bihari ghugni": "chana ghugni",
+  "ghugni curry": "chana ghugni",
+  "chana ghugni recipe": "chana ghugni",
+
+  // Dal Pitha
+  "dal pittha": "dal pitha",
+  "dal peetha": "dal pitha",
+  "bihari dal pitha": "dal pitha",
+  "bihari dal pittha": "dal pitha",
+  "chana dal pitha": "dal pitha",
+  "dal pitha recipe": "dal pitha",
+
+  // Masor Tenga
+  "maasor tenga": "masor tenga",
+  "masor tanga": "masor tenga",
+  "assamese masor tenga": "masor tenga",
+  "masor tenga recipe": "masor tenga",
+  "assamese sour fish curry": "masor tenga",
+  "assamese fish curry": "masor tenga",
+
+  // Thukpa
+  "thupka": "thukpa",
+  "thukpa soup": "thukpa",
+  "thukpa noodles": "thukpa",
+  "thukpa noodle soup": "thukpa",
+  "veg thukpa": "thukpa",
+  "vegetable thukpa": "thukpa",
+  "veg thukpa soup": "thukpa",
+
+  // Hyderabadi Biryani
+  "hyderabad biryani": "hyderabadi biryani",
+  "hyderabadi chicken biryani": "hyderabadi biryani",
+  "hyderabadi dum biryani": "hyderabadi biryani",
+  "hyderabadi chicken dum biryani": "hyderabadi biryani",
+  "hyderabad chicken biryani": "hyderabadi biryani",
+  "dum biryani hyderabad": "hyderabadi biryani",
+  "hyderabadi biriyani": "hyderabadi biryani",
+  "hyderabad biriyani": "hyderabadi biryani",
+
+  // Mirchi Ka Salan
+  "mirchi salan": "mirchi ka salan",
+  "mirchi ka salan recipe": "mirchi ka salan",
+  "mirchi salan recipe": "mirchi ka salan",
+  "hyderabadi mirchi ka salan": "mirchi ka salan",
+  "hyderabadi mirchi salan": "mirchi ka salan",
+  "green chilli salan": "mirchi ka salan",
+
+  // Gongura Pachadi
+  "gongura chutney": "gongura pachadi",
+  "gongura pachadi recipe": "gongura pachadi",
+  "andhra gongura chutney": "gongura pachadi",
+  "andhra gongura pachadi": "gongura pachadi",
+  "gongura roti pachadi": "gongura pachadi",
+  "gongura rotti pachadi": "gongura pachadi",
+
+  // Mysore Masala Dosa
+  "mysuru masala dosa": "mysore masala dosa",
+  "mysore masala dosai": "mysore masala dosa",
+  "mysore masala dose": "mysore masala dosa",
+  "mysuru masala dose": "mysore masala dosa",
+  "mysuru masala dosai": "mysore masala dosa",
+  "mysore masala dosa recipe": "mysore masala dosa",
+
+  // Ragi Mudde
+  "ragi sangati": "ragi mudde",
+  "ragi kali": "ragi mudde",
+  "ragikali": "ragi mudde",
+  "ragi mudda": "ragi mudde",
+  "ragi mudde recipe": "ragi mudde",
+
+  // Kootu variants
+  "poricha koottu": "poricha kootu",
+  "poricha kootu recipe": "poricha kootu",
+  "puli koottu": "puli kootu",
+  "puli kootu recipe": "puli kootu",
+  "pumpkin puli kootu": "puli kootu",
+  "mor koottu": "mor kootu",
+  "more kootu": "mor kootu",
+  "mor kootu recipe": "mor kootu",
+
+  // Poriyal
+  "porial": "poriyal",
+  "poriyal recipe": "poriyal",
+  "beans poriyal": "poriyal",
+  "beans porial": "poriyal",
+  "green beans poriyal": "poriyal",
+  "french beans poriyal": "poriyal",
+
+  // Podi Curry
+  "podi kari": "podi curry",
+  "podi curry recipe": "podi curry",
+  "vazhakkai podi curry": "podi curry",
+  "vazhakai podi curry": "podi curry",
+  "vazhakkai podi": "podi curry",
+  "vazhakkai podi potta curry": "podi curry",
+  "raw banana podi curry": "podi curry",
+  "raw banana podi": "podi curry",
+  "plantain podi curry": "podi curry",
+  "vazhakkai varuval": "podi curry",
+  "vazhakkai poriyal": "podi curry",
+
+  // Gushtaba
+  "goshtaba": "gushtaba",
+  "gushtaba curry": "gushtaba",
+  "kashmiri gushtaba": "gushtaba",
+  "kashmiri goshtaba": "gushtaba",
+  "gushtaba yakhni": "gushtaba",
+  "goshtaba yakhni": "gushtaba",
+
+  // Haak Saag
+  "haakh": "haak saag",
+  "haakh saag": "haak saag",
+  "kashmiri haak": "haak saag",
+  "kashmiri haakh": "haak saag",
+  "haak sabzi": "haak saag",
+
+  // Nadru Yakhni
+  "nadur yakhni": "nadru yakhni",
+  "nadir yakhni": "nadru yakhni",
+  "nandru yakhni": "nadru yakhni",
+  "kamal kakdi yakhni": "nadru yakhni",
+  "lotus stem yakhni": "nadru yakhni",
+  "kashmiri lotus stem curry": "nadru yakhni",
+  "nadru yakhni recipe": "nadru yakhni",
+
+  // Chole Tikki
+  "chole aloo tikki": "chole tikki",
+  "chole tikki chaat": "chole tikki",
+  "aloo tikki chole": "chole tikki",
+  "tikki chole": "chole tikki",
+  "chole ki tikki": "chole tikki",
+  "chole tikki recipe": "chole tikki",
+
+  // Dessert spellings
+  "rabdi": "rabri",
+  "rabadi": "rabri",
+  "rabri recipe": "rabri",
+  "rabdi recipe": "rabri",
+  "rabri doodh": "rabri",
+  "doodh rabri": "rabri",
+
+  "ghewar": "ghevar",
+  "ghebar": "ghevar",
+  "ghevar recipe": "ghevar",
+  "ghewar recipe": "ghevar",
+  "malai ghevar": "ghevar",
+  "rabdi ghevar": "ghevar",
+
+  "sondesh": "sandesh",
+  "bengali sandesh": "sandesh",
+  "bengali sondesh": "sandesh",
+  "chhena sandesh": "sandesh",
+  "sandesh recipe": "sandesh",
+
+  "misti doi": "mishti doi",
+  "mishti dahi": "mishti doi",
+  "mishti dohi": "mishti doi",
+  "bengali mishti doi": "mishti doi",
+  "sweet doi": "mishti doi",
+  "sweet dahi": "mishti doi",
+  "mishti doi recipe": "mishti doi",
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
