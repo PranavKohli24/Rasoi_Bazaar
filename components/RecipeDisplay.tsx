@@ -65,6 +65,10 @@ const Icon: React.FC<{ className?: string; children: React.ReactNode }> = ({
 
 type IconC = React.FC<React.SVGProps<SVGSVGElement>>;
 
+const CheckIcon: IconC = ({ className }) => (
+  <Icon className={className}><path d="M4 12l5 5L20 6" /></Icon>
+);
+
 const SpeakerIcon: IconC = ({ className }) => (
   <Icon className={className}>
     <path d="M11 5 6 9H2v6h4l5 4V5Z" />
@@ -173,9 +177,17 @@ const STEP_ANIMATION_CSS = `
   100% { transform: translateZ(0) scale(1); }
 }
 .animate-image-bounce-3d { animation: image-bounce-3d 0.55s cubic-bezier(0.25, 0.8, 0.35, 1) both; }
-@media (prefers-reduced-motion: reduce) {
-  .step-slide-from-right, .step-slide-from-left, .animate-image-bounce-3d { animation: none; }
+@keyframes confirm-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
+.confirm-pop { animation: confirm-pop 0.28s cubic-bezier(0.35, 1.56, 0.64, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .step-slide-from-right, .step-slide-from-left, .confirm-pop, .animate-image-bounce-3d { animation: none; }
+}
+  
 `;
 
 /* ---------- Shared UI ---------- */
@@ -564,6 +576,7 @@ useEffect(() => {
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
   // When the current step has a running/relevant timer, "Next" asks for a
   // confirmation tap first instead of advancing immediately.
+  const [isConfirmingDone, setIsConfirmingDone] = useState(false);
   const [showNextStepConfirm, setShowNextStepConfirm] = useState(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const methodHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -1521,14 +1534,27 @@ useEffect(() => {
                         </button>
                         <button
                           type="button"
-                          onClick={handleNextStep}
-                          className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                          disabled={isConfirmingDone}
+                          onClick={() => {
+                            setIsConfirmingDone(true);
+                            window.setTimeout(() => {
+                              setIsConfirmingDone(false);
+                              handleNextStep();
+                            }, 1020);
+                          }}
+                          className={`${primaryButton} flex-1 sm:flex-none sm:px-8 ${isConfirmingDone ? "confirm-pop" : ""}`}
                           style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                           onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
                           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
                         >
-                          Yes, done
-                          <ChevronRightIcon className="h-5 w-5" />
+                          {isConfirmingDone ? (
+                            <CheckIcon className="h-5 w-5" />
+                          ) : (
+                            <>
+                              Yes, done
+                              <ChevronRightIcon className="h-5 w-5" />
+                            </>
+                          )}
                         </button>
                       </div>
                     ) : (
