@@ -11939,7 +11939,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kadhi": {
     "dishName": "Kadhi",
-    "image": "/dishes/kadhi-chawal.webp",
+    "image": "/dishes/kadhi.webp",
     "description": "A simple Punjabi-style yogurt and gram-flour curry with a tangy, creamy texture and gentle spices.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -12325,6 +12325,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo matar": {
     "dishName": "Aloo Matar",
+    "image": "/dishes/aloo-matar.webp",
     "description": "A simple potato and green pea curry with a light onion-tomato gravy for.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -12448,6 +12449,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dal palak": {
     "dishName": "Dal Palak",
+    "image": "/dishes/dal-palak.webp",
     "description": "Comforting lentils cooked with spinach, tomato and simple spices for an easy everyday meal.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -12571,6 +12573,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "lobia masala": {
     "dishName": "Lobia Masala",
+    "image": "/dishes/lobia-masala.webp",
     "description": "Black-eyed beans cooked in a simple tomato and spice gravy, ideal with rice or roti.",
     "prepTime": "Approx. 45 minutes (plus soaking)",
     "equipment": [
@@ -13714,6 +13717,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dal baati": {
     "dishName": "Dal Baati",
+    "image": "/dishes/dal-baati.webp",
     "description": "A simple Rajasthani meal of baked whole-wheat baati served with spiced mixed dal and ghee.",
     "prepTime": "Approx. 1 hour 15 minutes",
     "equipment": [
@@ -14618,6 +14622,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "matar korma": {
     "dishName": "Matar Korma",
+    "image": "/dishes/matar-korma.webp",
     "description": "Green peas cooked in a mild onion-cashew yogurt gravy with gentle whole spices.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -15115,6 +15120,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mooli ki sabzi": {
     "dishName": "Mooli Ki Sabzi",
+    "image": "/dishes/mooli-sabzi.webp",
     "description": "A quick North Indian radish sabzi with simple spices, ideal for winter home meals.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -15228,6 +15234,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "lauki sabzi": {
     "dishName": "Lauki Sabzi",
+    "image": "/dishes/lauki-sabzi.webp",
     "description": "A light everyday bottle-gourd sabzi cooked with onion, tomato and minimal spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -15469,6 +15476,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "soya chaap": {
     "dishName": "Soya Chaap Masala",
+    "image": "/dishes/soya-chaap.webp",
     "description": "Home-style soya chaap in a spiced onion-tomato gravy with yogurt and simple whole spices.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -15606,6 +15614,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "papdi chaat": {
     "dishName": "Papdi Chaat",
+    "image": "/dishes/papdi-chaat.webp",
     "description": "Crisp papdi topped with potato, chickpeas, yogurt, chutneys, spices and sev in a home-style chaat.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -15830,6 +15839,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dahi puri": {
     "dishName": "Dahi Puri",
+    "image": "/dishes/dahi-puri.webp",
     "description": "Crisp hollow puris filled with potato, yogurt, chutneys, spices and sev for an.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
@@ -16188,6 +16198,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kadhi pakora": {
     "dishName": "Kadhi Pakora",
+    "image": "/dishes/kadhi-pakora.webp",
     "description": "Soft gram-flour pakoras served in a tangy yogurt kadhi.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -17277,6 +17288,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "vegetable kurma": {
     "dishName": "Vegetable Kurma",
+    "image": "/dishes/veg-kurma.webp",
     "description": "Creamy South Indian-style vegetable kurma made with mixed vegetables, coconut, cashews and mild spices.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -17406,6 +17418,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo shimla mirch": {
     "dishName": "Aloo Shimla Mirch",
+    "image": "/dishes/aloo-shimla-mirch.webp",
     "description": "Simple potato and capsicum sabzi cooked with cumin and everyday Indian spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -17652,6 +17665,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "rogan josh": {
     "dishName": "Rogan Josh",
+    "image": "/dishes/rogan-josh.webp",
     "description": "Home-style Kashmiri-inspired mutton curry with yogurt and warm spices, made tender in a pressure cooker.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -18277,6 +18291,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "parippu curry": {
     "dishName": "Parippu Curry",
+    "image": "/dishes/parippu-curry.webp",
     "description": "Kerala-style yellow dal cooked with mild spices and coconut for a simple home meal.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -19044,6 +19059,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo palya": {
     "dishName": "Aloo Palya",
+    "image": "/dishes/aloo-palya.webp",
     "description": "Simple Karnataka-style potato stir-fry with mustard, curry leaves and a little chilli.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -19278,6 +19294,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo sabzi": {
     "dishName": "Aloo Sabzi",
+    "image": "/dishes/aloo-sabzi.webp",
     "description": "Simple dry potato sabzi with cumin, turmeric and chilli for an everyday meal.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -21001,6 +21018,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "tandoori momos": {
     "dishName": "Tandoori Momos",
+    "image": "/dishes/momos.webp",
     "description": "Home-style baked momos coated in a smoky-spiced yogurt marinade, using an oven instead.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -34750,6 +34768,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sol kadhi": {
   "dishName": "Sol Kadhi",
+  "image": "/dishes/sol-kadhi.webp",
   "description": "Konkan-style cooling drink made from kokum and coconut milk with a little garlic and chilli.",
   "prepTime": "Approx. 15 minutes",
   "equipment": [
