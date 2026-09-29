@@ -62,7 +62,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const [isPhotoMenuOpen, setIsPhotoMenuOpen] = useState(false);
+  // Touch devices get the "Take a photo" option; desktops go straight to the file picker.
+  const [canUseCamera] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+  );
   const canUpload = !compact && !!onImageSelected;
   const showCamera = canUpload && searchTerm.length === 0;
 
@@ -113,6 +119,34 @@ const SearchBar: React.FC<SearchBarProps> = ({
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [compact, isExpanded]);
 
+    // Close the photo menu on outside click, Escape, or once the user starts typing.
+  useEffect(() => {
+    if (!isPhotoMenuOpen) return;
+
+    const handleOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsPhotoMenuOpen(false);
+      }
+    };
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsPhotoMenuOpen(false);
+    };
+
+    document.addEventListener('mousedown', handleOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isPhotoMenuOpen]);
+
+  useEffect(() => {
+    if (searchTerm) setIsPhotoMenuOpen(false);
+  }, [searchTerm]);
+
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !isLoading) {
       if (compact) setIsExpanded(false);
@@ -129,6 +163,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
     // Compact mode: submitting closes it.
     if (compact) setIsExpanded(false);
     onSearch();
+  };
+
+    const handlePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) onImageSelected?.(file);
+    e.target.value = ''; // allow re-picking the same photo
+    setIsPhotoMenuOpen(false);
   };
 
   const placeholder = compact
@@ -196,24 +237,36 @@ const SearchBar: React.FC<SearchBarProps> = ({
               }`}
             />
 
-                        {showCamera  && (
+                        {showCamera && (
               <>
+                {/* Gallery / file picker */}
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) onImageSelected!(file);
-                    e.target.value = ''; // allow re-picking the same photo
-                  }}
+                  onChange={handlePicked}
                 />
+                {/* Opens the rear camera directly on phones */}
+                <input
+                  ref={cameraInputRef}
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  className="hidden"
+                  onChange={handlePicked}
+                />
+
                 <button
                   type="button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={() => {
+                    if (canUseCamera) setIsPhotoMenuOpen((open) => !open);
+                    else fileInputRef.current?.click();
+                  }}
                   disabled={isLoading || isIdentifying}
                   aria-label="Identify a dish from a photo"
+                  aria-haspopup={canUseCamera ? 'menu' : undefined}
+                  aria-expanded={canUseCamera ? isPhotoMenuOpen : undefined}
                   title="Identify a dish from a photo"
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-stone-500 transition-colors hover:text-orange-200 focus:outline-none focus-visible:text-orange-200 disabled:opacity-50"
                 >
@@ -232,6 +285,66 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     <circle cx="12" cy="13" r="3" />
                   </svg>
                 </button>
+
+                {isPhotoMenuOpen && (
+                  <div
+                    role="menu"
+                    className="absolute right-0 top-full z-20 mt-2 w-48 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 py-1 text-left shadow-lg"
+                  >
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => {
+                        setIsPhotoMenuOpen(false);
+                        cameraInputRef.current?.click();
+                      }}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-stone-200 hover:bg-stone-800 focus:bg-stone-800 focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 text-orange-200"
+                        aria-hidden="true"
+                      >
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                        <circle cx="12" cy="13" r="3" />
+                      </svg>
+                      Take a photo
+                    </button>
+
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => {
+                        setIsPhotoMenuOpen(false);
+                        fileInputRef.current?.click();
+                      }}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-stone-200 hover:bg-stone-800 focus:bg-stone-800 focus:outline-none"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 text-orange-200"
+                        aria-hidden="true"
+                      >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <path d="M17 8l-5-5-5 5" />
+                        <path d="M12 3v12" />
+                      </svg>
+                      Upload a photo
+                    </button>
+                  </div>
+                )}
               </>
             )}
           </div>
