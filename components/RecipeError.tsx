@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { displayDishName } from "../utils/displayDishName";
 
 export type ErrorKind = "unavailable" | "not-a-dish" | "busy" | "offline";
@@ -63,6 +63,20 @@ const STEAM_CSS = `
 }
 `;
 
+const PLACEHOLDER_CSS = `
+@keyframes recipe-error-placeholder-fade {
+  0% { opacity: 0; transform: translateY(3px); }
+  12% { opacity: 1; transform: translateY(0); }
+  88% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-3px); }
+}
+.recipe-error-placeholder { animation: recipe-error-placeholder-fade 2.6s ease-in-out; }
+@media (prefers-reduced-motion: reduce) {
+  .recipe-error-placeholder { animation: none; }
+}
+`;
+
+
 const RecipeError: React.FC<RecipeErrorProps> = ({
   kind = "unavailable",
   message,
@@ -76,6 +90,25 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
 
   const [query, setQuery] = useState("");
 
+// Cycle the placeholder example through the suggested dishes.
+const [exampleIndex, setExampleIndex] = useState(0);
+
+useEffect(() => {
+  setExampleIndex(0); // restart from the first suggestion when the list changes
+}, [dishesToShow]);
+
+useEffect(() => {
+  if (dishesToShow.length < 2) return; // nothing to cycle through
+  const id = window.setInterval(() => {
+    setExampleIndex((i) => (i + 1) % dishesToShow.length);
+  }, 2600);
+  return () => window.clearInterval(id);
+}, [dishesToShow]);
+
+const currentExample = dishesToShow[exampleIndex] ?? "Rajma Chawal";
+
+
+
   const handleSearch = (event: React.FormEvent) => {
     event.preventDefault();
     const trimmed = query.trim();
@@ -85,6 +118,7 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
   return (
   <div className="mx-auto mt-4 w-full max-w-2xl animate-fade-in-up overflow-hidden rounded-3xl border border-orange-400/30 bg-stone-900 px-4 py-5 text-center shadow-[0_8px_30px_rgba(0,0,0,0.25)] sm:px-10 sm:py-10">
     <style>{STEAM_CSS}</style>
+    <style>{PLACEHOLDER_CSS}</style>
 
     {/* Empty bowl with a little steam */}
     <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FFE3C2] sm:h-24 sm:w-24">
@@ -129,13 +163,26 @@ const RecipeError: React.FC<RecipeErrorProps> = ({
         onSubmit={handleSearch}
         className="mx-auto mt-4 flex max-w-md flex-col items-stretch justify-center gap-3 sm:mt-6 sm:flex-row"
       >
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Try another dish, e.g. Rajma Chawal"
-          className="w-full flex-1 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 placeholder-stone-500 shadow-sm transition-colors focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 sm:text-base"
-        />
+        <div className="relative w-full flex-1">
+            <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search for another dish"
+                className="w-full rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-sm text-stone-100 shadow-sm transition-colors focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 sm:text-base"
+            />
+            {query.length === 0 && (
+                <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-0 left-4 right-4 flex items-center gap-1 truncate text-sm text-stone-500 sm:text-base"
+                >
+                    <span className="shrink-0">Try another dish, e.g.</span>
+                    <span key={currentExample} className="recipe-error-placeholder truncate">
+                    {currentExample}
+                    </span>
+                </span>
+                )}
+            </div>
         <button
           type="submit"
           disabled={!query.trim()}
