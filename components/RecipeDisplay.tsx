@@ -65,6 +65,20 @@ const Icon: React.FC<{ className?: string; children: React.ReactNode }> = ({
 
 type IconC = React.FC<React.SVGProps<SVGSVGElement>>;
 
+const SpeakerIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M11 5 6 9H2v6h4l5 4V5Z" />
+    <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+  </Icon>
+);
+const SpeakerOffIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M11 5 6 9H2v6h4l5 4V5Z" />
+    <line x1="23" y1="9" x2="17" y2="15" />
+    <line x1="17" y1="9" x2="23" y2="15" />
+  </Icon>
+);
+
 const ClockIcon: IconC = ({ className }) => (
   <Icon className={className}><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Icon>
 );
@@ -421,7 +435,80 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   }, []);
 
   const [isCooking, setIsCooking] = useState(false);
+
+  // keeps the screen awake while actively cooking; browsers vary in support,
+// so this fails silently rather than blocking anything
+const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+
+useEffect(() => {
+  if (!isCooking) return;
+
+  const requestWakeLock = async () => {
+    try {
+      if ("wakeLock" in navigator) {
+        wakeLockRef.current = await (navigator as any).wakeLock.request("screen");
+      }
+    } catch {
+      // Not supported, or permission denied — cooking still works fine.
+    }
+  };
+
+  requestWakeLock();
+
+  // Re-acquire if the tab was backgrounded and comes back (e.g. a phone call)
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "visible") requestWakeLock();
+  };
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
+  return () => {
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+    wakeLockRef.current?.release().catch(() => {});
+    wakeLockRef.current = null;
+  };
+}, [isCooking]);
+
+
+
+
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
+  try {
+    return localStorage.getItem("recipe-voice-enabled") === "true";
+  } catch {
+    return false;
+  }
+});
+
+const toggleVoice = () => {
+  setIsVoiceEnabled((prev) => {
+    const next = !prev;
+    try {
+      localStorage.setItem("recipe-voice-enabled", String(next));
+    } catch {
+      // ignore
+    }
+    if (!next) window.speechSynthesis?.cancel();
+    return next;
+  });
+};
+
+// Speak the current step whenever it changes, if enabled
+useEffect(() => {
+  if (!isCooking || !isVoiceEnabled) return;
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
+  utterance.rate = 0.95;
+  window.speechSynthesis.speak(utterance);
+
+  return () => window.speechSynthesis.cancel();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [currentStepIndex, isCooking, isVoiceEnabled]);
+
+
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
   // When the current step has a running/relevant timer, "Next" asks for a
   // confirmation tap first instead of advancing immediately.
@@ -1206,9 +1293,29 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               icon={<MethodIcon className="h-6 w-6" />}
               aside={
                 isCooking ? (
-                  <span className="text-sm" style={{ color: COLOR.inkSoft }}>
-                    Step {currentStepIndex + 1} of {totalSteps}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+                      Step {currentStepIndex + 1} of {totalSteps}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={toggleVoice}
+                      aria-pressed={isVoiceEnabled}
+                      aria-label={isVoiceEnabled ? "Turn off reading steps aloud" : "Read steps aloud"}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
+                      style={{
+                        borderColor: isVoiceEnabled ? COLOR.saffron : COLOR.border,
+                        backgroundColor: isVoiceEnabled ? COLOR.saffronTint : COLOR.surface,
+                        color: isVoiceEnabled ? COLOR.saffronDark : COLOR.inkSoft,
+                      }}
+                    >
+                      {isVoiceEnabled ? (
+                        <SpeakerIcon className="h-4 w-4" />
+                      ) : (
+                        <SpeakerOffIcon className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 ) : undefined
               }
             />
