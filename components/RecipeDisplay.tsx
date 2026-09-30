@@ -319,30 +319,39 @@ const buildCheckInMarks = (totalSeconds: number): number[] => {
   return marks;
 };
 
+type StepTimerState = { remaining: number; isRunning: boolean; firedMarks: Set<number> };
+
 const StepTimer: React.FC<{
   seconds: number;
   stepKey: number;
   onComplete?: () => void;
   onCheckIn?: (markIndex: number) => void;
-}> = ({ seconds, stepKey, onComplete, onCheckIn }) => {
-  const [remaining, setRemaining] = useState(seconds);
-  const [isRunning, setIsRunning] = useState(false);
+  timerState: Map<number, StepTimerState>;
+}> = ({ seconds, stepKey, onComplete, onCheckIn, timerState }) => {
+  // Reuse this step's saved progress if it's been visited before (e.g. the
+  // person stepped back to check something and came back), instead of
+  // starting the countdown over from scratch. Read once, at mount — this
+  // component gets a fresh instance each time the person navigates back to
+  // this step, so a lazy read here is exactly "restore where I left off".
+  const savedRef = useRef(timerState.get(stepKey));
+  const saved = savedRef.current;
+
+  const [remaining, setRemaining] = useState(saved?.remaining ?? seconds);
+  const [isRunning, setIsRunning] = useState(saved?.isRunning ?? false);
   const intervalRef = useRef<number | null>(null);
   const checkInMarksRef = useRef<number[]>(buildCheckInMarks(seconds));
-  const firedMarksRef = useRef<Set<number>>(new Set());
+  const firedMarksRef = useRef<Set<number>>(saved?.firedMarks ?? new Set());
 
-  // A fresh step (or a step whose parsed duration changed) gets a fresh timer.
+  // Mirror any change straight back into the shared map, so if this
+  // component unmounts (navigating to another step) the countdown is
+  // picked up exactly where it left off when the person returns here.
   useEffect(() => {
-    setRemaining(seconds);
-    setIsRunning(false);
-    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [seconds, stepKey]);
-
-  useEffect(() => {
-  checkInMarksRef.current = buildCheckInMarks(seconds);
-  firedMarksRef.current = new Set();
-}, [seconds, stepKey]);
+    timerState.set(stepKey, {
+      remaining,
+      isRunning,
+      firedMarks: firedMarksRef.current,
+    });
+  }, [remaining, isRunning, stepKey, timerState]);
 
 // Fires once per checkpoint mark as elapsed time crosses it.
 useEffect(() => {
@@ -370,7 +379,10 @@ useEffect(() => {
 }, [isRunning]);
 
 // Fires exactly once per completed countdown, when `remaining` actually
-// transitions to 0 while the timer was running.
+// transitions to 0 while the timer was running. The `isRunning` guard also
+// protects against a re-fire on remount: once a step's timer completes,
+// isRunning is persisted as false, so revisiting an already-finished step
+// later correctly skips this block instead of chiming again.
 useEffect(() => {
   if (remaining !== 0 || !isRunning) return;
   if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
@@ -393,6 +405,7 @@ useEffect(() => {
   const reset = () => {
     setRemaining(seconds);
     setIsRunning(false);
+    firedMarksRef.current = new Set();
   };
 
   const minuteLabel = Math.max(1, Math.round(seconds / 60));
@@ -544,6 +557,14 @@ useEffect(() => {
 
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+
+  // Per-step timer progress, keyed by step index. Lives here (not inside
+  // StepTimer) because StepTimer gets unmounted/remounted every time the
+  // person navigates between steps — this ref is what actually survives
+  // that, so a quick "check the previous step" peek doesn't reset the count.
+  const stepTimersRef = useRef<Map<number, { remaining: number; isRunning: boolean; firedMarks: Set<number> }>>(
+    new Map()
+  );
 
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
   try {
@@ -1530,6 +1551,7 @@ useEffect(() => {
                       <StepTimer
                         seconds={stepDurationSeconds}
                         stepKey={currentStepIndex}
+                        timerState={stepTimersRef.current}
                         onCheckIn={(markIndex) => {
                           const line =
                             markIndex === 0
