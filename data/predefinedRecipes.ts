@@ -37765,6 +37765,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "french fries": {
     "dishName": "French Fries",
+    "image": "/dishes/french-fries.webp",
     "description": "Crispy homemade potato fries with a fluffy centre, seasoned simply with salt and pepper.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -37845,6 +37846,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chilli potato": {
     "dishName": "Chilli Potato",
+    "image": "/dishes/chilli-potato.webp",
     "description": "Crispy potato fingers tossed in a spicy, tangy and slightly sweet Indo-Chinese sauce with onion and capsicum.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -37971,6 +37973,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo puri": {
     "dishName": "Aloo Puri",
+    "image": "/dishes/aloo-puri.webp",
     "description": "Crisp, fluffy puris served with a simple spiced potato sabzi, a classic Indian home-style meal.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -38154,6 +38157,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dahi bhale": {
     "dishName": "Dahi Bhale",
+    "image": "/dishes/dahi-bhale.webp",
     "description": "Soft, fluffy lentil dumplings soaked in water and topped with cool seasoned yogurt.",
     "prepTime": "Approx. 45 minutes (plus 4 hours soaking)",
     "equipment": [
@@ -38750,6 +38754,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
     "bedmi puri": {
       "dishName": "Bedmi Puri",
+      "image": "/dishes/bedmi-puri.webp",
       "description": "Crispy North Indian puris made with wheat flour and a spiced urad dal mixture, commonly served with aloo sabzi.",
       "prepTime": "Approx. 1 hour (plus 4 to 5 hours soaking)",
       "equipment": [
@@ -38882,6 +38887,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "rolled oats porridge": {
       "dishName": "Rolled Oats Porridge",
+      "image": "/dishes/oats.webp",
       "description": "A simple creamy breakfast made by simmering rolled oats with milk or water and finishing with fruit or a little jaggery.",
       "prepTime": "Approx. 10 minutes",
       "equipment": [
@@ -38957,6 +38963,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "steel cut oats porridge": {
       "dishName": "Steel-Cut Oats Porridge",
+      "image": "/dishes/oats.webp",
       "description": "Chewy steel-cut oats slowly cooked into a warm, hearty breakfast with milk, fruit and a little jaggery.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -39036,6 +39043,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "quick oats (plain oats)": {
       "dishName": "Quick Oats (Plain Oats)",
+      "image": "/dishes/oats.webp",
       "description": "A fast everyday oats bowl cooked with milk or water, ready in just a few minutes.",
       "prepTime": "Approx. 5 minutes",
       "equipment": [
@@ -39106,6 +39114,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "masala oats": {
       "dishName": "Masala Oats",
+      "image": "/dishes/masala-oats.webp",
       "description": "Indian-style savoury oats cooked with onion, tomato, vegetables and everyday spices.",
       "prepTime": "Approx. 20 minutes",
       "equipment": [
@@ -39234,6 +39243,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "oats upma": {
       "dishName": "Oats Upma",
+      "image": "/dishes/oats-upma.webp",
       "description": "A South Indian-style savoury upma made with oats, tempering, vegetables and a squeeze of lemon.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [

@@ -448,6 +448,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "bread omelette": "egg omelette",
   "bread omelet": "egg omelette",
   "egg toast": "french toast (anda bread)",
+  "fries" : "french fries",
 
   // halwa
   "halwa": "atta halwa (wheat flour halwa)",
