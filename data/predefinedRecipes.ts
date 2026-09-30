@@ -42322,6 +42322,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "chole tikki": {
       "dishName": "Chole Tikki Chaat",
+      "image": "/dishes/chole-tikki.webp",
       "description": "Crisp potato and pea tikkis topped with spiced chole, curd, chutneys and sev.",
       "prepTime": "Approx. 45 minutes (using cooked chole)",
       "equipment": [
@@ -42469,6 +42470,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "rabri": {
       "dishName": "Rabri",
+      "image": "/dishes/rabri.webp",
       "description": "A rich North Indian dessert made by slowly reducing full-fat milk and collecting layers of malai, then flavouring with cardamom.",
       "prepTime": "Approx. 1 hour",
       "equipment": [
@@ -42552,6 +42554,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "ghevar": {
       "dishName": "Ghevar",
+      "image": "/dishes/ghevar.webp",
       "description": "A Rajasthani honeycomb-style sweet made from a thin chilled maida batter, deep-fried and soaked lightly with sugar syrup.",
       "prepTime": "Approx. 1 hour",
       "equipment": [
@@ -42658,6 +42661,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "sandesh": {
       "dishName": "Sandesh",
+      "image": "/dishes/sandesh.webp",
       "description": "A classic Bengali sweet made from fresh chhena gently cooked with sugar and cardamom until soft and fudgy.",
       "prepTime": "Approx. 35 minutes",
       "equipment": [
@@ -42745,6 +42749,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "mishti doi": {
       "dishName": "Mishti Doi",
+      "image": "/dishes/mishti-doi.webp",
       "description": "A Bengali sweet yogurt made by reducing milk, adding caramelised sugar or jaggery and letting it set until creamy.",
       "prepTime": "Approx. 45 minutes (plus 6 to 8 hours setting)",
       "equipment": [
@@ -43513,7 +43518,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chiku juice": {
     "dishName": "Chikoo Juice",
-    "image": "/dishes/chikoo-juice.webp",
+    "image": "/dishes/chiku-juice.webp",
     "description": "A thick, naturally sweet chikoo drink made by blending ripe sapota with chilled water and a little sweetener.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
