@@ -39371,6 +39371,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "sattu paratha": {
       "dishName": "Sattu Paratha",
+      "image": "/dishes/sattu-paratha.webp",
       "description": "Bihari stuffed paratha filled with roasted chana flour, onion, chilli, ajwain, lemon and mustard oil.",
       "prepTime": "Approx. 45 minutes",
       "equipment": [
@@ -39597,6 +39598,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "bajra khichdi": {
       "dishName": "Bajra Khichdi",
+      "image": "/dishes/bajra-khichdi.webp",
       "description": "A rustic Rajasthani one-pot meal of cracked pearl millet and moong dal cooked until soft and comforting.",
       "prepTime": "Approx. 45 minutes",
       "equipment": [
@@ -41152,6 +41154,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "mysore masala dosa": {
       "dishName": "Mysore Masala Dosa",
+      "image": "/dishes/mysore-masala-dosa.webp",
       "description": "A crisp dosa spread with spicy red garlic chutney and filled with simple potato masala.",
       "prepTime": "Approx. 40 minutes (using ready dosa batter)",
       "equipment": [
@@ -41284,6 +41287,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "ragi mudde": {
       "dishName": "Ragi Mudde",
+      "image": "/dishes/ragi-mudde.webp",
       "description": "A Karnataka staple made from ragi flour cooked into a soft dough and shaped into warm balls.",
       "prepTime": "Approx. 20 minutes",
       "equipment": [
@@ -41352,6 +41356,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "poricha kootu": {
       "dishName": "Poricha Kootu",
+      "image": "/dishes/poricha-kootu.webp",
       "description": "A Tamil-style vegetable and moong dal kootu made with coconut, cumin, pepper and roasted spices.",
       "prepTime": "Approx. 35 minutes",
       "equipment": [
@@ -41484,6 +41489,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "puli kootu": {
       "dishName": "Puli Kootu",
+      "image": "/dishes/puli-kootu.webp",
       "description": "A tangy Tamil-style kootu of pumpkin and chickpeas cooked with tamarind, coconut and roasted lentil spices.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -41739,6 +41745,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "poriyal": {
       "dishName": "Beans Poriyal",
+      "image": "/dishes/poriyal.webp",
       "description": "An everyday South Indian vegetable side dish made with beans, mustard seeds, curry leaves and fresh coconut.",
       "prepTime": "Approx. 20 minutes",
       "equipment": [
@@ -41852,6 +41859,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "podi curry": {
       "dishName": "Vazhakkai Podi Curry",
+      "image": "/dishes/podi-curry.webp",
       "description": "A South Indian raw banana curry tossed with a roasted lentil-spice podi and a simple mustard tempering.",
       "prepTime": "Approx. 35 minutes",
       "equipment": [
@@ -41979,6 +41987,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "gushtaba": {
       "dishName": "Gushtaba",
+      "image": "/dishes/gushtaba.webp",
       "description": "A Kashmiri Wazwan specialty of soft mutton meatballs simmered in a lightly spiced yogurt gravy.",
       "prepTime": "Approx. 1 hour 30 minutes",
       "equipment": [
@@ -42095,6 +42104,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "haak saag": {
       "dishName": "Haak Saag",
+      "image": "/dishes/haak-saag.webp",
       "description": "A simple Kashmiri leafy-green dish cooked with mustard oil, asafoetida, dried chilli and salt.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -42188,6 +42198,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "nadru yakhni": {
       "dishName": "Nadru Yakhni",
+      "image": "/dishes/nadru-yakhni.webp",
       "description": "A Kashmiri yogurt curry of tender lotus stem flavoured with fennel, dry ginger and whole spices.",
       "prepTime": "Approx. 45 minutes",
       "equipment": [
