@@ -1180,25 +1180,25 @@ useEffect(() => {
     >
             <style>{STEP_ANIMATION_CSS}</style>
 
-            {resumePrompt && (
+      {resumePrompt && (
         <div
-          className={`${card} mb-6 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:p-5`}
-          style={{ borderColor: COLOR.border, backgroundColor: COLOR.mustard }}
+          className={`${card} mb-6 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6`}
+          style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
         >
           <div>
-            <p className="font-serif text-base font-black sm:text-lg" style={{ color: COLOR.ink }}>
+            <p className="font-serif text-lg font-black sm:text-xl" style={{ color: COLOR.ink }}>
               Pick up where you left off?
             </p>
-            <p className="mt-0.5 text-sm" style={{ color: COLOR.inkSoft }}>
+            <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
               You were on step {resumePrompt.stepIndex + 1} of {recipe.method.length}.
             </p>
           </div>
 
-          <div className="flex shrink-0 gap-2.5">
+          <div className="flex shrink-0 gap-3">
             <button
               type="button"
               onClick={handleStartFresh}
-              className={`${secondaryButton} flex-1 py-2 sm:flex-none`}
+              className={`${secondaryButton} flex-1 sm:flex-none`}
               style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
             >
               Start fresh
@@ -1206,10 +1206,10 @@ useEffect(() => {
             <button
               type="button"
               onClick={handleResumeCooking}
-              className={`${primaryButton} flex-1 py-2 sm:flex-none`}
-              style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#FFD8A8")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronTint)}
+              className={`${primaryButton} flex-1 sm:flex-none`}
+              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
             >
               Resume cooking
             </button>
