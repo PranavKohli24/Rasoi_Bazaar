@@ -606,6 +606,14 @@ useEffect(() => {
 const progressKey = `recipe-progress:${recipe.dishName}`;
 
 // Restore on mount
+// A pending resume, awaiting the person's confirmation — nothing is
+// applied to isCooking/currentStepIndex until they choose.
+const [resumePrompt, setResumePrompt] = useState<{
+  stepIndex: number;
+  checkedIngredients: boolean[] | null;
+} | null>(null);
+
+// Check for saved progress on mount — but don't apply it yet.
 useEffect(() => {
   try {
     const saved = localStorage.getItem(progressKey);
@@ -613,20 +621,39 @@ useEffect(() => {
     const parsed = JSON.parse(saved);
 
     if (parsed.isCooking && typeof parsed.currentStepIndex === "number") {
-      setCurrentStepIndex(Math.min(parsed.currentStepIndex, recipe.method.length - 1));
-      setIsCooking(true);
-    }
-    if (
-      Array.isArray(parsed.checkedIngredients) &&
-      parsed.checkedIngredients.length === recipe.ingredients.length
-    ) {
-      setCheckedIngredients(parsed.checkedIngredients);
+      const validIngredients =
+        Array.isArray(parsed.checkedIngredients) &&
+        parsed.checkedIngredients.length === recipe.ingredients.length;
+
+      setResumePrompt({
+        stepIndex: Math.min(parsed.currentStepIndex, recipe.method.length - 1),
+        checkedIngredients: validIngredients ? parsed.checkedIngredients : null,
+      });
     }
   } catch {
-    // Corrupted or inaccessible — just start fresh.
+    // Corrupted or inaccessible — nothing to offer, just start fresh.
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
+
+const handleResumeCooking = () => {
+  if (!resumePrompt) return;
+  setCurrentStepIndex(resumePrompt.stepIndex);
+  if (resumePrompt.checkedIngredients) {
+    setCheckedIngredients(resumePrompt.checkedIngredients);
+  }
+  setIsCooking(true);
+  setResumePrompt(null);
+};
+
+const handleStartFresh = () => {
+  try {
+    localStorage.removeItem(progressKey);
+  } catch {
+    // ignore
+  }
+  setResumePrompt(null);
+};
 
 // Persist on every relevant change
 useEffect(() => {
@@ -1145,7 +1172,44 @@ useEffect(() => {
       className="w-full animate-fade-in-up pb-24 sm:pb-8"
       style={{ color: COLOR.ink }}
     >
-      <style>{STEP_ANIMATION_CSS}</style>
+            <style>{STEP_ANIMATION_CSS}</style>
+
+      {resumePrompt && (
+        <div
+          className={`${card} mb-6 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6`}
+          style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+        >
+          <div>
+            <p className="font-serif text-lg font-black sm:text-xl" style={{ color: COLOR.ink }}>
+              Pick up where you left off?
+            </p>
+            <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
+              You were on step {resumePrompt.stepIndex + 1} of {recipe.method.length}.
+            </p>
+          </div>
+
+          <div className="flex shrink-0 gap-3">
+            <button
+              type="button"
+              onClick={handleStartFresh}
+              className={`${secondaryButton} flex-1 sm:flex-none`}
+              style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+            >
+              Start fresh
+            </button>
+            <button
+              type="button"
+              onClick={handleResumeCooking}
+              className={`${primaryButton} flex-1 sm:flex-none`}
+              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+            >
+              Resume cooking
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Header: a generous photo, the dish's own voice in the description,
           quick facts, and the two ways forward — cook it, or have it
