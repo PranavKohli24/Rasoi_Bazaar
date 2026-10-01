@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import KitchenEquipmentSelector from "./KitchenEquipmentSelector";
+import KitchenEquipmentSelector, { EQUIPMENT_NAMES } from "./KitchenEquipmentSelector";
 import {
   findRecipesFromIngredients,
   suggestIngredients,
@@ -33,6 +33,46 @@ interface SavedState {
   resultSource?: "predefined" | "ai" | "mixed";
   assumeStaples?: boolean;
 }
+
+const KITCHEN_KEY = "rasoi:kitchen:v1";
+
+const loadKitchen = (): string[] | null => {
+  try {
+    const raw = localStorage.getItem(KITCHEN_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return null;
+
+    // Keep only equipment the selector still offers.
+    const valid = parsed.filter(
+      (name): name is string =>
+        typeof name === "string" && EQUIPMENT_NAMES.includes(name)
+    );
+
+    return valid.length ? valid : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveKitchen = (equipment: string[]) => {
+  try {
+    if (equipment.length) {
+      localStorage.setItem(KITCHEN_KEY, JSON.stringify(equipment));
+    }
+  } catch {
+    /* Ignore storage failures (private mode, full storage). */
+  }
+};
+
+const forgetKitchen = () => {
+  try {
+    localStorage.removeItem(KITCHEN_KEY);
+  } catch {
+    /* Ignore. */
+  }
+};
 
 const loadSaved = (): SavedState | null => {
   try {
@@ -216,6 +256,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   onSelectDish,
 }) => {
   const [saved] = useState(loadSaved);
+  const [savedKitchen, setSavedKitchen] = useState<string[] | null>(loadKitchen);
 
   const [step, setStep] = useState<1 | 2 | 3>(() => {
     if (!saved) return 1;
@@ -434,7 +475,7 @@ const handleIngredientKeyDown = (
       return;
     }
 
-    if (pending) {
+            if (pending) {
       setIngredients(finalIngredients);
       setIngredientInput("");
     }
@@ -494,6 +535,18 @@ try {
     setStep(1);
   };
 
+  const applySavedKitchen = () => {
+  if (!savedKitchen) return;
+  setEquipment(savedKitchen);
+  setError(null);
+  setStep(2);
+};
+
+const forgetSavedKitchen = () => {
+  forgetKitchen();
+  setSavedKitchen(null);
+};
+
   const goToIngredients = () => {
     requestIdRef.current++;
     setIsLoading(false);
@@ -525,10 +578,40 @@ try {
 
         <div className="border-t border-stone-700" />
 
-        {step === 1 && (
-          <>
-            <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
-              <KitchenEquipmentSelector
+          {step === 1 && (
+  <>
+    <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
+      {savedKitchen && equipment.length === 0 && (
+  <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+    <div className="min-w-0">
+      <p className="text-sm font-semibold text-orange-50">
+        Use your saved kitchen?
+      </p>
+      <p className="mt-0.5 truncate text-xs text-stone-400 sm:text-sm">
+        {savedKitchen.join(", ")}
+      </p>
+    </div>
+
+    <div className="flex shrink-0 items-center gap-1">
+      <button
+        type="button"
+        onClick={applySavedKitchen}
+        className={`${footerButton} whitespace-nowrap`}
+      >
+        Use my kitchen
+      </button>
+      <button
+        type="button"
+        onClick={forgetSavedKitchen}
+        className={ghostButton}
+      >
+        Forget
+      </button>
+    </div>
+  </div>
+)}
+
+      <KitchenEquipmentSelector
                 selectedEquipment={equipment}
                 onChange={setEquipment}
               />
@@ -552,6 +635,8 @@ try {
                 type="button"
                 disabled={!equipment.length}
                 onClick={() => {
+                  saveKitchen(equipment);
+                  setSavedKitchen(equipment);
                   setError(null);
                   setStep(2);
                 }}

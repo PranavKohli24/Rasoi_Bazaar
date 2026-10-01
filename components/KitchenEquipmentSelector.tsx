@@ -28,6 +28,8 @@ const equipmentItems: EquipmentItem[] = [
   { id: 'pressure-cooker', name: 'Cooker', label: 'Cooker', src: '/kitchen/cooker.png', left: 22, top: 34, width: 12, zIndex: 25 },
 ];
 
+export const EQUIPMENT_NAMES = equipmentItems.map((item) => item.name);
+
 const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
   selectedEquipment,
   onChange,
