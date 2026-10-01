@@ -1,6 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import KitchenEquipmentSelector from "./KitchenEquipmentSelector";
-import { findRecipesFromIngredients } from "../services/cookWhatYouHaveService";
+import {
+  findRecipesFromIngredients,
+  suggestIngredients,
+} from "../services/cookWhatYouHaveService";
 import type { RecipeMatch } from "../services/cookWhatYouHaveService";
 
 interface CookWhatYouHaveProps {
@@ -241,6 +244,21 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   >(saved?.resultSource ?? "predefined");
   const [error, setError] = useState<string | null>(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+const [activeIndex, setActiveIndex] = useState(-1);
+
+const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
+
+const suggestions = useMemo(
+  () =>
+    showSuggestions
+      ? suggestIngredients(currentSegment, {
+          exclude: ingredients,
+          includeStaples: !assumeStaples,
+        })
+      : [],
+  [showSuggestions, currentSegment, ingredients, assumeStaples]
+);
 
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
@@ -322,9 +340,11 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   };
 
   const addFromInput = () => {
-    addIngredients(ingredientInput);
-    setIngredientInput("");
-  };
+  addIngredients(ingredientInput);
+  setIngredientInput("");
+  setActiveIndex(-1);
+  setShowSuggestions(false);
+};
 
   const removeIngredient = (ingredient: string) =>
     setIngredients((current) =>
@@ -341,14 +361,48 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     else addIngredients(item);
   };
 
-  const handleIngredientKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Enter") {
+  const pickSuggestion = (label: string) => {
+  const parts = ingredientInput.split(",");
+  parts.pop(); // drop the half-typed segment
+  const rest = parts.map((part) => part.trim()).filter(Boolean).join(", ");
+
+  addIngredients(label);
+  setIngredientInput(rest ? `${rest}, ` : "");
+  setActiveIndex(-1);
+  setShowSuggestions(false);
+};
+
+const handleIngredientKeyDown = (
+  event: React.KeyboardEvent<HTMLInputElement>
+) => {
+  if (suggestions.length > 0) {
+    if (event.key === "ArrowDown") {
       event.preventDefault();
-      addFromInput();
+      setActiveIndex((index) => (index + 1) % suggestions.length);
+      return;
     }
-  };
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveIndex((index) => (index <= 0 ? suggestions.length - 1 : index - 1));
+      return;
+    }
+    if (event.key === "Escape") {
+      setShowSuggestions(false);
+      setActiveIndex(-1);
+      return;
+    }
+    if (event.key === "Enter" && suggestions[activeIndex]) {
+      event.preventDefault();
+      pickSuggestion(suggestions[activeIndex]);
+      return;
+    }
+  }
+
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addFromInput();
+  }
+};
 
   const handleFindRecipes = async () => {
     const pending = ingredientInput.trim();
@@ -574,20 +628,62 @@ try {
                 Type ingredients
               </label>
               <div className="mt-2 flex gap-2 sm:gap-3">
-                <input
-                  id="ingredient-input"
-                  type="text"
-                  value={ingredientInput}
-                  onChange={(event) => setIngredientInput(event.target.value)}
-                  onKeyDown={handleIngredientKeyDown}
-                  placeholder="e.g. paneer, onion, dal"
-                  autoComplete="off"
-                  enterKeyHint="done"
-                  className="min-w-0 flex-1 rounded-xl border border-stone-700 bg-stone-900 px-4 py-3 text-base text-stone-100 outline-none transition placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
-                />
-                <button
-                  type="button"
-                  onClick={addFromInput}
+  <div className="relative min-w-0 flex-1">
+    <input
+      id="ingredient-input"
+      type="text"
+      role="combobox"
+      aria-expanded={suggestions.length > 0}
+      aria-controls="ingredient-suggestions"
+      aria-autocomplete="list"
+      aria-activedescendant={
+        activeIndex >= 0 ? `ingredient-option-${activeIndex}` : undefined
+      }
+      value={ingredientInput}
+      onChange={(event) => {
+        setIngredientInput(event.target.value);
+        setShowSuggestions(true);
+        setActiveIndex(-1);
+      }}
+      onFocus={() => setShowSuggestions(true)}
+      onBlur={() => setShowSuggestions(false)}
+      onKeyDown={handleIngredientKeyDown}
+      placeholder="e.g. paneer, onion, dal"
+      autoComplete="off"
+      enterKeyHint="done"
+      className="w-full rounded-xl border border-stone-700 bg-stone-900 px-4 py-3 text-base text-stone-100 outline-none transition placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
+    />
+
+    {suggestions.length > 0 && (
+      <ul
+        id="ingredient-suggestions"
+        role="listbox"
+        onMouseDown={(event) => event.preventDefault()}
+        className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg"
+      >
+        {suggestions.map((label, index) => (
+          <li
+            key={label}
+            id={`ingredient-option-${index}`}
+            role="option"
+            aria-selected={index === activeIndex}
+            onClick={() => pickSuggestion(label)}
+            className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
+              index === activeIndex
+                ? "bg-orange-400/15 text-orange-100"
+                : "text-stone-200 hover:bg-stone-800"
+            }`}
+          >
+            {label}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+
+  <button
+    type="button"
+    onClick={addFromInput}
                   disabled={!ingredientInput.trim()}
                   className="rounded-xl border border-stone-700 bg-stone-800 px-5 py-3 font-semibold text-stone-100 transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
                 >
@@ -595,7 +691,7 @@ try {
                 </button>
               </div>
               <p className="mt-2 text-xs text-stone-500">
-                Separate with commas to add several at once.
+                Start typing for suggestions. Separate with commas to add several at once.
               </p>
 
               <div className="mt-6">

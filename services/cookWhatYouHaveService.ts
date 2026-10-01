@@ -879,3 +879,125 @@ export const findRecipesFromIngredients = async (
   }
 };
 
+
+/* ------------------------------------------------------------------ */
+/* Ingredient autocomplete                                             */
+/* ------------------------------------------------------------------ */
+
+interface IngredientSuggestion {
+  label: string;
+  lower: string;
+  words: string[];
+  key: string;
+  count: number; // how many recipes use it
+  staple: boolean; // staple or garnish: hidden unless asked for
+}
+
+let SUGGESTION_INDEX: IngredientSuggestion[] | null = null;
+
+const suggestionLabel = (phrase: string): string => {
+  const text = phrase
+    .replace(/\([^)]*\)/g, " ")
+    .split(",")[0]
+    .replace(/\boptional\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
+};
+
+// Built on first use, so it costs nothing until someone types.
+const buildSuggestionIndex = (): IngredientSuggestion[] => {
+  const byKey = new Map<string, IngredientSuggestion>();
+
+  for (const recipe of Object.values(predefinedRecipes)) {
+    const rows: RawIngredient[] = Array.isArray((recipe as any).ingredients)
+      ? (recipe as any).ingredients
+      : [];
+
+    for (const row of rows) {
+      if (isWaterRow(row)) continue;
+
+      const phrases = [row.commonName, row.englishName]
+        .filter(Boolean)
+        .flatMap((name) => splitAlternatives(String(name)));
+
+      for (const phrase of phrases) {
+        const label = suggestionLabel(phrase);
+        if (!label || label.length > 28 || label.split(" ").length > 3) continue;
+        if (/\bfor\b/i.test(label)) continue; // "Oil for deep frying"
+
+        const tokens = tokenize(label);
+        if (!tokens.length) continue;
+        const key = canonicalKey(tokens);
+
+        const existing = byKey.get(key);
+        if (existing) {
+          existing.count++;
+          continue;
+        }
+
+        const lower = label.toLowerCase();
+        byKey.set(key, {
+          label,
+          lower,
+          words: lower.split(" "),
+          key,
+          count: 1,
+          staple: STAPLE_KEYS.has(key) || GARNISH_KEYS.has(key),
+        });
+      }
+    }
+  }
+
+  return [...byKey.values()];
+};
+
+export interface SuggestOptions {
+  exclude?: string[]; // ingredients already added
+  includeStaples?: boolean; // show salt, oil, spices too
+  limit?: number;
+}
+
+export const suggestIngredients = (query: string, options: SuggestOptions = {}): string[] => {
+  const q = baseNormalize(query);
+  if (q.length < 2) return [];
+
+  if (!SUGGESTION_INDEX) SUGGESTION_INDEX = buildSuggestionIndex();
+
+  const limit = options.limit ?? 6;
+  const excluded = new Set(
+    (options.exclude ?? []).map((item) => canonicalKey(tokenize(item))).filter(Boolean)
+  );
+  const singleWord = !q.includes(" ");
+
+  const scored: { s: IngredientSuggestion; score: number }[] = [];
+
+  for (const s of SUGGESTION_INDEX) {
+    if (s.staple && !options.includeStaples) continue;
+    if (excluded.has(s.key)) continue;
+
+    let score = 0;
+    if (s.lower === q) score = 100;
+    else if (s.lower.startsWith(q)) score = 90;
+    else if (` ${s.lower}`.includes(` ${q}`)) score = 75; // a later word starts with it
+    else if (s.lower.includes(q)) score = 60;
+    else if (singleWord && q.length >= 3) {
+      // typo tolerance: "panner" -> Paneer, "tomto" -> Tomato
+      const typo = s.words.some(
+        (w) => tokenSimilar(q, w) || (q.length >= 4 && tokenSimilar(q, w.slice(0, q.length)))
+      );
+      if (typo) score = 40;
+    }
+
+    if (score > 0) scored.push({ s, score });
+  }
+
+  scored.sort(
+    (a, b) =>
+      b.score - a.score ||
+      b.s.count - a.s.count ||
+      a.s.label.length - b.s.label.length
+  );
+
+  return scored.slice(0, limit).map((x) => x.s.label);
+};
