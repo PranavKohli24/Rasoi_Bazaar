@@ -40584,6 +40584,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "thukpa": {
       "dishName": "Vegetable Thukpa",
+      "image": "/dishes/veg-thukpa.webp",
       "description": "A warm Himalayan noodle soup with vegetables, ginger, garlic and a simple savoury broth.",
       "prepTime": "Approx. 30 minutes",
       "equipment": [
@@ -40716,6 +40717,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "hyderabadi biryani": {
       "dishName": "Hyderabadi Chicken Biryani",
+      "image": "/dishes/hyd-chicken-biryani.webp",
       "description": "A classic dum biryani with yogurt-marinated chicken, fragrant basmati rice, fried onions, mint and coriander.",
       "prepTime": "Approx. 2 hours 15 minutes (plus marination)",
       "equipment": [
@@ -40872,6 +40874,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "mirchi ka salan": {
       "dishName": "Mirchi Ka Salan",
+      "image": "/dishes/mirchi-ka-salan.webp",
       "description": "A Hyderabadi curry of mild green chillies simmered in a roasted peanut, sesame and coconut gravy with tamarind.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -41032,6 +41035,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "gongura pachadi": {
       "dishName": "Gongura Pachadi",
+      "image": "/dishes/gongura-pachadi.webp",
       "description": "A bold Andhra pachadi made from sour gongura leaves, dried red chillies, garlic and a simple tempering.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
