@@ -80,12 +80,12 @@ const App: React.FC = () => {
             <span className="mx-2 text-stone-600" aria-hidden="true">
               ·
             </span>
-            <a
+            {/* <a
               href="mailto:kohlipranav24@gmail.com"
               className="transition-colors hover:text-stone-100"
             >
               kohlipranav24@gmail.com
-            </a>
+            </a> */}
           </p>
         </div>
       </footer>
