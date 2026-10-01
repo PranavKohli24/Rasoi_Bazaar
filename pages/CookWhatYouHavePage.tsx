@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import CompactHeader from "../components/CompactHeader";
 import CookWhatYouHave from "../components/CookWhatYouHave";
-import { RECIPE_PATH } from "../utils/dishRoutes";
+import { useDishSearch } from "../utils/dishRoutes";
 
 const CookWhatYouHavePage: React.FC = () => {
-  const navigate = useNavigate();
+  const { go } = useDishSearch();
 
   useEffect(() => {
     document.title = "Cook what you have | Rasoi Bazaar";
@@ -16,9 +15,7 @@ const CookWhatYouHavePage: React.FC = () => {
       <CompactHeader />
 
       <div>
-        <CookWhatYouHave
-          onSelectDish={(dish) => navigate(RECIPE_PATH, { state: { dish } })}
-        />
+        <CookWhatYouHave onSelectDish={(dish) => go(dish)} />
       </div>
     </div>
   );
