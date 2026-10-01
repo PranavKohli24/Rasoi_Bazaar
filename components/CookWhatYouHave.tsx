@@ -8,24 +8,9 @@ interface CookWhatYouHaveProps {
 }
 
 const QUICK_INGREDIENTS = [
-  "Onion",
-  "Tomato",
-  "Potato",
-  "Paneer",
-  "Rice",
-  "Atta",
-  "Dal",
-  "Eggs",
-  "Milk",
-  "Curd",
-  "Green chilli",
-  "Ginger",
-  "Garlic",
-  "Salt",
-  "Oil",
-  "Ghee",
-  "Turmeric",
-  "Cumin",
+  "Onion", "Tomato", "Potato", "Paneer", "Rice", "Atta", "Dal", "Besan",
+  "Eggs", "Milk", "Curd", "Bread", "Capsicum", "Peas", "Spinach",
+  "Cauliflower", "Green chilli", "Ginger", "Garlic",
 ];
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
@@ -41,6 +26,7 @@ interface SavedState {
   results: RecipeMatch[];
   step: 1 | 2 | 3;
   resultSource?: "predefined" | "ai" | "mixed";
+  assumeStaples?: boolean;
 }
 
 const loadSaved = (): SavedState | null => {
@@ -233,6 +219,10 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     return saved.step === 1 ? 1 : 2;
   });
 
+  const [assumeStaples, setAssumeStaples] = useState<boolean>(
+    saved?.assumeStaples ?? true
+  );
+
   const [equipment, setEquipment] = useState<string[]>(
     saved?.equipment ?? []
   );
@@ -265,12 +255,13 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
           results,
           step,
           resultSource,
+          assumeStaples,
         })
       );
     } catch {
       /* Ignore storage failures. */
     }
-  }, [equipment, ingredients, results, step, resultSource, isLoading]);
+  }, [equipment, ingredients, results, step, resultSource, assumeStaples, isLoading]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -401,6 +392,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
       const response = await findRecipesFromIngredients({
         equipment,
         ingredients: finalIngredients,
+        assumeStaples,
       });
 
       if (!response.recipes.length) {
@@ -429,6 +421,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     setError(null);
     setIsLoading(false);
     setResultSource("predefined");
+    setAssumeStaples(true);
     setStep(1);
   };
 
@@ -512,9 +505,26 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 What&apos;s in your pantry?
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-stone-400 sm:text-base">
-                Add everything you&apos;re happy to cook with. We only suggest
-                dishes made from what you list, so include basics like salt and oil.
+                Add the main things you have. We&apos;ll suggest dishes that use them.
               </p>
+
+              <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
+                <input
+                  type="checkbox"
+                  checked={assumeStaples}
+                  onChange={(event) => setAssumeStaples(event.target.checked)}
+                  className="mt-1 h-4 w-4 accent-orange-300"
+                />
+                <span>
+                  <span className="block text-sm font-semibold text-stone-100">
+                    I have basic staples
+                  </span>
+                  <span className="block text-xs text-stone-400">
+                    Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
+                    garam masala, pepper, mustard seeds
+                  </span>
+                </span>
+              </label>
 
               <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <span className="text-sm text-stone-500">Cooking with</span>

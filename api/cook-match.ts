@@ -1,9 +1,9 @@
 /**
  * POST /api/cook-match   body: { equipment: string[], ingredients: string[], count?: number, excludeDishNames?: string[] }
  *
- * Runs on Vercel, so the OpenRouter key stays on the server. Set
- * OPENROUTER_API_KEY (no VITE_ prefix) in Vercel > Settings > Environment
- * Variables. OPENROUTER_MODEL is optional (defaults to "openrouter/free").
+ * Runs on Vercel, so the Cloudflare token stays on the server. Set
+ * CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN (no VITE_ prefix) in
+ * Vercel > Settings > Environment Variables. CF_MODEL is optional.
  */
 
 // Local stand-ins so this file doesn't depend on which type packages are installed.
@@ -22,8 +22,10 @@ interface Res {
 
 export const config = { maxDuration: 60 };
 
-const MODEL = process.env.OPENROUTER_MODEL || "openrouter/free";
-const BASE_URL = "https://openrouter.ai/api/v1";
+const BASE_URL = "https://api.cloudflare.com/client/v4";
+const MODEL = process.env.CF_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
+const FALLBACK_MODEL = "@cf/meta/llama-3.1-8b-instruct"; // used on the retry
+
 const MAX_ATTEMPTS = 2; // one retry if the model returns broken JSON
 
 const RATE_LIMIT = 6; // requests ...
@@ -72,6 +74,12 @@ const isRateLimited = (ip: string): boolean => {
   }
   return limited;
 };
+
+const STAPLES = [
+  "salt", "oil", "ghee", "sugar", "turmeric", "haldi", "cumin", "jeera",
+  "chilli powder", "coriander powder", "garam masala", "black pepper", "mustard seeds",
+];
+
 
 // Only accept calls made from our own site (blocks other websites; curl can still call it).
 const originAllowed = (req: Req): boolean => {
@@ -148,9 +156,34 @@ const cleanMatches = (value: unknown) =>
     ];
   }).slice(0, 3);
 
+const isAllowed = (name: string, allowed: string[]): boolean => {
+  const n = name.toLowerCase().trim();
+  if (n.length > 30 || n.split(/\s+/).length > 3) return false; // sentences are not ingredient names
+  return allowed.some((a) => n === a || n.includes(a) || a.includes(n));
+};
+
+const COMMENTARY = /\b(missing|substitut\w*|however|actually|instead|alternative|optional)\b/i;
+
+const validateMatches = (
+  matches: ReturnType<typeof cleanMatches>,
+  ingredients: string[],
+  equipment: string[],
+  assumeStaples: boolean
+) => {
+  const allowedIngredients = [...ingredients, ...(assumeStaples ? STAPLES : []), "water"].map((s) => s.toLowerCase());
+  const allowedEquipment = equipment.map((s) => s.toLowerCase());
+
+  return matches.filter(
+  (m) =>
+    m.ingredientsUsed.length > 0 &&
+    !COMMENTARY.test(`${m.ingredientsUsed.join(" ")} ${m.whyItWorks} ${m.description}`) &&
+      m.ingredientsUsed.every((i) => isAllowed(i, allowedIngredients)) &&
+      m.equipmentUsed.every((e) => isAllowed(e, allowedEquipment))
+  );
+};
 /* ---------- prompt (kept on the server) ---------- */
 
-const buildPrompt = (equipment: string[], ingredients: string[], count: number, excludeDishNames: string[]): string => `
+const buildPrompt = (equipment: string[], ingredients: string[], count: number, excludeDishNames: string[], assumeStaples: boolean): string => `
 You are the recipe-matching engine for an Indian cooking app.
 
 The user has given us their COMPLETE list of available ingredients and kitchen equipment.
@@ -160,6 +193,7 @@ ${equipment.map((item) => `- ${item}`).join("\n")}
 
 AVAILABLE INGREDIENTS:
 ${ingredients.map((item) => `- ${item}`).join("\n")}
+${assumeStaples ? `\nBASIC STAPLES (always available):\n${STAPLES.map((s) => `- ${s}`).join("\n")}\n` : ""}
 
 Your task:
 Find up to ${count} real dishes that the user can ACTUALLY cook right now.
@@ -168,11 +202,13 @@ STRICT RULES:
 
 1. Only recommend dishes that can be made with the ingredients provided.
 2. Do NOT assume the user has ingredients that are not listed.
-3. Do NOT assume salt, oil, butter, spices, dairy, vegetables, herbs or garnishes unless they appear in the ingredient list.
+3. ${assumeStaples
+  ? "The BASIC STAPLES above are always available. Do NOT assume any other ingredient that is not listed."
+  : "Do NOT assume salt, oil, butter, spices, dairy, vegetables, herbs or garnishes unless they appear in the ingredient list."}
 4. Water is always available and does not need to be listed.
 5. The required cooking equipment must be available.
 6. Do not recommend a dish if an essential ingredient is missing.
-7. Prefer dishes that use several of the ingredients the user already has.
+7. Prefer dishes that use the MOST of the listed ingredients. Rank dishes that use many of them above dishes that use few.
 8. Prefer practical home-style Indian dishes, but dishes from other cuisines are allowed when they genuinely fit.
 9. Do not invent fictional dishes.
 10. Return no more than ${count} results.
@@ -180,7 +216,9 @@ STRICT RULES:
 12. Do not return dishes with missing essential ingredients.
 13. Keep every description and explanation to one short sentence.
 14. Do not provide cooking instructions.
-15. Prefer the simplest valid dishes first.
+15. Avoid very basic dishes (plain roti, paratha, boiled rice, plain dal) when the user listed many ingredients. Return varied dish types, not variations of one dish.
+16. ingredientsUsed and equipmentUsed must contain ONLY short names copied from the lists above (for example "Dal", "Onion"). Never put sentences, notes or substitutions in them.
+17. If a dish needs an ingredient that is not listed, do not return that dish at all. Do not suggest substitutes.
 
 Do not recommend any of these dishes because they were already found locally:
 ${excludeDishNames.length ? excludeDishNames.map((name) => `- ${name}`).join("\n") : "- None"}
@@ -198,6 +236,14 @@ The recipes do NOT need to be limited to dishes already known by the app. Discov
 Return ONLY the requested JSON structure: {"recipes": [ ... ]}
 `;
 
+const extractJson = (text: string): any => {
+  const cleaned = text.replace(/```(?:json)?/gi, "").trim();
+  const start = cleaned.indexOf("{");
+  const end = cleaned.lastIndexOf("}");
+  if (start === -1 || end <= start) throw new Error("No JSON object found");
+  return JSON.parse(cleaned.slice(start, end + 1));
+};
+
 /* ---------- the endpoint ---------- */
 
 export default async function handler(req: Req, res: Res) {
@@ -210,9 +256,10 @@ export default async function handler(req: Req, res: Res) {
 
   if (!originAllowed(req)) return fail(res, 403, "FORBIDDEN", GENERIC_ERROR);
 
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
-    console.error("OPENROUTER_API_KEY is not set on the server. Add it in Vercel > Settings > Environment Variables, then redeploy.");
+  const apiKey = process.env.CLOUDFLARE_API_TOKEN;
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  if (!apiKey || !accountId) {
+    console.error("CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is not set. Add them in .env.local / Vercel, then restart or redeploy.");
     return fail(res, 500, "NOT_CONFIGURED", GENERIC_ERROR);
   }
 
@@ -229,6 +276,7 @@ export default async function handler(req: Req, res: Res) {
   const equipment = cleanList(body?.equipment, MAX_EQUIPMENT);
   const ingredients = cleanList(body?.ingredients, MAX_INGREDIENTS);
   const excludeDishNames = cleanDishNames(body?.excludeDishNames);
+  const assumeStaples = body?.assumeStaples !== false;
 
   const requestedCount = Number(body?.count);
   const count =
@@ -243,23 +291,22 @@ export default async function handler(req: Req, res: Res) {
     return fail(res, 400, "INVALID_INPUT", "Please add at least one ingredient.");
   }
 
-  const origin = header(req, "origin") || `https://${header(req, "host")}`;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    let content = "";
+  const model = attempt === 1 ? MODEL : FALLBACK_MODEL;
+  let content = "";
+  let finishReason = "";
 
-    try {
-      const response = await fetch(`${BASE_URL}/chat/completions`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": origin,
-          "X-Title": "Rasoi Bazaar",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          messages: [
+  try {
+    const response = await fetch(`${BASE_URL}/accounts/${accountId}/ai/v1/chat/completions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
             {
               role: "system",
               content:
@@ -267,43 +314,50 @@ export default async function handler(req: Req, res: Res) {
             },
             {
               role: "user",
-              content: buildPrompt(equipment, ingredients, count, excludeDishNames),
+              content: buildPrompt(equipment, ingredients, count, excludeDishNames, assumeStaples),
             },
           ],
           response_format: { type: "json_object" },
           temperature: 0.2,
-          max_tokens: 1000,
+          max_tokens: 2000,
         }),
       });
 
       if (!response.ok) {
-        console.error("OpenRouter error:", response.status, (await response.text()).slice(0, 500));
+        console.error("Cloudflare error:", response.status, (await response.text()).slice(0, 500));
         return response.status === 429 || response.status === 503
           ? fail(res, 503, "BUSY", BUSY_ERROR)
           : fail(res, 502, "SERVER", GENERIC_ERROR);
       }
 
       const data: any = await response.json();
-      content = str(data?.choices?.[0]?.message?.content);
+      const choice = data?.choices?.[0];
+      content = str(choice?.message?.content);
+      finishReason = String(choice?.finish_reason ?? "");
     } catch (error) {
-      console.error("OpenRouter request failed:", error);
+      console.error("Cloudflare request failed:", error);
       return fail(res, 502, "SERVER", GENERIC_ERROR);
     }
 
     let parsed: any;
     try {
-      parsed = JSON.parse(content.replace(/^```json\s*/i, "").replace(/```$/i, "").trim());
+      parsed = extractJson(content);
     } catch {
-      console.error(`OpenRouter returned invalid JSON (attempt ${attempt}).`);
+      console.error(
+        `Cloudflare returned invalid JSON (attempt ${attempt}). model=${model} finish=${finishReason} raw=`,
+        content.slice(0, 300)
+      );
       continue; // try once more
     }
 
     if (!parsed || !Array.isArray(parsed.recipes)) {
-      console.error(`OpenRouter returned an unexpected shape (attempt ${attempt}).`);
+      console.error(`Cloudflare returned an unexpected shape (attempt ${attempt}).`);
       continue;
     }
 
-    return res.status(200).json({ recipes: cleanMatches(parsed.recipes).slice(0, count) });
+    return res.status(200).json({
+      recipes: validateMatches(cleanMatches(parsed.recipes), ingredients, equipment, assumeStaples).slice(0, count),
+    });
   }
 
   return fail(res, 502, "SERVER", GENERIC_ERROR);

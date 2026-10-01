@@ -8,6 +8,7 @@ import type { Recipe } from "../types";
 export interface CookWhatYouHaveInput {
   equipment: string[];
   ingredients: string[];
+  assumeStaples?: boolean;
 }
 
 export interface RecipeMatch {
@@ -30,15 +31,17 @@ export interface CookWhatYouHaveResponse {
 
 const MATCH_CONFIG = {
   maxResults: 3,
-  minRequiredCoverage: 1.0, // every required ingredient must be available
-  matchThreshold: 0.8, // how confident a fuzzy match must be to "count"
+  matchThreshold: 0.8,
   equipmentMatchThreshold: 0.65,
   weights: {
-    requiredCoverage: 0.65,
-    overallCoverage: 0.25,
-    speed: 0.1,
+    richness: 0.45,     // dish is built from many real ingredients
+    utilization: 0.4,   // dish uses many of the user's picks
+    optional: 0.1,
+    speed: 0.05,        // tie-breaker only
   },
-  maxInputStringLength: 60, // defensive clamp on any single field
+  trivialPantrySize: 8, // user picked this many main ingredients or more...
+  trivialMaxMain: 2,    // ...hide dishes with this few main ingredients (paratha)
+  maxInputStringLength: 60,
   maxIngredientsAccepted: 50,
   maxEquipmentAccepted: 20,
 } as const;
@@ -505,12 +508,34 @@ interface Candidate {
   match: RecipeMatch;
 }
 
+const STAPLE_PHRASES = [
+  "salt", "oil", "cooking oil", "vegetable oil", "refined oil", "mustard oil",
+  "ghee", "sugar", "turmeric", "turmeric powder", "haldi",
+  "cumin", "cumin seeds", "jeera", "chilli powder", "red chilli powder",
+  "chili powder", "coriander powder", "garam masala", "black pepper",
+  "mustard seeds",
+];
+
+const STAPLE_KEYS = new Set(STAPLE_PHRASES.map((p) => canonicalKey(tokenize(p))));
+
+const isStaple = (req: IngredientRequirement): boolean =>
+  req.aliases.some((alias) => STAPLE_KEYS.has(canonicalKey(alias.tokens)));
+
+const joinNatural = (items: string[]): string =>
+  items.length <= 1
+    ? items.join("")
+    : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+  
+
 const matchRecipes = (
   compiledRecipes: CompiledRecipe[],
   users: UserIngredient[],
-  userEquipment: { tokens: string[] }[]
+  userEquipment: { tokens: string[] }[],
+  assumeStaples: boolean
 ): Candidate[] => {
   const shortlistKeys = candidateRecipeKeys(users);
+  const threshold = MATCH_CONFIG.matchThreshold;
+  const userMain = users.filter((u) => !STAPLE_KEYS.has(canonicalKey(u.tokens)));
   const candidates: Candidate[] = [];
 
   for (const compiled of compiledRecipes) {
@@ -519,52 +544,62 @@ const matchRecipes = (
 
     const required = compiled.requirements.filter((r) => !r.optional);
     const optional = compiled.requirements.filter((r) => r.optional);
-    if (!required.length) continue;
+    const mainRequired = required.filter((r) => !isStaple(r));
+    if (!mainRequired.length) continue;
 
-    const matchedLabels: string[] = [];
-    let requiredMatched = 0;
-    let optionalMatched = 0;
-
-    for (const req of required) {
-      if (bestMatchScore(req, users) >= MATCH_CONFIG.matchThreshold) {
-        requiredMatched++;
-        matchedLabels.push(req.label);
-      }
+    // Hide trivial dishes (paratha, plain rice) when the user has a big pantry.
+    if (
+      userMain.length >= MATCH_CONFIG.trivialPantrySize &&
+      mainRequired.length <= MATCH_CONFIG.trivialMaxMain
+    ) {
+      continue;
     }
 
-    const coverage = requiredMatched / required.length;
-    if (coverage < MATCH_CONFIG.minRequiredCoverage) continue;
+    // Every required ingredient must be available. Staples are free when the toggle is on.
+    const missingSomething = required.some(
+      (r) => !(assumeStaples && isStaple(r)) && bestMatchScore(r, users) < threshold
+    );
+    if (missingSomething) continue;
 
-    for (const req of optional) {
-      if (bestMatchScore(req, users) >= MATCH_CONFIG.matchThreshold) {
-        optionalMatched++;
-        matchedLabels.push(req.label);
-      }
-    }
+    const optionalMain = optional.filter((r) => !isStaple(r) && bestMatchScore(r, users) >= threshold);
 
-    const overallTotal = required.length + optional.length;
-    const overallMatched = requiredMatched + optionalMatched;
-    const overallCoverage = overallTotal ? overallMatched / overallTotal : coverage;
+    // How many of the user's own picks does this dish actually consume?
+    const usedUsers = userMain.filter((u) =>
+      mainRequired.some((r) =>
+        r.aliases.some((a) => aliasMatchScore(u.tokens, a.tokens) >= threshold)
+      )
+    ).length;
+
+    const richness = Math.min(mainRequired.length, 8) / 8;
+    const utilization = userMain.length ? usedUsers / userMain.length : 0;
+    const optionalCoverage = optional.length ? optionalMain.length / optional.length : 0;
 
     const prepMinutes = parsePrepMinutes(compiled.prepTime);
     const speed = Number.isFinite(prepMinutes) ? 1 / Math.max(prepMinutes, 5) : 0;
 
     const { weights } = MATCH_CONFIG;
-    const score = coverage * weights.requiredCoverage + overallCoverage * weights.overallCoverage + speed * weights.speed;
-    const pct = Math.round(coverage * 100);
+    const score =
+      richness * weights.richness +
+      utilization * weights.utilization +
+      optionalCoverage * weights.optional +
+      speed * weights.speed;
+
+    const usedLabels = [...mainRequired, ...optionalMain].map((r) => r.label);
+    const shown = usedLabels.slice(0, 4).map((l) => l.toLowerCase());
+    const prep = compiled.prepTime ? ` Ready in ${compiled.prepTime}.` : "";
 
     candidates.push({
       score,
-      matchedCount: overallMatched,
+      matchedCount: usedLabels.length,
       prepMinutes,
       key: compiled.key,
       match: {
         dishName: compiled.dishName,
         description: compiled.description,
         prepTime: compiled.prepTime,
-        ingredientsUsed: matchedLabels,
+        ingredientsUsed: usedLabels,
         equipmentUsed: usedEquipmentLabels(compiled.equipment, userEquipment),
-        whyItWorks: `Uses ${requiredMatched} of ${required.length} core ingredients you have (${pct}% match), with equipment you picked.`,
+        whyItWorks: `Uses your ${joinNatural(shown)}.${prep}`,
       },
     });
   }
@@ -593,6 +628,7 @@ const cloneResponse = (response: CookWhatYouHaveResponse): CookWhatYouHaveRespon
 
 const buildCacheKey = (input: CookWhatYouHaveInput): string =>
   JSON.stringify({
+    assumeStaples: input.assumeStaples ?? true,
     equipment: input.equipment.map((e) => canonicalKey(tokenize(String(e ?? "")))).filter(Boolean).sort(),
     ingredients: input.ingredients.map((i) => canonicalKey(tokenize(String(i ?? "")))).filter(Boolean).sort(),
   });
@@ -608,7 +644,12 @@ export const findMatchingPredefinedRecipes = (input: CookWhatYouHaveInput): Cook
   const userEquipment = buildUserEquipment(input.equipment);
   const users = buildUserIngredients(input.ingredients);
 
-  const candidates = matchRecipes(COMPILED_RECIPES, users, userEquipment);
+  const candidates = matchRecipes(
+    COMPILED_RECIPES,
+    users,
+    userEquipment,
+    input.assumeStaples ?? true
+  );
 
   const recipes: RecipeMatch[] = [];
   const seen = new Set<string>();
@@ -699,6 +740,7 @@ const findRecipesWithOpenRouter = async (
       body: JSON.stringify({
         equipment: input.equipment,
         ingredients: input.ingredients,
+        assumeStaples: input.assumeStaples ?? true,
         count,
         excludeDishNames,
       }),
