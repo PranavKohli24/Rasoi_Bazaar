@@ -104,9 +104,9 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   }`}
                 />
 
-                {/* Label */}
+                {/* Label (desktop only: the list below covers mobile) */}
                 <span
-                  className={`absolute -top-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-[8px] font-medium leading-none transition-all duration-200 sm:text-[9px] ${
+                  className={`absolute -top-6 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-[9px] font-medium leading-none transition-all duration-200 sm:block ${
                     selected
                       ? 'scale-100 bg-orange-200 text-white opacity-100 shadow-md'
                       : 'scale-95 border border-stone-700 bg-stone-900 text-stone-200 opacity-0 group-hover:scale-100 group-hover:opacity-100'
