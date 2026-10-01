@@ -69,6 +69,7 @@ const DESCRIPTOR_WORDS = new Set([
   "serving", "cooking", "frying", "brushing", "dusting", "greasing",
   "ripe", "whole", "ground", "plain", "pure", "quality", "good",
   "approx", "approximately", "about",
+   "deep", "fry", "stuffing", "filling",
 ]);
 
 /** Small, curated dictionary of common no-space compounds users type.
@@ -204,6 +205,10 @@ const aliasMatchScore = (userTokens: string[], aliasTokens: string[]): number =>
   const userSet = new Set(userTokens);
   const aliasSet = new Set(aliasTokens);
   if (!userSet.size || !aliasSet.size) return 0;
+
+  // A plain "dal" covers any specific dal (toor, moong, masoor...).
+  if (userSet.size === 1 && userSet.has("dal") && aliasSet.has("dal")) return 0.85;
+
 
   const intersection = [...userSet].filter((t) => aliasSet.has(t));
   const intersectionSize = intersection.length;
@@ -521,6 +526,13 @@ const STAPLE_KEYS = new Set(STAPLE_PHRASES.map((p) => canonicalKey(tokenize(p)))
 const isStaple = (req: IngredientRequirement): boolean =>
   req.aliases.some((alias) => STAPLE_KEYS.has(canonicalKey(alias.tokens)));
 
+// Garnishes: nice to have, never a reason to reject a dish.
+const GARNISH_PHRASES = ["coriander leaves", "curry leaves", "lemon", "lemon juice"];
+const GARNISH_KEYS = new Set(GARNISH_PHRASES.map((p) => canonicalKey(tokenize(p))));
+
+const isGarnish = (req: IngredientRequirement): boolean =>
+  req.aliases.some((alias) => GARNISH_KEYS.has(canonicalKey(alias.tokens)));
+
 const joinNatural = (items: string[]): string =>
   items.length <= 1
     ? items.join("")
@@ -535,7 +547,10 @@ const matchRecipes = (
 ): Candidate[] => {
   const shortlistKeys = candidateRecipeKeys(users);
   const threshold = MATCH_CONFIG.matchThreshold;
-  const userMain = users.filter((u) => !STAPLE_KEYS.has(canonicalKey(u.tokens)));
+  const userMain = users.filter((u) => {
+  const key = canonicalKey(u.tokens);
+    return !STAPLE_KEYS.has(key) && !GARNISH_KEYS.has(key);
+  });
   const candidates: Candidate[] = [];
 
   for (const compiled of compiledRecipes) {
@@ -544,7 +559,7 @@ const matchRecipes = (
 
     const required = compiled.requirements.filter((r) => !r.optional);
     const optional = compiled.requirements.filter((r) => r.optional);
-    const mainRequired = required.filter((r) => !isStaple(r));
+    const mainRequired = required.filter((r) => !isStaple(r) && !isGarnish(r));
     if (!mainRequired.length) continue;
 
     // Hide trivial dishes (paratha, plain rice) when the user has a big pantry.
@@ -557,7 +572,7 @@ const matchRecipes = (
 
     // Every required ingredient must be available. Staples are free when the toggle is on.
     const missingSomething = required.some(
-      (r) => !(assumeStaples && isStaple(r)) && bestMatchScore(r, users) < threshold
+      (r) => !(assumeStaples && isStaple(r)) && !isGarnish(r) && bestMatchScore(r, users) < threshold
     );
     if (missingSomething) continue;
 
@@ -621,6 +636,24 @@ const matchRecipes = (
 const MATCH_CACHE = new Map<string, CookWhatYouHaveResponse>();
 const MAX_CACHE_ENTRIES = 50;
 
+const AI_CACHE = new Map<string, RecipeMatch[]>();
+const MAX_AI_CACHE_ENTRIES = 30;
+
+const cloneMatches = (list: RecipeMatch[]): RecipeMatch[] =>
+  list.map((r) => ({
+    ...r,
+    ingredientsUsed: [...r.ingredientsUsed],
+    equipmentUsed: [...r.equipmentUsed],
+  }));
+
+const rememberAi = (key: string, list: RecipeMatch[]) => {
+  if (AI_CACHE.size >= MAX_AI_CACHE_ENTRIES) {
+    const oldest = AI_CACHE.keys().next().value;
+    if (typeof oldest === "string") AI_CACHE.delete(oldest);
+  }
+  AI_CACHE.set(key, cloneMatches(list));
+};
+
 const cloneResponse = (response: CookWhatYouHaveResponse): CookWhatYouHaveResponse => ({
   source: response.source,
   recipes: response.recipes.map((r) => ({ ...r, ingredientsUsed: [...r.ingredientsUsed], equipmentUsed: [...r.equipmentUsed] })),
@@ -680,6 +713,9 @@ export const findMatchingPredefinedRecipes = (input: CookWhatYouHaveInput): Cook
 const GENERIC_ERROR = "The kitchen assistant couldn't find recipes right now. Please try again.";
 const OFFLINE_ERROR = "Couldn't reach our kitchen. Check your connection and try again.";
 
+const TIMEOUT_ERROR = "The kitchen assistant is taking too long. Please try again.";
+const AI_TIMEOUT_MS = 25_000; // covers the server's one JSON retry
+
 const textValue = (value: unknown): string => (typeof value === "string" ? value.trim() : "");
 
 const stringList = (value: unknown): string[] =>
@@ -731,46 +767,60 @@ const findRecipesWithOpenRouter = async (
 ): Promise<RecipeMatch[]> => {
   if (count <= 0) return [];
 
-  let response: Response;
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
 
   try {
-    response = await fetch("/api/cook-match", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        equipment: input.equipment,
-        ingredients: input.ingredients,
-        assumeStaples: input.assumeStaples ?? true,
-        count,
-        excludeDishNames,
-      }),
-    });
-  } catch (error) {
-    console.error("Cook What You Have AI fallback failed:", error);
-    throw new Error(OFFLINE_ERROR);
-  }
+    let response: Response;
 
-  let data: any = null;
-  try {
-    data = await response.json();
-  } catch {
-    console.error("The cook-match API didn't return JSON. Locally, start the app with `vercel dev` instead of `npm run dev`.");
-  }
+    try {
+      response = await fetch("/api/cook-match", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          equipment: input.equipment,
+          ingredients: input.ingredients,
+          assumeStaples: input.assumeStaples ?? true,
+          count,
+          excludeDishNames,
+        }),
+      });
+    } catch (error) {
+      if (controller.signal.aborted) throw new Error(TIMEOUT_ERROR);
+      console.error("Cook What You Have AI fallback failed:", error);
+      throw new Error(OFFLINE_ERROR);
+    }
 
-  if (!response.ok) {
-    console.error("Cook What You Have AI fallback error:", response.status, JSON.stringify(data?.error));
-    throw new Error(typeof data?.error?.message === "string" && data.error.message ? data.error.message : GENERIC_ERROR);
-  }
+    let data: any = null;
+    try {
+      data = await response.json();
+    } catch {
+      if (controller.signal.aborted) throw new Error(TIMEOUT_ERROR);
+      console.error("The cook-match API didn't return JSON. Locally, start the app with `vercel dev` instead of `npm run dev`.");
+    }
 
-  if (!Array.isArray(data?.recipes)) {
-    console.error("The cook-match API returned an unexpected response:", data);
-    throw new Error(GENERIC_ERROR);
-  }
+    if (!response.ok) {
+      console.error("Cook What You Have AI fallback error:", response.status, JSON.stringify(data?.error));
+      throw new Error(typeof data?.error?.message === "string" && data.error.message ? data.error.message : GENERIC_ERROR);
+    }
 
-  return cleanAiMatches(data.recipes).slice(0, count);
+    if (!Array.isArray(data?.recipes)) {
+      console.error("The cook-match API returned an unexpected response:", data);
+      throw new Error(GENERIC_ERROR);
+    }
+
+    return cleanAiMatches(data.recipes).slice(0, count);
+  } finally {
+    window.clearTimeout(timer);
+  }
 };
 
-export const findRecipesFromIngredients = async (input: CookWhatYouHaveInput): Promise<CookWhatYouHaveResponse> => {
+
+export const findRecipesFromIngredients = async (
+  input: CookWhatYouHaveInput,
+  onLocalResults?: (recipes: RecipeMatch[]) => void
+): Promise<CookWhatYouHaveResponse> => {
   const predefined = findMatchingPredefinedRecipes(input);
   const predefinedCount = predefined.recipes.length;
 
@@ -781,14 +831,25 @@ export const findRecipesFromIngredients = async (input: CookWhatYouHaveInput): P
     };
   }
 
+  // Show local matches immediately while the AI fills the remaining slots.
+  if (predefinedCount > 0) onLocalResults?.(predefined.recipes);
+
   const missingCount = MATCH_CONFIG.maxResults - predefinedCount;
+  const aiKey = buildCacheKey(input);
 
   try {
-    const ai = await findRecipesWithOpenRouter(
-      input,
-      missingCount,
-      predefined.recipes.map((recipe) => recipe.dishName)
-    );
+    const cachedAi = AI_CACHE.get(aiKey);
+
+    const ai = cachedAi
+      ? cloneMatches(cachedAi)
+      : await findRecipesWithOpenRouter(
+          input,
+          missingCount,
+          predefined.recipes.map((recipe) => recipe.dishName)
+        );
+
+    // Only remember successful, non-empty answers so a bad run can be retried.
+    if (!cachedAi && ai.length > 0) rememberAi(aiKey, ai);
 
     const recipes = mergeUniqueRecipes(
       predefined.recipes,
@@ -817,3 +878,4 @@ export const findRecipesFromIngredients = async (input: CookWhatYouHaveInput): P
     throw error;
   }
 };
+

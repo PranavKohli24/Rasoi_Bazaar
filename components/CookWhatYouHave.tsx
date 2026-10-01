@@ -15,6 +15,8 @@ const QUICK_INGREDIENTS = [
 
 const STEPS = ["Equipment", "Ingredients", "Dishes"];
 
+const RESULT_SLOTS = 3;
+
 const FRIENDLY_ERROR =
   "We couldn't find a recipe for that combination. Try adding another ingredient or piece of equipment.";
 
@@ -242,6 +244,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
+  const requestIdRef = useRef(0); // ignores late answers from searches the user already left
 
   useEffect(() => {
     if (isLoading) return;
@@ -382,38 +385,50 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
       setIngredientInput("");
     }
 
-    setError(null);
-    setResults([]);
-    setResultSource("predefined");
-    setIsLoading(true);
-    setStep(3);
+    const requestId = ++requestIdRef.current;
+const isCurrent = () => requestId === requestIdRef.current;
 
-    try {
-      const response = await findRecipesFromIngredients({
-        equipment,
-        ingredients: finalIngredients,
-        assumeStaples,
-      });
+setError(null);
+setResults([]);
+setResultSource("predefined");
+setIsLoading(true);
+setStep(3);
 
-      if (!response.recipes.length) {
-        setError(FRIENDLY_ERROR);
-      } else {
-        setResults(response.recipes);
-        setResultSource(response.source);
-      }
-    } catch (err) {
-      console.error("Cook what you have failed:", err);
-      setError(
-        err instanceof Error && err.message
-          ? err.message
-          : FRIENDLY_ERROR
-      );
-    } finally {
-      setIsLoading(false);
+try {
+  const response = await findRecipesFromIngredients(
+    {
+      equipment,
+      ingredients: finalIngredients,
+      assumeStaples,
+    },
+    (localRecipes) => {
+      if (isCurrent()) setResults(localRecipes); // show local matches right away
     }
+  );
+
+  if (!isCurrent()) return;
+
+  if (!response.recipes.length) {
+    setError(FRIENDLY_ERROR);
+  } else {
+    setResults(response.recipes);
+    setResultSource(response.source);
+  }
+} catch (err) {
+  if (!isCurrent()) return;
+  console.error("Cook what you have failed:", err);
+  setError(
+    err instanceof Error && err.message
+      ? err.message
+      : FRIENDLY_ERROR
+  );
+} finally {
+  if (isCurrent()) setIsLoading(false);
+}
   };
 
   const startOver = () => {
+    requestIdRef.current++;
     setResults([]);
     setEquipment([]);
     setIngredients([]);
@@ -426,6 +441,8 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   };
 
   const goToIngredients = () => {
+    requestIdRef.current++;
+    setIsLoading(false);
     setResults([]);
     setError(null);
     setResultSource("predefined");
@@ -680,7 +697,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
           </>
         )}
 
-        {step === 3 && isLoading && (
+        {step === 3 && isLoading && results.length === 0 && (
           <div
             className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10"
             role="status"
@@ -739,7 +756,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
           </div>
         )}
 
-        {step === 3 && !isLoading && !error && results.length > 0 && (
+        {step === 3 && !error && results.length > 0 && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
                             <div>
@@ -820,6 +837,19 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     </button>
                   </article>
                 ))}
+
+                {isLoading && (
+                  <div role="status" aria-live="polite" className="grid gap-4">
+                    <p className="flex items-center gap-2 text-sm text-stone-400">
+                      Looking for more dishes…
+                    </p>
+                    {Array.from({ length: Math.max(RESULT_SLOTS - results.length, 0) }).map(
+                      (_, index) => (
+                        <ResultSkeleton key={index} />
+                      )
+                    )}
+                  </div>
+                )}
               </div>
 
               

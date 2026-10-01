@@ -176,7 +176,7 @@ const validateMatches = (
   return matches.filter(
   (m) =>
     m.ingredientsUsed.length > 0 &&
-    !COMMENTARY.test(`${m.ingredientsUsed.join(" ")} ${m.whyItWorks} ${m.description}`) &&
+    !COMMENTARY.test(m.ingredientsUsed.join(" ")) &&
       m.ingredientsUsed.every((i) => isAllowed(i, allowedIngredients)) &&
       m.equipmentUsed.every((e) => isAllowed(e, allowedEquipment))
   );
