@@ -179,7 +179,7 @@ const HomePage: React.FC = () => {
                   </span>
 
                   <img
-                    src="/basket.png"
+                    src="/cookwhatyouhave_cover.png"
                     alt=""
                     className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-lg sm:h-28"
                     draggable={false}

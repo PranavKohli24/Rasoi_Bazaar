@@ -81,10 +81,10 @@ const App: React.FC = () => {
               ·
             </span>
             <a
-              href="mailto:hey@pranavkohli.me"
+              href="mailto:kohlipranav24@gmail.com"
               className="transition-colors hover:text-stone-100"
             >
-              hey@pranavkohli.me
+              kohlipranav24@gmail.com
             </a>
           </p>
         </div>
