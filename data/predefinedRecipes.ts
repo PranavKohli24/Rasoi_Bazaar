@@ -22643,6 +22643,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rajma gogji": {
     dishName: "Rajma Gogji",
+    "image": "/dishes/rajma-gogji.webp",
     description: "Kashmiri kidney beans and tender turnip simmered with fennel, dry ginger and gentle Kashmiri spices.",
     prepTime: "Approx. 55 minutes (plus overnight soaking)",
     equipment: [
@@ -22682,6 +22683,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "siddu": {
     dishName: "Siddu",
+    "image": "/dishes/siddu.webp",
     description: "Soft Himachali steamed wheat buns filled with a simple spiced urad dal mixture and served warm with ghee.",
     prepTime: "Approx. 5 hours 30 minutes (including 4 to 5 hours proofing)",
     equipment: [
@@ -22722,6 +22724,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo ke gutke": {
     dishName: "Aloo Ke Gutke",
+    "image": "/dishes/aloo-gutke.webp",
     description: "Chunky potatoes tossed in mustard oil, cumin, dried chillies and simple Pahadi spices.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -22756,6 +22759,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gatte ki sabzi": {
     dishName: "Gatte Ki Sabzi",
+    "image": "/dishes/gatte-sabzi.webp",
     description: "Tender gram-flour dumplings simmered in a tangy yogurt gravy with Rajasthani spices.",
     prepTime: "Approx. 45 minutes",
     equipment: [
@@ -22800,6 +22804,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sev tameta": {
     dishName: "Sev Tameta",
+    "image": "/dishes/sev-tameta.webp",
     description: "Tangy Gujarati tomato curry sweetened lightly and finished with crunchy sev just before serving.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -22836,6 +22841,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bharli vangi": {
     dishName: "Bharli Vangi",
+    "image": "/dishes/bharli-vangi.webp",
     description: "Baby brinjals stuffed with a nutty Maharashtrian peanut-coconut masala and slow-cooked until tender.",
     prepTime: "Approx. 45 minutes",
     equipment: [
@@ -22877,6 +22883,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "ros omelette": {
     dishName: "Ros Omelette",
+    "image": "/dishes/ros-omelette.webp",
     description: "A fluffy Goan onion omelette topped with a rich coconut-tomato ros and served with soft pao.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -22922,6 +22929,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "beef ularthiyathu": {
     dishName: "Beef Ularthiyathu",
+    "image": "/dishes/beef-ularthiyathu.webp",
     description: "Kerala-style beef cooked tender with black pepper, ginger, garlic, curry leaves and coconut pieces.",
     prepTime: "Approx. 55 minutes",
     equipment: [
@@ -22965,6 +22973,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gutti vankaya": {
     dishName: "Gutti Vankaya",
+    "image": "/dishes/bharli-vangi.webp",
     description: "Tender baby brinjals stuffed with a peanut-coconut spice paste and simmered in tangy tamarind gravy.",
     prepTime: "Approx. 50 minutes",
     equipment: [
@@ -23008,6 +23017,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bagara baingan": {
     dishName: "Bagara Baingan",
+    "image": "/dishes/bharli-vangi.webp",
     description: "Hyderabadi baby brinjals cooked in a nutty peanut-sesame gravy sharpened with tamarind.",
     prepTime: "Approx. 55 minutes",
     equipment: [
@@ -23054,6 +23064,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dalma": {
     dishName: "Dalma",
+    "image": "/dishes/dalma.webp",
     description: "Odia toor dal cooked with seasonal vegetables and finished with a fragrant cumin-garlic tempering.",
     prepTime: "Approx. 40 minutes",
     equipment: [
@@ -23093,6 +23104,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "litti chokha": {
     dishName: "Litti Chokha",
+    "image": "/dishes/litti-chokha.webp",
     description: "Roasted whole-wheat balls stuffed with spiced sattu and served with smoky brinjal-potato chokha.",
     prepTime: "Approx. 1 hour",
     equipment: [
@@ -23135,6 +23147,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dhuska": {
     dishName: "Dhuska",
+    "image": "/dishes/dhuska.webp",
     description: "Jharkhandi rice-and-dal fritters with a crisp outside and soft centre, traditionally paired with aloo chana.",
     prepTime: "Approx. 7 hours (including soaking and fermentation)",
     equipment: [
@@ -23167,6 +23180,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khar": {
     dishName: "Assamese Khar",
+    "image": "/dishes/khar.webp",
     description: "A gentle Assamese raw-papaya preparation flavored with alkaline khar water and mustard oil.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -23198,6 +23212,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "eromba": {
     dishName: "Eromba",
+    "image": "/dishes/eromba.webp",
     description: "A fiery Manipuri mash of boiled vegetables, roasted chillies and fermented fish called ngari.",
     prepTime: "Approx. 30 minutes",
     equipment: [
@@ -23230,6 +23245,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dohneiihong": {
     dishName: "Dohneiihong",
+    "image": "/dishes/dohneiihong.webp",
     description: "Khasi pork slow-cooked with roasted black sesame, onions, ginger and garlic for a dark nutty gravy.",
     prepTime: "Approx. 1 hour",
     equipment: [
@@ -23266,6 +23282,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "axone pork": {
     dishName: "Axone Pork",
+    "image": "/dishes/axone-park.webp",
     description: "Naga pork cooked with fermented soybean axone, ginger, garlic, chillies and optional bamboo shoot.",
     prepTime: "Approx. 1 hour 25 minutes",
     equipment: [
@@ -23301,6 +23318,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bai": {
     dishName: "Bai",
+    "image": "/dishes/bai.webp",
     description: "A light Mizo vegetable stew of seasonal produce, green chilli and a little fermented flavor.",
     prepTime: "Approx. 30 minutes",
     equipment: [
@@ -23332,6 +23350,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "fara": {
     dishName: "Fara",
+    "image": "/dishes/fara.webp",
     description: "Chhattisgarhi steamed rice dumplings filled with lightly spiced chana dal and served with chutney.",
     prepTime: "Approx. 45 minutes",
     equipment: [
@@ -23369,6 +23388,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "poha jalebi": {
     dishName: "Poha Jalebi",
+    "image": "/dishes/poha-jalebi.webp",
     description: "Indore-style poha topped with sev and lemon, served alongside crisp syrupy jalebi for breakfast.",
     prepTime: "Approx. 40 minutes",
     equipment: [
@@ -25329,7 +25349,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bhakri": {
   "dishName": "Bhakri",
-  "image": "/dishes/roti.webp",
   "description": "Rustic thick Maharashtrian flatbread made from jowar or bajra flour.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
