@@ -318,13 +318,30 @@ const equipmentOptionFrom = (name: string): EquipmentOption | null => {
   return tokens.length ? { tokens, label: prettyLabel(name) } : null;
 };
 
+// Recipes say "stove", "pan", "grinder"; the selector says "Gas Stove", "Mixer / Grinder"...
+const EQUIPMENT_ALIASES: Record<string, string[]> = {
+  stove: ["gas stove", "kadai", "tawa", "cooker"],
+  pan: ["kadai", "tawa", "cooker", "gas stove"],
+  grinder: ["mixer grinder"],
+};
+
+const expandEquipmentOption = (option: EquipmentOption): EquipmentOption[] => {
+  const extras = (EQUIPMENT_ALIASES[option.tokens.join(" ")] ?? [])
+    .map(equipmentOptionFrom)
+    .filter((o): o is EquipmentOption => Boolean(o));
+  return [option, ...extras];
+};
+
 const compileEquipment = (recipe: Recipe): EquipmentRequirement[] => {
   const rows: RawEquipment[] = Array.isArray((recipe as any).equipment) ? (recipe as any).equipment : [];
 
   const requirements = rows
     .map((row) => {
       const names = [row.item, row.alternative].filter((v): v is string => Boolean(v));
-      const options = names.map(equipmentOptionFrom).filter((o): o is EquipmentOption => Boolean(o));
+      const options = names
+      .map(equipmentOptionFrom)
+      .filter((o): o is EquipmentOption => Boolean(o))
+      .flatMap(expandEquipmentOption);
       return options.length ? { options } : null;
     })
     .filter((r): r is EquipmentRequirement => Boolean(r));
@@ -343,7 +360,10 @@ const compileEquipment = (recipe: Recipe): EquipmentRequirement[] => {
     });
 
     if (explicitEither) {
-      const merged = rows.map((r) => equipmentOptionFrom(String(r.item ?? ""))).filter((o): o is EquipmentOption => Boolean(o));
+      const merged = rows
+        .map((r) => equipmentOptionFrom(String(r.item ?? "")))
+        .filter((o): o is EquipmentOption => Boolean(o))
+        .flatMap(expandEquipmentOption);
       return merged.length ? [{ options: merged }] : requirements;
     }
   }
