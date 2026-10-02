@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+
 import KitchenEquipmentSelector, { EQUIPMENT_NAMES } from "./KitchenEquipmentSelector";
 import {
   findRecipesFromIngredients,
@@ -373,7 +373,7 @@ const FlyingChip: React.FC<{
       ],
       timing
     );
-    
+
     const startTime = performance.now();
     let previous = { x: startX, y: startY, time: startTime };
     let raf = 0;
@@ -435,7 +435,7 @@ const FlyingChip: React.FC<{
     <span
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[100] inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-1.5 pl-3.5 pr-2.5 text-sm will-change-transform"
+      className="pointer-events-none fixed left-0 top-0 z-30 inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-1.5 pl-3.5 pr-2.5 text-sm will-change-transform"
     >
       {flight.label}
       <span className="text-base leading-none">×</span>
@@ -1475,12 +1475,9 @@ const forgetSavedKitchen = () => {
         )}
       </div>
 
-      {createPortal(
-        flights.map((flight) => (
-          <FlyingChip key={flight.id} flight={flight} onDone={finishFlight} />
-        )),
-        document.body
-      )}
+      {flights.map((flight) => (
+        <FlyingChip key={flight.id} flight={flight} onDone={finishFlight} />
+      ))}
     </section>
   );
 };
