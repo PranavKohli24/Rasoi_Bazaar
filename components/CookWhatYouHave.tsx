@@ -1204,10 +1204,10 @@ const forgetSavedKitchen = () => {
       setInputFocused(false);
     }}
     onKeyDown={handleIngredientKeyDown}
-    placeholder="Add ingredients, e.g. paneer, onion"
+    placeholder="Add ingredients... "
     autoComplete="off"
     enterKeyHint="done"
-    className="w-full rounded-xl border border-stone-700 bg-stone-900 py-3 pl-4 pr-14 text-base text-stone-100 outline-none transition placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
+    className="w-full rounded-xl border border-stone-700 bg-stone-900 py-3 pl-4 pr-14 text-base text-stone-100 outline-none transition placeholder:text-sm placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
   />
 
   <button
