@@ -23441,6 +23441,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "poori": {
   "dishName": "Poori (Puri)",
+  "image": "/dishes/poori.webp",
   "description": "Puffed whole-wheat Indian fried bread that stays crisp outside and soft inside.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -23525,6 +23526,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sabudana khichdi": {
   "dishName": "Sabudana Khichdi",
+  "image": "/dishes/sabudana-khichdi.webp",
   "description": "Soft, separate tapioca pearls cooked with potato, peanuts, lemon and mild spices.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [
@@ -23635,6 +23637,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rava idli": {
   "dishName": "Rava Idli",
+  "image": "/dishes/rava-idli.webp",
   "description": "Instant steamed semolina cakes made fluffy with curd and a little leavening.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -23893,6 +23896,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pesarattu": {
   "dishName": "Pesarattu",
+  "image": "/dishes/pesarattu.webp",
   "description": "Andhra-style thin green moong dosa with ginger, chilli and cumin.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [
@@ -23997,6 +24001,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "adai": {
   "dishName": "Adai",
+  "image": "/dishes/adai.webp",
   "description": "Protein-rich South Indian lentil crepes made with rice, mixed dals and green chilli.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
   "equipment": [
@@ -24116,6 +24121,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "appam": {
   "dishName": "Kerala Appam",
+  "image": "/dishes/appam.webp",
   "description": "Soft-centred, lace-edged Kerala rice pancakes made with a lightly fermented batter.",
   "prepTime": "Approx. 35 minutes (plus soaking and fermentation)",
   "equipment": [
@@ -24210,6 +24216,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "puttu": {
   "dishName": "Puttu",
+  "image": "/dishes/puttu.webp",
   "description": "Steamed rice flour cylinders layered with coconut, a simple Kerala breakfast.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -24285,6 +24292,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "paniyaram": {
   "dishName": "Kuzhi Paniyaram",
+  "image": "/dishes/paniyaram.webp",
   "description": "Small crisp South Indian rice-lentil dumplings made from fermented dosa or idli batter.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -24480,6 +24488,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "neer dosa": {
   "dishName": "Neer Dosa",
+  "image": "/dishes/neer-dosa.webp",
   "description": "Very thin, soft Mangalorean rice crepes made from an unfermented watery batter.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [
@@ -24564,6 +24573,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sabudana vada": {
   "dishName": "Sabudana Vada",
+  "image": "/dishes/sabudana-vada.webp",
   "description": "Crisp potato and tapioca fritters bound with roasted peanut powder.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
   "equipment": [
@@ -24659,6 +24669,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mysore bonda": {
   "dishName": "Mysore Bonda",
+  "image": "/dishes/mysore-bonda.webp",
   "description": "Soft-centred South Indian fried urad dumplings with coconut, pepper and curry leaves.",
   "prepTime": "Approx. 35 minutes (plus soaking)",
   "equipment": [
@@ -24759,6 +24770,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "thalipeeth": {
   "dishName": "Maharashtrian Thalipeeth",
+  "image": "/dishes/thalipeeth.webp",
   "description": "Savory multigrain Maharashtrian flatbread with onion, chilli and spices.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -24864,6 +24876,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bhatura": {
   "dishName": "Bhatura",
+  "image": "/dishes/bhature.webp",
   "description": "Large puffy Punjabi fried bread made from a soft yogurt-enriched dough.",
   "prepTime": "Approx. 35 minutes (plus resting)",
   "equipment": [
@@ -24973,6 +24986,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kulcha": {
   "dishName": "Kulcha",
+  "image": "/dishes/kulcha.webp",
   "description": "Soft leavened North Indian flatbread that can be made plain or lightly stuffed on a tawa.",
   "prepTime": "Approx. 45 minutes (plus resting)",
   "equipment": [
@@ -25349,6 +25363,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bhakri": {
   "dishName": "Bhakri",
+  "image": "/dishes/bhakri.webp",
   "description": "Rustic thick Maharashtrian flatbread made from jowar or bajra flour.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -25424,6 +25439,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "palak paratha": {
   "dishName": "Palak Paratha",
+  "image": "/dishes/palak-paratha.webp",
   "description": "Whole-wheat flatbread kneaded with spinach, green chilli and mild spices.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -25533,6 +25549,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "methi paratha": {
   "dishName": "Methi Paratha",
+  "image": "/dishes/mehi-paratha.webp",
   "description": "Everyday whole-wheat paratha mixed with fresh fenugreek leaves and spices.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -25850,6 +25867,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "veg kadai": {
   "dishName": "Veg Kadai",
+  "image": "/dishes/veg-kadai.webp",
   "description": "Mixed vegetables cooked in a roasted coriander-pepper masala with onion and tomato.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -25970,6 +25988,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "veg jalfrezi": {
   "dishName": "Veg Jalfrezi",
+  "image": "/dishes/veg-jalfrezi.webp",
   "description": "Quick stir-fried mixed vegetables in a tangy onion-tomato masala.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -26085,6 +26104,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "methi matar malai": {
   "dishName": "Methi Matar Malai",
+  "image": "/dishes/methi-matar-malai.webp",
   "description": "Creamy North Indian curry of fenugreek leaves and green peas with a mild spiced gravy.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
