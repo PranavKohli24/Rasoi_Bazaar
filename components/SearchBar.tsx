@@ -203,7 +203,7 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     input.selectionStart === input.value.length &&
     input.selectionEnd === input.value.length;
 
-  if (suggestion && atEnd && (event.key === 'Tab' || event.key === 'ArrowRight' || event.key === ' ' || event.key === 'End')) {
+  if (suggestion && atEnd && (event.key === 'Tab' || event.key === 'ArrowRight' || event.key === 'End')) {
     event.preventDefault();
     acceptSuggestion();
     return;
