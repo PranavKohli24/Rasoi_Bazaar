@@ -653,6 +653,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
 const [activeIndex, setActiveIndex] = useState(-1);
+const [dropUp, setDropUp] = useState(false);
 
 const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
 
@@ -666,6 +667,43 @@ const suggestions = useMemo(
       : [],
   [showSuggestions, currentSegment, ingredients, assumeStaples]
 );
+
+useLayoutEffect(() => {
+  if (suggestions.length === 0) return;
+
+  const update = () => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    const rect = input.getBoundingClientRect();
+    const footer = document.querySelector("[data-sticky-footer]");
+    const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+
+    // visualViewport shrinks when the phone keyboard opens.
+    const viewport = window.visualViewport;
+    const viewBottom = viewport
+      ? viewport.offsetTop + viewport.height
+      : window.innerHeight;
+
+    const below = Math.min(footerTop, viewBottom) - 8 - rect.bottom;
+    const above = rect.top - 8;
+    const needed = suggestions.length * 42 + 8;
+
+    setDropUp(below < needed && above > below);
+  };
+
+  update();
+  window.visualViewport?.addEventListener("resize", update);
+  window.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+
+  return () => {
+    window.visualViewport?.removeEventListener("resize", update);
+    window.removeEventListener("scroll", update);
+    window.removeEventListener("resize", update);
+  };
+}, [suggestions.length]);
+
 
 const availableQuick = QUICK_INGREDIENTS.filter(
   (item) =>
@@ -1163,7 +1201,9 @@ const forgetSavedKitchen = () => {
         id="ingredient-suggestions"
         role="listbox"
         onMouseDown={(event) => event.preventDefault()}
-        className="absolute left-0 right-0 top-full z-30 mt-1 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg"
+        className={`absolute left-0 right-0 z-50 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg ${
+          dropUp ? "bottom-full mb-1" : "top-full mt-1"
+        }`}
       >
         {suggestions.map((label, index) => (
           <li
@@ -1274,7 +1314,7 @@ const forgetSavedKitchen = () => {
               )}
             </div>
 
-            <div className={footerBar}>
+                          <div data-sticky-footer className={footerBar}>
               <button
                 type="button"
                 onClick={() => {
