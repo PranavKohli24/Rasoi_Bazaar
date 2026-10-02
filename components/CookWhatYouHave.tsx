@@ -654,6 +654,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
 const [activeIndex, setActiveIndex] = useState(-1);
 const [dropUp, setDropUp] = useState(false);
+const [inputFocused, setInputFocused] = useState(false);
 
 const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
 
@@ -702,7 +703,7 @@ useLayoutEffect(() => {
     window.removeEventListener("scroll", update);
     window.removeEventListener("resize", update);
   };
-}, [suggestions.length]);
+}, [suggestions.length, inputFocused]);
 
 
 const availableQuick = QUICK_INGREDIENTS.filter(
@@ -726,6 +727,10 @@ const settledCount = ingredients.filter(
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
   const requestIdRef = useRef(0); // ignores late answers from searches the user already left
+
+  useEffect(() => {
+    if (step !== 2) setInputFocused(false);
+  }, [step]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -1187,8 +1192,14 @@ const forgetSavedKitchen = () => {
         setShowSuggestions(true);
         setActiveIndex(-1);
       }}
-      onFocus={() => setShowSuggestions(true)}
-      onBlur={() => setShowSuggestions(false)}
+      onFocus={() => {
+        setShowSuggestions(true);
+        setInputFocused(true);
+      }}
+      onBlur={() => {
+        setShowSuggestions(false);
+        setInputFocused(false);
+      }}
       onKeyDown={handleIngredientKeyDown}
       placeholder="e.g. paneer, onion, dal"
       autoComplete="off"
@@ -1314,7 +1325,14 @@ const forgetSavedKitchen = () => {
               )}
             </div>
 
-                          <div data-sticky-footer className={footerBar}>
+            <div
+              data-sticky-footer
+              className={`${footerBar} transition-transform duration-200 ${
+                inputFocused
+                  ? "pointer-events-none translate-y-full sm:pointer-events-auto sm:translate-y-0"
+                  : ""
+              }`}
+            >
               <button
                 type="button"
                 onClick={() => {
