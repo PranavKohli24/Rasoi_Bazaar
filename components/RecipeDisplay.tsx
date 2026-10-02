@@ -152,14 +152,14 @@ const NotesIcon: IconC = ({ className }) => (
 /* Pictures reused from the kitchen selector, matched by equipment name */
 
 const EQUIPMENT_IMAGES: [RegExp, string][] = [
-  [/microwave/i, "/kitchen/microwave.png"],
-  [/air.?fryer/i, "/kitchen/air_fryer.png"],
-  [/grinder|mixer|blender/i, "/kitchen/grinder.png"],
-  [/cooker/i, "/kitchen/cooker.png"],
-  [/kadai|kadhai|wok/i, "/kitchen/kadai.png"],
-  [/tawa|griddle|\bpan\b/i, "/kitchen/tawa.png"],
-  [/oven|tandoor/i, "/kitchen/oven.png"],
-  [/stove|gas/i, "/kitchen/stove.png"],
+  [/microwave/i, "/kitchen/microwave.webp"],
+  [/air.?fryer/i, "/kitchen/air_fryer.webp"],
+  [/grinder|mixer|blender/i, "/kitchen/grinder.webp"],
+  [/cooker/i, "/kitchen/cooker.webp"],
+  [/kadai|kadhai|wok/i, "/kitchen/kadai.webp"],
+  [/tawa|griddle|\bpan\b/i, "/kitchen/tawa.webp"],
+  [/oven|tandoor/i, "/kitchen/oven.webp"],
+  [/stove|gas/i, "/kitchen/stove.webp"],
 ];
 
 const getEquipmentImage = (name: string): string | null =>
