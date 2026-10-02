@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 
 interface CelebrationPopupProps {
   dishName?: string;
+  /** recipe.image — used as the hero photo on the shareable card. */
+  dishImage?: string;
   onReset: () => void;
 }
 
@@ -38,16 +40,16 @@ const CONFETTI_COLORS = [
 const CONFETTI_COUNT = 60;
 const SPARKLE_COUNT = 14;
 
+const CARD_WIDTH = 1200;
+const CARD_HEIGHT = 630;
 
-// Wraps text across multiple lines, centered, for long dish names.
-const wrapCenteredText = (
+// Splits text into lines that fit maxWidth. Pure measurement — caller
+// decides alignment and where each line gets drawn.
+const computeWrappedLines = (
   ctx: CanvasRenderingContext2D,
   text: string,
-  x: number,
-  y: number,
-  maxWidth: number,
-  lineHeight: number
-) => {
+  maxWidth: number
+): string[] => {
   const words = text.split(" ");
   let line = "";
   const lines: string[] = [];
@@ -62,29 +64,100 @@ const wrapCenteredText = (
     }
   }
   lines.push(line);
-
-  const startY = y - ((lines.length - 1) * lineHeight) / 2;
-  lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineHeight));
+  return lines;
 };
 
-const generateShareCard = async (dishName: string): Promise<Blob> => {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1200;
-  canvas.height = 630;
-  const ctx = canvas.getContext("2d")!;
+const roundRectPath = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) => {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+};
 
-  await Promise.all([
-    document.fonts.load('900 76px Fraunces'),
-    document.fonts.load('600 42px Caveat'),
-    document.fonts.load('700 28px "DM Sans"'),
-    document.fonts.load('400 20px "DM Sans"'),
+// Picks a dish-name size that comfortably fits two lines in the text zone,
+// backing off for longer names instead of letting them wrap to three.
+const fitDishNameFont = (
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number
+): { fontSize: number; lines: string[] } => {
+  const sizes = [64, 56, 48, 42];
+  for (const size of sizes) {
+    ctx.font = `900 ${size}px Fraunces, serif`;
+    const lines = computeWrappedLines(ctx, text, maxWidth);
+    if (lines.length <= 2 || size === sizes[sizes.length - 1]) {
+      return { fontSize: size, lines };
+    }
+  }
+  ctx.font = `900 42px Fraunces, serif`;
+  return { fontSize: 42, lines: computeWrappedLines(ctx, text, maxWidth) };
+};
+
+// Draws `img` into the x/y/w/h box, cropped (never squashed) to cover it.
+const drawImageCover = (
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  x: number,
+  y: number,
+  w: number,
+  h: number
+) => {
+  const imgRatio = img.width / img.height;
+  const boxRatio = w / h;
+  let sx: number, sy: number, sw: number, sh: number;
+
+  if (imgRatio > boxRatio) {
+    sh = img.height;
+    sw = sh * boxRatio;
+    sx = (img.width - sw) / 2;
+    sy = 0;
+  } else {
+    sw = img.width;
+    sh = sw / boxRatio;
+    sx = 0;
+    sy = (img.height - sh) / 2;
+  }
+
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+};
+
+const loadImage = (src: string): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("image load failed"));
+    img.src = src;
+  });
+
+const loadBrandFonts = () =>
+  Promise.all([
+    document.fonts.load('900 68px Fraunces'),
+    document.fonts.load('600 44px Caveat'),
+    document.fonts.load('700 26px "DM Sans"'),
+    document.fonts.load('600 22px "DM Sans"'),
   ]);
 
-  // Base
+// Fallback used when there's no photo, or the photo can't be loaded /
+// drawn to canvas (broken URL, CORS-tainted source, etc). Sharing should
+// never hard-fail just because the hero image didn't cooperate.
+const drawTextOnlyCard = (
+  ctx: CanvasRenderingContext2D,
+  dishName: string
+) => {
   ctx.fillStyle = "#FFF8F1";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
 
-  // Soft orange glows, top-right and bottom-left
   const glow1 = ctx.createRadialGradient(1050, 80, 50, 1050, 80, 420);
   glow1.addColorStop(0, "rgba(252,108,38,0.18)");
   glow1.addColorStop(1, "rgba(252,108,38,0)");
@@ -102,33 +175,179 @@ const generateShareCard = async (dishName: string): Promise<Blob> => {
   ctx.fill();
 
   ctx.textAlign = "center";
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
 
-  // "I just cooked"
   ctx.fillStyle = "#D1560F";
   ctx.font = '600 42px Caveat, cursive';
-  ctx.fillText("I just cooked", canvas.width / 2, 210);
+  ctx.fillText("I just cooked", CARD_WIDTH / 2, 240);
 
-  // Dish name — hero text
   ctx.fillStyle = "#3E2E23";
   ctx.font = '900 76px Fraunces, serif';
-  wrapCenteredText(ctx, dishName, canvas.width / 2, 330, 1000, 84);
+  const words = dishName.split(" ");
+  let line = "";
+  const lines: string[] = [];
+  for (const word of words) {
+    const test = line ? `${line} ${word}` : word;
+    if (ctx.measureText(test).width > 1000 && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  lines.push(line);
+  const startY = 330 - ((lines.length - 1) * 84) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, CARD_WIDTH / 2, startY + i * 84));
 
-  // Brand footer
   ctx.font = '700 28px "DM Sans", sans-serif';
   ctx.fillStyle = "#FC6C26";
-  ctx.fillText("Rasoi Bazaar", canvas.width / 2, 540);
+  ctx.fillText("Rasoi Bazaar", CARD_WIDTH / 2, 540);
 
   ctx.font = '400 20px "DM Sans", sans-serif';
   ctx.fillStyle = "#7E6038";
-  ctx.fillText("rasoi-bazaar.vercel.app", canvas.width / 2, 572);
+  ctx.fillText("rasoi-bazaar.vercel.app", CARD_WIDTH / 2, 572);
+};
 
-  return new Promise((resolve) =>
-    canvas.toBlob((blob) => resolve(blob!), "image/png")
-  );
+// Recipe-card layout: the photo sits in its own framed panel up top, and
+// every piece of text lives in a solid-color zone below it. The photo
+// never has to carry text legibility on its own, so the card looks right
+// no matter how light, dark or busy the dish photo is.
+const drawPhotoCard = (
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  dishName: string
+) => {
+  const leftX = 64;
+  const frameX = 64;
+  const frameY = 56;
+  const frameW = CARD_WIDTH - frameX * 2; // 1072
+  const frameH = 318;
+  const frameRadius = 28;
+
+  // Base
+  ctx.fillStyle = "#FFF8F1";
+  ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
+
+  // Soft brand glows, same spirit as the text-only card, kept subtle so
+  // they read as texture behind the photo frame rather than competing.
+  const glow1 = ctx.createRadialGradient(1050, 40, 40, 1050, 40, 360);
+  glow1.addColorStop(0, "rgba(252,108,38,0.14)");
+  glow1.addColorStop(1, "rgba(252,108,38,0)");
+  ctx.fillStyle = glow1;
+  ctx.beginPath();
+  ctx.arc(1050, 40, 360, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Drop shadow caster for the photo panel.
+  ctx.save();
+  ctx.shadowColor = "rgba(62,46,35,0.28)";
+  ctx.shadowBlur = 32;
+  ctx.shadowOffsetY = 14;
+  ctx.fillStyle = "#FFFFFF";
+  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
+  ctx.fill();
+  ctx.restore();
+
+  // Photo, clipped to the rounded panel.
+  ctx.save();
+  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
+  ctx.clip();
+  drawImageCover(ctx, img, frameX, frameY, frameW, frameH);
+  ctx.restore();
+
+  // Crisp hairline around the panel so the crop edge feels intentional.
+  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "rgba(234,217,174,0.9)";
+  ctx.stroke();
+
+  // --- Text zone: everything below here sits on flat #FFF8F1, so it's
+  // legible regardless of what the photo looks like. ---
+  ctx.textAlign = "left";
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
+
+  const tagBaseline = frameY + frameH + 64; // 56+318+64 = 438
+  ctx.fillStyle = "#D1560F";
+  ctx.font = '600 40px Caveat, cursive';
+  ctx.fillText("I just cooked", leftX, tagBaseline);
+
+  const { fontSize, lines } = fitDishNameFont(ctx, dishName, CARD_WIDTH - leftX * 2);
+  const lineHeight = fontSize * 1.12;
+  const nameFirstBaseline = tagBaseline + 56;
+  ctx.fillStyle = "#3E2E23";
+  ctx.font = `900 ${fontSize}px Fraunces, serif`;
+  lines.slice(0, 2).forEach((line, i) => {
+    ctx.fillText(line, leftX, nameFirstBaseline + i * lineHeight);
+  });
+
+  // Footer pinned near the bottom edge, clear of the name block either way.
+  const footerY = CARD_HEIGHT - 40;
+  ctx.font = '700 26px "DM Sans", sans-serif';
+  ctx.fillStyle = "#FC6C26";
+  ctx.fillText("Rasoi Bazaar", leftX, footerY);
+
+  const brandWidth = ctx.measureText("Rasoi Bazaar").width;
+  ctx.font = '400 20px "DM Sans", sans-serif';
+  ctx.fillStyle = "#7E6038";
+  ctx.fillText("  ·  rasoi-bazaar.vercel.app", leftX + brandWidth, footerY);
+};
+
+const generateShareCard = async (
+  dishName: string,
+  dishImage?: string
+): Promise<Blob> => {
+  const canvas = document.createElement("canvas");
+  canvas.width = CARD_WIDTH;
+  canvas.height = CARD_HEIGHT;
+  const ctx = canvas.getContext("2d")!;
+
+  await loadBrandFonts();
+
+  let usedPhoto = false;
+
+  if (dishImage) {
+    try {
+      const img = await loadImage(dishImage);
+      drawPhotoCard(ctx, img, dishName);
+      usedPhoto = true;
+    } catch {
+      // Broken URL, network hiccup, etc — fall through to the text card.
+    }
+  }
+
+  if (!usedPhoto) {
+    drawTextOnlyCard(ctx, dishName);
+  }
+
+  // If the photo was cross-origin without permissive CORS headers, the
+  // canvas is "tainted" and toBlob will throw (or silently fail in some
+  // browsers) rather than export. Catch that here and redraw text-only
+  // so Share never just does nothing.
+  try {
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/png")
+    );
+    if (blob) return blob;
+  } catch {
+    // fall through to safe redraw below
+  }
+
+  if (usedPhoto) {
+    drawTextOnlyCard(ctx, dishName);
+    const safeBlob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob((b) => resolve(b), "image/png")
+    );
+    if (safeBlob) return safeBlob;
+  }
+
+  throw new Error("Could not generate share card");
 };
 
 const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
   dishName,
+  dishImage,
   onReset,
 }) => {
   const [isSharing, setIsSharing] = React.useState(false);
@@ -136,7 +355,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
   const handleShare = async () => {
     setIsSharing(true);
     try {
-      const blob = await generateShareCard(dishName ?? "something delicious");
+      const blob = await generateShareCard(dishName ?? "something delicious", dishImage);
       const file = new File([blob], "rasoi-bazaar-recipe.png", { type: "image/png" });
 
       if (navigator.canShare?.({ files: [file] })) {
@@ -277,11 +496,11 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
           Time for the best part - eating it!
         </p>
 
-                <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <button
             onClick={handleShare}
             disabled={isSharing}
-            className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-stone-700 bg-stone-900 font-semibold text-stone-200 shadow-sm transition-colors duration-150 hover:border-orange-400 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:opacity-60"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full border border-stone-700 bg-stone-900 px-4 text-sm font-semibold text-stone-200 shadow-sm transition-colors duration-150 hover:border-orange-400 hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:opacity-60 sm:flex-1 sm:text-base"
           >
             {isSharing ? (
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -300,7 +519,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
 
           <button
             onClick={onReset}
-            className="h-12 flex-1 rounded-full bg-orange-200 font-semibold text-white shadow-md transition-colors duration-150 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+            className="h-12 w-full whitespace-nowrap rounded-full bg-orange-200 px-4 text-sm font-semibold text-white shadow-md transition-colors duration-150 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900 sm:flex-1 sm:text-base"
           >
             Cook something else
           </button>

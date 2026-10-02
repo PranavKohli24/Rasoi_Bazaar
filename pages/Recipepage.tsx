@@ -180,6 +180,7 @@ const RecipePage: React.FC = () => {
       {showCelebration && (
         <CelebrationPopup
           dishName={recipe?.dishName}
+          dishImage={recipe?.image} 
           onReset={() => navigate("/")}
         />
       )}
