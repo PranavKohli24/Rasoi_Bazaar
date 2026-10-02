@@ -1549,7 +1549,8 @@ export const suggestDishCompletion = (query: string): string | null => {
   // Don't guess on a trailing space — the user just finished a word on purpose.
   if (!query || /\s$/.test(query) || query.trim().length < 3) return null;
 
-  const q = query.toLowerCase();
+  const leadingWhitespace = query.match(/^\s*/)?.[0] ?? '';
+  const q = query.trimStart().toLowerCase();
   const matches = allRecipesByDishName.filter((r) =>
     r.dishName.toLowerCase().startsWith(q)
   );
@@ -1557,7 +1558,7 @@ export const suggestDishCompletion = (query: string): string | null => {
   if (matches.length === 0) return null;
   if (matches.length === 1) {
     const name = matches[0].dishName;
-    return name.toLowerCase() === q ? null : name; // already an exact match
+    return name.toLowerCase() === q ? null : leadingWhitespace + name; // already an exact match
   }
 
   // Multiple dishes share this prefix — only offer a completion if they're
@@ -1570,5 +1571,7 @@ export const suggestDishCompletion = (query: string): string | null => {
     r.dishName.toLowerCase().startsWith(shortest.dishName.toLowerCase())
   );
 
-  return allAgree && shortest.dishName.toLowerCase() !== q ? shortest.dishName : null;
+  return allAgree && shortest.dishName.toLowerCase() !== q
+    ? leadingWhitespace + shortest.dishName
+    : null;
 };
