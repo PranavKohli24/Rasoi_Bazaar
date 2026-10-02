@@ -1431,87 +1431,80 @@ const forgetSavedKitchen = () => {
         {step === 3 && !error && results.length > 0 && (
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
-                            <div>
+              <div>
                 <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
                   You can make {results.length === 1 ? "this" : "these"}
                 </h3>
-                <p className="mt-2 text-sm text-stone-400">
-                  {resultSource === "predefined"
-                    ? "Matched from our recipe collection using "
-                    : resultSource === "mixed"
-                    ? "Matched from our recipe collection and kitchen assistant using "
-                    : "Found by our kitchen assistant using "}
-                  {ingredients.length} ingredients and {equipment.length} pieces of equipment you picked.
+                <p className="mt-1.5 text-sm text-stone-400">
+                  Based on your {ingredients.length}{" "}
+                  {ingredients.length === 1 ? "ingredient" : "ingredients"}
+                  {resultSource !== "predefined" &&
+                    " · includes suggestions from our kitchen assistant"}
                 </p>
               </div>
 
-              <div className="mt-6 grid gap-4">
-                {results.map((recipe) => (
-                  <article
-                    key={recipe.dishName}
-                    className="rounded-2xl border border-stone-700 bg-stone-900 p-5 shadow-sm transition-all hover:border-orange-400/60 hover:shadow-md sm:p-6"
-                  >
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <h4 className="min-w-0 font-serif text-xl font-bold text-orange-50 sm:text-2xl">
+              <div className="mt-5 grid gap-3">
+                {results.map((recipe) => {
+                  const meta = [recipe.prepTime, recipe.equipmentUsed?.join(", ")]
+                    .filter(Boolean)
+                    .join(" · ");
+                  const shown = recipe.ingredientsUsed.slice(0, 4);
+                  const extra = recipe.ingredientsUsed.slice(4);
+
+                  return (
+                    <article
+                      key={recipe.dishName}
+                      className="rounded-2xl border border-stone-700 bg-stone-900 p-4 shadow-sm transition-all hover:border-orange-400/60 hover:shadow-md sm:p-5"
+                    >
+                      <h4 className="font-serif text-xl font-bold text-orange-50 sm:text-2xl">
                         {recipe.dishName}
                       </h4>
-                      <span className="max-w-full whitespace-normal break-words rounded-full bg-[#FFEFC0] px-3 py-1 text-xs font-semibold text-stone-200">
-                        {recipe.prepTime}
-                      </span>
-                    </div>
 
-                    <p className="mt-2 text-sm leading-relaxed text-stone-400 sm:text-base">
-                      {recipe.description}
-                    </p>
+                      {meta && (
+                        <p className="mt-1 text-xs text-stone-400 sm:text-sm">{meta}</p>
+                      )}
 
-                    <p className="mt-4 rounded-r-lg border-l-2 border-orange-300 bg-stone-950 py-2 pl-3 pr-2 text-sm leading-relaxed text-stone-300">
-                      {recipe.whyItWorks}
-                    </p>
+                      {recipe.description && (
+                        <p className="mt-2 text-sm leading-relaxed text-stone-400 sm:text-base">
+                          {recipe.description}
+                        </p>
+                      )}
 
-                    <div className="mt-5 space-y-3">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="mr-1 text-xs text-stone-500">
-                          Uses
-                        </span>
-                        {recipe.ingredientsUsed.map((ingredient) => (
-                          <span
-                            key={ingredient}
-                            className="rounded-full bg-[#DDEBD3] px-2.5 py-1 text-xs font-medium text-stone-200"
-                          >
-                            {ingredient}
-                          </span>
-                        ))}
-                      </div>
-
-                      {recipe.equipmentUsed?.length > 0 && (
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="mr-1 text-xs text-stone-500">
-                            On
-                          </span>
-                          {recipe.equipmentUsed.map((item) => (
+                      {shown.length > 0 && (
+                        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                          <span className="mr-1 text-xs text-stone-500">Uses</span>
+                          {shown.map((ingredient) => (
                             <span
-                              key={item}
-                              className="rounded-full bg-[#FFE3C2] px-2.5 py-1 text-xs font-medium text-stone-200"
+                              key={ingredient}
+                              className="rounded-full bg-[#DDEBD3] px-2.5 py-1 text-xs font-medium text-stone-200"
                             >
-                              {item}
+                              {ingredient}
                             </span>
                           ))}
+                          {extra.length > 0 && (
+                            <span
+                              title={extra.join(", ")}
+                              className="rounded-full border border-stone-700 px-2.5 py-1 text-xs text-stone-400"
+                            >
+                              +{extra.length}
+                            </span>
+                          )}
                         </div>
                       )}
-                    </div>
 
-                    <button
-                      type="button"
-                      onClick={() => onSelectDish(recipe.dishName)}
-                      className={`${primaryButton} mt-6 w-full sm:w-auto`}
-                    >
-                      Get the recipe
-                    </button>
-                  </article>
-                ))}
+                      <button
+                        type="button"
+                        onClick={() => onSelectDish(recipe.dishName)}
+                        className={`${footerButton} mt-4 w-full sm:w-auto`}
+                      >
+                        Get the recipe
+                      </button>
+                    </article>
+                  );
+                })}
 
                 {isLoading && (
-                  <div role="status" aria-live="polite" className="grid gap-4">
+                  <div role="status" aria-live="polite" className="grid gap-3">
                     <p className="flex items-center gap-2 text-sm text-stone-400">
                       Looking for more dishes…
                     </p>
