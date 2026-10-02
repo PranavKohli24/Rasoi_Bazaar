@@ -71,6 +71,20 @@
 
       .prose ol > li::marker { font-weight: 700; color: #FC6C26; }
 
+      /* Shimmering text, e.g. "Identifying your dish..." while loading */
+      @keyframes text-shimmer {
+        0%   { background-position: 200% center; }
+        100% { background-position: -200% center; }
+      }
+      .shimmer-text {
+        background: linear-gradient(90deg, #7E6038 35%, #B8A693 50%, #7E6038 65%);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: text-shimmer 2s linear infinite;
+      }
+
       @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
@@ -113,6 +127,7 @@
       @media (prefers-reduced-motion: reduce) {
         .animate-fade-in-up { animation: fadeInUp 0.01ms linear forwards; }
         .celebration-popup .sparkle { animation: none; opacity: 0; }
+        .shimmer-text { animation: none; background: none; color: #7E6038; }
         * { scroll-behavior: auto !important; }
       }
 

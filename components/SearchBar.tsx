@@ -436,7 +436,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             </button>
           </div>
           {isIdentifying && (
-            <span className="text-sm text-stone-400">Identifying your dish…</span>
+            <span className="shimmer-text text-sm font-medium">Identifying your dish…</span>
           )}
         </div>
       )}
