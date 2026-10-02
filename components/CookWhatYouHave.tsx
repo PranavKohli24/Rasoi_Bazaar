@@ -655,6 +655,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 const [activeIndex, setActiveIndex] = useState(-1);
 const [dropUp, setDropUp] = useState(false);
 const [inputFocused, setInputFocused] = useState(false);
+const [showStaplesInfo, setShowStaplesInfo] = useState(false);
 
 const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
 
@@ -1121,135 +1122,135 @@ const forgetSavedKitchen = () => {
               <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
                 What&apos;s in your pantry?
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-400 sm:text-base">
-                Add the main things you have. We&apos;ll suggest dishes that use them.
-              </p>
-
-              <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={assumeStaples}
-                  onChange={(event) => setAssumeStaples(event.target.checked)}
-                  className="mt-1 h-4 w-4 accent-orange-300"
-                />
-                <span>
-                  <span className="block text-sm font-semibold text-stone-100">
-                    I have basic staples
-                  </span>
-                  <span className="block text-xs text-stone-400">
-                    Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
-                    garam masala, pepper, mustard seeds
-                  </span>
-                </span>
-              </label>
-
-              <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
-                <span className="text-sm text-stone-500">Cooking with</span>
-                <div className="flex flex-1 flex-wrap gap-1.5">
-                  {equipment.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-full bg-[#FFE3C2] px-2.5 py-1 text-xs font-medium text-stone-200"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setError(null);
-                    setStep(1);
-                  }}
-                  className="text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
-                >
-                  Edit
-                </button>
-              </div>
-
-              <label
-                htmlFor="ingredient-input"
-                className="mt-7 block text-sm font-semibold text-stone-100"
-              >
-                Type ingredients
-              </label>
-              <div className="mt-2 flex gap-2 sm:gap-3">
-  <div className="relative min-w-0 flex-1">
-    <input
-      ref={inputRef}    
-      id="ingredient-input"
-      type="text"
-      role="combobox"
-      aria-expanded={suggestions.length > 0}
-      aria-controls="ingredient-suggestions"
-      aria-autocomplete="list"
-      aria-activedescendant={
-        activeIndex >= 0 ? `ingredient-option-${activeIndex}` : undefined
-      }
-      value={ingredientInput}
-      onChange={(event) => {
-        setIngredientInput(event.target.value);
-        setShowSuggestions(true);
-        setActiveIndex(-1);
+              <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
+  <div className="flex items-center justify-between gap-3">
+    <p
+      className="min-w-0 truncate text-sm text-stone-200"
+      title={equipment.join(", ")}
+    >
+      <span className="text-stone-500">Cooking with </span>
+      {equipment.slice(0, 2).join(", ")}
+      {equipment.length > 2 && (
+        <span className="text-stone-400"> +{equipment.length - 2}</span>
+      )}
+    </p>
+    <button
+      type="button"
+      onClick={() => {
+        setError(null);
+        setStep(1);
       }}
-      onFocus={() => {
-        setShowSuggestions(true);
-        setInputFocused(true);
-      }}
-      onBlur={() => {
-        setShowSuggestions(false);
-        setInputFocused(false);
-      }}
-      onKeyDown={handleIngredientKeyDown}
-      placeholder="e.g. paneer, onion, dal"
-      autoComplete="off"
-      enterKeyHint="done"
-      className="w-full rounded-xl border border-stone-700 bg-stone-900 px-4 py-3 text-base text-stone-100 outline-none transition placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
-    />
-
-    {suggestions.length > 0 && (
-      <ul
-        id="ingredient-suggestions"
-        role="listbox"
-        onMouseDown={(event) => event.preventDefault()}
-        className={`absolute left-0 right-0 z-50 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg ${
-          dropUp ? "bottom-full mb-1" : "top-full mt-1"
-        }`}
-      >
-        {suggestions.map((label, index) => (
-          <li
-            key={label}
-            id={`ingredient-option-${index}`}
-            role="option"
-            aria-selected={index === activeIndex}
-            onClick={(event) =>
-              pickSuggestion(label, sourceBox(event.currentTarget))
-            }
-            className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
-              index === activeIndex
-                ? "bg-orange-400/15 text-orange-100"
-                : "text-stone-200 hover:bg-stone-800"
-            }`}
-          >
-            {label}
-          </li>
-        ))}
-      </ul>
-    )}
+      className="shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
+    >
+      Edit
+    </button>
   </div>
+
+  <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-stone-800 pt-2.5">
+    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-stone-100">
+      <input
+        type="checkbox"
+        checked={assumeStaples}
+        onChange={(event) => setAssumeStaples(event.target.checked)}
+        className="h-4 w-4 accent-orange-300"
+      />
+      I have basic staples
+    </label>
+    <button
+      type="button"
+      aria-expanded={showStaplesInfo}
+      onClick={() => setShowStaplesInfo((open) => !open)}
+      className="shrink-0 text-xs text-stone-500 underline-offset-2 transition-colors hover:text-orange-200 hover:underline focus:outline-none focus-visible:underline"
+    >
+      {showStaplesInfo ? "Hide" : "What's included?"}
+    </button>
+  </div>
+
+  {showStaplesInfo && (
+    <p className="mt-2 text-xs leading-relaxed text-stone-400">
+      Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
+      garam masala, pepper, mustard seeds
+    </p>
+  )}
+</div>
+
+              <label htmlFor="ingredient-input" className="sr-only">
+  Type ingredients
+</label>
+<div className="relative mt-5">
+  <input
+    ref={inputRef}
+    id="ingredient-input"
+    type="text"
+    role="combobox"
+    aria-expanded={suggestions.length > 0}
+    aria-controls="ingredient-suggestions"
+    aria-autocomplete="list"
+    aria-activedescendant={
+      activeIndex >= 0 ? `ingredient-option-${activeIndex}` : undefined
+    }
+    value={ingredientInput}
+    onChange={(event) => {
+      setIngredientInput(event.target.value);
+      setShowSuggestions(true);
+      setActiveIndex(-1);
+    }}
+    onFocus={() => {
+      setShowSuggestions(true);
+      setInputFocused(true);
+    }}
+    onBlur={() => {
+      setShowSuggestions(false);
+      setInputFocused(false);
+    }}
+    onKeyDown={handleIngredientKeyDown}
+    placeholder="Add ingredients, e.g. paneer, onion"
+    autoComplete="off"
+    enterKeyHint="done"
+    className="w-full rounded-xl border border-stone-700 bg-stone-900 py-3 pl-4 pr-14 text-base text-stone-100 outline-none transition placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
+  />
 
   <button
     type="button"
+    onMouseDown={(event) => event.preventDefault()}
     onClick={addFromInput}
-                  disabled={!ingredientInput.trim()}
-                  className="rounded-xl border border-stone-700 bg-stone-800 px-5 py-3 font-semibold text-stone-100 transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
-                >
-                  Add
-                </button>
-              </div>
-              <p className="mt-2 text-xs text-stone-500">
-                Start typing for suggestions. Separate with commas to add several at once.
-              </p>
+    disabled={!ingredientInput.trim()}
+    aria-label="Add ingredient"
+    className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-orange-200 text-xl font-bold leading-none text-stone-900 transition hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:bg-transparent disabled:text-stone-600 disabled:hover:bg-transparent"
+  >
+    +
+  </button>
+
+  {suggestions.length > 0 && (
+    <ul
+      id="ingredient-suggestions"
+      role="listbox"
+      onMouseDown={(event) => event.preventDefault()}
+      className={`absolute left-0 right-0 z-50 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg ${
+        dropUp ? "bottom-full mb-1" : "top-full mt-1"
+      }`}
+    >
+      {suggestions.map((label, index) => (
+        <li
+          key={label}
+          id={`ingredient-option-${index}`}
+          role="option"
+          aria-selected={index === activeIndex}
+          onClick={(event) =>
+            pickSuggestion(label, sourceBox(event.currentTarget))
+          }
+          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
+            index === activeIndex
+              ? "bg-orange-400/15 text-orange-100"
+              : "text-stone-200 hover:bg-stone-800"
+          }`}
+        >
+          {label}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
 
               {availableQuick.length > 0 && (
                 <div className="mt-6">
@@ -1334,24 +1335,36 @@ const forgetSavedKitchen = () => {
               }`}
             >
               <button
-                type="button"
-                onClick={() => {
-                  setError(null);
-                  setStep(1);
-                }}
-                className={ghostButton}
-              >
-                <span aria-hidden="true">←</span> Back
-              </button>
+  type="button"
+  onClick={() => {
+    setError(null);
+    setStep(1);
+  }}
+  className={`${ghostButton} shrink-0`}
+>
+  <span aria-hidden="true">←</span> Back
+</button>
 
-              <button
-                type="button"
-                onClick={handleFindRecipes}
-                disabled={ingredients.length === 0 && !ingredientInput.trim()}
-                className={`${footerButton} min-w-[10.5rem] shrink-0 whitespace-nowrap sm:min-w-[12.5rem]`}
-              >
-                Find what I can make
-              </button>
+<p className="min-w-0 flex-1 text-center text-xs leading-tight text-stone-400 sm:text-sm">
+  <span className="block sm:inline">
+    <span className="font-semibold text-orange-200">{settledCount}</span>{" "}
+    {settledCount === 1 ? "ingredient" : "ingredients"}
+  </span>
+  <span className="hidden sm:inline"> · </span>
+  <span className="block sm:inline">
+    <span className="font-semibold text-orange-200">{equipment.length}</span>{" "}
+    {equipment.length === 1 ? "tool" : "tools"}
+  </span>
+</p>
+
+<button
+  type="button"
+  onClick={handleFindRecipes}
+  disabled={ingredients.length === 0 && !ingredientInput.trim()}
+  className={`${footerButton} shrink-0 whitespace-nowrap`}
+>
+  Find dishes
+</button>
             </div>
           </>
         )}
