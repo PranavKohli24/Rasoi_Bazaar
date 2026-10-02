@@ -40,8 +40,11 @@ const CONFETTI_COLORS = [
 const CONFETTI_COUNT = 60;
 const SPARKLE_COUNT = 14;
 
-const CARD_WIDTH = 1200;
-const CARD_HEIGHT = 630;
+// Portrait 4:5 — this is how the card actually gets used (Instagram/
+// WhatsApp story-shaped), and it gives the photo far more height to work
+// with than a landscape OG-image ratio ever could.
+const CARD_WIDTH = 1080;
+const CARD_HEIGHT = 1350;
 
 // Splits text into lines that fit maxWidth. Pure measurement — caller
 // decides alignment and where each line gets drawn.
@@ -81,6 +84,26 @@ const roundRectPath = (
   ctx.arcTo(x + w, y + h, x, y + h, r);
   ctx.arcTo(x, y + h, x, y, r);
   ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+};
+
+// Only the top two corners rounded, bottom flush — for a "bottom sheet"
+// panel sitting on the canvas floor.
+const roundRectTopPath = (
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) => {
+  ctx.beginPath();
+  ctx.moveTo(x, y + h);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h);
   ctx.closePath();
 };
 
@@ -209,89 +232,84 @@ const drawTextOnlyCard = (
   ctx.fillText("rasoi-bazaar.vercel.app", CARD_WIDTH / 2, 572);
 };
 
-// Recipe-card layout: the photo sits in its own framed panel up top, and
-// every piece of text lives in a solid-color zone below it. The photo
-// never has to carry text legibility on its own, so the card looks right
-// no matter how light, dark or busy the dish photo is.
+// Full-bleed photo, almost the whole frame — a portrait canvas means
+// "cover" fit barely has to crop a typical dish photo at all. A rounded
+// panel rises off the bottom like a bottom sheet, lifted with its own
+// shadow, carrying every piece of text on flat, guaranteed-legible color.
 const drawPhotoCard = (
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   dishName: string
 ) => {
-  const leftX = 64;
-  const frameX = 64;
-  const frameY = 56;
-  const frameW = CARD_WIDTH - frameX * 2; // 1072
-  const frameH = 318;
-  const frameRadius = 28;
+  const PAD = 56;
+  const panelHeight = 468;
+  const panelY = CARD_HEIGHT - panelHeight; // 882
+  const panelRadius = 44;
 
-  // Base
+  // Photo fills the entire canvas — the hero, uncropped as much as the
+  // portrait ratio allows.
+  drawImageCover(ctx, img, 0, 0, CARD_WIDTH, CARD_HEIGHT);
+
+  // A gentle darkening right where the photo meets the panel, so the
+  // seam feels designed rather than like a hard cut.
+  const seam = ctx.createLinearGradient(0, panelY - 140, 0, panelY + 20);
+  seam.addColorStop(0, "rgba(20,12,6,0)");
+  seam.addColorStop(1, "rgba(20,12,6,0.22)");
+  ctx.fillStyle = seam;
+  ctx.fillRect(0, panelY - 140, CARD_WIDTH, 160);
+
+  // Shadow caster — lifts the panel off the photo with a soft upward glow.
+  ctx.save();
+  ctx.shadowColor = "rgba(20,12,6,0.35)";
+  ctx.shadowBlur = 46;
+  ctx.shadowOffsetY = -16;
   ctx.fillStyle = "#FFF8F1";
-  ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
-
-  // Soft brand glows, same spirit as the text-only card, kept subtle so
-  // they read as texture behind the photo frame rather than competing.
-  const glow1 = ctx.createRadialGradient(1050, 40, 40, 1050, 40, 360);
-  glow1.addColorStop(0, "rgba(252,108,38,0.14)");
-  glow1.addColorStop(1, "rgba(252,108,38,0)");
-  ctx.fillStyle = glow1;
-  ctx.beginPath();
-  ctx.arc(1050, 40, 360, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Drop shadow caster for the photo panel.
-  ctx.save();
-  ctx.shadowColor = "rgba(62,46,35,0.28)";
-  ctx.shadowBlur = 32;
-  ctx.shadowOffsetY = 14;
-  ctx.fillStyle = "#FFFFFF";
-  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
+  roundRectTopPath(ctx, 0, panelY, CARD_WIDTH, panelHeight + 40, panelRadius);
   ctx.fill();
   ctx.restore();
 
-  // Photo, clipped to the rounded panel.
-  ctx.save();
-  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
-  ctx.clip();
-  drawImageCover(ctx, img, frameX, frameY, frameW, frameH);
-  ctx.restore();
-
-  // Crisp hairline around the panel so the crop edge feels intentional.
-  roundRectPath(ctx, frameX, frameY, frameW, frameH, frameRadius);
+  // A thin warm highlight tracing the top edge of the panel — catches
+  // the eye as a deliberate seam, not a clipped rectangle.
+  roundRectTopPath(ctx, 0, panelY, CARD_WIDTH, panelHeight + 40, panelRadius);
   ctx.lineWidth = 2;
-  ctx.strokeStyle = "rgba(234,217,174,0.9)";
+  ctx.strokeStyle = "rgba(255,255,255,0.5)";
   ctx.stroke();
 
-  // --- Text zone: everything below here sits on flat #FFF8F1, so it's
-  // legible regardless of what the photo looks like. ---
+  // --- Panel content: flat #FFF8F1 behind everything from here down, so
+  // text is legible no matter what the photo looks like. ---
   ctx.textAlign = "left";
   ctx.shadowColor = "transparent";
   ctx.shadowBlur = 0;
+  ctx.shadowOffsetY = 0;
 
-  const tagBaseline = frameY + frameH + 64; // 56+318+64 = 438
+  const contentX = PAD;
+  const contentWidth = CARD_WIDTH - PAD * 2;
+
+  const tagBaseline = panelY + 92;
   ctx.fillStyle = "#D1560F";
-  ctx.font = '600 40px Caveat, cursive';
-  ctx.fillText("I just cooked", leftX, tagBaseline);
+  ctx.font = '600 42px Caveat, cursive';
+  ctx.fillText("I just cooked", contentX, tagBaseline);
 
-  const { fontSize, lines } = fitDishNameFont(ctx, dishName, CARD_WIDTH - leftX * 2);
+  const { fontSize, lines } = fitDishNameFont(ctx, dishName, contentWidth);
   const lineHeight = fontSize * 1.12;
-  const nameFirstBaseline = tagBaseline + 56;
+  const nameFirstBaseline = tagBaseline + 62;
   ctx.fillStyle = "#3E2E23";
   ctx.font = `900 ${fontSize}px Fraunces, serif`;
   lines.slice(0, 2).forEach((line, i) => {
-    ctx.fillText(line, leftX, nameFirstBaseline + i * lineHeight);
+    ctx.fillText(line, contentX, nameFirstBaseline + i * lineHeight);
   });
 
-  // Footer pinned near the bottom edge, clear of the name block either way.
-  const footerY = CARD_HEIGHT - 40;
-  ctx.font = '700 26px "DM Sans", sans-serif';
+  // Footer pinned to the bottom edge regardless of how many lines the
+  // dish name took.
+  const footerY = CARD_HEIGHT - 54;
+  ctx.font = '700 28px "DM Sans", sans-serif';
   ctx.fillStyle = "#FC6C26";
-  ctx.fillText("Rasoi Bazaar", leftX, footerY);
+  ctx.fillText("Rasoi Bazaar", contentX, footerY);
 
   const brandWidth = ctx.measureText("Rasoi Bazaar").width;
-  ctx.font = '400 20px "DM Sans", sans-serif';
+  ctx.font = '400 22px "DM Sans", sans-serif';
   ctx.fillStyle = "#7E6038";
-  ctx.fillText("  ·  rasoi-bazaar.vercel.app", leftX + brandWidth, footerY);
+  ctx.fillText("  ·  rasoi-bazaar.vercel.app", contentX + brandWidth, footerY);
 };
 
 const generateShareCard = async (
