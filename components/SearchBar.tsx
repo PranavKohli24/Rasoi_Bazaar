@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { suggestDishCompletion } from '@/utils/findPredefinedRecipe'; // ← adjust to wherever that file actually lives
 
 interface SearchBarProps {
   searchTerm: string;
@@ -60,6 +61,22 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [exampleIndex, setExampleIndex] = useState(0);
   const [typedExample, setTypedExample] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const [suggestion, setSuggestion] = useState('');
+
+useEffect(() => {
+  if (compact || isLoading || isIdentifying) {
+    setSuggestion('');
+    return;
+  }
+  setSuggestion(suggestDishCompletion(searchTerm) ?? '');
+}, [searchTerm, compact, isLoading, isIdentifying]);
+
+const acceptSuggestion = () => {
+  if (!suggestion) return;
+  setSearchTerm(suggestion);
+  setSuggestion('');
+};
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -164,11 +181,22 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }, [searchTerm]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && !isLoading) {
-      if (compact) setIsExpanded(false);
-      onSearch();
-    }
-  };
+  const input = event.currentTarget;
+  const atEnd =
+    input.selectionStart === input.value.length &&
+    input.selectionEnd === input.value.length;
+
+  if (suggestion && atEnd && (event.key === 'Tab' || event.key === 'ArrowRight' || event.key === ' ' || event.key === 'End')) {
+    event.preventDefault();
+    acceptSuggestion();
+    return;
+  }
+
+  if (event.key === 'Enter' && !isLoading) {
+    if (compact) setIsExpanded(false);
+    onSearch();
+  }
+};
 
   const handleSearchClick = () => {
     // Compact mode: the first click opens the search.
@@ -229,9 +257,31 @@ const SearchBar: React.FC<SearchBarProps> = ({
           }`}
         >
           <div className="group relative w-full flex-grow">
+            {/* Visual box — background, border, focus ring. Drawn separately so the
+                ghost suggestion can show through a transparent input on top of it. */}
+            <div
+              aria-hidden="true"
+              className={`pointer-events-none absolute inset-0 border bg-stone-900 shadow-sm transition-all duration-200 group-focus-within:border-orange-400 group-focus-within:ring-4 group-focus-within:ring-orange-400/15 ${
+                compact ? 'h-11 rounded-full border-stone-700' : 'h-12 rounded-xl border-stone-700 sm:h-14'
+              }`}
+            />
+
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-stone-500 transition-colors duration-200 group-focus-within:text-orange-200">
               <SearchIcon className="h-5 w-5" />
             </div>
+
+            {/* Ghost completion: "rajma ch" (invisible, matches real input exactly) + "awal" (dim) */}
+            {!compact && suggestion && (
+              <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre pl-11 text-sm sm:pl-12 sm:text-lg ${
+                  showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
+                }`}
+              >
+                <span className="invisible">{searchTerm}</span>
+                <span className="text-stone-500">{suggestion.slice(searchTerm.length)}</span>
+              </div>
+            )}
 
             <input
               id="recipe-search"
@@ -244,11 +294,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
               autoFocus={compact && isExpanded}
               placeholder={placeholder}
               disabled={isLoading}
-              className={`w-full border bg-stone-900 text-stone-100 shadow-sm placeholder-stone-500 transition-all duration-200 focus:border-orange-400 focus:outline-none focus:ring-4 focus:ring-orange-400/15 disabled:opacity-60 text-ellipsis ${
+              autoComplete="off"
+              className={`relative w-full border border-transparent bg-transparent text-stone-100 placeholder-stone-500 transition-all duration-200 focus:outline-none disabled:opacity-60 text-ellipsis ${
                 compact
-                  ? 'h-11 rounded-full border-stone-700 pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
-                                    : `h-12 rounded-xl border-stone-700 pl-11 text-sm sm:h-14 sm:pl-12 sm:text-lg ${
-                                            showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
+                  ? 'h-11 rounded-full pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
+                  : `h-12 rounded-xl pl-11 text-sm sm:h-14 sm:pl-12 sm:text-lg ${
+                      showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
                     }`
               }`}
             />

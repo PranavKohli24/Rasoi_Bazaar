@@ -1537,3 +1537,38 @@ export const findSimilarRecipes = (query: string, limit = 6): string[] => {
     .slice(0, limit)
     .map((s) => s.name);
 };
+
+
+/* ------------------------------------------------------------------ */
+/* Inline "ghost text" autocomplete: suggests the rest of a dish name  */
+/* only when we're confident — i.e. every dish that starts with what   */
+/* the user typed agrees on how it continues.                          */
+/* ------------------------------------------------------------------ */
+
+export const suggestDishCompletion = (query: string): string | null => {
+  // Don't guess on a trailing space — the user just finished a word on purpose.
+  if (!query || /\s$/.test(query) || query.trim().length < 3) return null;
+
+  const q = query.toLowerCase();
+  const matches = allRecipesByDishName.filter((r) =>
+    r.dishName.toLowerCase().startsWith(q)
+  );
+
+  if (matches.length === 0) return null;
+  if (matches.length === 1) {
+    const name = matches[0].dishName;
+    return name.toLowerCase() === q ? null : name; // already an exact match
+  }
+
+  // Multiple dishes share this prefix — only offer a completion if they're
+  // all just longer variants of the same shortest name, e.g. "Chole Bhature"
+  // and "Chole Bhature (Amritsari style)". Otherwise we'd be guessing.
+  const shortest = matches.reduce((a, b) =>
+    a.dishName.length <= b.dishName.length ? a : b
+  );
+  const allAgree = matches.every((r) =>
+    r.dishName.toLowerCase().startsWith(shortest.dishName.toLowerCase())
+  );
+
+  return allAgree && shortest.dishName.toLowerCase() !== q ? shortest.dishName : null;
+};
