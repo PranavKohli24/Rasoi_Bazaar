@@ -25549,7 +25549,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "methi paratha": {
   "dishName": "Methi Paratha",
-  "image": "/dishes/mehi-paratha.webp",
+  "image": "/dishes/methi-paratha.webp",
   "description": "Everyday whole-wheat paratha mixed with fresh fenugreek leaves and spices.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
