@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import KitchenEquipmentSelector, { EQUIPMENT_NAMES } from "./KitchenEquipmentSelector";
 import {
   findRecipesFromIngredients,
@@ -172,12 +173,16 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
 const Chip: React.FC<{
   label: string;
   onRemove: () => void;
-}> = ({ label, onRemove }) => (
+  hidden?: boolean; // true while its flying copy is still on the way
+}> = ({ label, onRemove, hidden }) => (
   <button
     type="button"
     onClick={onRemove}
     aria-label={`Remove ${label}`}
-    className="inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+    data-ingredient-chip={label.toLowerCase()}
+    className={`inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
+      hidden ? "invisible" : ""
+    }`}
   >
     {label}
     <span
@@ -188,6 +193,165 @@ const Chip: React.FC<{
     </span>
   </button>
 );
+
+interface Box {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+interface Flight {
+  id: number;
+  label: string;
+  from: Box;
+  delay: number;
+}
+
+const FLIGHT_MS = 650;
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** A copy of the chip that flies from where you tapped to where the new chip lands. */
+const FlyingChip: React.FC<{
+  flight: Flight;
+  onDone: (flight: Flight) => void;
+}> = ({ flight, onDone }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const key = flight.label.toLowerCase();
+    const target = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-ingredient-chip]")
+    ).find((node) => node.dataset.ingredientChip === key);
+
+    // No landing spot (or no animation support): skip the flight.
+    if (!target || typeof el.animate !== "function") {
+      onDone(flight);
+      return;
+    }
+
+    const own = el.getBoundingClientRect();
+    const to = target.getBoundingClientRect();
+
+    const startX = flight.from.left + flight.from.width / 2 - own.width / 2;
+    const startY = flight.from.top + flight.from.height / 2 - own.height / 2;
+    const endX = to.left;
+    // Keep the landing point on screen if the box is scrolled out of view.
+    const endY = Math.min(
+      Math.max(to.top, 8),
+      window.innerHeight - own.height - 8
+    );
+    const lift = Math.min(70, Math.abs(endY - startY) * 0.3 + 24);
+
+    const animation = el.animate(
+      [
+        { transform: `translate(${startX}px, ${startY}px) scale(1)`, offset: 0 },
+        {
+          transform: `translate(${(startX + endX) / 2}px, ${
+            (startY + endY) / 2 - lift
+          }px) scale(1.1)`,
+          offset: 0.5,
+        },
+        { transform: `translate(${endX}px, ${endY}px) scale(1)`, offset: 1 },
+      ],
+      {
+        duration: FLIGHT_MS,
+        delay: flight.delay,
+        easing: "cubic-bezier(0.22, 0.7, 0.25, 1)",
+        fill: "both",
+      }
+    );
+
+        // Stay bright for the first third of the flight, then settle into the
+    // real chip's colors so there is no visible change when it lands.
+    const style = getComputedStyle(target);
+    const lastChild = target.lastElementChild as HTMLElement | null;
+    const timing: KeyframeAnimationOptions = {
+      duration: FLIGHT_MS,
+      delay: flight.delay,
+      easing: "ease-in-out",
+      fill: "both",
+    };
+
+    const colorAnimation = el.animate(
+      [
+        {
+          backgroundColor: "rgb(254, 215, 170)",
+          borderColor: "rgb(253, 186, 116)",
+          color: "rgb(28, 25, 23)",
+          boxShadow: "0 10px 15px -3px rgba(124, 45, 18, 0.3)",
+          offset: 0,
+        },
+        {
+          backgroundColor: "rgb(254, 215, 170)",
+          borderColor: "rgb(253, 186, 116)",
+          color: "rgb(28, 25, 23)",
+          boxShadow: "0 10px 15px -3px rgba(124, 45, 18, 0.3)",
+          offset: 0.35,
+        },
+        {
+          backgroundColor: style.backgroundColor,
+          borderColor: style.borderTopColor,
+          color: style.color,
+          boxShadow: "0 0 0 0 rgba(0, 0, 0, 0)",
+          offset: 1,
+        },
+      ],
+      timing
+    );
+
+    const crossAnimation = lastChild
+      ? (el.lastElementChild as HTMLElement | null)?.animate(
+          [
+            { color: "rgb(28, 25, 23)" },
+            { color: "rgb(28, 25, 23)", offset: 0.35 },
+            { color: getComputedStyle(lastChild).color },
+          ],
+          timing
+        )
+      : undefined;
+
+    animation.onfinish = () => {
+      onDone(flight);
+      // Small bounce on the real chip once it appears.
+      requestAnimationFrame(() => {
+        target.animate?.(
+          [
+            { transform: "scale(1)" },
+            { transform: "scale(1.14)" },
+            { transform: "scale(1)" },
+          ],
+          { duration: 240, easing: "ease-out" }
+        );
+      });
+    };
+
+        return () => {
+      animation.cancel();
+      colorAnimation.cancel();
+      crossAnimation?.cancel();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <span
+      ref={ref}
+      aria-hidden="true"
+      className="pointer-events-none fixed left-0 top-0 z-[100] inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-orange-300 bg-orange-200 py-1.5 pl-3.5 pr-2.5 text-sm text-stone-900 shadow-lg shadow-orange-900/30"
+    >
+      {flight.label}
+      <span className="text-base leading-none">×</span>
+    </span>
+  );
+};
+
 
 const ResultSkeleton: React.FC = () => (
   <div className="animate-pulse rounded-2xl border border-stone-700 bg-stone-900 p-5">
@@ -265,10 +429,14 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     return saved.step === 1 ? 1 : 2;
   });
 
+    const [flights, setFlights] = useState<Flight[]>([]);
+  const [landing, setLanding] = useState<string[]>([]); // chips hidden until their flight lands
+  const flightIdRef = useRef(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [assumeStaples, setAssumeStaples] = useState<boolean>(
     saved?.assumeStaples ?? true
   );
-
   const [equipment, setEquipment] = useState<string[]>(
     saved?.equipment ?? []
   );
@@ -299,6 +467,11 @@ const suggestions = useMemo(
         })
       : [],
   [showSuggestions, currentSegment, ingredients, assumeStaples]
+);
+
+const availableQuick = QUICK_INGREDIENTS.filter(
+  (item) =>
+    !ingredients.some((current) => current.toLowerCase() === item.toLowerCase())
 );
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -356,7 +529,39 @@ const suggestions = useMemo(
     });
   }, [step]);
 
-  const addIngredients = (raw: string) => {
+  const launchFlights = (labels: string[], from: Box) => {
+    setLanding((current) => [...current, ...labels.map((l) => l.toLowerCase())]);
+    setFlights((current) => [
+      ...current,
+      ...labels.map((label, index) => ({
+        id: ++flightIdRef.current,
+        label,
+        from,
+        delay: index * 90, // stagger when several are added at once
+      })),
+    ]);
+  };
+
+  const finishFlight = (flight: Flight) => {
+    setFlights((current) => current.filter((f) => f.id !== flight.id));
+    setLanding((current) => {
+      const index = current.indexOf(flight.label.toLowerCase());
+      if (index === -1) return current;
+      const next = [...current];
+      next.splice(index, 1);
+      return next;
+    });
+  };
+
+  // Where typed words take off from: the left side of the input.
+  const inputSource = (): Box | null => {
+    const rect = inputRef.current?.getBoundingClientRect();
+    return rect
+      ? { left: rect.left + 24, top: rect.top, width: 0, height: rect.height }
+      : null;
+  };
+
+  const addIngredients = (raw: string, from?: Box | null) => {
     const newItems = raw
       .split(",")
       .map((item) => item.trim())
@@ -364,24 +569,29 @@ const suggestions = useMemo(
 
     if (!newItems.length) return;
 
-    setIngredients((current) => {
-      const seen = new Set(
-        current.map((item) => item.toLowerCase())
-      );
-
-      const additions = newItems.filter((item) => {
-        const key = item.toLowerCase();
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-
-      return [...current, ...additions];
+    const seen = new Set(ingredients.map((item) => item.toLowerCase()));
+    const additions = newItems.filter((item) => {
+      const key = item.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
     });
+
+    if (!additions.length) return;
+
+    setIngredients((current) => {
+      const have = new Set(current.map((item) => item.toLowerCase()));
+      return [
+        ...current,
+        ...additions.filter((item) => !have.has(item.toLowerCase())),
+      ];
+    });
+
+    if (from && !prefersReducedMotion()) launchFlights(additions, from);
   };
 
   const addFromInput = () => {
-  addIngredients(ingredientInput);
+  addIngredients(ingredientInput, inputSource());
   setIngredientInput("");
   setActiveIndex(-1);
   setShowSuggestions(false);
@@ -392,26 +602,18 @@ const suggestions = useMemo(
       current.filter((item) => item !== ingredient)
     );
 
-  const toggleQuickIngredient = (item: string) => {
-    const existing = ingredients.find(
-      (current) =>
-        current.toLowerCase() === item.toLowerCase()
-    );
+  
 
-    if (existing) removeIngredient(existing);
-    else addIngredients(item);
+  const pickSuggestion = (label: string, from?: Box | null) => {
+    const parts = ingredientInput.split(",");
+    parts.pop(); // drop the half-typed segment
+    const rest = parts.map((part) => part.trim()).filter(Boolean).join(", ");
+
+    addIngredients(label, from ?? inputSource());
+    setIngredientInput(rest ? `${rest}, ` : "");
+    setActiveIndex(-1);
+    setShowSuggestions(false);
   };
-
-  const pickSuggestion = (label: string) => {
-  const parts = ingredientInput.split(",");
-  parts.pop(); // drop the half-typed segment
-  const rest = parts.map((part) => part.trim()).filter(Boolean).join(", ");
-
-  addIngredients(label);
-  setIngredientInput(rest ? `${rest}, ` : "");
-  setActiveIndex(-1);
-  setShowSuggestions(false);
-};
 
 const handleIngredientKeyDown = (
   event: React.KeyboardEvent<HTMLInputElement>
@@ -434,7 +636,8 @@ const handleIngredientKeyDown = (
     }
     if (event.key === "Enter" && suggestions[activeIndex]) {
       event.preventDefault();
-      pickSuggestion(suggestions[activeIndex]);
+      const option = document.getElementById(`ingredient-option-${activeIndex}`);
+      pickSuggestion(suggestions[activeIndex], option?.getBoundingClientRect());
       return;
     }
   }
@@ -523,6 +726,8 @@ try {
   };
 
   const startOver = () => {
+    setFlights([]);
+    setLanding([]);
     requestIdRef.current++;
     setResults([]);
     setEquipment([]);
@@ -548,6 +753,8 @@ const forgetSavedKitchen = () => {
 };
 
   const goToIngredients = () => {
+    setFlights([]);
+    setLanding([]);
     requestIdRef.current++;
     setIsLoading(false);
     setResults([]);
@@ -715,6 +922,7 @@ const forgetSavedKitchen = () => {
               <div className="mt-2 flex gap-2 sm:gap-3">
   <div className="relative min-w-0 flex-1">
     <input
+      ref={inputRef}    
       id="ingredient-input"
       type="text"
       role="combobox"
@@ -752,7 +960,9 @@ const forgetSavedKitchen = () => {
             id={`ingredient-option-${index}`}
             role="option"
             aria-selected={index === activeIndex}
-            onClick={() => pickSuggestion(label)}
+            onClick={(event) =>
+              pickSuggestion(label, event.currentTarget.getBoundingClientRect())
+            }
             className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
               index === activeIndex
                 ? "bg-orange-400/15 text-orange-100"
@@ -779,36 +989,27 @@ const forgetSavedKitchen = () => {
                 Start typing for suggestions. Separate with commas to add several at once.
               </p>
 
-              <div className="mt-6">
-                <p className="text-sm font-semibold text-stone-100">
-                  Or tap to add
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {QUICK_INGREDIENTS.map((item) => {
-                    const active = ingredients.some(
-                      (current) =>
-                        current.toLowerCase() === item.toLowerCase()
-                    );
-
-                    return (
+              {availableQuick.length > 0 && (
+                <div className="mt-6">
+                  <p className="text-sm font-semibold text-stone-100">
+                    Or tap to add
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {availableQuick.map((item) => (
                       <button
                         key={item}
                         type="button"
-                        aria-pressed={active}
-                        onClick={() => toggleQuickIngredient(item)}
-                        className={`rounded-full border px-3.5 py-2 text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
-                          active
-                            ? "border-orange-400 bg-orange-400/15 text-orange-100"
-                            : "border-stone-700 bg-stone-900 text-stone-300 hover:border-orange-300/70 hover:text-stone-100"
-                        }`}
+                        onClick={(event) =>
+                          addIngredients(item, event.currentTarget.getBoundingClientRect())
+                        }
+                        className="rounded-full border border-stone-700 bg-stone-900 px-3.5 py-2 text-sm text-stone-300 transition-colors hover:border-orange-300/70 hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
                       >
-                        {active ? "✓ " : "+ "}
-                        {item}
+                        + {item}
                       </button>
-                    );
-                  })}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="mt-8 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
                 <div className="flex items-center justify-between gap-4">
@@ -836,6 +1037,7 @@ const forgetSavedKitchen = () => {
                       <Chip
                         key={ingredient}
                         label={ingredient}
+                        hidden={landing.includes(ingredient.toLowerCase())}
                         onRemove={() => removeIngredient(ingredient)}
                       />
                     ))}
@@ -1054,6 +1256,13 @@ const forgetSavedKitchen = () => {
           </div>
         )}
       </div>
+
+      {createPortal(
+        flights.map((flight) => (
+          <FlyingChip key={flight.id} flight={flight} onDone={finishFlight} />
+        )),
+        document.body
+      )}
     </section>
   );
 };
