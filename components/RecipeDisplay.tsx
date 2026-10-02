@@ -38,7 +38,7 @@ const COLOR = {
   saffronDark: "#D1560F",
   saffronTint: "#FFE3C2",
   mustard: "#FFEFC0",
-  clay: "#C65D42",      
+  clay: "#C65D42",
   clayTint: "#F5E1DA",
 } as const;
 
@@ -353,44 +353,44 @@ const StepTimer: React.FC<{
     });
   }, [remaining, isRunning, stepKey, timerState]);
 
-// Fires once per checkpoint mark as elapsed time crosses it.
-useEffect(() => {
-  if (remaining <= 0) return;
-  const elapsed = seconds - remaining;
-  checkInMarksRef.current.forEach((mark, index) => {
-    if (elapsed >= mark && !firedMarksRef.current.has(mark)) {
-      firedMarksRef.current.add(mark);
-      onCheckIn?.(index);
-    }
-  });
-}, [remaining, seconds, onCheckIn]);
+  // Fires once per checkpoint mark as elapsed time crosses it.
+  useEffect(() => {
+    if (remaining <= 0) return;
+    const elapsed = seconds - remaining;
+    checkInMarksRef.current.forEach((mark, index) => {
+      if (elapsed >= mark && !firedMarksRef.current.has(mark)) {
+        firedMarksRef.current.add(mark);
+        onCheckIn?.(index);
+      }
+    });
+  }, [remaining, seconds, onCheckIn]);
 
   // Pure countdown — just decrements. No side effects here, so Strict
-// Mode's dev-time double-invoke of updater functions can't double-fire
-// anything.
-useEffect(() => {
-  if (!isRunning) return;
-  intervalRef.current = window.setInterval(() => {
-    setRemaining((prev) => (prev <= 1 ? 0 : prev - 1));
-  }, 1000);
-  return () => {
-    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-  };
-}, [isRunning]);
+  // Mode's dev-time double-invoke of updater functions can't double-fire
+  // anything.
+  useEffect(() => {
+    if (!isRunning) return;
+    intervalRef.current = window.setInterval(() => {
+      setRemaining((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => {
+      if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+    };
+  }, [isRunning]);
 
-// Fires exactly once per completed countdown, when `remaining` actually
-// transitions to 0 while the timer was running. The `isRunning` guard also
-// protects against a re-fire on remount: once a step's timer completes,
-// isRunning is persisted as false, so revisiting an already-finished step
-// later correctly skips this block instead of chiming again.
-useEffect(() => {
-  if (remaining !== 0 || !isRunning) return;
-  if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-  setIsRunning(false);
-  playChime();
-  onComplete?.();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [remaining]);
+  // Fires exactly once per completed countdown, when `remaining` actually
+  // transitions to 0 while the timer was running. The `isRunning` guard also
+  // protects against a re-fire on remount: once a step's timer completes,
+  // isRunning is persisted as false, so revisiting an already-finished step
+  // later correctly skips this block instead of chiming again.
+  useEffect(() => {
+    if (remaining !== 0 || !isRunning) return;
+    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
+    setIsRunning(false);
+    playChime();
+    onComplete?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remaining]);
 
   const isDone = remaining === 0;
   const hasStarted = remaining !== seconds;
@@ -503,58 +503,55 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [isCooking, setIsCooking] = useState(false);
 
   // A check-in the companion should say — bumping the id (not just the text)
-// guarantees CookingCompanion treats repeats on a later long step as new.
-const [companionCheckIn, setCompanionCheckIn] = useState<{ id: string; text: string } | null>(
-  null
-);
+  // guarantees CookingCompanion treats repeats on a later long step as new.
+  const [companionCheckIn, setCompanionCheckIn] = useState<{ id: string; text: string } | null>(
+    null
+  );
 
-// Index 0 always lands around the 1-minute mark (a reassuring "you're off
-// to a good start"), later indexes land every 5 minutes after (a steady
-// "still with you").
-const CHECK_IN_LINES_FIRST = [
-  "Off to a good start — I'll keep an eye on the time for you.",
-  "Looking good so far. I've got the clock, I will remind you once its done",
-];
-const CHECK_IN_LINES_LATER = [
-  "Still going strong in there — I'll let you know when it's ready.",
-  "Simmering away nicely. Hang tight, not long now.",
-  "No rush — good things take their time. I've got an eye on the clock.",
-];
+  // Index 0 always lands around the 1-minute mark (a reassuring "you're off
+  // to a good start"), later indexes land every 5 minutes after (a steady
+  // "still with you").
+  const CHECK_IN_LINES_FIRST = [
+    "Off to a good start — I'll keep an eye on the time for you.",
+    "Looking good so far. I've got the clock, I will remind you once its done",
+  ];
+  const CHECK_IN_LINES_LATER = [
+    "Still going strong in there — I'll let you know when it's ready.",
+    "Simmering away nicely. Hang tight, not long now.",
+    "No rush — good things take their time. I've got an eye on the clock.",
+  ];
 
   // keeps the screen awake while actively cooking; browsers vary in support,
-// so this fails silently rather than blocking anything
-const wakeLockRef = useRef<WakeLockSentinel | null>(null);
+  // so this fails silently rather than blocking anything
+  const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
-useEffect(() => {
-  if (!isCooking) return;
+  useEffect(() => {
+    if (!isCooking) return;
 
-  const requestWakeLock = async () => {
-    try {
-      if ("wakeLock" in navigator) {
-        wakeLockRef.current = await (navigator as any).wakeLock.request("screen");
+    const requestWakeLock = async () => {
+      try {
+        if ("wakeLock" in navigator) {
+          wakeLockRef.current = await (navigator as any).wakeLock.request("screen");
+        }
+      } catch {
+        // Not supported, or permission denied — cooking still works fine.
       }
-    } catch {
-      // Not supported, or permission denied — cooking still works fine.
-    }
-  };
+    };
 
-  requestWakeLock();
+    requestWakeLock();
 
-  // Re-acquire if the tab was backgrounded and comes back (e.g. a phone call)
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === "visible") requestWakeLock();
-  };
-  document.addEventListener("visibilitychange", handleVisibilityChange);
+    // Re-acquire if the tab was backgrounded and comes back (e.g. a phone call)
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") requestWakeLock();
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-  return () => {
-    document.removeEventListener("visibilitychange", handleVisibilityChange);
-    wakeLockRef.current?.release().catch(() => {});
-    wakeLockRef.current = null;
-  };
-}, [isCooking]);
-
-
-
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      wakeLockRef.current?.release().catch(() => { });
+      wakeLockRef.current = null;
+    };
+  }, [isCooking]);
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
@@ -567,115 +564,115 @@ useEffect(() => {
   );
 
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
-  try {
-    return localStorage.getItem("recipe-voice-enabled") === "true";
-  } catch {
-    return false;
-  }
-});
-
-const toggleVoice = () => {
-  setIsVoiceEnabled((prev) => {
-    const next = !prev;
     try {
-      localStorage.setItem("recipe-voice-enabled", String(next));
+      return localStorage.getItem("recipe-voice-enabled") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleVoice = () => {
+    setIsVoiceEnabled((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("recipe-voice-enabled", String(next));
+      } catch {
+        // ignore
+      }
+      if (!next) window.speechSynthesis?.cancel();
+      return next;
+    });
+  };
+
+  // Speak the current step whenever it changes, if enabled
+  useEffect(() => {
+    if (!isCooking || !isVoiceEnabled) return;
+    if (!("speechSynthesis" in window)) return;
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
+    utterance.rate = 0.95;
+    window.speechSynthesis.speak(utterance);
+
+    return () => window.speechSynthesis.cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStepIndex, isCooking, isVoiceEnabled]);
+
+  // Assumes dishName is stable/unique enough per recipe; swap for a real
+  // recipe.id if one exists in your data model.
+  const progressKey = `recipe-progress:${recipe.dishName}`;
+
+  // Restore on mount
+  // A pending resume, awaiting the person's confirmation — nothing is
+  // applied to isCooking/currentStepIndex until they choose.
+  const [resumePrompt, setResumePrompt] = useState<{
+    stepIndex: number;
+    checkedIngredients: boolean[] | null;
+  } | null>(null);
+
+  // Check for saved progress on mount — but don't apply it yet.
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(progressKey);
+      if (!saved) return;
+      const parsed = JSON.parse(saved);
+
+      if (parsed.isCooking && typeof parsed.currentStepIndex === "number") {
+        const validIngredients =
+          Array.isArray(parsed.checkedIngredients) &&
+          parsed.checkedIngredients.length === recipe.ingredients.length;
+
+        setResumePrompt({
+          stepIndex: Math.min(parsed.currentStepIndex, recipe.method.length - 1),
+          checkedIngredients: validIngredients ? parsed.checkedIngredients : null,
+        });
+      }
+    } catch {
+      // Corrupted or inaccessible — nothing to offer, just start fresh.
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleResumeCooking = () => {
+    if (!resumePrompt) return;
+    setCurrentStepIndex(resumePrompt.stepIndex);
+    if (resumePrompt.checkedIngredients) {
+      setCheckedIngredients(resumePrompt.checkedIngredients);
+    }
+    setIsCooking(true);
+    setResumePrompt(null);
+    // Give the method card a beat to render (isCooking just flipped to true)
+    // before scrolling, so it scrolls to the actual step content, not an
+    // empty "Ready when you are" card that's about to be replaced.
+    window.setTimeout(() => {
+      methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
+  const handleStartFresh = () => {
+    try {
+      localStorage.removeItem(progressKey);
     } catch {
       // ignore
     }
-    if (!next) window.speechSynthesis?.cancel();
-    return next;
-  });
-};
+    setResumePrompt(null);
+  };
 
-// Speak the current step whenever it changes, if enabled
-useEffect(() => {
-  if (!isCooking || !isVoiceEnabled) return;
-  if (!("speechSynthesis" in window)) return;
-
-  window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
-  utterance.rate = 0.95;
-  window.speechSynthesis.speak(utterance);
-
-  return () => window.speechSynthesis.cancel();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [currentStepIndex, isCooking, isVoiceEnabled]);
-
-// Assumes dishName is stable/unique enough per recipe; swap for a real
-// recipe.id if one exists in your data model.
-const progressKey = `recipe-progress:${recipe.dishName}`;
-
-// Restore on mount
-// A pending resume, awaiting the person's confirmation — nothing is
-// applied to isCooking/currentStepIndex until they choose.
-const [resumePrompt, setResumePrompt] = useState<{
-  stepIndex: number;
-  checkedIngredients: boolean[] | null;
-} | null>(null);
-
-// Check for saved progress on mount — but don't apply it yet.
-useEffect(() => {
-  try {
-    const saved = localStorage.getItem(progressKey);
-    if (!saved) return;
-    const parsed = JSON.parse(saved);
-
-    if (parsed.isCooking && typeof parsed.currentStepIndex === "number") {
-      const validIngredients =
-        Array.isArray(parsed.checkedIngredients) &&
-        parsed.checkedIngredients.length === recipe.ingredients.length;
-
-      setResumePrompt({
-        stepIndex: Math.min(parsed.currentStepIndex, recipe.method.length - 1),
-        checkedIngredients: validIngredients ? parsed.checkedIngredients : null,
-      });
+  // Persist on every relevant change
+  useEffect(() => {
+    try {
+      if (isCooking) {
+        localStorage.setItem(
+          progressKey,
+          JSON.stringify({ isCooking, currentStepIndex, checkedIngredients })
+        );
+      } else {
+        localStorage.removeItem(progressKey);
+      }
+    } catch {
+      // Storage unavailable — progress just won't persist this session.
     }
-  } catch {
-    // Corrupted or inaccessible — nothing to offer, just start fresh.
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, []);
-
-const handleResumeCooking = () => {
-  if (!resumePrompt) return;
-  setCurrentStepIndex(resumePrompt.stepIndex);
-  if (resumePrompt.checkedIngredients) {
-    setCheckedIngredients(resumePrompt.checkedIngredients);
-  }
-  setIsCooking(true);
-  setResumePrompt(null);
-  // Give the method card a beat to render (isCooking just flipped to true)
-  // before scrolling, so it scrolls to the actual step content, not an
-  // empty "Ready when you are" card that's about to be replaced.
-  window.setTimeout(() => {
-    methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, 50);
-};
-
-const handleStartFresh = () => {
-  try {
-    localStorage.removeItem(progressKey);
-  } catch {
-    // ignore
-  }
-  setResumePrompt(null);
-};
-
-// Persist on every relevant change
-useEffect(() => {
-  try {
-    if (isCooking) {
-      localStorage.setItem(
-        progressKey,
-        JSON.stringify({ isCooking, currentStepIndex, checkedIngredients })
-      );
-    } else {
-      localStorage.removeItem(progressKey);
-    }
-  } catch {
-    // Storage unavailable — progress just won't persist this session.
-  }
-}, [isCooking, currentStepIndex, checkedIngredients, progressKey]);
+  }, [isCooking, currentStepIndex, checkedIngredients, progressKey]);
 
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
   // When the current step has a running/relevant timer, "Next" asks for a
@@ -758,30 +755,30 @@ useEffect(() => {
   }, [currentStepIndex]);
 
   const handleNextStep = () => {
-  if (currentStepIndex >= recipe.method.length - 1) return;
+    if (currentStepIndex >= recipe.method.length - 1) return;
 
-  const currentHasTimer =
-    parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
+    const currentHasTimer =
+      parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
 
-  // First tap on a timed step just asks for confirmation; a second tap
-  // (or a tap on a step with no timer at all) actually advances.
-  if (currentHasTimer && !showNextStepConfirm) {
-    setShowNextStepConfirm(true);
-    if (isVoiceEnabled && "speechSynthesis" in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(
-        "If you're done with this step, press Yes, done."
-      );
-      utterance.rate = 0.95;
-      window.speechSynthesis.speak(utterance);
+    // First tap on a timed step just asks for confirmation; a second tap
+    // (or a tap on a step with no timer at all) actually advances.
+    if (currentHasTimer && !showNextStepConfirm) {
+      setShowNextStepConfirm(true);
+      if (isVoiceEnabled && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(
+          "If you're done with this step, press Yes, done."
+        );
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+      }
+      return;
     }
-    return;
-  }
 
-  setShowNextStepConfirm(false);
-  setStepDirection("next");
-  setCurrentStepIndex((prev) => prev + 1);
-};
+    setShowNextStepConfirm(false);
+    setStepDirection("next");
+    setCurrentStepIndex((prev) => prev + 1);
+  };
 
   const handleCancelNextStep = () => setShowNextStepConfirm(false);
 
@@ -1170,15 +1167,15 @@ useEffect(() => {
     stepDirection === "next"
       ? "step-slide-from-right"
       : stepDirection === "prev"
-      ? "step-slide-from-left"
-      : "animate-fade-in-up";
+        ? "step-slide-from-left"
+        : "animate-fade-in-up";
 
   return (
     <div
       className="w-full animate-fade-in-up pb-24 sm:pb-8"
       style={{ color: COLOR.ink }}
     >
-            <style>{STEP_ANIMATION_CSS}</style>
+      <style>{STEP_ANIMATION_CSS}</style>
 
       {resumePrompt && (
         <div
@@ -1232,9 +1229,8 @@ useEffect(() => {
             {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
             <div
               aria-hidden="true"
-              className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
-                isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
-              }`}
+              className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
+                }`}
               style={{ backgroundColor: COLOR.saffronTint }}
             />
             <img
@@ -1253,9 +1249,8 @@ useEffect(() => {
               onClick={() => setImageBounceKey((key) => key + 1)}
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
-              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${
-                imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-              } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+                } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
               style={{
                 transformStyle: "preserve-3d",
                 pointerEvents: "auto",
@@ -1384,9 +1379,8 @@ useEffect(() => {
                         strokeWidth="3"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={`h-3.5 w-3.5 transition-all duration-200 ${
-                          checkedIngredients[index] ? "scale-100 opacity-100" : "scale-0 opacity-0"
-                        }`}
+                        className={`h-3.5 w-3.5 transition-all duration-200 ${checkedIngredients[index] ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                          }`}
                       >
                         <path d="M4 10l4 4 8-8" />
                       </svg>
@@ -1397,9 +1391,8 @@ useEffect(() => {
                       style={{ color: checkedIngredients[index] ? COLOR.inkSoft : COLOR.ink }}
                     >
                       <span
-                        className={`block leading-snug ${
-                          checkedIngredients[index] ? "line-through" : ""
-                        }`}
+                        className={`block leading-snug ${checkedIngredients[index] ? "line-through" : ""
+                          }`}
                       >
                         <span className="font-semibold">{ing.amount}</span> {ing.commonName}
                       </span>
@@ -1444,9 +1437,8 @@ useEffect(() => {
                 return (
                   <li
                     key={index}
-                    className={`rounded-2xl border p-3.5 sm:p-4 ${
-                      special && tool.alternative ? "sm:col-span-2" : ""
-                    }`}
+                    className={`rounded-2xl border p-3.5 sm:p-4 ${special && tool.alternative ? "sm:col-span-2" : ""
+                      }`}
                     style={{
                       borderColor: special ? COLOR.clay : COLOR.border,
                       backgroundColor: special ? COLOR.clayTint : COLOR.surface,
@@ -1662,9 +1654,8 @@ useEffect(() => {
                     type="button"
                     onClick={handlePrevStep}
                     disabled={currentStepIndex === 0}
-                    className={`${secondaryButton} ${
-                      showNextStepConfirm ? "flex-none px-3.5" : "flex-1 sm:flex-none"
-                    }`}
+                    className={`${secondaryButton} ${showNextStepConfirm ? "flex-none px-3.5" : "flex-1 sm:flex-none"
+                      }`}
                     style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
                   >
                     <ChevronLeftIcon className="h-5 w-5" />

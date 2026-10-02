@@ -138,9 +138,9 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
                 done
                   ? "bg-orange-200 text-white"
                   : active
-                  ? "bg-orange-200 text-white ring-4 ring-orange-400/25"
-                  : "border border-stone-700 bg-stone-900 text-stone-500"
-              }`}
+                    ? "bg-orange-200 text-white ring-4 ring-orange-400/25"
+                    : "border border-stone-700 bg-stone-900 text-stone-500"
+                }`}
             >
               {done ? "✓" : number}
             </span>
@@ -149,9 +149,9 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
                 active
                   ? "text-orange-100"
                   : done
-                  ? "text-stone-300"
-                  : "text-stone-500"
-              }`}
+                    ? "text-stone-300"
+                    : "text-stone-500"
+                }`}
             >
               {label}
             </span>
@@ -161,7 +161,7 @@ const Stepper: React.FC<{ current: number }> = ({ current }) => (
             <div
               className={`mx-2 mb-6 h-0.5 flex-1 rounded-full transition-colors duration-300 sm:mx-3 ${
                 done ? "bg-orange-200" : "bg-stone-700"
-              }`}
+                }`}
             />
           )}
         </React.Fragment>
@@ -183,7 +183,7 @@ const Chip: React.FC<{
     data-glide={label.toLowerCase()}
     className={`inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
       hidden ? "invisible" : ""
-    }`}
+      }`}
   >
     {label}
     <span
@@ -328,8 +328,8 @@ const FlyingChip: React.FC<{
     };
     place(startX, startY); // before the first paint, so it never flashes at 0,0
 
-        // Colors: leave in the tapped element's look, ease into the real chip's look.
-        // Colors: leave as the tapped chip, turn bright orange in the air,
+    // Colors: leave in the tapped element's look, ease into the real chip's look.
+    // Colors: leave as the tapped chip, turn bright orange in the air,
     // then settle into the real chip's colors just before landing.
     const landingStyle = getComputedStyle(initialTarget);
     const landingColors = {
@@ -488,7 +488,7 @@ const useChipGlide = (
           { transform: `translate(${dx}px, ${dy}px)` },
           { transform: "translate(0px, 0px)" },
         ],
-                {
+        {
           duration: 340,
           delay,
           fill: "backwards", // stay at the old spot until the delay ends
@@ -537,7 +537,7 @@ const useBlockGlide = (
     const dy = previous - top;
     if (Math.abs(dy) < 1) return;
 
-        running.current = node.animate(
+    running.current = node.animate(
       [{ transform: `translateY(${dy}px)` }, { transform: "translateY(0px)" }],
       {
         duration: 340,
@@ -627,7 +627,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     return saved.step === 1 ? 1 : 2;
   });
 
-    const [flights, setFlights] = useState<Flight[]>([]);
+  const [flights, setFlights] = useState<Flight[]>([]);
   const [landing, setLanding] = useState<string[]>([]); // chips hidden until their flight lands
   const flightIdRef = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -652,78 +652,78 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [showSuggestions, setShowSuggestions] = useState(false);
-const [activeIndex, setActiveIndex] = useState(-1);
-const [dropUp, setDropUp] = useState(false);
-const [inputFocused, setInputFocused] = useState(false);
-const [showStaplesInfo, setShowStaplesInfo] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [dropUp, setDropUp] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
+  const [showStaplesInfo, setShowStaplesInfo] = useState(false);
 
-const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
+  const currentSegment = ingredientInput.split(",").pop()?.trim() ?? "";
 
-const suggestions = useMemo(
-  () =>
-    showSuggestions
-      ? suggestIngredients(currentSegment, {
+  const suggestions = useMemo(
+    () =>
+      showSuggestions
+        ? suggestIngredients(currentSegment, {
           exclude: ingredients,
           includeStaples: !assumeStaples,
         })
-      : [],
-  [showSuggestions, currentSegment, ingredients, assumeStaples]
-);
+        : [],
+    [showSuggestions, currentSegment, ingredients, assumeStaples]
+  );
 
-useLayoutEffect(() => {
-  if (suggestions.length === 0) return;
+  useLayoutEffect(() => {
+    if (suggestions.length === 0) return;
 
-  const update = () => {
-    const input = inputRef.current;
-    if (!input) return;
+    const update = () => {
+      const input = inputRef.current;
+      if (!input) return;
 
-    const rect = input.getBoundingClientRect();
-    const footer = document.querySelector("[data-sticky-footer]");
-    const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
+      const rect = input.getBoundingClientRect();
+      const footer = document.querySelector("[data-sticky-footer]");
+      const footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
 
-    // visualViewport shrinks when the phone keyboard opens.
-    const viewport = window.visualViewport;
-    const viewBottom = viewport
-      ? viewport.offsetTop + viewport.height
-      : window.innerHeight;
+      // visualViewport shrinks when the phone keyboard opens.
+      const viewport = window.visualViewport;
+      const viewBottom = viewport
+        ? viewport.offsetTop + viewport.height
+        : window.innerHeight;
 
-    const below = Math.min(footerTop, viewBottom) - 8 - rect.bottom;
-    const above = rect.top - 8;
-    const needed = suggestions.length * 42 + 8;
+      const below = Math.min(footerTop, viewBottom) - 8 - rect.bottom;
+      const above = rect.top - 8;
+      const needed = suggestions.length * 42 + 8;
 
-    setDropUp(below < needed && above > below);
-  };
+      setDropUp(below < needed && above > below);
+    };
 
-  update();
-  window.visualViewport?.addEventListener("resize", update);
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
+    update();
+    window.visualViewport?.addEventListener("resize", update);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
 
-  return () => {
-    window.visualViewport?.removeEventListener("resize", update);
-    window.removeEventListener("scroll", update);
-    window.removeEventListener("resize", update);
-  };
-}, [suggestions.length, inputFocused]);
+    return () => {
+      window.visualViewport?.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [suggestions.length, inputFocused]);
 
 
-const availableQuick = QUICK_INGREDIENTS.filter(
-  (item) =>
-    !ingredients.some((current) => current.toLowerCase() === item.toLowerCase())
-);
+  const availableQuick = QUICK_INGREDIENTS.filter(
+    (item) =>
+      !ingredients.some((current) => current.toLowerCase() === item.toLowerCase())
+  );
 
-const quickRef = useRef<HTMLDivElement>(null);
-const chipsRef = useRef<HTMLDivElement>(null);
-const boxRef = useRef<HTMLDivElement>(null);
+  const quickRef = useRef<HTMLDivElement>(null);
+  const chipsRef = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
 
-useChipGlide(quickRef, availableQuick.join("|"), 150);
-useChipGlide(chipsRef, ingredients.join("|"));
-useBlockGlide(boxRef, availableQuick.join("|"), 150);
+  useChipGlide(quickRef, availableQuick.join("|"), 150);
+  useChipGlide(chipsRef, ingredients.join("|"));
+  useBlockGlide(boxRef, availableQuick.join("|"), 150);
 
-// Chips still in the air don't count yet; the number updates when they land.
-const settledCount = ingredients.filter(
-  (item) => !landing.includes(item.toLowerCase())
-).length;
+  // Chips still in the air don't count yet; the number updates when they land.
+  const settledCount = ingredients.filter(
+    (item) => !landing.includes(item.toLowerCase())
+  ).length;
 
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
@@ -810,11 +810,11 @@ const settledCount = ingredients.filter(
 
   // Where typed words take off from: the left side of the input.
   const inputSource = (): Box | null => {
-  const el = inputRef.current;
-  if (!el) return null;
-  const box = sourceBox(el);
-  return { ...box, left: box.left + 24, width: 0 };
-};
+    const el = inputRef.current;
+    if (!el) return null;
+    const box = sourceBox(el);
+    return { ...box, left: box.left + 24, width: 0 };
+  };
 
   const addIngredients = (raw: string, from?: Box | null) => {
     const newItems = raw
@@ -846,18 +846,18 @@ const settledCount = ingredients.filter(
   };
 
   const addFromInput = () => {
-  addIngredients(ingredientInput, inputSource());
-  setIngredientInput("");
-  setActiveIndex(-1);
-  setShowSuggestions(false);
-};
+    addIngredients(ingredientInput, inputSource());
+    setIngredientInput("");
+    setActiveIndex(-1);
+    setShowSuggestions(false);
+  };
 
   const removeIngredient = (ingredient: string) =>
     setIngredients((current) =>
       current.filter((item) => item !== ingredient)
     );
 
-  
+
 
   const pickSuggestion = (label: string, from?: Box | null) => {
     const parts = ingredientInput.split(",");
@@ -870,57 +870,57 @@ const settledCount = ingredients.filter(
     setShowSuggestions(false);
   };
 
-const handleIngredientKeyDown = (
-  event: React.KeyboardEvent<HTMLInputElement>
-) => {
-  if (suggestions.length > 0) {
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setActiveIndex((index) => (index + 1) % suggestions.length);
-      return;
+  const handleIngredientKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (suggestions.length > 0) {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        setActiveIndex((index) => (index + 1) % suggestions.length);
+        return;
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        setActiveIndex((index) => (index <= 0 ? suggestions.length - 1 : index - 1));
+        return;
+      }
+      if (event.key === "Escape") {
+        setShowSuggestions(false);
+        setActiveIndex(-1);
+        return;
+      }
+      if (event.key === "Enter" && suggestions[activeIndex]) {
+        event.preventDefault();
+        const option = document.getElementById(`ingredient-option-${activeIndex}`);
+        pickSuggestion(suggestions[activeIndex], option ? sourceBox(option) : null);
+        return;
+      }
     }
-    if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setActiveIndex((index) => (index <= 0 ? suggestions.length - 1 : index - 1));
-      return;
-    }
-    if (event.key === "Escape") {
-      setShowSuggestions(false);
-      setActiveIndex(-1);
-      return;
-    }
-    if (event.key === "Enter" && suggestions[activeIndex]) {
-      event.preventDefault();
-      const option = document.getElementById(`ingredient-option-${activeIndex}`);
-      pickSuggestion(suggestions[activeIndex], option ? sourceBox(option) : null);
-      return;
-    }
-  }
 
-  if (event.key === "Enter") {
-    event.preventDefault();
-    addFromInput();
-  }
-};
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addFromInput();
+    }
+  };
 
   const handleFindRecipes = async () => {
     const pending = ingredientInput.trim();
 
     const finalIngredients = pending
       ? [
-          ...ingredients,
-          ...pending
-            .split(",")
-            .map((item) => item.trim())
-            .filter(
-              (item) =>
-                item &&
-                !ingredients.some(
-                  (existing) =>
-                    existing.toLowerCase() === item.toLowerCase()
-                )
-            ),
-        ]
+        ...ingredients,
+        ...pending
+          .split(",")
+          .map((item) => item.trim())
+          .filter(
+            (item) =>
+              item &&
+              !ingredients.some(
+                (existing) =>
+                  existing.toLowerCase() === item.toLowerCase()
+              )
+          ),
+      ]
       : ingredients;
 
     if (!equipment.length) {
@@ -933,51 +933,51 @@ const handleIngredientKeyDown = (
       return;
     }
 
-            if (pending) {
+    if (pending) {
       setIngredients(finalIngredients);
       setIngredientInput("");
     }
 
     const requestId = ++requestIdRef.current;
-const isCurrent = () => requestId === requestIdRef.current;
+    const isCurrent = () => requestId === requestIdRef.current;
 
-setError(null);
-setResults([]);
-setResultSource("predefined");
-setIsLoading(true);
-setStep(3);
+    setError(null);
+    setResults([]);
+    setResultSource("predefined");
+    setIsLoading(true);
+    setStep(3);
 
-try {
-  const response = await findRecipesFromIngredients(
-    {
-      equipment,
-      ingredients: finalIngredients,
-      assumeStaples,
-    },
-    (localRecipes) => {
-      if (isCurrent()) setResults(localRecipes); // show local matches right away
+    try {
+      const response = await findRecipesFromIngredients(
+        {
+          equipment,
+          ingredients: finalIngredients,
+          assumeStaples,
+        },
+        (localRecipes) => {
+          if (isCurrent()) setResults(localRecipes); // show local matches right away
+        }
+      );
+
+      if (!isCurrent()) return;
+
+      if (!response.recipes.length) {
+        setError(FRIENDLY_ERROR);
+      } else {
+        setResults(response.recipes);
+        setResultSource(response.source);
+      }
+    } catch (err) {
+      if (!isCurrent()) return;
+      console.error("Cook what you have failed:", err);
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : FRIENDLY_ERROR
+      );
+    } finally {
+      if (isCurrent()) setIsLoading(false);
     }
-  );
-
-  if (!isCurrent()) return;
-
-  if (!response.recipes.length) {
-    setError(FRIENDLY_ERROR);
-  } else {
-    setResults(response.recipes);
-    setResultSource(response.source);
-  }
-} catch (err) {
-  if (!isCurrent()) return;
-  console.error("Cook what you have failed:", err);
-  setError(
-    err instanceof Error && err.message
-      ? err.message
-      : FRIENDLY_ERROR
-  );
-} finally {
-  if (isCurrent()) setIsLoading(false);
-}
   };
 
   const startOver = () => {
@@ -996,16 +996,16 @@ try {
   };
 
   const applySavedKitchen = () => {
-  if (!savedKitchen) return;
-  setEquipment(savedKitchen);
-  setError(null);
-  setStep(2);
-};
+    if (!savedKitchen) return;
+    setEquipment(savedKitchen);
+    setError(null);
+    setStep(2);
+  };
 
-const forgetSavedKitchen = () => {
-  forgetKitchen();
-  setSavedKitchen(null);
-};
+  const forgetSavedKitchen = () => {
+    forgetKitchen();
+    setSavedKitchen(null);
+  };
 
   const goToIngredients = () => {
     setFlights([]);
@@ -1040,40 +1040,40 @@ const forgetSavedKitchen = () => {
 
         <div className="border-t border-stone-700" />
 
-          {step === 1 && (
-  <>
-    <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
-      {savedKitchen && equipment.length === 0 && (
-  <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-    <div className="min-w-0">
-      <p className="text-sm font-semibold text-orange-50">
-        Use your saved kitchen?
-      </p>
-      <p className="mt-0.5 truncate text-xs text-stone-400 sm:text-sm">
-        {savedKitchen.join(", ")}
-      </p>
-    </div>
+        {step === 1 && (
+          <>
+            <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
+              {savedKitchen && equipment.length === 0 && (
+                <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-orange-50">
+                      Use your saved kitchen?
+                    </p>
+                    <p className="mt-0.5 truncate text-xs text-stone-400 sm:text-sm">
+                      {savedKitchen.join(", ")}
+                    </p>
+                  </div>
 
-    <div className="flex shrink-0 items-center gap-1">
-      <button
-        type="button"
-        onClick={applySavedKitchen}
-        className={`${footerButton} whitespace-nowrap`}
-      >
-        Use my kitchen
-      </button>
-      <button
-        type="button"
-        onClick={forgetSavedKitchen}
-        className={ghostButton}
-      >
-        Forget
-      </button>
-    </div>
-  </div>
-)}
+                  <div className="flex shrink-0 items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={applySavedKitchen}
+                      className={`${footerButton} whitespace-nowrap`}
+                    >
+                      Use my kitchen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={forgetSavedKitchen}
+                      className={ghostButton}
+                    >
+                      Forget
+                    </button>
+                  </div>
+                </div>
+              )}
 
-      <KitchenEquipmentSelector
+              <KitchenEquipmentSelector
                 selectedEquipment={equipment}
                 onChange={setEquipment}
               />
@@ -1123,134 +1123,134 @@ const forgetSavedKitchen = () => {
                 What&apos;s in your pantry?
               </h3>
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
-  <div className="flex items-center justify-between gap-3">
-    <p
-      className="min-w-0 truncate text-sm text-stone-200"
-      title={equipment.join(", ")}
-    >
-      <span className="text-stone-500">Cooking with </span>
-      {equipment.slice(0, 2).join(", ")}
-      {equipment.length > 2 && (
-        <span className="text-stone-400"> +{equipment.length - 2}</span>
-      )}
-    </p>
-    <button
-      type="button"
-      onClick={() => {
-        setError(null);
-        setStep(1);
-      }}
-      className="shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
-    >
-      Edit
-    </button>
-  </div>
+                <div className="flex items-center justify-between gap-3">
+                  <p
+                    className="min-w-0 truncate text-sm text-stone-200"
+                    title={equipment.join(", ")}
+                  >
+                    <span className="text-stone-500">Cooking with </span>
+                    {equipment.slice(0, 2).join(", ")}
+                    {equipment.length > 2 && (
+                      <span className="text-stone-400"> +{equipment.length - 2}</span>
+                    )}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setError(null);
+                      setStep(1);
+                    }}
+                    className="shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
+                  >
+                    Edit
+                  </button>
+                </div>
 
-  <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-stone-800 pt-2.5">
-    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-stone-100">
-      <input
-        type="checkbox"
-        checked={assumeStaples}
-        onChange={(event) => setAssumeStaples(event.target.checked)}
-        className="h-4 w-4 accent-orange-300"
-      />
-      I have basic staples
-    </label>
-    <button
-      type="button"
-      aria-expanded={showStaplesInfo}
-      onClick={() => setShowStaplesInfo((open) => !open)}
-      className="shrink-0 text-xs text-stone-500 underline-offset-2 transition-colors hover:text-orange-200 hover:underline focus:outline-none focus-visible:underline"
-    >
-      {showStaplesInfo ? "Hide" : "What's included?"}
-    </button>
-  </div>
+                <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-stone-800 pt-2.5">
+                  <label className="flex cursor-pointer items-center gap-2.5 text-sm text-stone-100">
+                    <input
+                      type="checkbox"
+                      checked={assumeStaples}
+                      onChange={(event) => setAssumeStaples(event.target.checked)}
+                      className="h-4 w-4 accent-orange-300"
+                    />
+                    I have basic staples
+                  </label>
+                  <button
+                    type="button"
+                    aria-expanded={showStaplesInfo}
+                    onClick={() => setShowStaplesInfo((open) => !open)}
+                    className="shrink-0 text-xs text-stone-500 underline-offset-2 transition-colors hover:text-orange-200 hover:underline focus:outline-none focus-visible:underline"
+                  >
+                    {showStaplesInfo ? "Hide" : "What's included?"}
+                  </button>
+                </div>
 
-  {showStaplesInfo && (
-    <p className="mt-2 text-xs leading-relaxed text-stone-400">
-      Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
-      garam masala, pepper, mustard seeds
-    </p>
-  )}
-</div>
+                {showStaplesInfo && (
+                  <p className="mt-2 text-xs leading-relaxed text-stone-400">
+                    Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
+                    garam masala, pepper, mustard seeds
+                  </p>
+                )}
+              </div>
 
               <label htmlFor="ingredient-input" className="sr-only">
-  Type ingredients
-</label>
-<div className="relative mt-5">
-  <input
-    ref={inputRef}
-    id="ingredient-input"
-    type="text"
-    role="combobox"
-    aria-expanded={suggestions.length > 0}
-    aria-controls="ingredient-suggestions"
-    aria-autocomplete="list"
-    aria-activedescendant={
-      activeIndex >= 0 ? `ingredient-option-${activeIndex}` : undefined
-    }
-    value={ingredientInput}
-    onChange={(event) => {
-      setIngredientInput(event.target.value);
-      setShowSuggestions(true);
-      setActiveIndex(-1);
-    }}
-    onFocus={() => {
-      setShowSuggestions(true);
-      setInputFocused(true);
-    }}
-    onBlur={() => {
-      setShowSuggestions(false);
-      setInputFocused(false);
-    }}
-    onKeyDown={handleIngredientKeyDown}
-    placeholder="Type ingredients, eg: paneer, dal "
-    autoComplete="off"
-    enterKeyHint="done"
-    className="w-full rounded-xl border border-stone-700 bg-stone-900 py-3 pl-4 pr-14 text-base text-stone-100 outline-none transition placeholder:text-sm placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
-  />
+                Type ingredients
+              </label>
+              <div className="relative mt-5">
+                <input
+                  ref={inputRef}
+                  id="ingredient-input"
+                  type="text"
+                  role="combobox"
+                  aria-expanded={suggestions.length > 0}
+                  aria-controls="ingredient-suggestions"
+                  aria-autocomplete="list"
+                  aria-activedescendant={
+                    activeIndex >= 0 ? `ingredient-option-${activeIndex}` : undefined
+                  }
+                  value={ingredientInput}
+                  onChange={(event) => {
+                    setIngredientInput(event.target.value);
+                    setShowSuggestions(true);
+                    setActiveIndex(-1);
+                  }}
+                  onFocus={() => {
+                    setShowSuggestions(true);
+                    setInputFocused(true);
+                  }}
+                  onBlur={() => {
+                    setShowSuggestions(false);
+                    setInputFocused(false);
+                  }}
+                  onKeyDown={handleIngredientKeyDown}
+                  placeholder="Type ingredients, eg: paneer, dal "
+                  autoComplete="off"
+                  enterKeyHint="done"
+                  className="w-full rounded-xl border border-stone-700 bg-stone-900 py-3 pl-4 pr-14 text-base text-stone-100 outline-none transition placeholder:text-sm placeholder:text-stone-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20"
+                />
 
-  <button
-    type="button"
-    onMouseDown={(event) => event.preventDefault()}
-    onClick={addFromInput}
-    disabled={!ingredientInput.trim()}
-    aria-label="Add ingredient"
-    className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-orange-200 text-xl font-bold leading-none text-stone-900 transition hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:bg-transparent disabled:text-stone-600 disabled:hover:bg-transparent"
-  >
-    +
-  </button>
+                <button
+                  type="button"
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={addFromInput}
+                  disabled={!ingredientInput.trim()}
+                  aria-label="Add ingredient"
+                  className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-orange-200 text-xl font-bold leading-none text-stone-900 transition hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 disabled:bg-transparent disabled:text-stone-600 disabled:hover:bg-transparent"
+                >
+                  +
+                </button>
 
-  {suggestions.length > 0 && (
-    <ul
-      id="ingredient-suggestions"
-      role="listbox"
-      onMouseDown={(event) => event.preventDefault()}
-      className={`absolute left-0 right-0 z-50 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg ${
+                {suggestions.length > 0 && (
+                  <ul
+                    id="ingredient-suggestions"
+                    role="listbox"
+                    onMouseDown={(event) => event.preventDefault()}
+                    className={`absolute left-0 right-0 z-50 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg ${
         dropUp ? "bottom-full mb-1" : "top-full mt-1"
-      }`}
-    >
-      {suggestions.map((label, index) => (
-        <li
-          key={label}
-          id={`ingredient-option-${index}`}
-          role="option"
-          aria-selected={index === activeIndex}
-          onClick={(event) =>
-            pickSuggestion(label, sourceBox(event.currentTarget))
-          }
-          className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
+                      }`}
+                  >
+                    {suggestions.map((label, index) => (
+                      <li
+                        key={label}
+                        id={`ingredient-option-${index}`}
+                        role="option"
+                        aria-selected={index === activeIndex}
+                        onClick={(event) =>
+                          pickSuggestion(label, sourceBox(event.currentTarget))
+                        }
+                        className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
             index === activeIndex
-              ? "bg-orange-400/15 text-orange-100"
-              : "text-stone-200 hover:bg-stone-800"
-          }`}
-        >
-          {label}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
+                            ? "bg-orange-400/15 text-orange-100"
+                            : "text-stone-200 hover:bg-stone-800"
+                          }`}
+                      >
+                        {label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
               {availableQuick.length > 0 && (
                 <div className="mt-6">
@@ -1332,39 +1332,39 @@ const forgetSavedKitchen = () => {
                 inputFocused
                   ? "pointer-events-none translate-y-full sm:pointer-events-auto sm:translate-y-0"
                   : ""
-              }`}
+                }`}
             >
               <button
-  type="button"
-  onClick={() => {
-    setError(null);
-    setStep(1);
-  }}
-  className={`${ghostButton} shrink-0`}
->
-  <span aria-hidden="true">←</span> Back
-</button>
+                type="button"
+                onClick={() => {
+                  setError(null);
+                  setStep(1);
+                }}
+                className={`${ghostButton} shrink-0`}
+              >
+                <span aria-hidden="true">←</span> Back
+              </button>
 
-<p className="min-w-0 flex-1 text-center text-xs leading-tight text-stone-400 sm:text-sm">
-  <span className="block sm:inline">
-    <span className="font-semibold text-orange-200">{settledCount}</span>{" "}
-    {settledCount === 1 ? "ingredient" : "ingredients"}
-  </span>
-  <span className="hidden sm:inline"> · </span>
-  <span className="block sm:inline">
-    <span className="font-semibold text-orange-200">{equipment.length}</span>{" "}
-    {equipment.length === 1 ? "tool" : "tools"}
-  </span>
-</p>
+              <p className="min-w-0 flex-1 text-center text-xs leading-tight text-stone-400 sm:text-sm">
+                <span className="block sm:inline">
+                  <span className="font-semibold text-orange-200">{settledCount}</span>{" "}
+                  {settledCount === 1 ? "ingredient" : "ingredients"}
+                </span>
+                <span className="hidden sm:inline"> · </span>
+                <span className="block sm:inline">
+                  <span className="font-semibold text-orange-200">{equipment.length}</span>{" "}
+                  {equipment.length === 1 ? "tool" : "tools"}
+                </span>
+              </p>
 
-<button
-  type="button"
-  onClick={handleFindRecipes}
-  disabled={ingredients.length === 0 && !ingredientInput.trim()}
-  className={`${footerButton} shrink-0 whitespace-nowrap`}
->
-  Find dishes
-</button>
+              <button
+                type="button"
+                onClick={handleFindRecipes}
+                disabled={ingredients.length === 0 && !ingredientInput.trim()}
+                className={`${footerButton} shrink-0 whitespace-nowrap`}
+              >
+                Find dishes
+              </button>
             </div>
           </>
         )}
@@ -1517,23 +1517,23 @@ const forgetSavedKitchen = () => {
                 )}
               </div>
 
-              
-                      <div className="mt-6 flex items-center justify-center gap-1">
-                        <button
-                          type="button"
-                          onClick={goToIngredients}
-                          className={ghostButton}
-                        >
-                          Edit ingredients
-                        </button>
-                        <button
-                          type="button"
-                          onClick={startOver}
-                          className={ghostButton}
-                        >
-                          Start over
-                        </button>
-                      </div>
+
+              <div className="mt-6 flex items-center justify-center gap-1">
+                <button
+                  type="button"
+                  onClick={goToIngredients}
+                  className={ghostButton}
+                >
+                  Edit ingredients
+                </button>
+                <button
+                  type="button"
+                  onClick={startOver}
+                  className={ghostButton}
+                >
+                  Start over
+                </button>
+              </div>
             </div>
           </div>
         )}

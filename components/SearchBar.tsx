@@ -64,39 +64,39 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   const [suggestion, setSuggestion] = useState('');
 
-useEffect(() => {
-  if (compact || isLoading || isIdentifying) {
+  useEffect(() => {
+    if (compact || isLoading || isIdentifying) {
+      setSuggestion('');
+      return;
+    }
+    setSuggestion(suggestDishCompletion(searchTerm) ?? '');
+  }, [searchTerm, compact, isLoading, isIdentifying]);
+
+  const acceptSuggestion = () => {
+    if (!suggestion) return;
+    setSearchTerm(suggestion);
     setSuggestion('');
-    return;
-  }
-  setSuggestion(suggestDishCompletion(searchTerm) ?? '');
-}, [searchTerm, compact, isLoading, isIdentifying]);
+  };
 
-const acceptSuggestion = () => {
-  if (!suggestion) return;
-  setSearchTerm(suggestion);
-  setSuggestion('');
-};
+  const NAVIGATION_KEYS = new Set(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Home', 'End']);
 
-const NAVIGATION_KEYS = new Set(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Home', 'End']);
+  const checkCaretAtEnd = (event: React.SyntheticEvent<HTMLInputElement>) => {
+    const input = event.currentTarget;
+    const atEnd =
+      input.selectionStart === input.value.length &&
+      input.selectionEnd === input.value.length;
+    if (atEnd && suggestion) acceptSuggestion();
+  };
 
-const checkCaretAtEnd = (event: React.SyntheticEvent<HTMLInputElement>) => {
-  const input = event.currentTarget;
-  const atEnd =
-    input.selectionStart === input.value.length &&
-    input.selectionEnd === input.value.length;
-  if (atEnd && suggestion) acceptSuggestion();
-};
-
-// Only fires checkCaretAtEnd for keys that MOVE the cursor without changing
-// the text — never for normal typing, which also happens to land the
-// cursor at the end and would otherwise trigger a false accept.
-const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  if (!NAVIGATION_KEYS.has(event.key)) return;
-  checkCaretAtEnd(event);
-};
+  // Only fires checkCaretAtEnd for keys that MOVE the cursor without changing
+  // the text — never for normal typing, which also happens to land the
+  // cursor at the end and would otherwise trigger a false accept.
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!NAVIGATION_KEYS.has(event.key)) return;
+    checkCaretAtEnd(event);
+  };
   const searchContainerRef = useRef<HTMLDivElement>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const [isPhotoMenuOpen, setIsPhotoMenuOpen] = useState(false);
   // Touch devices get the "Take a photo" option; desktops go straight to the file picker.
@@ -111,7 +111,7 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
   }, [compact]);
 
   // Type and erase example dishes while the input is not focused.
-    // The typewriter only runs while the box is idle. Otherwise it is paused and
+  // The typewriter only runs while the box is idle. Otherwise it is paused and
   // the placeholder falls back to its full default text.
   const isTypewriterIdle =
     !compact &&
@@ -169,7 +169,7 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [compact, isExpanded]);
 
-    // Close the photo menu on outside click, Escape, or once the user starts typing.
+  // Close the photo menu on outside click, Escape, or once the user starts typing.
   useEffect(() => {
     if (!isPhotoMenuOpen) return;
 
@@ -198,18 +198,37 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
   }, [searchTerm]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  const input = event.currentTarget;
-  const atEnd =
-    input.selectionStart === input.value.length &&
-    input.selectionEnd === input.value.length;
+    const input = event.currentTarget;
+    const atEnd =
+      input.selectionStart === input.value.length &&
+      input.selectionEnd === input.value.length;
 
-  if (suggestion && atEnd && (event.key === 'Tab' || event.key === 'ArrowRight' || event.key === 'End')) {
-    event.preventDefault();
-    acceptSuggestion();
-    return;
-  }
+    if (suggestion && atEnd && (event.key === 'Tab' || event.key === 'ArrowRight' || event.key === 'End')) {
+      event.preventDefault();
+      acceptSuggestion();
+      return;
+    }
 
-  if (event.key === 'Enter' && !isLoading) {
+    if (event.key === 'Enter' && !isLoading) {
+      const termToSearch = suggestion || searchTerm;
+
+      if (suggestion) {
+        setSearchTerm(suggestion);
+        setSuggestion('');
+      }
+
+      if (compact) setIsExpanded(false);
+      onSearch(termToSearch);
+    }
+  };
+
+  const handleSearchClick = () => {
+    // Compact mode: the first click opens the search.
+    if (compact && !isExpanded) {
+      setIsExpanded(true);
+      return;
+    }
+
     const termToSearch = suggestion || searchTerm;
 
     if (suggestion) {
@@ -219,28 +238,9 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
 
     if (compact) setIsExpanded(false);
     onSearch(termToSearch);
-  }
-};
+  };
 
-  const handleSearchClick = () => {
-  // Compact mode: the first click opens the search.
-  if (compact && !isExpanded) {
-    setIsExpanded(true);
-    return;
-  }
-
-  const termToSearch = suggestion || searchTerm;
-
-  if (suggestion) {
-    setSearchTerm(suggestion);
-    setSuggestion('');
-  }
-
-  if (compact) setIsExpanded(false);
-  onSearch(termToSearch);
-};
-
-    const handlePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) onImageSelected?.(file);
     e.target.value = ''; // allow re-picking the same photo
@@ -289,7 +289,7 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         >
           <div className="group relative w-full flex-grow">
             {/* Visual box — background, border, focus ring. Drawn separately so the
-                ghost suggestion can show through a transparent input on top of it. */}
+            ghost suggestion can show through a transparent input on top of it. */}
             <div
               aria-hidden="true"
               className={`pointer-events-none absolute inset-0 border bg-stone-900 shadow-sm transition-all duration-200 group-focus-within:border-orange-400 group-focus-within:ring-4 group-focus-within:ring-orange-400/15 ${
@@ -332,12 +332,12 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
                 compact
                   ? 'h-11 rounded-full pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
                   : `h-12 rounded-xl pl-11 text-sm sm:h-14 sm:pl-12 sm:text-lg ${
-                      showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
-                    }`
+                    showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
+                  }`
               }`}
             />
 
-                        {showCamera && (
+            {showCamera && (
               <>
                 {/* Gallery / file picker */}
                 <input
@@ -498,7 +498,7 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
             ) : (
               'Generate Recipe'
             )}
-                    </button>
+          </button>
         </div>
       )}
 
