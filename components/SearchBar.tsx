@@ -78,6 +78,23 @@ const acceptSuggestion = () => {
   setSuggestion('');
 };
 
+const NAVIGATION_KEYS = new Set(['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Home', 'End']);
+
+const checkCaretAtEnd = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  const input = event.currentTarget;
+  const atEnd =
+    input.selectionStart === input.value.length &&
+    input.selectionEnd === input.value.length;
+  if (atEnd && suggestion) acceptSuggestion();
+};
+
+// Only fires checkCaretAtEnd for keys that MOVE the cursor without changing
+// the text — never for normal typing, which also happens to land the
+// cursor at the end and would otherwise trigger a false accept.
+const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  if (!NAVIGATION_KEYS.has(event.key)) return;
+  checkCaretAtEnd(event);
+};
   const searchContainerRef = useRef<HTMLDivElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -279,7 +296,7 @@ const acceptSuggestion = () => {
                 }`}
               >
                 <span className="invisible">{searchTerm}</span>
-                <span className="text-stone-500">{suggestion.slice(searchTerm.length)}</span>
+                <span className="text-stone-500/40">{suggestion.slice(searchTerm.length)}</span>
               </div>
             )}
 
@@ -289,6 +306,8 @@ const acceptSuggestion = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
+              onKeyUp={handleKeyUp}
+              onClick={checkCaretAtEnd}
               onFocus={() => setIsInputFocused(true)}
               onBlur={() => setIsInputFocused(false)}
               autoFocus={compact && isExpanded}
