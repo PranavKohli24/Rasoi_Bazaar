@@ -4,7 +4,7 @@ import { suggestDishCompletion } from '@/utils/findPredefinedRecipe'; // ← adj
 interface SearchBarProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
-  onSearch: () => void;
+  onSearch: (term: string) => void;
   isLoading: boolean;
   compact?: boolean;
   /** Placeholder used by the compact (header) search box */
@@ -210,21 +210,35 @@ const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
   }
 
   if (event.key === 'Enter' && !isLoading) {
+    const termToSearch = suggestion || searchTerm;
+
+    if (suggestion) {
+      setSearchTerm(suggestion);
+      setSuggestion('');
+    }
+
     if (compact) setIsExpanded(false);
-    onSearch();
+    onSearch(termToSearch);
   }
 };
 
   const handleSearchClick = () => {
-    // Compact mode: the first click opens the search.
-    if (compact && !isExpanded) {
-      setIsExpanded(true);
-      return;
-    }
-    // Compact mode: submitting closes it.
-    if (compact) setIsExpanded(false);
-    onSearch();
-  };
+  // Compact mode: the first click opens the search.
+  if (compact && !isExpanded) {
+    setIsExpanded(true);
+    return;
+  }
+
+  const termToSearch = suggestion || searchTerm;
+
+  if (suggestion) {
+    setSearchTerm(suggestion);
+    setSuggestion('');
+  }
+
+  if (compact) setIsExpanded(false);
+  onSearch(termToSearch);
+};
 
     const handlePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

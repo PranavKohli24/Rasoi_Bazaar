@@ -85,11 +85,11 @@ const HomePage: React.FC = () => {
             </span>
           </p>
 
-                    <div className="mt-8 w-full max-w-2xl">
+          <div className="mt-8 w-full max-w-2xl">
             <SearchBar
               searchTerm={term}
               setSearchTerm={setTerm}
-              onSearch={() => goWithPreload(term)}
+              onSearch={(search) => goWithPreload(search)}
               isLoading={false}
               compact={false}
               onImageSelected={handleImage}
