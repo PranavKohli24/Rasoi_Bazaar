@@ -173,7 +173,9 @@ const loadBrandFonts = () =>
 
 // Fallback used when there's no photo, or the photo can't be loaded /
 // drawn to canvas (broken URL, CORS-tainted source, etc). Sharing should
-// never hard-fail just because the hero image didn't cooperate.
+// never hard-fail just because the hero image didn't cooperate — this is
+// the same warm cream card as before, just recentred for the portrait
+// canvas and sharing font sizing with the photo version.
 const drawTextOnlyCard = (
   ctx: CanvasRenderingContext2D,
   dishName: string
@@ -181,55 +183,49 @@ const drawTextOnlyCard = (
   ctx.fillStyle = "#FFF8F1";
   ctx.fillRect(0, 0, CARD_WIDTH, CARD_HEIGHT);
 
-  const glow1 = ctx.createRadialGradient(1050, 80, 50, 1050, 80, 420);
+  const glow1 = ctx.createRadialGradient(920, 160, 60, 920, 160, 520);
   glow1.addColorStop(0, "rgba(252,108,38,0.18)");
   glow1.addColorStop(1, "rgba(252,108,38,0)");
   ctx.fillStyle = glow1;
   ctx.beginPath();
-  ctx.arc(1050, 80, 420, 0, Math.PI * 2);
+  ctx.arc(920, 160, 520, 0, Math.PI * 2);
   ctx.fill();
 
-  const glow2 = ctx.createRadialGradient(100, 580, 40, 100, 580, 320);
-  glow2.addColorStop(0, "rgba(252,108,38,0.12)");
+  const glow2 = ctx.createRadialGradient(140, 1200, 50, 140, 1200, 420);
+  glow2.addColorStop(0, "rgba(252,108,38,0.14)");
   glow2.addColorStop(1, "rgba(252,108,38,0)");
   ctx.fillStyle = glow2;
   ctx.beginPath();
-  ctx.arc(100, 580, 320, 0, Math.PI * 2);
+  ctx.arc(140, 1200, 420, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.textAlign = "center";
   ctx.shadowColor = "transparent";
   ctx.shadowBlur = 0;
 
+  const centerX = CARD_WIDTH / 2;
+
   ctx.fillStyle = "#D1560F";
-  ctx.font = '600 42px Caveat, cursive';
-  ctx.fillText("I just cooked", CARD_WIDTH / 2, 240);
+  ctx.font = '600 46px Caveat, cursive';
+  ctx.fillText("I just cooked", centerX, 520);
 
+  // Reuse the same font-fitting logic as the photo card for a consistent
+  // dish-name treatment, just centered instead of left-aligned.
+  const maxWidth = CARD_WIDTH - 160;
+  const { fontSize, lines } = fitDishNameFont(ctx, dishName, maxWidth);
+  const lineHeight = fontSize * 1.12;
   ctx.fillStyle = "#3E2E23";
-  ctx.font = '900 76px Fraunces, serif';
-  const words = dishName.split(" ");
-  let line = "";
-  const lines: string[] = [];
-  for (const word of words) {
-    const test = line ? `${line} ${word}` : word;
-    if (ctx.measureText(test).width > 1000 && line) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = test;
-    }
-  }
-  lines.push(line);
-  const startY = 330 - ((lines.length - 1) * 84) / 2;
-  lines.forEach((l, i) => ctx.fillText(l, CARD_WIDTH / 2, startY + i * 84));
+  ctx.font = `900 ${fontSize}px Fraunces, serif`;
+  const startY = 650 - ((lines.length - 1) * lineHeight) / 2;
+  lines.slice(0, 2).forEach((l, i) => ctx.fillText(l, centerX, startY + i * lineHeight));
 
-  ctx.font = '700 28px "DM Sans", sans-serif';
+  ctx.font = '700 30px "DM Sans", sans-serif';
   ctx.fillStyle = "#FC6C26";
-  ctx.fillText("Rasoi Bazaar", CARD_WIDTH / 2, 540);
+  ctx.fillText("Rasoi Bazaar", centerX, 1250);
 
-  ctx.font = '400 20px "DM Sans", sans-serif';
+  ctx.font = '400 22px "DM Sans", sans-serif';
   ctx.fillStyle = "#7E6038";
-  ctx.fillText("rasoi-bazaar.vercel.app", CARD_WIDTH / 2, 572);
+  ctx.fillText("rasoi-bazaar.vercel.app", centerX, 1286);
 };
 
 // Full-bleed photo, almost the whole frame — a portrait canvas means
