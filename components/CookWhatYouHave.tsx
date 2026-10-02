@@ -552,7 +552,7 @@ const useBlockGlide = (
 
 
 const ResultSkeleton: React.FC = () => (
-  <div className="animate-pulse rounded-2xl border border-stone-700 bg-stone-900 p-5">
+  <div className="animate-pulse rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_10px_24px_-8px_rgba(0,0,0,0.7)] sm:p-5">
     <div className="h-5 w-1/2 rounded bg-stone-800" />
     <div className="mt-3 h-3 w-full rounded bg-stone-800" />
     <div className="mt-2 h-3 w-4/5 rounded bg-stone-800" />
@@ -1454,7 +1454,7 @@ const forgetSavedKitchen = () => {
                   return (
                     <article
                       key={recipe.dishName}
-                      className="rounded-2xl border border-stone-700 bg-stone-900 p-4 shadow-sm transition-all hover:border-orange-400/60 hover:shadow-md sm:p-5"
+                      className="rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_1px_0_rgba(0,0,0,0.5),0_10px_24px_-8px_rgba(0,0,0,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_1px_0_rgba(0,0,0,0.5),0_16px_32px_-10px_rgba(0,0,0,0.8)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:p-5"
                     >
                       <h4 className="font-serif text-xl font-bold text-orange-50 sm:text-2xl">
                         {recipe.dishName}
