@@ -180,6 +180,7 @@ const Chip: React.FC<{
     onClick={onRemove}
     aria-label={`Remove ${label}`}
     data-ingredient-chip={label.toLowerCase()}
+    data-glide={label.toLowerCase()}
     className={`inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
       hidden ? "invisible" : ""
     }`}
@@ -199,6 +200,8 @@ interface Box {
   top: number;
   width: number;
   height: number;
+  // Colors of the element the chip took off from, so lift-off is seamless.
+  colors?: { bg: string; border: string; text: string };
 }
 
 interface Flight {
@@ -208,11 +211,68 @@ interface Flight {
   delay: number;
 }
 
-const FLIGHT_MS = 650;
-
 const prefersReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+const sourceBox = (el: Element): Box => {
+  const rect = el.getBoundingClientRect();
+  const style = getComputedStyle(el);
+  return {
+    left: rect.left,
+    top: rect.top,
+    width: rect.width,
+    height: rect.height,
+    colors: {
+      bg: style.backgroundColor,
+      border: style.borderTopColor,
+      text: style.color,
+    },
+  };
+};
+
+const BRIGHT = {
+  bg: "rgb(254, 215, 170)",
+  border: "rgb(253, 186, 116)",
+  text: "rgb(28, 25, 23)",
+};
+
+/** Everything that happens when a chip arrives. */
+const playLanding = (target: HTMLElement) => {
+  // 1. Springy overshoot on the chip itself.
+  target.animate?.(
+    [
+      { transform: "scale(1)", easing: "cubic-bezier(0.2, 0.8, 0.3, 1)" },
+      { transform: "scale(1.18)", offset: 0.38, easing: "ease-in-out" },
+      { transform: "scale(0.96)", offset: 0.68, easing: "ease-out" },
+      { transform: "scale(1)" },
+    ],
+    { duration: 460, easing: "linear" }
+  );
+
+  // 2. The counter pops.
+  document
+    .querySelector<HTMLElement>("[data-ingredient-count]")
+    ?.animate?.(
+      [
+        { transform: "scale(1)" },
+        { transform: "scale(1.4)", offset: 0.4 },
+        { transform: "scale(1)" },
+      ],
+      { duration: 380, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" }
+    );
+
+  // 4. A tiny tap on phones that support it.
+  if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+    navigator.vibrate(8);
+  }
+};
 
 /** A copy of the chip that flies from where you tapped to where the new chip lands. */
 const FlyingChip: React.FC<{
@@ -226,114 +286,145 @@ const FlyingChip: React.FC<{
     if (!el) return;
 
     const key = flight.label.toLowerCase();
-    const target = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-ingredient-chip]")
-    ).find((node) => node.dataset.ingredientChip === key);
+    const findTarget = (): HTMLElement | null =>
+      Array.from(
+        document.querySelectorAll<HTMLElement>("[data-ingredient-chip]")
+      ).find((node) => node.dataset.ingredientChip === key) ?? null;
+
+    let target = findTarget();
 
     // No landing spot (or no animation support): skip the flight.
     if (!target || typeof el.animate !== "function") {
       onDone(flight);
       return;
     }
+    const initialTarget: HTMLElement = target;
 
     const own = el.getBoundingClientRect();
-    const to = target.getBoundingClientRect();
-
     const startX = flight.from.left + flight.from.width / 2 - own.width / 2;
     const startY = flight.from.top + flight.from.height / 2 - own.height / 2;
-    const endX = to.left;
-    // Keep the landing point on screen if the box is scrolled out of view.
-    const endY = Math.min(
-      Math.max(to.top, 8),
-      window.innerHeight - own.height - 8
-    );
-    const lift = Math.min(70, Math.abs(endY - startY) * 0.3 + 24);
 
-    const animation = el.animate(
-      [
-        { transform: `translate(${startX}px, ${startY}px) scale(1)`, offset: 0 },
-        {
-          transform: `translate(${(startX + endX) / 2}px, ${
-            (startY + endY) / 2 - lift
-          }px) scale(1.1)`,
-          offset: 0.5,
-        },
-        { transform: `translate(${endX}px, ${endY}px) scale(1)`, offset: 1 },
-      ],
-      {
-        duration: FLIGHT_MS,
-        delay: flight.delay,
-        easing: "cubic-bezier(0.22, 0.7, 0.25, 1)",
-        fill: "both",
+    // The landing point is re-read every frame, so scrolling or a layout
+    // shift mid-flight can't make the chip miss.
+    let lastEnd = { x: startX, y: startY };
+    const readEnd = () => {
+      if (target && !target.isConnected) target = findTarget();
+      if (target) {
+        const rect = target.getBoundingClientRect();
+        lastEnd = {
+          x: rect.left,
+          y: clamp(rect.top, 8, window.innerHeight - own.height - 8),
+        };
       }
-    );
+      return lastEnd;
+    };
 
-        // Stay bright for the first third of the flight, then settle into the
-    // real chip's colors so there is no visible change when it lands.
-    const style = getComputedStyle(target);
-    const lastChild = target.lastElementChild as HTMLElement | null;
+    const first = readEnd();
+    const distance = Math.hypot(first.x - startX, first.y - startY);
+    const duration = clamp(520 + distance * 0.4, 580, 900);
+
+    const place = (x: number, y: number, tilt = 0, sx = 1, sy = 1) => {
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${tilt}deg) scale(${sx}, ${sy})`;
+    };
+    place(startX, startY); // before the first paint, so it never flashes at 0,0
+
+        // Colors: leave in the tapped element's look, ease into the real chip's look.
+        // Colors: leave as the tapped chip, turn bright orange in the air,
+    // then settle into the real chip's colors just before landing.
+    const landingStyle = getComputedStyle(initialTarget);
+    const landingColors = {
+      bg: landingStyle.backgroundColor,
+      border: landingStyle.borderTopColor,
+      text: landingStyle.color,
+    };
+    const landingX = initialTarget.lastElementChild
+      ? getComputedStyle(initialTarget.lastElementChild).color
+      : landingColors.text;
+    const from = flight.from.colors ?? landingColors;
+
     const timing: KeyframeAnimationOptions = {
-      duration: FLIGHT_MS,
+      duration,
       delay: flight.delay,
-      easing: "ease-in-out",
+      easing: "linear",
       fill: "both",
     };
 
     const colorAnimation = el.animate(
       [
+        { backgroundColor: from.bg, borderColor: from.border, color: from.text, offset: 0 },
+        { backgroundColor: BRIGHT.bg, borderColor: BRIGHT.border, color: BRIGHT.text, offset: 0.18 },
+        { backgroundColor: BRIGHT.bg, borderColor: BRIGHT.border, color: BRIGHT.text, offset: 0.62 },
         {
-          backgroundColor: "rgb(254, 215, 170)",
-          borderColor: "rgb(253, 186, 116)",
-          color: "rgb(28, 25, 23)",
-          boxShadow: "0 10px 15px -3px rgba(124, 45, 18, 0.3)",
-          offset: 0,
-        },
-        {
-          backgroundColor: "rgb(254, 215, 170)",
-          borderColor: "rgb(253, 186, 116)",
-          color: "rgb(28, 25, 23)",
-          boxShadow: "0 10px 15px -3px rgba(124, 45, 18, 0.3)",
-          offset: 0.35,
-        },
-        {
-          backgroundColor: style.backgroundColor,
-          borderColor: style.borderTopColor,
-          color: style.color,
-          boxShadow: "0 0 0 0 rgba(0, 0, 0, 0)",
+          backgroundColor: landingColors.bg,
+          borderColor: landingColors.border,
+          color: landingColors.text,
           offset: 1,
         },
       ],
       timing
     );
 
-    const crossAnimation = lastChild
-      ? (el.lastElementChild as HTMLElement | null)?.animate(
-          [
-            { color: "rgb(28, 25, 23)" },
-            { color: "rgb(28, 25, 23)", offset: 0.35 },
-            { color: getComputedStyle(lastChild).color },
-          ],
-          timing
-        )
-      : undefined;
+    const crossAnimation = (el.lastElementChild as HTMLElement | null)?.animate(
+      [
+        { color: from.text, offset: 0 },
+        { color: BRIGHT.text, offset: 0.18 },
+        { color: BRIGHT.text, offset: 0.62 },
+        { color: landingX, offset: 1 },
+      ],
+      timing
+    );
+    
+    const startTime = performance.now();
+    let previous = { x: startX, y: startY, time: startTime };
+    let raf = 0;
 
-    animation.onfinish = () => {
-      onDone(flight);
-      // Small bounce on the real chip once it appears.
-      requestAnimationFrame(() => {
-        target.animate?.(
-          [
-            { transform: "scale(1)" },
-            { transform: "scale(1.14)" },
-            { transform: "scale(1)" },
-          ],
-          { duration: 240, easing: "ease-out" }
-        );
-      });
+    const frame = (now: number) => {
+      const elapsed = now - startTime - flight.delay;
+      const end = readEnd();
+
+      if (elapsed < 0) {
+        raf = requestAnimationFrame(frame); // waiting for its turn (stagger)
+        return;
+      }
+
+      const progress = Math.min(elapsed / duration, 1);
+
+      if (progress >= 1) {
+        place(end.x, end.y);
+        onDone(flight);
+        const landed = target && target.isConnected ? target : null;
+        if (landed) requestAnimationFrame(() => playLanding(landed));
+        return;
+      }
+
+      const t = easeInOutCubic(progress);
+      const peak = Math.min(70, Math.abs(end.y - startY) * 0.3 + 24);
+      const controlX = (startX + end.x) / 2;
+      const controlY = (startY + end.y) / 2 - peak * 2; // a curve's peak is half its control offset
+      const inverse = 1 - t;
+
+      const x = inverse * inverse * startX + 2 * inverse * t * controlX + t * t * end.x;
+      const y = inverse * inverse * startY + 2 * inverse * t * controlY + t * t * end.y;
+
+      const dt = Math.max(now - previous.time, 1);
+      const vx = (x - previous.x) / dt;
+      const vy = (y - previous.y) / dt;
+      const speed = Math.hypot(vx, vy);
+
+      const tilt = clamp(vx * 14, -14, 14);
+      const stretch = clamp(speed * 0.1, 0, 0.16);
+      const pop = 1 + 0.08 * Math.sin(Math.PI * progress);
+
+      place(x, y, tilt, pop * (1 + stretch), pop * (1 - stretch * 0.5));
+      previous = { x, y, time: now };
+
+      raf = requestAnimationFrame(frame);
     };
 
-        return () => {
-      animation.cancel();
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      cancelAnimationFrame(raf);
       colorAnimation.cancel();
       crossAnimation?.cancel();
     };
@@ -344,12 +435,119 @@ const FlyingChip: React.FC<{
     <span
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-[100] inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-orange-300 bg-orange-200 py-1.5 pl-3.5 pr-2.5 text-sm text-stone-900 shadow-lg shadow-orange-900/30"
+      className="pointer-events-none fixed left-0 top-0 z-[100] inline-flex items-center gap-2 whitespace-nowrap rounded-full border py-1.5 pl-3.5 pr-2.5 text-sm will-change-transform"
     >
       {flight.label}
       <span className="text-base leading-none">×</span>
     </span>
   );
+};
+
+/* ---------- Glide: neighbours slide instead of snapping (FLIP) ---------- */
+
+/** Chips inside a container glide to their new spots. Mark each with data-glide="key". */
+const useChipGlide = (
+  ref: { readonly current: HTMLElement | null },
+  signature: string,
+  delay = 0
+) => {
+  const last = useRef(new Map<string, { x: number; y: number }>());
+  const running = useRef(new Map<string, Animation>());
+
+  useLayoutEffect(() => {
+    const container = ref.current;
+    if (!container) {
+      last.current = new Map();
+      return;
+    }
+
+    // Measure true layout positions, so stop our own glides first.
+    running.current.forEach((animation) => animation.cancel());
+    running.current.clear();
+
+    const origin = container.getBoundingClientRect();
+    const reduce = prefersReducedMotion();
+    const next = new Map<string, { x: number; y: number }>();
+
+    container.querySelectorAll<HTMLElement>("[data-glide]").forEach((node) => {
+      const key = node.dataset.glide as string;
+      const rect = node.getBoundingClientRect();
+      // Relative to the container, so the container moving doesn't count.
+      const position = { x: rect.left - origin.left, y: rect.top - origin.top };
+      next.set(key, position);
+
+      const previous = last.current.get(key);
+      if (!previous || reduce || typeof node.animate !== "function") return;
+
+      const dx = previous.x - position.x;
+      const dy = previous.y - position.y;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+
+      const animation = node.animate(
+        [
+          { transform: `translate(${dx}px, ${dy}px)` },
+          { transform: "translate(0px, 0px)" },
+        ],
+                {
+          duration: 340,
+          delay,
+          fill: "backwards", // stay at the old spot until the delay ends
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        }
+      );
+      running.current.set(key, animation);
+      animation.onfinish = () => {
+        if (running.current.get(key) === animation) running.current.delete(key);
+      };
+    });
+
+    last.current = next;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature]);
+};
+
+/** One block (the ingredients box) glides when things above it change height. */
+const useBlockGlide = (
+  ref: { readonly current: HTMLElement | null },
+  signature: string,
+  delay = 0
+) => {
+  const lastTop = useRef<number | null>(null);
+  const running = useRef<Animation | null>(null);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (!node) {
+      lastTop.current = null;
+      return;
+    }
+
+    running.current?.cancel();
+    running.current = null;
+
+    // Page coordinates, so scrolling between renders doesn't fool it.
+    const top = node.getBoundingClientRect().top + window.scrollY;
+    const previous = lastTop.current;
+    lastTop.current = top;
+
+    if (previous === null || prefersReducedMotion() || typeof node.animate !== "function") {
+      return;
+    }
+
+    const dy = previous - top;
+    if (Math.abs(dy) < 1) return;
+
+        running.current = node.animate(
+      [{ transform: `translateY(${dy}px)` }, { transform: "translateY(0px)" }],
+      {
+        duration: 340,
+        delay,
+        fill: "backwards",
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+      }
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature]);
 };
 
 
@@ -474,6 +672,19 @@ const availableQuick = QUICK_INGREDIENTS.filter(
     !ingredients.some((current) => current.toLowerCase() === item.toLowerCase())
 );
 
+const quickRef = useRef<HTMLDivElement>(null);
+const chipsRef = useRef<HTMLDivElement>(null);
+const boxRef = useRef<HTMLDivElement>(null);
+
+useChipGlide(quickRef, availableQuick.join("|"), 150);
+useChipGlide(chipsRef, ingredients.join("|"));
+useBlockGlide(boxRef, availableQuick.join("|"), 150);
+
+// Chips still in the air don't count yet; the number updates when they land.
+const settledCount = ingredients.filter(
+  (item) => !landing.includes(item.toLowerCase())
+).length;
+
   const sectionRef = useRef<HTMLElement>(null);
   const isFirstRender = useRef(true);
   const requestIdRef = useRef(0); // ignores late answers from searches the user already left
@@ -555,11 +766,11 @@ const availableQuick = QUICK_INGREDIENTS.filter(
 
   // Where typed words take off from: the left side of the input.
   const inputSource = (): Box | null => {
-    const rect = inputRef.current?.getBoundingClientRect();
-    return rect
-      ? { left: rect.left + 24, top: rect.top, width: 0, height: rect.height }
-      : null;
-  };
+  const el = inputRef.current;
+  if (!el) return null;
+  const box = sourceBox(el);
+  return { ...box, left: box.left + 24, width: 0 };
+};
 
   const addIngredients = (raw: string, from?: Box | null) => {
     const newItems = raw
@@ -637,7 +848,7 @@ const handleIngredientKeyDown = (
     if (event.key === "Enter" && suggestions[activeIndex]) {
       event.preventDefault();
       const option = document.getElementById(`ingredient-option-${activeIndex}`);
-      pickSuggestion(suggestions[activeIndex], option?.getBoundingClientRect());
+      pickSuggestion(suggestions[activeIndex], option ? sourceBox(option) : null);
       return;
     }
   }
@@ -961,7 +1172,7 @@ const forgetSavedKitchen = () => {
             role="option"
             aria-selected={index === activeIndex}
             onClick={(event) =>
-              pickSuggestion(label, event.currentTarget.getBoundingClientRect())
+              pickSuggestion(label, sourceBox(event.currentTarget))
             }
             className={`cursor-pointer px-4 py-2.5 text-sm transition-colors ${
               index === activeIndex
@@ -994,13 +1205,14 @@ const forgetSavedKitchen = () => {
                   <p className="text-sm font-semibold text-stone-100">
                     Or tap to add
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div ref={quickRef} className="mt-3 flex flex-wrap gap-2">
                     {availableQuick.map((item) => (
                       <button
                         key={item}
                         type="button"
+                        data-glide={item.toLowerCase()}
                         onClick={(event) =>
-                          addIngredients(item, event.currentTarget.getBoundingClientRect())
+                          addIngredients(item, sourceBox(event.currentTarget))
                         }
                         className="rounded-full border border-stone-700 bg-stone-900 px-3.5 py-2 text-sm text-stone-300 transition-colors hover:border-orange-300/70 hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
                       >
@@ -1011,15 +1223,21 @@ const forgetSavedKitchen = () => {
                 </div>
               )}
 
-              <div className="mt-8 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
+              <div
+                ref={boxRef}
+                data-ingredient-box
+                className="mt-8 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5"
+              >
                 <div className="flex items-center justify-between gap-4">
                   <h4 className="font-semibold text-stone-100">
                     Your ingredients
-                    <span className="ml-2 text-orange-300">
-                      ({ingredients.length})
+                    <span
+                      data-ingredient-count
+                      className="ml-2 inline-block text-orange-300"
+                    >
+                      ({settledCount})
                     </span>
                   </h4>
-
                   {ingredients.length > 0 && (
                     <button
                       type="button"
@@ -1032,7 +1250,7 @@ const forgetSavedKitchen = () => {
                 </div>
 
                 {ingredients.length > 0 ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div ref={chipsRef} className="mt-4 flex flex-wrap gap-2">
                     {ingredients.map((ingredient) => (
                       <Chip
                         key={ingredient}
