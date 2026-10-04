@@ -1492,11 +1492,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </section>
 
           {/* Method */}
-          <section
-            ref={methodHeadingRef}
-            aria-labelledby="method-heading"
-            className="scroll-mt-16 py-10 lg:py-12"
-          >
+        <section
+          ref={methodHeadingRef}
+          aria-labelledby="method-heading"
+          className="scroll-mt-12 py-10 lg:py-12"
+        >
             <SectionTitle
               id="method-heading"
               title="Method"
