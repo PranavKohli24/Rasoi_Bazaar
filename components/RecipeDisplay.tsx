@@ -18,6 +18,8 @@ import SwiggyActionModal from "./SwiggyActionModal";
 import NutritionInfo from "./NutritionInfo";
 import CookingCompanionChat from "./CookingCompanion";
 
+import { isHeyChefSupported, HeyChefCommands, HeyChefPhase } from "../src/hooks/useHeyChef";
+
 interface RecipeDisplayProps {
   recipe: Recipe;
   onFinishCooking: () => void;
@@ -80,6 +82,14 @@ const SpeakerOffIcon: IconC = ({ className }) => (
     <path d="M11 5 6 9H2v6h4l5 4V5Z" />
     <line x1="23" y1="9" x2="17" y2="15" />
     <line x1="17" y1="9" x2="23" y2="15" />
+  </Icon>
+);
+
+const MicIcon: IconC = ({ className }) => (
+  <Icon className={className}>
+    <path d="M12 1a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+    <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+    <line x1="12" y1="19" x2="12" y2="23" />
   </Icon>
 );
 
@@ -188,8 +198,42 @@ const STEP_ANIMATION_CSS = `
   .step-slide-from-right, .step-slide-from-left, .confirm-pop, .animate-image-bounce-3d { animation: none; }
 }
   
+
+.hey-chef-dot {
+  width: 8px; height: 8px; border-radius: 9999px;
+  background: #EAD9AE; flex-shrink: 0;
+}
+.hey-chef-dot.is-awake {
+  background: #FC6C26;
+  animation: hey-chef-pulse 0.9s ease-in-out infinite;
+}
+.hey-chef-ring {
+  position: absolute; inset: -4px; border-radius: 9999px;
+  border: 2px solid #FC6C26; opacity: 0; pointer-events: none;
+}
+.hey-chef-ring.is-awake { animation: hey-chef-ring 1.2s ease-out infinite; }
+@keyframes hey-chef-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+@keyframes hey-chef-ring {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hey-chef-dot.is-awake, .hey-chef-ring.is-awake { animation: none; }
+  .hey-chef-ring.is-awake { opacity: 0.6; }
+}
 `;
 
+const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
+  off: "",
+  paused: "Hey chef is paused while the chat is open",
+  sleeping: "Say “Hey chef”",
+  awake: "Listening…",
+  processing: "Thinking…",
+  speaking: "Speaking…",
+};
 /* ---------- Shared UI ---------- */
 
 const primaryButton =
@@ -502,6 +546,47 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   const [isCooking, setIsCooking] = useState(false);
 
+    // ---- "Hey chef" ----
+  const [isHeyChefOn, setIsHeyChefOn] = useState(() => {
+    try {
+      return localStorage.getItem("recipe-heychef-enabled") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [heyChefSupported] = useState(isHeyChefSupported);
+  const [heyChefPhase, setHeyChefPhase] = useState<HeyChefPhase>("off");
+  const [heyChefBlocked, setHeyChefBlocked] = useState(false);
+
+  // Only listens while someone is actually cooking.
+  const heyChefActive = isCooking && isHeyChefOn && heyChefSupported;
+
+  const doneHint = heyChefActive
+    ? "If you're done with this step, say yes done."
+    : "If you're done with this step, press Yes, done.";
+
+  const toggleHeyChef = () => {
+    const next = !isHeyChefOn;
+    setHeyChefBlocked(false);
+    setIsHeyChefOn(next);
+    try {
+      localStorage.setItem("recipe-heychef-enabled", String(next));
+    } catch {
+      /* ignore */
+    }
+    if (!next) window.speechSynthesis?.cancel();
+  };
+
+  const handleHeyChefBlocked = () => {
+    setIsHeyChefOn(false);
+    setHeyChefBlocked(true);
+    try {
+      localStorage.setItem("recipe-heychef-enabled", "false");
+    } catch {
+      /* ignore */
+    }
+  };
+  
   // A check-in the companion should say — bumping the id (not just the text)
   // guarantees CookingCompanion treats repeats on a later long step as new.
   const [companionCheckIn, setCompanionCheckIn] = useState<{ id: string; text: string } | null>(
@@ -571,6 +656,27 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     }
   });
 
+    // Read through a ref so toggling Hey chef doesn't re-run the effect below
+  // (which would re-read the current step every time the mic is switched).
+    // Mic on implies speaker on (not the other way round). Derived, so the
+  // person's own speaker setting is untouched and returns when the mic goes off.
+  const speakerOn = isVoiceEnabled || heyChefActive;
+  const readStepsRef = useRef(false);
+  readStepsRef.current = speakerOn;
+
+  useEffect(() => {
+    if (!isCooking || !readStepsRef.current) return;
+    if (!("speechSynthesis" in window)) return;
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
+    utterance.rate = 0.95;
+    window.speechSynthesis.speak(utterance);
+
+    return () => window.speechSynthesis.cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStepIndex, isCooking, isVoiceEnabled]);
+
   const toggleVoice = () => {
     setIsVoiceEnabled((prev) => {
       const next = !prev;
@@ -584,19 +690,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     });
   };
 
-  // Speak the current step whenever it changes, if enabled
-  useEffect(() => {
-    if (!isCooking || !isVoiceEnabled) return;
-    if (!("speechSynthesis" in window)) return;
-
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
-    utterance.rate = 0.95;
-    window.speechSynthesis.speak(utterance);
-
-    return () => window.speechSynthesis.cancel();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStepIndex, isCooking, isVoiceEnabled]);
 
   // Assumes dishName is stable/unique enough per recipe; swap for a real
   // recipe.id if one exists in your data model.
@@ -764,11 +857,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     // (or a tap on a step with no timer at all) actually advances.
     if (currentHasTimer && !showNextStepConfirm) {
       setShowNextStepConfirm(true);
-      if (isVoiceEnabled && "speechSynthesis" in window) {
+      if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(
-          "If you're done with this step, press Yes, done."
-        );
+        const utterance = new SpeechSynthesisUtterance(doneHint);
         utterance.rate = 0.95;
         window.speechSynthesis.speak(utterance);
       }
@@ -787,6 +878,49 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       setStepDirection("prev");
       setCurrentStepIndex((prev) => prev - 1);
     }
+  };
+
+    /* ----- Hey chef: what each spoken command does ----- */
+
+  // Skips the "are you sure?" step: this is what "yes done" does.
+  const advanceNow = () => {
+    if (currentStepIndex >= recipe.method.length - 1) return;
+    setShowNextStepConfirm(false);
+    setStepDirection("next");
+    setCurrentStepIndex((prev) => prev + 1);
+  };
+
+  const speakNow = (text: string) => {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 0.95;
+    // Chrome can drop a speak() that lands in the same tick as a cancel().
+    window.setTimeout(() => window.speechSynthesis.speak(utterance), 60);
+  };
+
+  // A returned string is spoken back; returning nothing stays quiet
+  // (the step-reading effect reads the new step by itself).
+  const heyChefCommands: HeyChefCommands = {
+    next: () => {
+      if (currentStepIndex >= recipe.method.length - 1) return "That was the last step.";
+      handleNextStep(); // on a timed step this asks "done?" first, as the button does
+    },
+    back: () => {
+      if (currentStepIndex === 0) return "You're already on the first step.";
+      handlePrevStep();
+    },
+    repeat: () => {
+      speakNow(recipe.method[currentStepIndex].instruction);
+    },
+    yesDone: () => {
+      if (currentStepIndex >= recipe.method.length - 1) return "That's the last step.";
+      advanceNow();
+    },
+    notYet: () => {
+      handleCancelNextStep();
+      return "Okay, take your time.";
+    },
   };
 
   // Swipe on the step card: left = next step, right = previous step.
@@ -1504,22 +1638,51 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               aside={
                 isCooking ? (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+                                        <span className="text-sm" style={{ color: COLOR.inkSoft }}>
                       Step {currentStepIndex + 1} of {totalSteps}
                     </span>
+                    {heyChefSupported && (
+                      <button
+                        type="button"
+                        onClick={toggleHeyChef}
+                        aria-pressed={isHeyChefOn}
+                        aria-label={
+                          isHeyChefOn
+                            ? "Turn off Hey chef voice control"
+                            : "Turn on Hey chef voice control"
+                        }
+                        title="Hey chef: hands-free voice control"
+                        className="relative flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
+                        style={{
+                          borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
+                          backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
+                          color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
+                        }}
+                      >
+                        <MicIcon className="h-4 w-4" />
+                        {heyChefActive && heyChefPhase !== "paused" && (
+                          <span
+                            aria-hidden="true"
+                            className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+                          />
+                        )}
+                      </button>
+                    )}
                     <button
                       type="button"
-                      onClick={toggleVoice}
-                      aria-pressed={isVoiceEnabled}
+                                            onClick={toggleVoice}
+                      disabled={heyChefActive}
+                      aria-pressed={speakerOn}
                       aria-label={isVoiceEnabled ? "Turn off reading steps aloud" : "Read steps aloud"}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
+                      title={heyChefActive ? "Speaker stays on while Hey chef is on" : undefined}
+                      className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors disabled:cursor-not-allowed"
                       style={{
-                        borderColor: isVoiceEnabled ? COLOR.saffron : COLOR.border,
-                        backgroundColor: isVoiceEnabled ? COLOR.saffronTint : COLOR.surface,
-                        color: isVoiceEnabled ? COLOR.saffronDark : COLOR.inkSoft,
+                        borderColor: speakerOn ? COLOR.saffron : COLOR.border,
+                        backgroundColor: speakerOn ? COLOR.saffronTint : COLOR.surface,
+                        color: speakerOn ? COLOR.saffronDark : COLOR.inkSoft,
                       }}
                     >
-                      {isVoiceEnabled ? (
+                      {speakerOn ? (
                         <SpeakerIcon className="h-4 w-4" />
                       ) : (
                         <SpeakerOffIcon className="h-4 w-4" />
@@ -1529,7 +1692,34 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                 ) : undefined
               }
             />
-            
+
+                        {heyChefBlocked && (
+              <p
+                role="alert"
+                className="mb-4 rounded-xl p-3 text-sm"
+                style={{ backgroundColor: COLOR.clayTint, color: COLOR.clay }}
+              >
+                The microphone is blocked. Allow it in your browser&apos;s site settings to
+                use Hey chef.
+              </p>
+            )}
+
+            {heyChefActive && (
+              <div
+                role="status"
+                className="mb-4 flex items-center gap-2 text-sm font-medium"
+                style={{ color: COLOR.inkSoft }}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+                />
+                {heyChefPhase === "sleeping" && showNextStepConfirm
+                  ? "Say “yes done” or “not yet”"
+                  : HEY_CHEF_LABEL[heyChefPhase]}
+              </div>
+            )}
+
             {!isCooking ? (
               <div
                 className="flex flex-col gap-5 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
@@ -1626,14 +1816,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                           });
                         }}
                         onComplete={() => {
-                          if (isVoiceEnabled && "speechSynthesis" in window) {
+                            if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
                             window.speechSynthesis.cancel();
                             // Let the chime's attention-grabbing ping land first, then speak —
                             // avoids the beep and voice overlapping into a garbled mess.
                             window.setTimeout(() => {
                               const message = isLastStep
                                 ? "Time's up."
-                                : "Time's up. If you're done with this step, press Yes, done.";
+                                : `Time's up. ${doneHint}`;
                               const utterance = new SpeechSynthesisUtterance(message);
                               utterance.rate = 0.95;
                               window.speechSynthesis.speak(utterance);
@@ -1803,6 +1993,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         currentStepInstruction={isCooking ? currentStep.instruction : null}
         totalSteps={totalSteps}
         checkInMessage={companionCheckIn}
+        heyChef={{
+          enabled: heyChefActive,
+          awaitingConfirm: showNextStepConfirm,
+          commands: heyChefCommands,
+          onPhaseChange: setHeyChefPhase,
+          onMicBlocked: handleHeyChefBlocked,
+        }}
       />
     </div>
   );

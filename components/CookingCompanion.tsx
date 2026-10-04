@@ -6,12 +6,21 @@ import {
   CompanionMessage,
 } from "../services/cookingCompanionService";
 
+import { useHeyChef, HeyChefCommands, HeyChefPhase } from "../src/hooks/useHeyChef";
+
 interface CookingCompanionProps {
   recipe: Recipe;
   currentStepNumber: number | null;
   currentStepInstruction: string | null;
   totalSteps: number;
   checkInMessage?: { id: string; text: string } | null;
+  heyChef?: {
+    enabled: boolean;
+    awaitingConfirm?: boolean;
+    commands: HeyChefCommands;
+    onPhaseChange?: (phase: HeyChefPhase) => void;
+    onMicBlocked?: () => void;
+  };
 }
 
 const STORAGE_PREFIX = "rasoi:companion:";
@@ -33,6 +42,26 @@ const THINKING_PHRASES = [
   "Checking the recipe…",
   "One sec, almost there…",
 ];
+
+// Added to the question we send, NOT to what's shown in the chat.
+const VOICE_STYLE_HINT =
+  "(This question was spoken aloud while cooking. Reply in one or two short sentences of plain text, with no lists, markdown or emojis.)";
+
+const NO_COMMANDS: HeyChefCommands = {
+  next() {},
+  back() {},
+  repeat() {},
+  yesDone() {},
+  notYet() {},
+};
+
+// Long answers are tiring to listen to: cut at a sentence end.
+const clipForSpeech = (text: string, max = 420): string => {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const last = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+  return last > 80 ? cut.slice(0, last + 1) : cut;
+};
 
 type Mood = "idle" | "thinking" | "listening" | "talking";
 
@@ -481,6 +510,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   currentStepInstruction,
   totalSteps,
   checkInMessage,
+  heyChef,
 }) => {
   const hasRecipe = !!recipe && typeof recipe.dishName === "string";
 
@@ -532,8 +562,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
       return false;
     }
   });
-  const speakRepliesRef = useRef(speakReplies);
-  speakRepliesRef.current = speakReplies;
+  // Mic on implies replies are spoken (the person's own toggle is left untouched).
+  const repliesAloud = speakReplies || !!heyChef?.enabled;
+  const speakRepliesRef = useRef(repliesAloud);
+  speakRepliesRef.current = repliesAloud;
   const [speakingIndex, setSpeakingIndex] = useState<number | null>(null);
   // Bumped on every speak/stop so a cancelled utterance's late `onend`
   // can't clear the state of the one that replaced it.
@@ -701,6 +733,7 @@ const focusInputWithoutKeyboard = () => {
   if (isOpen) {
     setShowNudge(false);
     setCheckInNudgeText(null);
+    setVoiceReplyText(null); 
     window.setTimeout(focusInputWithoutKeyboard, PANEL_TRANSITION_MS);
   } else {
       // Reset drag state so the next open starts from a clean slate.
@@ -1261,6 +1294,83 @@ const focusInputWithoutKeyboard = () => {
     el.style.height = `${Math.min(el.scrollHeight, 96)}px`;
   }, [input]);
 
+    /* ------------------------------------------------------- "Hey chef" */
+
+  const [voiceReplyText, setVoiceReplyText] = useState<string | null>(null);
+
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
+
+  // Same conversation as typed questions (same history, same chat log), but
+  // the reply is spoken by the hook, so no word-by-word reveal and no panel.
+  const askByVoice = async (question: string): Promise<string | null> => {
+    const history = messagesRef.current;
+    setMessages((current) => [...current, { role: "user", content: question }]);
+    try {
+      const reply = await askCookingCompanion(
+        recipe,
+        history,
+        `${question}\n\n${VOICE_STYLE_HINT}`,
+        currentStepNumber,
+        currentStepInstruction,
+        totalSteps
+      );
+      setMessages((current) => [...current, { role: "assistant", content: reply }]);
+      const spoken = clipForSpeech(plainTextForSpeech(reply).replace(/\s+/g, " ").trim());
+      setVoiceReplyText(spoken);
+      return spoken;
+    } catch (err) {
+      console.error("Hey chef question failed:", err);
+      return null;
+    }
+  };
+
+  const hc = useHeyChef({
+    enabled: !!heyChef?.enabled,
+    suspended: isOpen, // the chat sheet (and its dictation mic) has priority
+    awaitingConfirm: !!heyChef?.awaitingConfirm,
+    commands: heyChef?.commands ?? NO_COMMANDS,
+    onQuestion: askByVoice,
+    lang: "en-IN",
+  });
+
+  useEffect(() => {
+    heyChef?.onPhaseChange?.(hc.phase);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hc.phase]);
+
+  useEffect(() => {
+    if (hc.micBlocked) heyChef?.onMicBlocked?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hc.micBlocked]);
+
+  // The spoken answer also shows as a bubble by the mascot, then fades away.
+  useEffect(() => {
+    if (!voiceReplyText) return;
+    const id = window.setTimeout(() => setVoiceReplyText(null), 12000);
+    return () => window.clearTimeout(id);
+  }, [voiceReplyText]);
+
+  const voiceMood: Mood =
+    hc.phase === "awake"
+      ? "listening"
+      : hc.phase === "processing"
+      ? "thinking"
+      : hc.phase === "speaking"
+      ? "talking"
+      : "idle";
+
+  const heyChefCaption =
+    hc.phase === "awake"
+      ? hc.liveText
+        ? `“${hc.liveText}”`
+        : "Listening…"
+      : hc.phase === "processing"
+      ? "Thinking…"
+      : null;
+
+  const launcherNote = heyChefCaption ?? voiceReplyText ?? checkInNudgeText;
+
   if (!hasRecipe) return null;
 
   // Rendered via portal straight into <body>. If this markup stayed inside
@@ -1280,12 +1390,12 @@ const focusInputWithoutKeyboard = () => {
           aria-label="Ask your Cooking Companion"
           className="group fixed bottom-5 right-5 z-[60] flex items-end gap-2 focus:outline-none sm:bottom-6 sm:right-6"
         >
-          {checkInNudgeText ? (
+                    {launcherNote ? (
             <span
               aria-hidden="true"
-              className="companion-nudge mb-3 max-w-[220px] rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
+              className="companion-nudge mb-3 max-w-[220px] break-words rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
             >
-              {checkInNudgeText}
+              {launcherNote}
             </span>
           ) : (
             showNudge &&
@@ -1299,7 +1409,7 @@ const focusInputWithoutKeyboard = () => {
             )
           )}
           <span className="companion-orb flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
-            <CompanionCharacter className="companion-bob h-10 w-10" />
+            <CompanionCharacter mood={voiceMood} className="companion-bob h-10 w-10" />
           </span>
         </button>
       )}
@@ -1351,17 +1461,24 @@ const focusInputWithoutKeyboard = () => {
                   {canSpeak && (
                     <button
                       type="button"
-                      onClick={toggleSpeakReplies}
-                      aria-pressed={speakReplies}
+                                            onClick={toggleSpeakReplies}
+                      disabled={!!heyChef?.enabled}
+                      aria-pressed={repliesAloud}
                       aria-label="Read replies aloud"
-                      title={speakReplies ? "Replies are read aloud" : "Read replies aloud"}
-                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] ${
-                        speakReplies
+                      title={
+                        heyChef?.enabled
+                          ? "Replies are read aloud while Hey chef is on"
+                          : speakReplies
+                          ? "Replies are read aloud"
+                          : "Read replies aloud"
+                      }
+                      className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] disabled:cursor-not-allowed ${
+                        repliesAloud
                           ? "bg-[#FC6C26] text-white"
                           : "bg-white/70 text-[#6B5238] ring-1 ring-[#EAD9AE] hover:bg-white"
                       }`}
                     >
-                      <SpeakerIcon on={speakReplies} className="h-[18px] w-[18px]" />
+                      <SpeakerIcon on={repliesAloud} className="h-[18px] w-[18px]" />
                     </button>
                   )}
                                     <button
