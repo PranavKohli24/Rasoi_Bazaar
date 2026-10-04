@@ -33,6 +33,7 @@ interface SavedState {
   step: 1 | 2 | 3;
   resultSource?: "predefined" | "ai" | "mixed";
   assumeStaples?: boolean;
+  incomplete?: boolean;
 }
 
 const KITCHEN_KEY = "rasoi:kitchen:v1";
@@ -734,12 +735,16 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   }, [step]);
 
   useEffect(() => {
-    if (isLoading && results.length === 0) return; // only skip when there's nothing to save yet
+    if (isLoading && results.length === 0) return;
 
     try {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
-        equipment, ingredients, results, step, resultSource, assumeStaples,
-      }));
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          equipment, ingredients, results, step, resultSource, assumeStaples,
+          incomplete: isLoading, // new
+        })
+      );
     } catch {}
   }, [equipment, ingredients, results, step, resultSource, assumeStaples, isLoading]);
 
@@ -969,6 +974,13 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
       if (isCurrent()) setIsLoading(false);
     }
   };
+
+  // Resume a search that was interrupted when the user left (e.g. "Get the recipe")
+  useEffect(() => {
+    if (saved?.incomplete) handleFindRecipes();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const startOver = () => {
     setFlights([]);
