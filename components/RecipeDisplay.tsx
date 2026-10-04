@@ -680,7 +680,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [isConfirmingDone, setIsConfirmingDone] = useState(false);
   const [showNextStepConfirm, setShowNextStepConfirm] = useState(false);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
-  const methodHeadingRef = useRef<HTMLHeadingElement>(null);
+  const methodHeadingRef = useRef<HTMLElement>(null);
 
   // Tracks when the header photo has actually finished loading, so it can
   // fade in smoothly instead of popping in abruptly.
@@ -1492,7 +1492,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </section>
 
           {/* Method */}
-          <section aria-labelledby="method-heading" className="py-10 lg:py-12">
+          <section
+            ref={methodHeadingRef}
+            aria-labelledby="method-heading"
+            className="scroll-mt-16 py-10 lg:py-12"
+          >
             <SectionTitle
               id="method-heading"
               title="Method"
@@ -1525,10 +1529,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                 ) : undefined
               }
             />
-            <h2 ref={methodHeadingRef} className="sr-only">
-              Method
-            </h2>
-
+            
             {!isCooking ? (
               <div
                 className="flex flex-col gap-5 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
