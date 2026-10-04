@@ -734,23 +734,13 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   }, [step]);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading && results.length === 0) return; // only skip when there's nothing to save yet
 
     try {
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          equipment,
-          ingredients,
-          results,
-          step,
-          resultSource,
-          assumeStaples,
-        })
-      );
-    } catch {
-      /* Ignore storage failures. */
-    }
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+        equipment, ingredients, results, step, resultSource, assumeStaples,
+      }));
+    } catch {}
   }, [equipment, ingredients, results, step, resultSource, assumeStaples, isLoading]);
 
   useEffect(() => {
