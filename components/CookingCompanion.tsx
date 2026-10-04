@@ -1396,7 +1396,11 @@ const focusInputWithoutKeyboard = () => {
               aria-hidden="true"
               className="companion-nudge mb-3 max-w-[220px] break-words rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-[#EAD9AE]"
             >
-              {launcherNote}
+                          {hc.phase === "processing" ? (
+                <span className="companion-shimmer">{launcherNote}</span>
+              ) : (
+                launcherNote
+              )}
             </span>
           ) : (
             showNudge &&
@@ -1886,6 +1890,20 @@ const focusInputWithoutKeyboard = () => {
           from { opacity: 0; transform: translateX(8px) scale(0.96); }
           to { opacity: 1; transform: translateX(0) scale(1); }
         }
+
+        .companion-shimmer {
+  background: linear-gradient(90deg, #8A6B4A 0%, #8A6B4A 35%, #FC6C26 50%, #8A6B4A 65%, #8A6B4A 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: companion-shimmer 1.6s linear infinite;
+}
+@keyframes companion-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
 
         .companion-pulse {
           animation: companion-pulse 1.4s ease-in-out infinite;

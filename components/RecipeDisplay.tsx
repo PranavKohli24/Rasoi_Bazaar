@@ -224,6 +224,29 @@ const STEP_ANIMATION_CSS = `
   .hey-chef-dot.is-awake, .hey-chef-ring.is-awake { animation: none; }
   .hey-chef-ring.is-awake { opacity: 0.6; }
 }
+
+
+.hey-chef-shimmer {
+  background: linear-gradient(90deg, #6B5238 0%, #6B5238 35%, #FC6C26 50%, #6B5238 65%, #6B5238 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: hey-chef-shimmer 1.6s linear infinite;
+}
+@keyframes hey-chef-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hey-chef-shimmer {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: #6B5238;
+    color: #6B5238;
+  }
+}
 `;
 
 const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
@@ -1714,9 +1737,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   aria-hidden="true"
                   className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
                 />
-                {heyChefPhase === "sleeping" && showNextStepConfirm
-                  ? "Say “yes done” or “not yet”"
-                  : HEY_CHEF_LABEL[heyChefPhase]}
+                <span className={heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined}>
+                  {heyChefPhase === "sleeping" && showNextStepConfirm
+                    ? "Say “yes done” or “not yet”"
+                    : HEY_CHEF_LABEL[heyChefPhase]}
+                </span>
               </div>
             )}
 
