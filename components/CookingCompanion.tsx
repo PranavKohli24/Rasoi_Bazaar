@@ -1329,6 +1329,7 @@ const focusInputWithoutKeyboard = () => {
     enabled: !!heyChef?.enabled,
     suspended: isOpen, // the chat sheet (and its dictation mic) has priority
     awaitingConfirm: !!heyChef?.awaitingConfirm,
+    stepNumber: currentStepNumber,
     commands: heyChef?.commands ?? NO_COMMANDS,
     onQuestion: askByVoice,
     lang: "en-IN",

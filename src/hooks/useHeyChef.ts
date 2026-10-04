@@ -30,6 +30,7 @@ export interface UseHeyChefOptions {
   /** Called with the spoken question; returns text to speak, or null on failure. */
   onQuestion: (question: string) => Promise<string | null>;
   lang?: string;
+  stepNumber?: number | null;
 }
 
 /* ------------------------------------------------------------ constants */
@@ -40,6 +41,9 @@ const AWAKE_IDLE_MS = 10000; // woke up but nobody spoke: go back to sleep quiet
 const TAIL_MS = 700; // keep the mic off this long after speech ends
 const COMMAND_HOLD_MS = 1000; // mic off while the UI starts reading the next step
 const MAX_SPEAKING_MS = 60000; // stuck-speechSynthesis safety valve
+const FILLER_DELAY_MS = 900;
+const FILLER_SKIP_CHANCE = 0.25;
+const FILLERS = ["Hmm, one sec.", "Let me check.", "Good question.", "Let me think."];
 
 // Speech engines mishear short phrases, so match loosely.
 const CHEF_WORDS = ["chef", "shef", "chaf", "shaf", "chief", "cheff", "sheff", "chev"];
@@ -125,6 +129,27 @@ const ping = () => {
   }
 };
 
+const softCue = () => {
+  try {
+    const Ctx = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new Ctx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = 523;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.16);
+    window.setTimeout(() => ctx.close().catch(() => {}), 300);
+  } catch {
+    /* audio unavailable */
+  }
+};
+
 type Seg = { text: string; isFinal: boolean };
 
 /* ----------------------------------------------------------------- hook */
@@ -136,6 +161,7 @@ export function useHeyChef({
   commands,
   onQuestion,
   lang = "en-IN",
+  stepNumber = null,
 }: UseHeyChefOptions) {
   const supported = isHeyChefSupported();
 
@@ -153,6 +179,8 @@ export function useHeyChef({
   awaitingConfirmRef.current = awaitingConfirm;
   const langRef = useRef(lang);
   langRef.current = lang;
+  const stepRef = useRef<number | null>(stepNumber);
+  stepRef.current = stepNumber;
 
   const phaseRef = useRef<InnerPhase>("sleeping");
   const recRef = useRef<any>(null);
@@ -167,6 +195,9 @@ export function useHeyChef({
   const lastSpokeRef = useRef(0);
   const speakingSinceRef = useRef(0);
   const speakTokenRef = useRef(0);
+    const fillerTimerRef = useRef<number | null>(null);
+  const fillerDoneRef = useRef<Promise<void> | null>(null);
+  const lastFillerRef = useRef("");
 
   /* ---- small state helpers ---- */
 
@@ -179,7 +210,7 @@ export function useHeyChef({
   };
 
   const clearTimers = () => {
-    for (const ref of [silenceTimerRef, idleTimerRef]) {
+    for (const ref of [silenceTimerRef, idleTimerRef, fillerTimerRef]) {
       if (ref.current !== null) {
         window.clearTimeout(ref.current);
         ref.current = null;
@@ -277,6 +308,58 @@ export function useHeyChef({
       }, 60);
     });
 
+  const pickFiller = () => {
+    const step = stepRef.current;
+    const pool = step ? [...FILLERS, `Checking step ${step}.`] : FILLERS;
+    let pick = pool[0];
+    do {
+      pick = pool[Math.floor(Math.random() * pool.length)];
+    } while (pick === lastFillerRef.current && pool.length > 1);
+    lastFillerRef.current = pick;
+    return pick;
+  };
+
+  const speakFiller = (text: string) =>
+    new Promise<void>((resolve) => {
+      const synth = window.speechSynthesis;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = langRef.current;
+      const voice = synth.getVoices().find((v) => v.lang === "en-IN" || v.lang === "en_IN");
+      if (voice) utterance.voice = voice;
+      let done = false;
+      let safety = 0;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.clearTimeout(safety);
+        resolve();
+      };
+      utterance.onend = finish;
+      utterance.onerror = finish;
+      safety = window.setTimeout(() => {
+        try {
+          synth.cancel();
+        } catch {
+          /* nothing to cancel */
+        }
+        finish();
+      }, 3000);
+      try {
+        synth.speak(utterance);
+      } catch {
+        finish();
+      }
+    });
+
+  const startFillerTimer = () => {
+    if (Math.random() < FILLER_SKIP_CHANCE) return;
+    fillerTimerRef.current = window.setTimeout(() => {
+      fillerTimerRef.current = null;
+      if (phaseRef.current !== "processing") return;
+      fillerDoneRef.current = speakFiller(pickFiller());
+    }, FILLER_DELAY_MS);
+  };
+
   /* ---- the flow ---- */
 
   const runCommand = (name: CommandName) => {
@@ -314,8 +397,10 @@ export function useHeyChef({
       return;
     }
 
-    ignoreBeforeRef.current = segmentsRef.current.length;
+        ignoreBeforeRef.current = segmentsRef.current.length;
     setPhase("processing");
+    softCue();
+    startFillerTimer();
 
     let reply: string | null = null;
     try {
@@ -323,8 +408,15 @@ export function useHeyChef({
     } catch {
       reply = null;
     }
+    if (fillerTimerRef.current !== null) {
+      window.clearTimeout(fillerTimerRef.current);
+      fillerTimerRef.current = null;
+    }
+    const filler = fillerDoneRef.current;
+    fillerDoneRef.current = null;
+    if (filler) await filler;
     // If the toggle was turned off / the sheet opened meanwhile, drop the spoken reply.
-     if (currentPhase() !== "processing") return;
+    if (currentPhase() !== "processing") return;
     await say(reply || "Sorry, I couldn't get that. Try again?", "sleeping");
   };
 
@@ -479,8 +571,9 @@ export function useHeyChef({
   // Turned off or suspended: drop whatever was in flight and go back to sleep.
   useEffect(() => {
     if (enabled && supported && !suspended) return;
-    clearTimers();
-    if (phaseRef.current === "speaking") {
+        clearTimers();
+    fillerDoneRef.current = null;
+    if (phaseRef.current === "speaking" || phaseRef.current === "processing") {
       try {
         window.speechSynthesis?.cancel();
       } catch {
