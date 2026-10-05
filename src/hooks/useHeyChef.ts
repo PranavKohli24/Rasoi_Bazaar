@@ -11,12 +11,13 @@ export type HeyChefPhase =
 type InnerPhase = "sleeping" | "awake" | "processing" | "speaking";
 
 export interface HeyChefCommands {
-  next: () => string | void;
-  back: () => string | void;
-  repeat: () => string | void;
-  yesDone: () => string | void;
-  notYet: () => string | void;
+  next: () => string | void | false;
+  back: () => string | void | false;
+  repeat: () => string | void | false;
+  yesDone: () => string | void | false;
+  notYet: () => string | void | false;
 }
+
 export type CommandName = keyof HeyChefCommands;
 
 export interface UseHeyChefOptions {
@@ -444,14 +445,26 @@ export function useHeyChef({
     const runCommand = (name: CommandName) => {
     clearTimers();
     ignoreBeforeRef.current = segmentsRef.current.length;
-    tick();
-    setLastCommand({ name, id: Date.now() });
-    let message: string | void = undefined;
+    let message: string | void | false = undefined;
     try {
       message = commandsRef.current[name]();
     } catch (error) {
       console.warn("Hey chef command failed:", error);
     }
+
+    if (message === false) {
+      // Heard and understood, but nothing actually happened yet — e.g. "next"
+      // on a timed step just opened the done/not-yet confirmation instead of
+      // advancing. No tick, no flash claiming a step change that didn't
+      // happen; the confirmation prompt (spoken + on-screen) speaks for itself.
+      holdUntilRef.current = Date.now() + COMMAND_HOLD_MS;
+      sleep();
+      return;
+    }
+
+    tick();
+    setLastCommand({ name, id: Date.now() });
+
     if (typeof message === "string" && message) {
       void say(message, "sleeping");
     } else {

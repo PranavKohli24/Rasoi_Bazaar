@@ -925,14 +925,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     setShowNextStepConfirm(false);
   }, [currentStepIndex]);
 
-  const handleNextStep = () => {
-    if (currentStepIndex >= recipe.method.length - 1) return;
+    const handleNextStep = (): boolean => {
+    if (currentStepIndex >= recipe.method.length - 1) return false;
 
     const currentHasTimer =
       parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
 
-    // First tap on a timed step just asks for confirmation; a second tap
-    // (or a tap on a step with no timer at all) actually advances.
     if (currentHasTimer && !showNextStepConfirm) {
       setShowNextStepConfirm(true);
       if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
@@ -941,12 +939,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         utterance.rate = 0.95;
         window.speechSynthesis.speak(utterance);
       }
-      return;
+      return false;
     }
 
     setShowNextStepConfirm(false);
     setStepDirection("next");
     setCurrentStepIndex((prev) => prev + 1);
+    return true;
   };
 
   const handleCancelNextStep = () => setShowNextStepConfirm(false);
@@ -984,7 +983,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const heyChefCommands: HeyChefCommands = {
     next: () => {
       if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
-      handleNextStep(); // on a timed step this asks "done?" first, as the button does
+      const advanced = handleNextStep(); // on a timed step this asks "done?" first, as the button does
+      return advanced ? undefined : false; // false: only opened the confirm, nothing to flash yet
     },
     back: () => {
       if (currentStepIndex === 0) return "You're already on the first step.";
