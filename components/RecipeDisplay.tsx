@@ -71,6 +71,25 @@ const CheckIcon: IconC = ({ className }) => (
   <Icon className={className}><path d="M4 12l5 5L20 6" /></Icon>
 );
 
+const SteamIcon: React.FC<{ className?: string; color: string }> = ({ className, color }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+    <path
+      d="M9 21c-1.5-1.5-1.5-3 0-4.5s1.5-3 0-4.5"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      className="steam-wisp-1"
+    />
+    <path
+      d="M15 21c-1.5-1.5-1.5-3 0-4.5s1.5-3 0-4.5"
+      stroke={color}
+      strokeWidth="2"
+      strokeLinecap="round"
+      className="steam-wisp-2"
+    />
+  </svg>
+);
+
 const SpeakerIcon: IconC = ({ className }) => (
   <Icon className={className}>
     <path d="M11 5 6 9H2v6h4l5 4V5Z" />
@@ -198,6 +217,20 @@ const STEP_ANIMATION_CSS = `
   .step-slide-from-right, .step-slide-from-left, .confirm-pop, .animate-image-bounce-3d { animation: none; }
 }
   
+@keyframes steam-rise {
+  0% { transform: translateY(2px); opacity: 0; }
+  25% { opacity: 0.9; }
+  75% { opacity: 0.5; }
+  100% { transform: translateY(-5px); opacity: 0; }
+}
+.timer-steam-active .steam-wisp-1 { animation: steam-rise 2.2s ease-in-out infinite; }
+.timer-steam-active .steam-wisp-2 { animation: steam-rise 2.2s ease-in-out infinite 0.7s; }
+@media (prefers-reduced-motion: reduce) {
+  .timer-steam-active .steam-wisp-1,
+  .timer-steam-active .steam-wisp-2 {
+    animation: none;
+  }
+}
 
 .hey-chef-dot {
   width: 8px; height: 8px; border-radius: 9999px;
@@ -388,6 +421,10 @@ const buildCheckInMarks = (totalSeconds: number): number[] => {
 
 type StepTimerState = { remaining: number; isRunning: boolean; firedMarks: Set<number>; total: number };
 
+const TICK_COUNT = 24;
+const MIN_TIMER_SECONDS = 30;
+const ADJUST_STEP_SECONDS = 30;
+
 const StepTimer: React.FC<{
   seconds: number;
   stepKey: number;
@@ -395,12 +432,7 @@ const StepTimer: React.FC<{
   onCheckIn?: (markIndex: number) => void;
   timerState: Map<number, StepTimerState>;
 }> = ({ seconds, stepKey, onComplete, onCheckIn, timerState }) => {
-  // Reuse this step's saved progress if it's been visited before (e.g. the
-  // person stepped back to check something and came back), instead of
-  // starting the countdown over from scratch. Read once, at mount — this
-  // component gets a fresh instance each time the person navigates back to
-  // this step, so a lazy read here is exactly "restore where I left off".
-    const savedRef = useRef(timerState.get(stepKey));
+  const savedRef = useRef(timerState.get(stepKey));
   const saved = savedRef.current;
 
   const [total, setTotal] = useState(saved?.total ?? seconds);
@@ -410,39 +442,18 @@ const StepTimer: React.FC<{
   const checkInMarksRef = useRef<number[]>(buildCheckInMarks(total));
   const firedMarksRef = useRef<Set<number>>(saved?.firedMarks ?? new Set());
 
+  const [resetArmed, setResetArmed] = useState(false);
+  const resetArmTimeoutRef = useRef<number | null>(null);
+
   useEffect(() => {
-    timerState.set(stepKey, {
-      remaining,
-      isRunning,
-      firedMarks: firedMarksRef.current,
-      total,
-    });
+    timerState.set(stepKey, { remaining, isRunning, firedMarks: firedMarksRef.current, total });
   }, [remaining, isRunning, stepKey, timerState, total]);
 
-  // Check-in marks (the 5-minute "still going" nudges) are based on the
-  // total duration — recompute them if the person adjusts the time, so a
-  // step stretched from 5 to 15 minutes still gets a mid-way check-in.
   useEffect(() => {
     checkInMarksRef.current = buildCheckInMarks(total);
   }, [total]);
 
-  const MIN_TIMER_SECONDS = 10;
-  const ADJUST_STEP_SECONDS = 30;
-
-  // +30 / -30, microwave-style: adjusts both the total and however much time
-  // is left right now, so it works the same whether tapped before starting
-  // or mid-cook.
-  const adjustTime = (delta: number) => {
-    setTotal((prev) => Math.max(MIN_TIMER_SECONDS, prev + delta));
-    setRemaining((prev) => Math.max(0, prev + delta));
-  };
-
-  // Fires once per checkpoint mark as elapsed time crosses it.
-    useEffect(() => {
-    // Only a genuinely running countdown counts as "elapsed" — a +/- tap
-    // changes `remaining` directly without the clock actually running, and
-    // elapsed must be measured against the current (possibly adjusted)
-    // total, not the original parsed duration.
+  useEffect(() => {
     if (!isRunning || remaining <= 0) return;
     const elapsed = total - remaining;
     checkInMarksRef.current.forEach((mark, index) => {
@@ -453,9 +464,6 @@ const StepTimer: React.FC<{
     });
   }, [remaining, total, isRunning, onCheckIn]);
 
-  // Pure countdown — just decrements. No side effects here, so Strict
-  // Mode's dev-time double-invoke of updater functions can't double-fire
-  // anything.
   useEffect(() => {
     if (!isRunning) return;
     intervalRef.current = window.setInterval(() => {
@@ -466,11 +474,6 @@ const StepTimer: React.FC<{
     };
   }, [isRunning]);
 
-  // Fires exactly once per completed countdown, when `remaining` actually
-  // transitions to 0 while the timer was running. The `isRunning` guard also
-  // protects against a re-fire on remount: once a step's timer completes,
-  // isRunning is persisted as false, so revisiting an already-finished step
-  // later correctly skips this block instead of chiming again.
   useEffect(() => {
     if (remaining !== 0 || !isRunning) return;
     if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
@@ -480,104 +483,158 @@ const StepTimer: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remaining]);
 
-    const isDone = remaining === 0;
+  useEffect(() => {
+    return () => {
+      if (resetArmTimeoutRef.current !== null) window.clearTimeout(resetArmTimeoutRef.current);
+    };
+  }, []);
+
+  const isDone = remaining === 0;
   const hasStarted = remaining !== total;
   const progressPct = total === 0 ? 0 : ((total - remaining) / total) * 100;
   const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
   const secs = (remaining % 60).toString().padStart(2, "0");
+  const litTicks = isDone ? TICK_COUNT : Math.round(TICK_COUNT * (progressPct / 100));
 
-  const radius = 21;
-  const circumference = 2 * Math.PI * radius;
-  const dashOffset = circumference * (1 - progressPct / 100);
+  const adjustTime = (delta: number) => {
+    setTotal((prev) => Math.max(MIN_TIMER_SECONDS, prev + delta));
+    setRemaining((prev) => Math.max(0, prev + delta));
+  };
 
-  const reset = () => {
-    // Reset goes back to the recipe's own duration, undoing any +/- taps —
-    // not just restarting the clock at whatever total was last edited to.
+  const doReset = () => {
+    if (resetArmTimeoutRef.current !== null) window.clearTimeout(resetArmTimeoutRef.current);
+    setResetArmed(false);
     setTotal(seconds);
     setRemaining(seconds);
     setIsRunning(false);
     firedMarksRef.current = new Set();
   };
 
+  const handleResetTap = () => {
+    if (!resetArmed) {
+      setResetArmed(true);
+      if (resetArmTimeoutRef.current !== null) window.clearTimeout(resetArmTimeoutRef.current);
+      resetArmTimeoutRef.current = window.setTimeout(() => setResetArmed(false), 2800);
+      return;
+    }
+    doReset();
+  };
+
   const minuteLabel = Math.max(1, Math.round(total / 60));
+  const tickColor = isDone ? COLOR.clay : COLOR.saffron;
+  const steamColor = COLOR.inkSoft;
 
   return (
     <div
-      className="mt-6 inline-flex items-center gap-3.5 rounded-2xl border px-4 py-3"
+      className="mt-6 w-full max-w-xs rounded-3xl border p-5"
       style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
     >
-      <div className="relative h-12 w-12 shrink-0">
-        <svg viewBox="0 0 52 52" className="h-12 w-12 -rotate-90">
-          <circle cx="26" cy="26" r={radius} fill="none" stroke={COLOR.border} strokeWidth="5" />
-          <circle
-            cx="26"
-            cy="26"
-            r={radius}
-            fill="none"
-            stroke={COLOR.saffron}
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={dashOffset}
-            style={{ transition: "stroke-dashoffset 1s linear" }}
-          />
-        </svg>
-        <span
-          className="absolute inset-0 flex items-center justify-center text-[11px] font-bold tabular-nums"
-          style={{ color: COLOR.ink }}
-        >
-          {minutes}:{secs}
-        </span>
+            {/* No "Timer" label — the clock face + steam already say what this
+          is. This row exists only to hold Reset, right-aligned, at a fixed
+          height so it reserves the same space whether Reset is showing or not. */}
+      <div className="flex h-5 items-center justify-end">
+        {hasStarted && !isDone && (
+          <button
+            type="button"
+            onClick={handleResetTap}
+            onBlur={() => setResetArmed(false)}
+            className="text-xs font-semibold underline-offset-2 transition-colors hover:underline"
+            style={{ color: resetArmed ? COLOR.clay : COLOR.inkSoft }}
+          >
+            {resetArmed ? "Tap again to reset" : "Reset"}
+          </button>
+        )}
       </div>
-
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+      {/* The dial: a stove-knob of tick marks that light up as time passes,
+          with a flame perched on the rim that flickers while running and
+          goes dark once the step is done. */}
+            <div className="relative mx-auto mt-7 h-32 w-32">
         {!isDone && (
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => adjustTime(-ADJUST_STEP_SECONDS)}
-              disabled={total <= MIN_TIMER_SECONDS}
-              aria-label="Subtract 30 seconds"
-              className="flex h-7 w-7 items-center justify-center rounded-full border text-base font-bold leading-none transition-colors disabled:cursor-not-allowed disabled:opacity-30"
-              style={{ borderColor: COLOR.border, color: COLOR.saffronDark, backgroundColor: COLOR.surface }}
-            >
-              −
-            </button>
-            <button
-              type="button"
-              onClick={() => adjustTime(ADJUST_STEP_SECONDS)}
-              aria-label="Add 30 seconds"
-              className="flex h-7 w-7 items-center justify-center rounded-full border text-base font-bold leading-none transition-colors"
-              style={{ borderColor: COLOR.border, color: COLOR.saffronDark, backgroundColor: COLOR.surface }}
-            >
-              +
-            </button>
+          <div className="absolute left-1/2 -top-6 z-10 -translate-x-1/2">
+            <SteamIcon
+              className={`h-6 w-6 ${isRunning ? "timer-steam-active" : "opacity-40"}`}
+              color={steamColor}
+            />
           </div>
         )}
 
-        {isDone ? (
-          <span className="text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
-            Time&apos;s up!
+        <svg viewBox="0 0 120 120" className="h-32 w-32">
+          {Array.from({ length: TICK_COUNT }).map((_, i) => (
+            <line
+              key={i}
+              x1={60}
+              y1={9}
+              x2={60}
+              y2={21}
+              transform={`rotate(${(360 / TICK_COUNT) * i} 60 60)`}
+              stroke={i < litTicks ? tickColor : COLOR.border}
+              strokeWidth={4}
+              strokeLinecap="round"
+              style={{ transition: "stroke 0.25s ease" }}
+            />
+          ))}
+        </svg>
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span
+            className="font-serif text-3xl font-black tabular-nums leading-none"
+            style={{ color: COLOR.ink }}
+          >
+            {minutes}:{secs}
           </span>
-        ) : (
+          <span className="mt-1 h-3 text-[11px] font-medium" style={{ color: COLOR.inkSoft }}>
+            {isDone ? "Done" : hasStarted ? (isRunning ? "Running" : "Paused") : `${minuteLabel} min`}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 flex items-center gap-2">
+        {!isDone && (
           <button
             type="button"
-            onClick={() => setIsRunning((running) => !running)}
-            className="rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors"
-            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+            onClick={() => adjustTime(-ADJUST_STEP_SECONDS)}
+            disabled={total <= MIN_TIMER_SECONDS}
+            aria-label="Subtract 30 seconds"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-bold leading-none transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+            style={{ backgroundColor: COLOR.surface, color: COLOR.saffronDark }}
           >
-            {isRunning ? "Pause" : hasStarted ? "Resume" : `Start ${minuteLabel}-min timer`}
+            −
           </button>
         )}
 
-        {(hasStarted || isDone) && (
+        {!isDone ? (
           <button
             type="button"
-            onClick={reset}
-            className="text-xs font-semibold underline underline-offset-2"
-            style={{ color: COLOR.inkSoft }}
+            onClick={() => setIsRunning((running) => !running)}
+            className="flex-1 truncate rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
           >
-            Reset
+            {isRunning ? "Pause" : hasStarted ? "Resume" : "Start the timer"}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={doReset}
+            className="flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+          >
+            Start again
+          </button>
+        )}
+
+        {!isDone && (
+          <button
+            type="button"
+            onClick={() => adjustTime(ADJUST_STEP_SECONDS)}
+            aria-label="Add 30 seconds"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-bold leading-none transition-colors"
+            style={{ backgroundColor: COLOR.surface, color: COLOR.saffronDark }}
+          >
+            +
           </button>
         )}
       </div>
