@@ -889,6 +889,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   };
 
   const handleStartCooking = () => {
+    setResumePrompt(null);
     setIsCooking(true);
     setStepDirection("none");
     setCurrentStepIndex(0);
