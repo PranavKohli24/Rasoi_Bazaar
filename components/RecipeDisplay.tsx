@@ -430,8 +430,9 @@ const StepTimer: React.FC<{
   stepKey: number;
   onComplete?: () => void;
   onCheckIn?: (markIndex: number) => void;
+  onReset?: () => void;
   timerState: Map<number, StepTimerState>;
-}> = ({ seconds, stepKey, onComplete, onCheckIn, timerState }) => {
+}> = ({ seconds, stepKey, onComplete, onCheckIn, onReset, timerState }) => {
   const savedRef = useRef(timerState.get(stepKey));
   const saved = savedRef.current;
 
@@ -508,6 +509,9 @@ const StepTimer: React.FC<{
     setRemaining(seconds);
     setIsRunning(false);
     firedMarksRef.current = new Set();
+    // Undoes whatever onComplete set up (the Not yet / Yes done prompt) —
+    // restarting the clock means the step is back in progress, not done.
+    onReset?.();
   };
 
   const handleResetTap = () => {
@@ -1997,11 +2001,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                       <TipCallout tip={currentStep.tip!} />
                     )}
 
-                    {stepDurationSeconds !== null && (
+                                        {stepDurationSeconds !== null && (
                       <StepTimer
                         seconds={stepDurationSeconds}
                         stepKey={currentStepIndex}
                         timerState={stepTimersRef.current}
+                        onReset={() => setShowNextStepConfirm(false)}
                         onCheckIn={(markIndex) => {
                           const line =
                             markIndex === 0
