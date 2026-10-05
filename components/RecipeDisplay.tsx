@@ -386,7 +386,7 @@ const buildCheckInMarks = (totalSeconds: number): number[] => {
   return marks;
 };
 
-type StepTimerState = { remaining: number; isRunning: boolean; firedMarks: Set<number> };
+type StepTimerState = { remaining: number; isRunning: boolean; firedMarks: Set<number>; total: number };
 
 const StepTimer: React.FC<{
   seconds: number;
@@ -400,25 +400,42 @@ const StepTimer: React.FC<{
   // starting the countdown over from scratch. Read once, at mount — this
   // component gets a fresh instance each time the person navigates back to
   // this step, so a lazy read here is exactly "restore where I left off".
-  const savedRef = useRef(timerState.get(stepKey));
+    const savedRef = useRef(timerState.get(stepKey));
   const saved = savedRef.current;
 
+  const [total, setTotal] = useState(saved?.total ?? seconds);
   const [remaining, setRemaining] = useState(saved?.remaining ?? seconds);
   const [isRunning, setIsRunning] = useState(saved?.isRunning ?? false);
   const intervalRef = useRef<number | null>(null);
-  const checkInMarksRef = useRef<number[]>(buildCheckInMarks(seconds));
+  const checkInMarksRef = useRef<number[]>(buildCheckInMarks(total));
   const firedMarksRef = useRef<Set<number>>(saved?.firedMarks ?? new Set());
 
-  // Mirror any change straight back into the shared map, so if this
-  // component unmounts (navigating to another step) the countdown is
-  // picked up exactly where it left off when the person returns here.
   useEffect(() => {
     timerState.set(stepKey, {
       remaining,
       isRunning,
       firedMarks: firedMarksRef.current,
+      total,
     });
-  }, [remaining, isRunning, stepKey, timerState]);
+  }, [remaining, isRunning, stepKey, timerState, total]);
+
+  // Check-in marks (the 5-minute "still going" nudges) are based on the
+  // total duration — recompute them if the person adjusts the time, so a
+  // step stretched from 5 to 15 minutes still gets a mid-way check-in.
+  useEffect(() => {
+    checkInMarksRef.current = buildCheckInMarks(total);
+  }, [total]);
+
+  const MIN_TIMER_SECONDS = 10;
+  const ADJUST_STEP_SECONDS = 30;
+
+  // +30 / -30, microwave-style: adjusts both the total and however much time
+  // is left right now, so it works the same whether tapped before starting
+  // or mid-cook.
+  const adjustTime = (delta: number) => {
+    setTotal((prev) => Math.max(MIN_TIMER_SECONDS, prev + delta));
+    setRemaining((prev) => Math.max(0, prev + delta));
+  };
 
   // Fires once per checkpoint mark as elapsed time crosses it.
   useEffect(() => {
@@ -459,9 +476,9 @@ const StepTimer: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remaining]);
 
-  const isDone = remaining === 0;
-  const hasStarted = remaining !== seconds;
-  const progressPct = seconds === 0 ? 0 : ((seconds - remaining) / seconds) * 100;
+    const isDone = remaining === 0;
+  const hasStarted = remaining !== total;
+  const progressPct = total === 0 ? 0 : ((total - remaining) / total) * 100;
   const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
   const secs = (remaining % 60).toString().padStart(2, "0");
 
@@ -470,12 +487,15 @@ const StepTimer: React.FC<{
   const dashOffset = circumference * (1 - progressPct / 100);
 
   const reset = () => {
+    // Reset goes back to the recipe's own duration, undoing any +/- taps —
+    // not just restarting the clock at whatever total was last edited to.
+    setTotal(seconds);
     setRemaining(seconds);
     setIsRunning(false);
     firedMarksRef.current = new Set();
   };
 
-  const minuteLabel = Math.max(1, Math.round(seconds / 60));
+  const minuteLabel = Math.max(1, Math.round(total / 60));
 
   return (
     <div
@@ -506,7 +526,31 @@ const StepTimer: React.FC<{
         </span>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+        {!isDone && (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => adjustTime(-ADJUST_STEP_SECONDS)}
+              disabled={total <= MIN_TIMER_SECONDS}
+              aria-label="Subtract 30 seconds"
+              className="flex h-7 w-7 items-center justify-center rounded-full border text-base font-bold leading-none transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+              style={{ borderColor: COLOR.border, color: COLOR.saffronDark, backgroundColor: COLOR.surface }}
+            >
+              −
+            </button>
+            <button
+              type="button"
+              onClick={() => adjustTime(ADJUST_STEP_SECONDS)}
+              aria-label="Add 30 seconds"
+              className="flex h-7 w-7 items-center justify-center rounded-full border text-base font-bold leading-none transition-colors"
+              style={{ borderColor: COLOR.border, color: COLOR.saffronDark, backgroundColor: COLOR.surface }}
+            >
+              +
+            </button>
+          </div>
+        )}
+
         {isDone ? (
           <span className="text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
             Time&apos;s up!
@@ -721,9 +765,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   // StepTimer) because StepTimer gets unmounted/remounted every time the
   // person navigates between steps — this ref is what actually survives
   // that, so a quick "check the previous step" peek doesn't reset the count.
-  const stepTimersRef = useRef<Map<number, { remaining: number; isRunning: boolean; firedMarks: Set<number> }>>(
-    new Map()
-  );
+  const stepTimersRef = useRef<Map<number, StepTimerState>>(new Map());
 
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
     try {
