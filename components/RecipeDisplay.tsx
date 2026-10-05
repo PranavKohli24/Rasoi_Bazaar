@@ -537,6 +537,34 @@ const StepTimer: React.FC<{
   );
 };
 
+const ProgressRing: React.FC<{ current: number; total: number }> = ({ current, total }) => {
+  const r = 16;
+  const c = 2 * Math.PI * r;
+  return (
+    <div className="relative h-10 w-10 shrink-0">
+      <svg viewBox="0 0 40 40" className="h-10 w-10 -rotate-90" aria-hidden="true">
+        <circle cx="20" cy="20" r={r} fill="none" stroke={COLOR.saffronTint} strokeWidth="3.5" />
+        <circle
+          cx="20"
+          cy="20"
+          r={r}
+          fill="none"
+          stroke={COLOR.saffron}
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - current / total)}
+        />
+      </svg>
+      <span
+        className="absolute inset-0 flex items-center justify-center text-[11px] font-bold tabular-nums"
+        style={{ color: COLOR.ink }}
+      >
+        {current}/{total}
+      </span>
+    </div>
+  );
+};
 /* ---------- Component ---------- */
 
 const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }) => {
@@ -1344,41 +1372,45 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       <style>{STEP_ANIMATION_CSS}</style>
 
       {resumePrompt && (
-        <div
-          className={`${card} mb-6 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6`}
-          style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
-        >
-          <div>
-            <p className="font-serif text-lg font-black sm:text-xl" style={{ color: COLOR.ink }}>
-              Pick up where you left off?
-            </p>
-            <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
-              You were on step {resumePrompt.stepIndex + 1} of {recipe.method.length}.
-            </p>
-          </div>
+  <div
+    role="status"
+    className="mb-5 flex items-center gap-3 rounded-2xl border px-3.5 py-3 shadow-sm sm:mb-6 sm:gap-4 sm:px-5 sm:py-4"
+    style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+  >
+    <ProgressRing current={resumePrompt.stepIndex + 1} total={recipe.method.length} />
 
-          <div className="flex shrink-0 gap-3">
-            <button
-              type="button"
-              onClick={handleStartFresh}
-              className={`${secondaryButton} flex-1 sm:flex-none`}
-              style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
-            >
-              Start fresh
-            </button>
-            <button
-              type="button"
-              onClick={handleResumeCooking}
-              className={`${primaryButton} flex-1 sm:flex-none`}
-              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-            >
-              Resume cooking
-            </button>
-          </div>
-        </div>
-      )}
+    <div className="min-w-0 flex-1">
+      <p className="text-[15px] font-semibold leading-tight sm:text-base" style={{ color: COLOR.ink }}>
+        Continue cooking
+      </p>
+      <p className="mt-0.5 truncate text-[13px] sm:text-sm" style={{ color: COLOR.inkSoft }}>
+        {recipe.dishName} · Step {resumePrompt.stepIndex + 1} of {recipe.method.length}
+      </p>
+    </div>
+
+    <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+      <button
+        type="button"
+        onClick={handleStartFresh}
+        className="rounded-full px-3 py-2 text-[13px] font-medium transition-colors hover:bg-black/5 focus:outline-none focus-visible:ring-2 sm:text-sm"
+        style={{ color: COLOR.inkSoft }}
+      >
+        <span className="sm:hidden">Restart</span>
+        <span className="hidden sm:inline">Start fresh</span>
+      </button>
+      <button
+        type="button"
+        onClick={handleResumeCooking}
+        className="rounded-full px-4 py-2 text-[13px] font-semibold transition-colors active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-5 sm:text-sm"
+        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+      >
+        Resume<span className="hidden sm:inline">&nbsp;cooking</span>
+      </button>
+    </div>
+  </div>
+)}
 
       {/* Header: a generous photo, the dish's own voice in the description,
           quick facts, and the two ways forward — cook it, or have it
