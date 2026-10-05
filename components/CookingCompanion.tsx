@@ -6,7 +6,7 @@ import {
   CompanionMessage,
 } from "../services/cookingCompanionService";
 
-import { useHeyChef, HeyChefCommands, HeyChefPhase } from "../src/hooks/useHeyChef";
+import { useHeyChef, HeyChefCommands, HeyChefPhase, CommandName } from "../src/hooks/useHeyChef";
 
 interface CookingCompanionProps {
   recipe: Recipe;
@@ -20,6 +20,7 @@ interface CookingCompanionProps {
     commands: HeyChefCommands;
     onPhaseChange?: (phase: HeyChefPhase) => void;
     onMicBlocked?: () => void;
+    onCommand?: (name: CommandName) => void;
   };
 }
 
@@ -1345,6 +1346,10 @@ const focusInputWithoutKeyboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hc.micBlocked]);
 
+  useEffect(() => {
+    if (hc.lastCommand) heyChef?.onCommand?.(hc.lastCommand.name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hc.lastCommand]);
   // The spoken answer also shows as a bubble by the mascot, then fades away.
   useEffect(() => {
     if (!voiceReplyText) return;

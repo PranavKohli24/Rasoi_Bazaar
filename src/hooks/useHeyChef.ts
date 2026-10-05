@@ -17,7 +17,7 @@ export interface HeyChefCommands {
   yesDone: () => string | void;
   notYet: () => string | void;
 }
-type CommandName = keyof HeyChefCommands;
+export type CommandName = keyof HeyChefCommands;
 
 export interface UseHeyChefOptions {
   /** Master switch: toggle is on AND the person is cooking. */
@@ -35,15 +35,21 @@ export interface UseHeyChefOptions {
 
 /* ------------------------------------------------------------ constants */
 
-const SILENCE_MS = 1500; // no new words for this long = finished talking
-const FINAL_GRACE_MS = 350; // engine said "final": wait a beat in case you continue
-const AWAKE_IDLE_MS = 10000; // woke up but nobody spoke: go back to sleep quietly
-const TAIL_MS = 700; // keep the mic off this long after speech ends
-const COMMAND_HOLD_MS = 1000; // mic off while the UI starts reading the next step
+const SILENCE_MS = 1100; // no new words for this long = finished talking
+const FINAL_GRACE_MS = 350;
+const AWAKE_IDLE_MS = 10000;
+const TAIL_MS = 450; // keep the mic off this long after speech ends
+const COMMAND_HOLD_MS = 700; // mic off while the UI starts reading the next step
 const MAX_SPEAKING_MS = 60000; // stuck-speechSynthesis safety valve
 const FILLER_DELAY_MS = 900;
 const FILLER_SKIP_CHANCE = 0.25;
 const FILLERS = ["Hmm, one sec.", "Let me check.", "Good question.", "Let me think."];
+const WAKE_GREETINGS = [
+  "Hey, how can I help you in your tasty journey?",
+  "Hi there, what do you need?",
+  "Yes chef, I'm listening.",
+  "I'm here — what's up?",
+];
 
 // Speech engines mishear short phrases, so match loosely.
 const CHEF_WORDS = ["chef", "chefs", "shef", "chaf", "shaf", "chief", "cheff", "sheff", "chev", "shep", "chep", "chaff", "shaft", "sheaf", "jeff"];
@@ -117,6 +123,19 @@ const matchBareCommand = (text: string): CommandName | null => {
   return null;
 };
 
+// Words a finished question rarely ends on: if we hear one, the person is
+// probably still thinking, so wait longer. (Prepositions like "for" and "in"
+// are left out: "what is it for?" is a complete question.)
+const INCOMPLETE_TAIL =
+  /\b(?:and|but|or|so|because|if|when|then|um|uh|umm|uhh|like|with|to|the|a|an|of|my|is|are|do|does|can|should|i|how|what|which)$/;
+
+// How long to wait for more words before treating the question as finished.
+const endDelay = (question: string, isFinal: boolean): number => {
+  if (matchCommand(question)) return isFinal ? 200 : 600; // "next", "repeat"...
+  if (INCOMPLETE_TAIL.test(question)) return isFinal ? 1200 : 2200;
+  return isFinal ? FINAL_GRACE_MS : SILENCE_MS;
+};
+
 // A short "I heard you" ping + buzz. Fails silently if audio is blocked.
 const ping = () => {
   try {
@@ -165,6 +184,27 @@ const softCue = () => {
   }
 };
 
+// A tiny "got it" tick, higher and shorter than softCue.
+const tick = () => {
+  try {
+    const Ctx = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new Ctx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = 784;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.1, ctx.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.09);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+    window.setTimeout(() => ctx.close().catch(() => {}), 250);
+  } catch {
+    /* audio unavailable */
+  }
+};
 type Seg = { text: string; isFinal: boolean };
 
 /* ----------------------------------------------------------------- hook */
@@ -185,6 +225,8 @@ export function useHeyChef({
   const [micBlocked, setMicBlocked] = useState(false);
   const [ttsBusy, setTtsBusy] = useState(false);
   const [micLive, setMicLive] = useState(false);
+
+    const [lastCommand, setLastCommand] = useState<{ name: CommandName; id: number } | null>(null);
 
   // Always-fresh copies of the inputs, so long-lived speech callbacks never go stale.
   const commandsRef = useRef(commands);
@@ -216,6 +258,7 @@ export function useHeyChef({
     const fillerTimerRef = useRef<number | null>(null);
   const fillerDoneRef = useRef<Promise<void> | null>(null);
   const lastFillerRef = useRef("");
+  const lastGreetingRef = useRef("");
 
   /* ---- small state helpers ---- */
 
@@ -274,7 +317,7 @@ export function useHeyChef({
       clearTimers();
       const token = ++speakTokenRef.current;
       setPhase("speaking");
-      holdUntilRef.current = Date.now() + 400;
+      holdUntilRef.current = Date.now() + 250;
 
             const parts = text.split("||").map((p) => p.trim()).filter(Boolean);
       const voice = synth
@@ -346,6 +389,15 @@ export function useHeyChef({
     return pick;
   };
 
+  const pickGreeting = () => {
+    let pick = WAKE_GREETINGS[0];
+    do {
+      pick = WAKE_GREETINGS[Math.floor(Math.random() * WAKE_GREETINGS.length)];
+    } while (pick === lastGreetingRef.current && WAKE_GREETINGS.length > 1);
+    lastGreetingRef.current = pick;
+    return pick;
+  };
+
   const speakFiller = (text: string) =>
     new Promise<void>((resolve) => {
       const synth = window.speechSynthesis;
@@ -389,9 +441,11 @@ export function useHeyChef({
 
   /* ---- the flow ---- */
 
-  const runCommand = (name: CommandName) => {
+    const runCommand = (name: CommandName) => {
     clearTimers();
     ignoreBeforeRef.current = segmentsRef.current.length;
+    tick();
+    setLastCommand({ name, id: Date.now() });
     let message: string | void = undefined;
     try {
       message = commandsRef.current[name]();
@@ -429,15 +483,19 @@ export function useHeyChef({
     softCue();
     startFillerTimer();
 
-    let reply: string | null = null;
+        let reply: string | null = null;
+    let timeoutId = 0;
     try {
-        reply = await Promise.race([
+      reply = await Promise.race([
         onQuestionRef.current(question),
-        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 15000)),
+        new Promise<null>((resolve) => {
+          timeoutId = window.setTimeout(() => resolve(null), REPLY_TIMEOUT_MS);
+        }),
       ]);
     } catch {
       reply = null;
     }
+    window.clearTimeout(timeoutId);
     if (fillerTimerRef.current !== null) {
       window.clearTimeout(fillerTimerRef.current);
       fillerTimerRef.current = null;
@@ -450,7 +508,9 @@ export function useHeyChef({
     await say(reply || "Sorry, I couldn't get that. Try again?", "awake");
   };
 
-  const wake = (segmentIndex: number) => {
+  const REPLY_TIMEOUT_MS = 40000; // give the AI time; a late answer beats "sorry"
+
+    const wake = (segmentIndex: number) => {
     anchorRef.current = segmentIndex;
     ping();
     setPhase("awake");
@@ -460,9 +520,10 @@ export function useHeyChef({
     if (question) {
       // "Hey chef, how much salt?" in one breath: no prompt needed.
       const last = segmentsRef.current[segmentsRef.current.length - 1];
-      scheduleFinish(last?.isFinal ? FINAL_GRACE_MS : SILENCE_MS);
+      scheduleFinish(endDelay(question, !!last?.isFinal));
     } else {
-      void say("Yes? What would you like to know?", "awake");
+      // No question in the same breath — greet them, then keep listening.
+      void say(pickGreeting(), "awake");
     }
   };
 
@@ -470,9 +531,19 @@ export function useHeyChef({
     errorStreakRef.current = 0;
 
     const segs: Seg[] = [];
-    for (let i = 0; i < event.results.length; i++) {
+        for (let i = 0; i < event.results.length; i++) {
       const result = event.results[i];
-      segs.push({ text: result[0].transcript, isFinal: result.isFinal });
+      // If the top guess missed the wake phrase but another guess has it, use that one.
+      let text: string = result[0].transcript;
+      if (!WAKE.test(norm(text))) {
+        for (let a = 1; a < result.length; a++) {
+          if (WAKE.test(norm(result[a].transcript))) {
+            text = result[a].transcript;
+            break;
+          }
+        }
+      }
+      segs.push({ text, isFinal: result.isFinal });
     }
     segmentsRef.current = segs;
 
@@ -513,7 +584,7 @@ export function useHeyChef({
       window.clearTimeout(idleTimerRef.current);
       idleTimerRef.current = null;
     }
-    scheduleFinish(segs[segs.length - 1].isFinal ? FINAL_GRACE_MS : SILENCE_MS);
+    scheduleFinish(endDelay(question, segs[segs.length - 1].isFinal));
   };
 
   /* ---- recognition lifecycle ---- */
@@ -543,7 +614,7 @@ export function useHeyChef({
     const rec = new Ctor();
     rec.continuous = true;
     rec.interimResults = true;
-    rec.maxAlternatives = 1;
+    rec.maxAlternatives = 3;
     rec.lang = langRef.current;
 
     rec.onstart = () => {
@@ -682,7 +753,7 @@ export function useHeyChef({
       const busy =
         speaking || now - lastSpokeRef.current < TAIL_MS || now < holdUntilRef.current;
       setTtsBusy((prev) => (prev === busy ? prev : busy));
-    }, 150);
+    }, 100);
     return () => window.clearInterval(id);
   }, [enabled, supported]);
 
@@ -695,5 +766,5 @@ export function useHeyChef({
       ? "off"
       : phase;
 
-  return { supported, phase: publicPhase, liveText, micBlocked };
+      return { supported, phase: publicPhase, liveText, micBlocked, lastCommand };
 }

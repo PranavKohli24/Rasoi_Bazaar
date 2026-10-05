@@ -18,7 +18,7 @@ import SwiggyActionModal from "./SwiggyActionModal";
 import NutritionInfo from "./NutritionInfo";
 import CookingCompanionChat from "./CookingCompanion";
 
-import { isHeyChefSupported, HeyChefCommands, HeyChefPhase } from "../src/hooks/useHeyChef";
+import { isHeyChefSupported, HeyChefCommands, HeyChefPhase, CommandName } from "../src/hooks/useHeyChef";
 
 interface RecipeDisplayProps {
   recipe: Recipe;
@@ -637,6 +637,25 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       /* ignore */
     }
   };
+
+    const COMMAND_LABELS: Record<CommandName, string> = {
+    next: "Next step",
+    back: "Previous step",
+    repeat: "Repeating",
+    yesDone: "Done",
+    notYet: "Okay, not yet",
+  };
+  const [commandFlash, setCommandFlash] = useState<{ label: string; id: number } | null>(null);
+
+  const handleHeyChefCommand = (name: CommandName) =>
+    setCommandFlash({ label: COMMAND_LABELS[name], id: Date.now() });
+
+  useEffect(() => {
+    if (!commandFlash) return;
+    const id = window.setTimeout(() => setCommandFlash(null), 1400);
+    return () => window.clearTimeout(id);
+  }, [commandFlash]);
+
 
     // Hide the "mic blocked" note after 8 seconds; each new block restarts the timer.
   useEffect(() => {
@@ -1776,8 +1795,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   aria-hidden="true"
                   className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
                 />
-                <span className={heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined}>
-                  {heyChefPhase === "sleeping" && showNextStepConfirm
+                <span
+                  className={!commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined}
+                  style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+                >
+                  {commandFlash
+                    ? `✓ ${commandFlash.label}`
+                    : heyChefPhase === "sleeping" && showNextStepConfirm
                     ? "Say “yes done” or “not yet”"
                     : HEY_CHEF_LABEL[heyChefPhase]}
                 </span>
@@ -2063,6 +2087,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           commands: heyChefCommands,
           onPhaseChange: setHeyChefPhase,
           onMicBlocked: handleHeyChefBlocked,
+          onCommand: handleHeyChefCommand,
         }}
       />
     </div>
