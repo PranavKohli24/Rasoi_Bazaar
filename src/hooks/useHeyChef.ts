@@ -169,6 +169,7 @@ export function useHeyChef({
   const [liveText, setLiveText] = useState("");
   const [micBlocked, setMicBlocked] = useState(false);
   const [ttsBusy, setTtsBusy] = useState(false);
+  const [micLive, setMicLive] = useState(false);
 
   // Always-fresh copies of the inputs, so long-lived speech callbacks never go stale.
   const commandsRef = useRef(commands);
@@ -485,7 +486,7 @@ export function useHeyChef({
 
   /* ---- recognition lifecycle ---- */
 
-  const stopRecognition = () => {
+    const stopRecognition = () => {
     const rec = recRef.current;
     recRef.current = null;
     if (restartTimerRef.current !== null) {
@@ -514,6 +515,7 @@ export function useHeyChef({
     rec.lang = langRef.current;
 
     rec.onstart = () => {
+      setMicLive(true);
       // A fresh session has a fresh transcript.
       segmentsRef.current = [];
       ignoreBeforeRef.current = 0;
@@ -596,7 +598,10 @@ export function useHeyChef({
     segmentsRef.current = [];
     ignoreBeforeRef.current = 0;
     setPhase("sleeping");
-    if (!enabled) setMicBlocked(false);
+    if (!enabled) {
+      setMicBlocked(false);
+      setMicLive(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, suspended, supported]);
 
@@ -634,8 +639,8 @@ export function useHeyChef({
     return () => window.clearInterval(id);
   }, [enabled, supported]);
 
-  const publicPhase: HeyChefPhase =
-    !enabled || !supported ? "off" : suspended ? "paused" : phase;
+    const publicPhase: HeyChefPhase =
+    !enabled || !supported ? "off" : suspended ? "paused" : !micLive ? "off" : phase;
 
   return { supported, phase: publicPhase, liveText, micBlocked };
 }

@@ -579,7 +579,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   });
   const [heyChefSupported] = useState(isHeyChefSupported);
   const [heyChefPhase, setHeyChefPhase] = useState<HeyChefPhase>("off");
-  const [heyChefBlocked, setHeyChefBlocked] = useState(false);
+  const [heyChefBlockedAt, setHeyChefBlockedAt] = useState<number | null>(null);
 
   // Only listens while someone is actually cooking.
   const heyChefActive = isCooking && isHeyChefOn && heyChefSupported;
@@ -590,7 +590,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   const toggleHeyChef = () => {
     const next = !isHeyChefOn;
-    setHeyChefBlocked(false);
+    if (!next) setHeyChefBlockedAt(null);
     setIsHeyChefOn(next);
     try {
       localStorage.setItem("recipe-heychef-enabled", String(next));
@@ -602,13 +602,20 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   const handleHeyChefBlocked = () => {
     setIsHeyChefOn(false);
-    setHeyChefBlocked(true);
+    setHeyChefBlockedAt(Date.now());
     try {
       localStorage.setItem("recipe-heychef-enabled", "false");
     } catch {
       /* ignore */
     }
   };
+
+    // Hide the "mic blocked" note after 8 seconds; each new block restarts the timer.
+  useEffect(() => {
+    if (heyChefBlockedAt === null) return;
+    const id = window.setTimeout(() => setHeyChefBlockedAt(null), 8000);
+    return () => window.clearTimeout(id);
+  }, [heyChefBlockedAt]);
   
   // A check-in the companion should say — bumping the id (not just the text)
   // guarantees CookingCompanion treats repeats on a later long step as new.
@@ -1716,18 +1723,18 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               }
             />
 
-                        {heyChefBlocked && (
+            {heyChefBlockedAt !== null && (
               <p
-                role="alert"
-                className="mb-4 rounded-xl p-3 text-sm"
-                style={{ backgroundColor: COLOR.clayTint, color: COLOR.clay }}
+                role="status"
+                className="mb-4 rounded-xl border p-3 text-sm"
+                style={{ backgroundColor: COLOR.mustard, borderColor: COLOR.border, color: COLOR.ink }}
               >
                 The microphone is blocked. Allow it in your browser&apos;s site settings to
                 use Hey chef.
               </p>
             )}
 
-            {heyChefActive && (
+            {heyChefActive && heyChefPhase !== "off" && (
               <div
                 role="status"
                 className="mb-4 flex items-center gap-2 text-sm font-medium"
