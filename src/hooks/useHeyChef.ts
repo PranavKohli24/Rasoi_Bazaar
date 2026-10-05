@@ -46,9 +46,9 @@ const FILLER_SKIP_CHANCE = 0.25;
 const FILLERS = ["Hmm, one sec.", "Let me check.", "Good question.", "Let me think."];
 
 // Speech engines mishear short phrases, so match loosely.
-const CHEF_WORDS = ["chef", "shef", "chaf", "shaf", "chief", "cheff", "sheff", "chev"];
+const CHEF_WORDS = ["chef", "chefs", "shef", "chaf", "shaf", "chief", "cheff", "sheff", "chev", "shep", "chep", "chaff", "shaft", "sheaf", "jeff"];
 const WAKE = new RegExp(
-  `\\b(?:hey|hay|hi|hello|okay|ok|ay|hei)\\s+(?:${CHEF_WORDS.join("|")})\\b`
+  `\\b(?:hey|hay|hi|hello|okay|ok|ay|hei|heyy)\\s*(?:${CHEF_WORDS.join("|")})\\b`
 );
 
 const COMMAND_PATTERNS: [CommandName, RegExp][] = [
@@ -404,7 +404,10 @@ export function useHeyChef({
 
     let reply: string | null = null;
     try {
-      reply = await onQuestionRef.current(question);
+        reply = await Promise.race([
+        onQuestionRef.current(question),
+        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 15000)),
+      ]);
     } catch {
       reply = null;
     }
@@ -529,14 +532,16 @@ export function useHeyChef({
     rec.onend = () => {
       if (recRef.current !== rec) return; // we stopped it on purpose
       // Chrome ends continuous sessions after silence: quietly start again.
-      const delay = Math.min(300 * 2 ** errorStreakRef.current, 8000);
+            const delay = Math.min(150 * 2 ** errorStreakRef.current, 2000);
       restartTimerRef.current = window.setTimeout(() => {
         restartTimerRef.current = null;
         if (recRef.current !== rec) return;
         try {
           rec.start();
         } catch {
-          /* already started */
+          // couldn't restart: throw this recognizer away and build a fresh one
+          stopRecognition();
+          startRecognition();
         }
       }, delay);
     };
@@ -546,6 +551,11 @@ export function useHeyChef({
       rec.start();
     } catch (error) {
       console.warn("Hey chef could not start listening:", error);
+      stopRecognition();
+      restartTimerRef.current = window.setTimeout(() => {
+        restartTimerRef.current = null;
+        startRecognition();
+      }, 500);
     }
   };
 
