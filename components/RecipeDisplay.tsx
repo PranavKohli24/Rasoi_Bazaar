@@ -438,16 +438,20 @@ const StepTimer: React.FC<{
   };
 
   // Fires once per checkpoint mark as elapsed time crosses it.
-  useEffect(() => {
-    if (remaining <= 0) return;
-    const elapsed = seconds - remaining;
+    useEffect(() => {
+    // Only a genuinely running countdown counts as "elapsed" — a +/- tap
+    // changes `remaining` directly without the clock actually running, and
+    // elapsed must be measured against the current (possibly adjusted)
+    // total, not the original parsed duration.
+    if (!isRunning || remaining <= 0) return;
+    const elapsed = total - remaining;
     checkInMarksRef.current.forEach((mark, index) => {
       if (elapsed >= mark && !firedMarksRef.current.has(mark)) {
         firedMarksRef.current.add(mark);
         onCheckIn?.(index);
       }
     });
-  }, [remaining, seconds, onCheckIn]);
+  }, [remaining, total, isRunning, onCheckIn]);
 
   // Pure countdown — just decrements. No side effects here, so Strict
   // Mode's dev-time double-invoke of updater functions can't double-fire
