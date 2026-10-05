@@ -526,7 +526,7 @@ const StepTimer: React.FC<{
 
   return (
     <div
-      className="mt-6 w-full max-w-xs rounded-3xl border p-5"
+      className="mt-6 w-full max-w-[260px] rounded-2xl border p-4 sm:max-w-xs sm:rounded-3xl sm:p-5"
       style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
     >
             {/* No "Timer" label — the clock face + steam already say what this
@@ -548,17 +548,17 @@ const StepTimer: React.FC<{
       {/* The dial: a stove-knob of tick marks that light up as time passes,
           with a flame perched on the rim that flickers while running and
           goes dark once the step is done. */}
-            <div className="relative mx-auto mt-7 h-32 w-32">
+      <div className="relative mx-auto mt-5 h-24 w-24 sm:mt-7 sm:h-32 sm:w-32">
         {!isDone && (
-          <div className="absolute left-1/2 -top-6 z-10 -translate-x-1/2">
+          <div className="absolute left-1/2 -top-5 z-10 -translate-x-1/2 sm:-top-6">
             <SteamIcon
-              className={`h-6 w-6 ${isRunning ? "timer-steam-active" : "opacity-40"}`}
+              className={`h-5 w-5 sm:h-6 sm:w-6 ${isRunning ? "timer-steam-active" : "opacity-40"}`}
               color={steamColor}
             />
           </div>
         )}
 
-        <svg viewBox="0 0 120 120" className="h-32 w-32">
+        <svg viewBox="0 0 120 120" className="h-24 w-24 sm:h-32 sm:w-32">
           {Array.from({ length: TICK_COUNT }).map((_, i) => (
             <line
               key={i}
@@ -577,7 +577,7 @@ const StepTimer: React.FC<{
 
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
-            className="font-serif text-3xl font-black tabular-nums leading-none"
+            className="font-serif text-2xl font-black tabular-nums leading-none sm:text-3xl"
             style={{ color: COLOR.ink }}
           >
             {minutes}:{secs}
@@ -588,7 +588,7 @@ const StepTimer: React.FC<{
         </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-2">
+      <div className="mt-3 flex items-center gap-1.5 sm:mt-4 sm:gap-2">
         {!isDone && (
           <button
             type="button"
