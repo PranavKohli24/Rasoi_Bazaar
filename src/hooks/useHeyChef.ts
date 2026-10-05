@@ -274,7 +274,9 @@ export function useHeyChef({
         window.clearTimeout(safety);
         // Only move on if nothing newer took over (reset, newer say, etc.)
         if (speakTokenRef.current === token && phaseRef.current === "speaking") {
-          if (then === "awake") {
+            if (then === "awake") {
+            anchorRef.current = segmentsRef.current.length;
+            ignoreBeforeRef.current = segmentsRef.current.length;
             setPhase("awake");
             armIdle();
           } else {
@@ -420,7 +422,7 @@ export function useHeyChef({
     if (filler) await filler;
     // If the toggle was turned off / the sheet opened meanwhile, drop the spoken reply.
     if (currentPhase() !== "processing") return;
-    await say(reply || "Sorry, I couldn't get that. Try again?", "sleeping");
+    await say(reply || "Sorry, I couldn't get that. Try again?", "awake");
   };
 
   const wake = (segmentIndex: number) => {
