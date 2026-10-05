@@ -1008,7 +1008,7 @@ const focusInputWithoutKeyboard = () => {
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
-    recognition.lang = "en-US";
+    recognition.lang = "en-IN";
 
     recognition.onstart = () => {
       isListeningRef.current = true;
