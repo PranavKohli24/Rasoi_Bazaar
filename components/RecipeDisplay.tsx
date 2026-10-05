@@ -252,7 +252,7 @@ const STEP_ANIMATION_CSS = `
 const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
   off: "",
   paused: "Hey chef is paused while the chat is open",
-  sleeping: "Say “Hey chef”",
+  sleeping: "Say “Hey chef”, or just “next” / “back”",
   awake: "Listening…",
   processing: "Thinking…",
   speaking: "Speaking…",

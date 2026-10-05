@@ -68,6 +68,13 @@ const COMMAND_PATTERNS: [CommandName, RegExp][] = [
   ],
 ];
 
+// Commands that work WITHOUT "hey chef". Deliberately narrow: the whole phrase
+// must be the command, so normal talking in the kitchen doesn't trigger them.
+const BARE_PATTERNS: [CommandName, RegExp][] = [
+  ["next", /^(?:go\s+)?(?:to\s+)?next(?:\s+step)?$/],
+  ["back", /^(?:go\s+)?(?:back|previous)(?:\s+step)?$|^back\s+(?:a\s+)?step$/],
+  ["repeat", /^(?:repeat|repeat\s+(?:that|it|the\s+step)|say\s+that\s+again)$/],
+];
 /* -------------------------------------------------------------- helpers */
 
 const getCtor = (): any =>
@@ -97,6 +104,14 @@ const cleanForCommand = (t: string) =>
 const matchCommand = (text: string): CommandName | null => {
   const cleaned = cleanForCommand(text);
   for (const [name, pattern] of COMMAND_PATTERNS) {
+    if (pattern.test(cleaned)) return name;
+  }
+  return null;
+};
+
+const matchBareCommand = (text: string): CommandName | null => {
+  const cleaned = cleanForCommand(text);
+  for (const [name, pattern] of BARE_PATTERNS) {
     if (pattern.test(cleaned)) return name;
   }
   return null;
@@ -462,10 +477,18 @@ export function useHeyChef({
           wake(i);
           return;
         }
-        if (awaitingConfirmRef.current) {
+                if (awaitingConfirmRef.current) {
           const command = matchCommand(text);
           if (command === "yesDone" || command === "notYet") {
             runCommand(command);
+            return;
+          }
+        }
+        // Bare "next" / "back" / "repeat": only once the engine has finished the phrase.
+        if (segs[i].isFinal) {
+          const bare = matchBareCommand(text);
+          if (bare) {
+            runCommand(bare);
             return;
           }
         }
