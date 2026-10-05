@@ -1383,9 +1383,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       <p className="text-[15px] font-semibold leading-tight sm:text-base" style={{ color: COLOR.ink }}>
         Continue cooking
       </p>
-      <p className="mt-0.5 text-[13px] sm:text-sm" style={{ color: COLOR.inkSoft }}>
-        You were on step {resumePrompt.stepIndex + 1} of {recipe.method.length}
-      </p>
     </div>
 
     <div className="flex shrink-0 items-center gap-1 sm:gap-2">
