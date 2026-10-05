@@ -583,7 +583,7 @@ const StepTimer: React.FC<{
             {minutes}:{secs}
           </span>
           <span className="mt-1 h-3 text-[11px] font-medium" style={{ color: COLOR.inkSoft }}>
-            {isDone ? "Done" : hasStarted ? (isRunning ? "Running" : "Paused") : `${minuteLabel} min`}
+            {!isDone && (hasStarted ? (isRunning ? "Running" : "Paused") : `${minuteLabel} min`)}
           </span>
         </div>
       </div>
@@ -602,7 +602,7 @@ const StepTimer: React.FC<{
           </button>
         )}
 
-        {!isDone ? (
+                {!isDone ? (
           <button
             type="button"
             onClick={() => setIsRunning((running) => !running)}
@@ -614,16 +614,22 @@ const StepTimer: React.FC<{
             {isRunning ? "Pause" : hasStarted ? "Resume" : "Start the timer"}
           </button>
         ) : (
-          <button
-            type="button"
-            onClick={doReset}
-            className="flex-1 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
-            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-          >
-            Start again
-          </button>
+          // Done means the countdown did its job — the headline already
+          // says so. Restarting isn't the next likely action (moving on to
+          // the step is), so it's a quiet link, not a competing button.
+          <div className="flex flex-1 items-center justify-between">
+            <span className="text-sm font-semibold" style={{ color: COLOR.clay }}>
+              Time&apos;s up!
+            </span>
+            <button
+              type="button"
+              onClick={doReset}
+              className="text-xs font-semibold underline-offset-2 transition-colors hover:underline"
+              style={{ color: COLOR.inkSoft }}
+            >
+              Start again
+            </button>
+          </div>
         )}
 
         {!isDone && (
