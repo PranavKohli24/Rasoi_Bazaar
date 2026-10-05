@@ -504,6 +504,89 @@ const buildSuggestions = (_recipe: Recipe, stepNumber: number | null): string[] 
 // are already written in-character, so those are shown as-is.
 const FRIENDLY_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 
+/* ------------------------------------------------- local fast-path ------
+   A few question shapes are answerable straight from the recipe data, with
+   no AI round trip. Checked before the network call so these feel instant
+   instead of waiting on the same latency as an open-ended question. */
+
+const INGREDIENT_QUERY_RE = /^(?:how much|how many)\s+(.+)$/i;
+
+// Catches "should I add", "do I need", "can I use", "should I put in",
+// "must I take", etc. — any helper-verb + "I" + verb tail, in one shot,
+// instead of needing every combination spelled out.
+const TRAILING_CLAUSE_RE =
+  /\s*(?:do|does|should|can|could|must|will)\s+i\s+(?:add|use|need|put|take|include)\b.*$/i;
+
+// Hindi words romanize inconsistently — "pani"/"paani", "cheeni"/"chini",
+// "mirch"/"mirchi" are the same word spoken by different people (or
+// transcribed differently by the recognizer each time). Collapsing doubled
+// vowels and a trailing "i"/"a" wobble catches most of that without needing
+// a real phonetic library.
+const normalizeTranslit = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/aa/g, "a")
+    .replace(/ee/g, "i")
+    .replace(/oo/g, "u")
+    .replace(/ii/g, "i")
+    .replace(/([a-z])\1+/g, "$1") // "ammm" -> "am"
+    .trim();
+  
+// Plain Levenshtein distance. Ingredient words are short (4-10 chars), so
+// the full O(n*m) table is cheap — no need for a library here.
+const editDistance = (a: string, b: string): number => {
+  const dp: number[][] = Array.from({ length: a.length + 1 }, (_, i) =>
+    Array(b.length + 1).fill(0).map((_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  );
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] =
+        a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    }
+  }
+  return dp[a.length][b.length];
+};
+
+// A word a couple of letters off still counts as the same word — the
+// threshold scales with length so short words ("dal") still need a near-exact
+// hit while longer ones ("dhaniya") tolerate more drift.
+const fuzzyMatches = (a: string, b: string): boolean => {
+  if (a === b || a.includes(b) || b.includes(a)) return true;
+  const threshold = Math.max(1, Math.floor(Math.min(a.length, b.length) / 4));
+  return editDistance(a, b) <= threshold;
+};
+
+const findIngredientAnswer = (recipe: Recipe, question: string): string | null => {
+  const match = question.trim().match(INGREDIENT_QUERY_RE);
+  if (!match) return null;
+
+  const rawQuery = match[1].replace(TRAILING_CLAUSE_RE, "").replace(/\?+$/, "").trim();
+  if (!rawQuery) return null;
+  const query = normalizeTranslit(rawQuery);
+
+  const ingredient = recipe.ingredients.find((ing) => {
+    const common = normalizeTranslit(ing.commonName);
+    const english = normalizeTranslit(ing.englishName || "");
+    return fuzzyMatches(query, common) || (!!english && fuzzyMatches(query, english));
+  });
+
+  return ingredient ? `You'll need ${ingredient.amount} ${ingredient.commonName}.` : null;
+};
+
+const STEP_QUERY_RE = /\b(?:what(?:'s| is)|read|tell me)\s+step\s+(\d+)\b/i;
+
+const findStepAnswer = (recipe: Recipe, question: string): string | null => {
+  const match = question.trim().match(STEP_QUERY_RE);
+  const stepNum = match ? parseInt(match[1], 10) : null;
+  if (!stepNum) return null;
+  return recipe.method[stepNum - 1]?.instruction ?? null;
+};
+
+const findLocalAnswer = (recipe: Recipe, question: string): string | null =>
+  findIngredientAnswer(recipe, question) ?? findStepAnswer(recipe, question);
+
 /* ------------------------------------------------------------ component */
 const CookingCompanion: React.FC<CookingCompanionProps> = ({
   recipe,
@@ -1304,7 +1387,20 @@ const focusInputWithoutKeyboard = () => {
 
   // Same conversation as typed questions (same history, same chat log), but
   // the reply is spoken by the hook, so no word-by-word reveal and no panel.
-  const askByVoice = async (question: string): Promise<string | null> => {
+    const askByVoice = async (question: string): Promise<string | null> => {
+    // Fast path: a handful of question shapes are answerable straight from
+    // the recipe data — no AI round trip, so these come back instantly.
+    const localAnswer = findLocalAnswer(recipe, question);
+    if (localAnswer) {
+      setMessages((current) => [
+        ...current,
+        { role: "user", content: question },
+        { role: "assistant", content: localAnswer },
+      ]);
+      setVoiceReplyText(localAnswer);
+      return localAnswer;
+    }
+
     const history = messagesRef.current;
     setMessages((current) => [...current, { role: "user", content: question }]);
     try {
