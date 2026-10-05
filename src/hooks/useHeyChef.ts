@@ -16,6 +16,11 @@ export interface HeyChefCommands {
   repeat: () => string | void | false;
   yesDone: () => string | void | false;
   notYet: () => string | void | false;
+  pauseTimer: () => string | void | false;
+  resumeTimer: () => string | void | false;
+  addTime: () => string | void | false;
+  subtractTime: () => string | void | false;
+  timeLeft: () => string | void | false;
 }
 
 export type CommandName = keyof HeyChefCommands;
@@ -73,14 +78,32 @@ const COMMAND_PATTERNS: [CommandName, RegExp][] = [
     "repeat",
     /^(?:repeat|again|say\s+(?:that\s+)?again|read\s+(?:that\s+|it\s+|this\s+)?again|repeat\s+(?:that|it|this|the\s+step))$|^what\s+was\s+that$/,
   ],
+  ["pauseTimer", /^(?:pause|stop|hold)(?:\s+the)?\s+(?:timer|time)$/],
+  ["resumeTimer", /^(?:resume|continue|restart|unpause|start)(?:\s+the)?\s+(?:timer|time)$/],
+  [
+    "addTime",
+    /^add\s+(?:30\s+seconds|thirty\s+seconds|more\s+time|some\s+time)(?:\s+to\s+(?:the\s+)?timer)?$|^(?:give\s+me\s+)?(?:30\s+more\s+seconds|more\s+time)$/,
+  ],
+  [
+    "subtractTime",
+    /^(?:subtract|remove|take\s+off)\s+(?:30\s+seconds|thirty\s+seconds|some\s+time)(?:\s+from\s+(?:the\s+)?timer)?$|^less\s+time$/,
+  ],
+  [
+    "timeLeft",
+    /^how\s+(?:much\s+)?time(?:'s|\s+is)?\s+left$|^how\s+long(?:'s|\s+is)?\s+left$|^how\s+much\s+time\s+(?:do\s+i\s+have|remains|is\s+remaining)$/,
+  ],
 ];
 
 // Commands that work WITHOUT "hey chef". Deliberately narrow: the whole phrase
 // must be the command, so normal talking in the kitchen doesn't trigger them.
+// Add/subtract time stay wake-word only: they're rare and easy to mishear.
 const BARE_PATTERNS: [CommandName, RegExp][] = [
   ["next", /^(?:go\s+)?(?:to\s+)?next(?:\s+step)?$/],
   ["back", /^(?:go\s+)?(?:back|previous)(?:\s+step)?$|^back\s+(?:a\s+)?step$/],
   ["repeat", /^(?:repeat|repeat\s+(?:that|it|the\s+step)|say\s+that\s+again)$/],
+  ["pauseTimer", /^(?:pause|stop|hold)(?:\s+the)?\s+(?:timer|time)$/],
+  ["resumeTimer", /^(?:resume|restart|unpause|start)(?:\s+the)?\s+(?:timer|time)$/],
+  ["timeLeft", /^how\s+(?:much\s+)?time(?:'s|\s+is)?\s+left$|^how\s+long(?:'s|\s+is)?\s+left$/],
 ];
 /* -------------------------------------------------------------- helpers */
 

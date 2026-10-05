@@ -54,6 +54,11 @@ const NO_COMMANDS: HeyChefCommands = {
   repeat() {},
   yesDone() {},
   notYet() {},
+  pauseTimer() {},
+  resumeTimer() {},
+  addTime() {},
+  subtractTime() {},
+  timeLeft() {},
 };
 
 // Long answers are tiring to listen to: cut at a sentence end.

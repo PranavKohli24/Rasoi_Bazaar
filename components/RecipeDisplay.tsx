@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Recipe, Tip } from "../types";
 import {
   getSwiggyAddresses,
@@ -382,6 +382,14 @@ const parseDurationSeconds = (text: string): number | null => {
   return value;
 };
 
+const formatSpokenDuration = (totalSeconds: number): string => {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  if (m === 0) return `${s} second${s === 1 ? "" : "s"}`;
+  if (s === 0) return `${m} minute${m === 1 ? "" : "s"}`;
+  return `${m} minute${m === 1 ? "" : "s"} ${s} second${s === 1 ? "" : "s"}`;
+};
+
 // A couple of short sine pings — no audio file to ship, so this still works
 // the moment the page loads.
 const playChime = () => {
@@ -425,14 +433,30 @@ const TICK_COUNT = 24;
 const MIN_TIMER_SECONDS = 30;
 const ADJUST_STEP_SECONDS = 30;
 
-const StepTimer: React.FC<{
-  seconds: number;
-  stepKey: number;
-  onComplete?: () => void;
-  onCheckIn?: (markIndex: number) => void;
-  onReset?: () => void;
-  timerState: Map<number, StepTimerState>;
-}> = ({ seconds, stepKey, onComplete, onCheckIn, onReset, timerState }) => {
+export interface StepTimerHandle {
+  pause: () => void;
+  resume: () => void;
+  adjust: (deltaSeconds: number) => void;
+  reset: () => void;
+    isRunning: () => boolean;
+  isDone: () => boolean;
+  hasStarted: () => boolean;
+  getRemainingSeconds: () => number;
+}
+
+const StepTimer = React.forwardRef<
+  StepTimerHandle,
+  {
+    seconds: number;
+    stepKey: number;
+        onComplete?: () => void;
+    onCheckIn?: (markIndex: number) => void;
+    onReset?: () => void;
+    onStart?: () => void;
+    voiceHints?: boolean;
+    timerState: Map<number, StepTimerState>;
+  }
+>(({ seconds, stepKey, onComplete, onCheckIn, onReset, onStart, voiceHints, timerState }, ref) => {
   const savedRef = useRef(timerState.get(stepKey));
   const saved = savedRef.current;
 
@@ -528,6 +552,19 @@ const StepTimer: React.FC<{
   const tickColor = isDone ? COLOR.clay : COLOR.saffron;
   const steamColor = COLOR.inkSoft;
 
+    useImperativeHandle(ref, () => ({
+    pause: () => setIsRunning(false),
+    resume: () => {
+      if (!isDone) setIsRunning(true);
+    },
+    adjust: (delta: number) => adjustTime(delta),
+    reset: doReset,
+    isRunning: () => isRunning,
+    isDone: () => isDone,
+    hasStarted: () => hasStarted,
+    getRemainingSeconds: () => remaining,
+  }));
+
   return (
     <div
       className="mt-6 w-full max-w-[260px] rounded-2xl border p-4 sm:max-w-xs sm:rounded-3xl sm:p-5"
@@ -609,7 +646,10 @@ const StepTimer: React.FC<{
                 {!isDone ? (
           <button
             type="button"
-            onClick={() => setIsRunning((running) => !running)}
+            onClick={() => {
+              if (!isRunning && !hasStarted) onStart?.();
+              setIsRunning((running) => !running);
+            }}
             className="flex-1 truncate rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
             style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
@@ -636,7 +676,7 @@ const StepTimer: React.FC<{
           </div>
         )}
 
-        {!isDone && (
+                {!isDone && (
           <button
             type="button"
             onClick={() => adjustTime(ADJUST_STEP_SECONDS)}
@@ -648,9 +688,20 @@ const StepTimer: React.FC<{
           </button>
         )}
       </div>
+
+      {voiceHints && !isDone && (
+        <p
+          className="mt-2.5 text-center text-[11px]"
+          style={{ color: COLOR.inkSoft, opacity: 0.8 }}
+        >
+          or say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
+        </p>
+      )}
     </div>
   );
-};
+});
+
+StepTimer.displayName = "StepTimer";
 
 const ProgressRing: React.FC<{ current: number; total: number }> = ({ current, total }) => {
   const r = 16;
@@ -753,12 +804,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     }
   };
 
-    const COMMAND_LABELS: Record<CommandName, string> = {
+      const COMMAND_LABELS: Record<CommandName, string> = {
     next: "Next step",
     back: "Previous step",
     repeat: "Repeating",
     yesDone: "Done",
     notYet: "Okay, not yet",
+    pauseTimer: "Timer paused",
+    resumeTimer: "Timer resumed",
+    addTime: "+30 sec",
+    subtractTime: "−30 sec",
+    timeLeft: "Time left",
   };
   const [commandFlash, setCommandFlash] = useState<{ label: string; id: number } | null>(null);
 
@@ -836,7 +892,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   // StepTimer) because StepTimer gets unmounted/remounted every time the
   // person navigates between steps — this ref is what actually survives
   // that, so a quick "check the previous step" peek doesn't reset the count.
-  const stepTimersRef = useRef<Map<number, StepTimerState>>(new Map());
+    const stepTimersRef = useRef<Map<number, StepTimerState>>(new Map());
+  // Always points at whichever step's timer is currently mounted, or null
+  // when the current step has no timer at all. React clears this to null
+  // automatically when StepTimer unmounts (e.g. navigating to a step
+  // without a duration), so heyChefCommands never needs to track that itself.
+  const stepTimerHandleRef = useRef<StepTimerHandle | null>(null);
 
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
     try {
@@ -858,12 +919,24 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     if (!isCooking || !readStepsRef.current) return;
     if (!("speechSynthesis" in window)) return;
 
-    window.speechSynthesis.cancel();
+        window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(currentStep.instruction);
     utterance.rate = 0.95;
     window.speechSynthesis.speak(utterance);
 
+    // On a timed step, tell the person they can start the timer by voice.
+    const savedTimer = stepTimersRef.current.get(currentStepIndex);
+    const timerUntouched = !savedTimer || savedTimer.remaining === savedTimer.total;
+    if (heyChefActive && stepDurationSeconds !== null && timerUntouched) {
+      const hint = new SpeechSynthesisUtterance(
+        "This step has a timer. Say start timer when you're ready."
+      );
+      hint.rate = 0.95;
+      window.speechSynthesis.speak(hint);
+    }
+
     return () => window.speechSynthesis.cancel();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStepIndex, isCooking, isVoiceEnabled]);
 
@@ -1089,8 +1162,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     window.setTimeout(() => window.speechSynthesis.speak(utterance), 60);
   };
 
-    const LAST_STEP_MESSAGE =
+      const LAST_STEP_MESSAGE =
     "That was the last step.||If you're done cooking, it's time for the best part, eating it!";
+  const TIMER_STARTED_MESSAGE = "Timer started. I'll remind you once it's over.";
   // A returned string is spoken back; returning nothing stays quiet
   // (the step-reading effect reads the new step by itself).
   const heyChefCommands: HeyChefCommands = {
@@ -1110,9 +1184,41 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
       advanceNow();
     },
-    notYet: () => {
+        notYet: () => {
       handleCancelNextStep();
       return "Okay, take your time.";
+    },
+    pauseTimer: () => {
+      const timer = stepTimerHandleRef.current;
+      if (!timer || timer.isDone()) return "There's no timer running on this step.";
+      if (!timer.isRunning()) return "The timer's already paused.";
+      timer.pause();
+    },
+        resumeTimer: () => {
+      const timer = stepTimerHandleRef.current;
+      if (!timer || timer.isDone()) return "There's no timer on this step.";
+      if (timer.isRunning()) return "The timer's already running.";
+      const firstStart = !timer.hasStarted();
+      timer.resume();
+      return firstStart ? TIMER_STARTED_MESSAGE : "Timer resumed.";
+    },
+    addTime: () => {
+      const timer = stepTimerHandleRef.current;
+      if (!timer || timer.isDone()) return "There's no timer to add time to.";
+      timer.adjust(30);
+      return "Added 30 seconds.";
+    },
+    subtractTime: () => {
+      const timer = stepTimerHandleRef.current;
+      if (!timer || timer.isDone()) return "There's no timer to take time off.";
+      timer.adjust(-30);
+      return "Took off 30 seconds.";
+    },
+    timeLeft: () => {
+      const timer = stepTimerHandleRef.current;
+      if (!timer) return "There's no timer on this step.";
+      if (timer.isDone()) return "Time's already up.";
+      return `${formatSpokenDuration(timer.getRemainingSeconds())} left.`;
     },
   };
 
@@ -2001,11 +2107,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                       <TipCallout tip={currentStep.tip!} />
                     )}
 
-                                        {stepDurationSeconds !== null && (
-                      <StepTimer
+                                          {stepDurationSeconds !== null && (
+                                            <StepTimer
+                        ref={stepTimerHandleRef}
                         seconds={stepDurationSeconds}
                         stepKey={currentStepIndex}
                         timerState={stepTimersRef.current}
+                        voiceHints={heyChefActive}
+                        onStart={() => {
+                          if (isVoiceEnabled || heyChefActive) speakNow(TIMER_STARTED_MESSAGE);
+                        }}
                         onReset={() => setShowNextStepConfirm(false)}
                         onCheckIn={(markIndex) => {
                           const line =
