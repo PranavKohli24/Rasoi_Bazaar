@@ -510,7 +510,7 @@ export function useHeyChef({
 
   const REPLY_TIMEOUT_MS = 40000; // give the AI time; a late answer beats "sorry"
 
-    const wake = (segmentIndex: number) => {
+      const wake = (segmentIndex: number) => {
     anchorRef.current = segmentIndex;
     ping();
     setPhase("awake");
@@ -518,13 +518,26 @@ export function useHeyChef({
     const question = questionText();
     setLiveText(question);
     if (question) {
-      // "Hey chef, how much salt?" in one breath: no prompt needed.
       const last = segmentsRef.current[segmentsRef.current.length - 1];
       scheduleFinish(endDelay(question, !!last?.isFinal));
     } else {
-      // No question in the same breath — greet them, then keep listening.
       void say(pickGreeting(), "awake");
     }
+  };
+
+  // Interrupting the companion mid-sentence: stop whatever it's saying and
+  // start listening fresh, exactly like a normal wake-up. Bumping
+  // speakTokenRef first means the utterance being cut off can't complete
+  // its own phase transition once synth.cancel() fires its (async) onerror.
+  const bargeIn = (segmentIndex: number) => {
+    speakTokenRef.current += 1;
+    try {
+      window.speechSynthesis.cancel();
+    } catch {
+      /* nothing to cancel */
+    }
+    clearTimers();
+    wake(segmentIndex);
   };
 
   const handleResult = (event: any) => {
@@ -547,8 +560,21 @@ export function useHeyChef({
     }
     segmentsRef.current = segs;
 
-    const current = phaseRef.current;
-    if (current === "processing" || current === "speaking") return; // deaf on purpose
+        const current = phaseRef.current;
+    if (current === "processing") return; // deaf on purpose — nothing to barge into yet
+
+    if (current === "speaking") {
+      // Barge-in: while the companion is talking, the only thing worth
+      // reacting to is the wake word — anything else is either kitchen
+      // noise or part of what it's currently saying.
+      for (let i = ignoreBeforeRef.current; i < segs.length; i++) {
+        if (WAKE.test(norm(segs[i].text))) {
+          bargeIn(i);
+          return;
+        }
+      }
+      return;
+    }
 
     if (current === "sleeping") {
       for (let i = ignoreBeforeRef.current; i < segs.length; i++) {
@@ -667,9 +693,14 @@ export function useHeyChef({
   };
 
   /* ---- effects ---- */
-
-  // Mic on only when: enabled, not handed to someone else, and nobody is speaking.
-  const shouldListen = enabled && supported && !suspended && !ttsBusy && !micBlocked;
+  // Normally the mic is off while anything on the page is talking (ttsBusy
+  // covers step read-aloud, timers, this hook's own replies). The one
+  // exception is the companion's own voice: while IT is speaking, the mic
+  // stays on so "hey chef" can interrupt it — handleResult (below) stays
+  // deaf to everything except the wake word during that phase, so this
+  // doesn't open the door to stray commands mid-sentence.
+  const shouldListen =
+    enabled && supported && !suspended && !micBlocked && (!ttsBusy || phase === "speaking");
   useEffect(() => {
     if (shouldListen) startRecognition();
     else stopRecognition();
