@@ -274,13 +274,10 @@ export function useHeyChef({
       setPhase("speaking");
       holdUntilRef.current = Date.now() + 400;
 
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = langRef.current;
-      utterance.rate = 0.97;
+            const parts = text.split("||").map((p) => p.trim()).filter(Boolean);
       const voice = synth
         .getVoices()
         .find((v) => v.lang === "en-IN" || v.lang === "en_IN");
-      if (voice) utterance.voice = voice;
 
       let finished = false;
       let safety = 0;
@@ -301,8 +298,18 @@ export function useHeyChef({
         }
         resolve();
       };
-      utterance.onend = finish;
-      utterance.onerror = finish;
+            // Each part is its own utterance, with a 1 second pause between them.
+      const speakPart = (i: number) => {
+        if (speakTokenRef.current !== token) return finish();
+        const utterance = new SpeechSynthesisUtterance(parts[i]);
+        utterance.lang = langRef.current;
+        utterance.rate = 0.97;
+        if (voice) utterance.voice = voice;
+        const isLast = i === parts.length - 1;
+        utterance.onend = isLast ? finish : () => window.setTimeout(() => speakPart(i + 1), 1000);
+        utterance.onerror = finish;
+        synth.speak(utterance);
+      };
 
       // onend sometimes never fires (some Android browsers): don't stay deaf forever.
       safety = window.setTimeout(() => {
@@ -312,7 +319,7 @@ export function useHeyChef({
           /* nothing to cancel */
         }
         finish();
-      }, Math.max(4000, text.length * 100 + 3000));
+    }, Math.max(4000, text.length * 100 + 3000 + parts.length * 1000));
 
       try {
         synth.cancel();
@@ -321,8 +328,8 @@ export function useHeyChef({
       }
       // Chrome can drop a speak() that lands in the same tick as a cancel().
       window.setTimeout(() => {
-        if (speakTokenRef.current !== token) return finish();
-        synth.speak(utterance);
+                if (speakTokenRef.current !== token) return finish();
+        speakPart(0);
       }, 60);
     });
 

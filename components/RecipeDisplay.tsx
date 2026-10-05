@@ -929,11 +929,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     window.setTimeout(() => window.speechSynthesis.speak(utterance), 60);
   };
 
+    const LAST_STEP_MESSAGE =
+    "That was the last step.||If you're done cooking, it's time for the best part, eating it!";
   // A returned string is spoken back; returning nothing stays quiet
   // (the step-reading effect reads the new step by itself).
   const heyChefCommands: HeyChefCommands = {
     next: () => {
-      if (currentStepIndex >= recipe.method.length - 1) return "That was the last step.";
+      if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
       handleNextStep(); // on a timed step this asks "done?" first, as the button does
     },
     back: () => {
@@ -944,7 +946,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       speakNow(recipe.method[currentStepIndex].instruction);
     },
     yesDone: () => {
-      if (currentStepIndex >= recipe.method.length - 1) return "That's the last step.";
+      if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
       advanceNow();
     },
     notYet: () => {
