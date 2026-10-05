@@ -743,10 +743,10 @@ const focusInputWithoutKeyboard = () => {
       dragStartYRef.current = null;
       panelRef.current?.style.removeProperty("--kb-inset");
 
-      // Closing the panel shouldn't leave the companion talking to an
-      // empty room, or the mic listening in the background.
+      // Closing the panel shouldn't leave the chat's own spoken reply talking
+      // to an empty room. A "Hey chef" answer belongs to the hook: let it finish.
       setTalkingIndex(null);
-      stopSpeaking();
+      if (speakingIndex !== null) stopSpeaking();
 
       // Closing the panel (swipe-to-close, the minimize button, Escape,
       // whatever) shouldn't leave the mic listening in the background.
@@ -1361,6 +1361,15 @@ const focusInputWithoutKeyboard = () => {
       ? "talking"
       : "idle";
 
+  const headerMood: Mood =
+    companionMood !== "idle"
+      ? companionMood
+      : hc.phase === "speaking"
+      ? "talking"
+      : hc.phase === "processing"
+      ? "thinking"
+      : "idle";
+
   const heyChefCaption =
     hc.phase === "awake"
       ? hc.liveText
@@ -1457,7 +1466,7 @@ const focusInputWithoutKeyboard = () => {
             >
               <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-0.5">
                 <div className="flex min-w-0 items-center gap-2.5">
-                  <CompanionCharacter mood={companionMood} className="h-10 w-10 shrink-0" />
+                  <CompanionCharacter mood={headerMood} className="h-10 w-10 shrink-0" />
                   <p className="truncate text-[15px] font-bold leading-tight text-[#2B1A0C]">
                     Cooking Companion
                   </p>

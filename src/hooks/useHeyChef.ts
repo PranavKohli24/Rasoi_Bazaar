@@ -197,6 +197,8 @@ export function useHeyChef({
   langRef.current = lang;
   const stepRef = useRef<number | null>(stepNumber);
   stepRef.current = stepNumber;
+  const suspendedRef = useRef(suspended);
+  suspendedRef.current = suspended;
 
   const phaseRef = useRef<InnerPhase>("sleeping");
   const recRef = useRef<any>(null);
@@ -287,7 +289,7 @@ export function useHeyChef({
         window.clearTimeout(safety);
         // Only move on if nothing newer took over (reset, newer say, etc.)
         if (speakTokenRef.current === token && phaseRef.current === "speaking") {
-            if (then === "awake") {
+          if (then === "awake" && !suspendedRef.current) {
             anchorRef.current = segmentsRef.current.length;
             ignoreBeforeRef.current = segmentsRef.current.length;
             setPhase("awake");
@@ -612,10 +614,25 @@ export function useHeyChef({
     []
   );
 
-  // Turned off or suspended: drop whatever was in flight and go back to sleep.
+    // Turned off: drop whatever was in flight. Suspended (chat open): only hand
+  // over the mic, and let a reply that is already speaking or on its way finish.
   useEffect(() => {
     if (enabled && supported && !suspended) return;
-        clearTimers();
+
+    if (enabled && supported && suspended) {
+      const p = phaseRef.current;
+      // say() sees suspendedRef and goes to sleep once the speech ends.
+      if (p === "speaking" || p === "processing") return;
+      // Sleeping / awake: drop any half-captured question.
+      clearTimers();
+      segmentsRef.current = [];
+      ignoreBeforeRef.current = 0;
+      setPhase("sleeping");
+      return;
+    }
+
+    // Toggle off (or unsupported): full reset.
+    clearTimers();
     fillerDoneRef.current = null;
     if (phaseRef.current === "speaking" || phaseRef.current === "processing") {
       try {
@@ -669,8 +686,14 @@ export function useHeyChef({
     return () => window.clearInterval(id);
   }, [enabled, supported]);
 
-    const publicPhase: HeyChefPhase =
-    !enabled || !supported ? "off" : suspended ? "paused" : !micLive ? "off" : phase;
+  const publicPhase: HeyChefPhase =
+    !enabled || !supported
+      ? "off"
+      : suspended && phase !== "speaking" && phase !== "processing"
+      ? "paused"
+      : !micLive
+      ? "off"
+      : phase;
 
   return { supported, phase: publicPhase, liveText, micBlocked };
 }
