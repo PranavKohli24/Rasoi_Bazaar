@@ -2058,75 +2058,75 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   )}
 
   {isCooking && heyChefSupported && (
-    <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-      <button
-        type="button"
-        onClick={toggleHeyChef}
-        aria-pressed={isHeyChefOn}
-        aria-label={
-          isHeyChefOn
-            ? "Turn off hands-free voice control"
-            : "Turn on hands-free voice control"
-        }
-        title="Hands-free: say “Hey chef”"
-        className="relative inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2"
+  <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+    <button
+      type="button"
+      onClick={toggleHeyChef}
+      aria-pressed={isHeyChefOn}
+      aria-label={
+        isHeyChefOn
+          ? "Turn off hands-free voice control"
+          : "Turn on hands-free voice control"
+      }
+      title="Hands-free: say “Hey chef”"
+      className="relative inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2"
+      style={{
+        borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
+        backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
+        color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
+      }}
+    >
+      <MicIcon className="h-4 w-4" />
+      Hands-free
+      <span
+        className="rounded-full px-1.5 py-0.5 text-[10px] font-bold"
         style={{
-          borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
-          backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
-          color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
+          backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
+          color: isHeyChefOn ? COLOR.surface : COLOR.inkSoft,
         }}
       >
-        <MicIcon className="h-4 w-4" />
-        Hands-free
+        {isHeyChefOn ? "ON" : "OFF"}
+      </span>
+      {heyChefActive && heyChefPhase !== "paused" && (
         <span
-          className="rounded-full px-1.5 py-0.5 text-[10px] font-bold"
-          style={{
-            backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
-            color: isHeyChefOn ? COLOR.surface : COLOR.inkSoft,
-          }}
-        >
-          {isHeyChefOn ? "ON" : "OFF"}
-        </span>
-        {heyChefActive && heyChefPhase !== "paused" && (
-          <span
-            aria-hidden="true"
-            className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-          />
-        )}
-      </button>
-
-      {heyChefActive && heyChefPhase !== "off" ? (
-        <span
-          role="status"
-          className="flex min-w-0 items-center gap-2 text-sm font-medium"
-          style={{ color: COLOR.inkSoft }}
-        >
-          <span
-            aria-hidden="true"
-            className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-          />
-          <span
-            className={
-              !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
-            }
-            style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
-          >
-            {commandFlash
-              ? `✓ ${commandFlash.label}`
-              : heyChefPhase === "sleeping"
-              ? `Try saying "${heyChefTips[heyChefTipIndex % heyChefTips.length]}"`
-              : HEY_CHEF_LABEL[heyChefPhase]}
-          </span>
-        </span>
-      ) : (
-        !isHeyChefOn && (
-          <span className="text-sm" style={{ color: COLOR.inkSoft }}>
-            Cook with your voice, no touching the screen
-          </span>
-        )
+          aria-hidden="true"
+          className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+        />
       )}
-    </div>
-  )}
+    </button>
+
+    {heyChefActive && heyChefPhase !== "off" ? (
+      <span
+        role="status"
+        className="flex min-w-0 items-center gap-2 text-sm font-medium"
+        style={{ color: COLOR.inkSoft }}
+      >
+        <span
+          aria-hidden="true"
+          className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+        />
+        <span
+          className={
+            !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
+          }
+          style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+        >
+          {commandFlash
+            ? `✓ ${commandFlash.label}`
+            : heyChefPhase === "sleeping"
+            ? `Try saying "${heyChefTips[heyChefTipIndex % heyChefTips.length]}"`
+            : HEY_CHEF_LABEL[heyChefPhase]}
+        </span>
+      </span>
+    ) : (
+      !isHeyChefOn && (
+        <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+          Cook with your voice, no touching the screen
+        </span>
+      )
+    )}
+  </div>
+)}
 
   {heyChefActive && !heyChefIntroSeen && (
     <div
