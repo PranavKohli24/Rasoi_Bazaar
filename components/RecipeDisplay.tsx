@@ -2096,35 +2096,46 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     </button>
 
     {heyChefActive && heyChefPhase !== "off" ? (
-      <div
-        role="status"
-        className="mt-2 flex items-center gap-2 text-sm font-medium"
-        style={{ color: COLOR.inkSoft }}
-      >
-        <span
-          aria-hidden="true"
-          className={`hey-chef-dot shrink-0 ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-        />
-        <span
-          className={
-            !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
-          }
-          style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
-        >
-          {commandFlash
-            ? `✓ ${commandFlash.label}`
-            : heyChefPhase === "sleeping"
-            ? `Try saying "${heyChefTips[heyChefTipIndex % heyChefTips.length]}"`
-            : HEY_CHEF_LABEL[heyChefPhase]}
-        </span>
-      </div>
-    ) : (
-      !isHeyChefOn && (
-        <p className="mt-2 text-sm" style={{ color: COLOR.inkSoft }}>
-          Cook with your voice, no touching the screen
-        </p>
-      )
-    )}
+  <div
+    role="status"
+    className="mt-2 flex items-center gap-2 text-sm font-medium"
+    style={{ color: COLOR.inkSoft }}
+  >
+    <span
+      aria-hidden="true"
+      className={`hey-chef-dot shrink-0 ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+    />
+    <span
+      className={
+        !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
+      }
+      style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+    >
+      {commandFlash ? (
+        `✓ ${commandFlash.label}`
+      ) : heyChefPhase === "sleeping" ? (
+        <>
+          Try saying{" "}
+          <span
+            key={heyChefTipIndex}
+            className="inline-block animate-fade-in-up"
+            style={{ animationDuration: "0.3s" }}
+          >
+            "{heyChefTips[heyChefTipIndex % heyChefTips.length]}"
+          </span>
+        </>
+      ) : (
+        HEY_CHEF_LABEL[heyChefPhase]
+      )}
+    </span>
+  </div>
+) : (
+  !isHeyChefOn && (
+    <p className="mt-2 text-sm" style={{ color: COLOR.inkSoft }}>
+      Cook with your voice, no touching the screen
+    </p>
+  )
+)}
   </div>
 )}
 
