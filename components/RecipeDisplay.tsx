@@ -2058,7 +2058,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   )}
 
   {isCooking && heyChefSupported && (
-  <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+  <div className="mb-4">
     <button
       type="button"
       onClick={toggleHeyChef}
@@ -2096,14 +2096,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     </button>
 
     {heyChefActive && heyChefPhase !== "off" ? (
-      <span
+      <div
         role="status"
-        className="flex min-w-0 items-center gap-2 text-sm font-medium"
+        className="mt-2 flex items-center gap-2 text-sm font-medium"
         style={{ color: COLOR.inkSoft }}
       >
         <span
           aria-hidden="true"
-          className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+          className={`hey-chef-dot shrink-0 ${heyChefPhase === "awake" ? "is-awake" : ""}`}
         />
         <span
           className={
@@ -2117,12 +2117,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
             ? `Try saying "${heyChefTips[heyChefTipIndex % heyChefTips.length]}"`
             : HEY_CHEF_LABEL[heyChefPhase]}
         </span>
-      </span>
+      </div>
     ) : (
       !isHeyChefOn && (
-        <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+        <p className="mt-2 text-sm" style={{ color: COLOR.inkSoft }}>
           Cook with your voice, no touching the screen
-        </span>
+        </p>
       )
     )}
   </div>
