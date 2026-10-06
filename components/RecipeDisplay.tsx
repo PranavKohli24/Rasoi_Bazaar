@@ -2005,67 +2005,69 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           </section>
 
           {/* Method */}
-        <section
-          ref={methodHeadingRef}
-          aria-labelledby="method-heading"
-          className="scroll-mt-12 py-10 lg:py-12"
-        >
-            <SectionTitle
-              id="method-heading"
-              title="Method"
-              icon={<MethodIcon className="h-6 w-6" />}
-              aside={
-                isCooking ? (
-                  <div className="flex items-center gap-3">
-                                        <span className="text-sm" style={{ color: COLOR.inkSoft }}>
-                      Step {currentStepIndex + 1} of {totalSteps}
-                    </span>
-                    
-                    <button
-                      type="button"
-                                            onClick={toggleVoice}
-                      disabled={heyChefActive}
-                      aria-pressed={speakerOn}
-                      aria-label={isVoiceEnabled ? "Turn off reading steps aloud" : "Read steps aloud"}
-                      title={heyChefActive ? "Speaker stays on while Hey chef is on" : undefined}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors disabled:cursor-not-allowed"
-                      style={{
-                        borderColor: speakerOn ? COLOR.saffron : COLOR.border,
-                        backgroundColor: speakerOn ? COLOR.saffronTint : COLOR.surface,
-                        color: speakerOn ? COLOR.saffronDark : COLOR.inkSoft,
-                      }}
-                    >
-                      {speakerOn ? (
-                        <SpeakerIcon className="h-4 w-4" />
-                      ) : (
-                        <SpeakerOffIcon className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
-                ) : undefined
-              }
-            />
+<section
+  ref={methodHeadingRef}
+  aria-labelledby="method-heading"
+  className="scroll-mt-12 py-10 lg:py-12"
+>
+  <SectionTitle
+    id="method-heading"
+    title="Method"
+    icon={<MethodIcon className="h-6 w-6" />}
+    aside={
+      isCooking ? (
+        <div className="flex items-center gap-3">
+          <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+            Step {currentStepIndex + 1} of {totalSteps}
+          </span>
 
-            {heyChefBlockedAt !== null && (
-              <p
-                role="status"
-                className="mb-4 rounded-xl border p-3 text-sm"
-                style={{ backgroundColor: COLOR.mustard, borderColor: COLOR.border, color: COLOR.ink }}
-              >
-                The microphone is blocked. Allow it in your browser&apos;s site settings to
-                use Hey chef.
-              </p>
+          <button
+            type="button"
+            onClick={toggleVoice}
+            disabled={heyChefActive}
+            aria-pressed={speakerOn}
+            aria-label={isVoiceEnabled ? "Turn off reading steps aloud" : "Read steps aloud"}
+            title={heyChefActive ? "Speaker stays on while Hey chef is on" : undefined}
+            className="flex h-8 w-8 items-center justify-center rounded-full border transition-colors disabled:cursor-not-allowed"
+            style={{
+              borderColor: speakerOn ? COLOR.saffron : COLOR.border,
+              backgroundColor: speakerOn ? COLOR.saffronTint : COLOR.surface,
+              color: speakerOn ? COLOR.saffronDark : COLOR.inkSoft,
+            }}
+          >
+            {speakerOn ? (
+              <SpeakerIcon className="h-4 w-4" />
+            ) : (
+              <SpeakerOffIcon className="h-4 w-4" />
             )}
+          </button>
+        </div>
+      ) : undefined
+    }
+  />
 
-            {isCooking && heyChefSupported && (
-  <div className="mb-4">
-    {/* Row 1: toggle only — position never changes */}
-    <div className="flex items-center gap-3">
+  {heyChefBlockedAt !== null && (
+    <p
+      role="status"
+      className="mb-4 rounded-xl border p-3 text-sm"
+      style={{ backgroundColor: COLOR.mustard, borderColor: COLOR.border, color: COLOR.ink }}
+    >
+      The microphone is blocked. Allow it in your browser&apos;s site settings to
+      use Hey chef.
+    </p>
+  )}
+
+  {isCooking && heyChefSupported && (
+    <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
       <button
         type="button"
         onClick={toggleHeyChef}
         aria-pressed={isHeyChefOn}
-        aria-label={isHeyChefOn ? "Turn off hands-free voice control" : "Turn on hands-free voice control"}
+        aria-label={
+          isHeyChefOn
+            ? "Turn off hands-free voice control"
+            : "Turn on hands-free voice control"
+        }
         title="Hands-free: say “Hey chef”"
         className="relative inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2"
         style={{
@@ -2086,18 +2088,27 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           {isHeyChefOn ? "ON" : "OFF"}
         </span>
         {heyChefActive && heyChefPhase !== "paused" && (
-          <span aria-hidden="true" className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`} />
+          <span
+            aria-hidden="true"
+            className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+          />
         )}
       </button>
-    </div>
 
-    {/* Row 2: status/tip text — fixed height, single line, truncated */}
-    <div className="mt-2 flex min-h-[20px] items-center gap-2 text-sm font-medium" style={{ color: COLOR.inkSoft }}>
       {heyChefActive && heyChefPhase !== "off" ? (
-        <>
-          <span aria-hidden="true" className={`hey-chef-dot shrink-0 ${heyChefPhase === "awake" ? "is-awake" : ""}`} />
+        <span
+          role="status"
+          className="flex min-w-0 items-center gap-2 text-sm font-medium"
+          style={{ color: COLOR.inkSoft }}
+        >
           <span
-            className={`truncate ${!commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : ""}`}
+            aria-hidden="true"
+            className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+          />
+          <span
+            className={
+              !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
+            }
             style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
           >
             {commandFlash
@@ -2106,284 +2117,283 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               ? `Try saying "${heyChefTips[heyChefTipIndex % heyChefTips.length]}"`
               : HEY_CHEF_LABEL[heyChefPhase]}
           </span>
-        </>
+        </span>
       ) : (
-        !isHeyChefOn && <span className="truncate">Cook with your voice, no touching the screen</span>
+        !isHeyChefOn && (
+          <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+            Cook with your voice, no touching the screen
+          </span>
+        )
       )}
     </div>
-  </div>
-)}
+  )}
 
-            {heyChefActive && !heyChefIntroSeen && (
-              <div
-                role="status"
-                className="mb-4 rounded-2xl border p-4 sm:p-5"
-                style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
-                    Hands-free is on
-                  </p>
-                  <button
-                    type="button"
-                    onClick={dismissHeyChefIntro}
-                    className="shrink-0 text-xs font-semibold underline-offset-2 hover:underline"
-                    style={{ color: COLOR.inkSoft }}
-                  >
-                    Got it
-                  </button>
-                </div>
-
-                <ul className="mt-2 space-y-1.5 text-sm leading-snug" style={{ color: COLOR.ink }}>
-                  <li>
-                    “<span className="font-semibold">Next</span>” or “
-                    <span className="font-semibold">Back</span>” to change steps
-                  </li>
-                  <li>
-                    “<span className="font-semibold">Start the timer</span>” or “
-                    <span className="font-semibold">How much time is left?</span>”
-                  </li>
-                  <li>
-                    “<span className="font-semibold">Hey chef</span>, how do I know it&apos;s
-                    done?”
-                  </li>
-                </ul>
-
-                <p className="mt-3 text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
-                  Try it now: say “Hey chef”
-                </p>
-              </div>
-            )}
-            {!isCooking ? (
-  <div
-    className="overflow-hidden rounded-3xl border"
-    style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
-  >
-    {/* Top: pitch + primary action, side by side, no wasted vertical room */}
-    <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6">
-      <div className="min-w-0">
-        <p className="font-serif text-lg font-black leading-tight sm:text-xl" style={{ color: COLOR.ink }}>
-          Ready when you are
+  {heyChefActive && !heyChefIntroSeen && (
+    <div
+      role="status"
+      className="mb-4 rounded-2xl border p-4 sm:p-5"
+      style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
+          Hands-free is on
         </p>
-        <p className="mt-0.5 text-sm leading-snug" style={{ color: COLOR.inkSoft }}>
-          {totalSteps} steps, one at a time
-        </p>
+        <button
+          type="button"
+          onClick={dismissHeyChefIntro}
+          className="shrink-0 text-xs font-semibold underline-offset-2 hover:underline"
+          style={{ color: COLOR.inkSoft }}
+        >
+          Got it
+        </button>
       </div>
 
-      <button
-        type="button"
-        onClick={handleStartCooking}
-        className={`${primaryButton} w-full shrink-0 sm:w-auto`}
-        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-      >
-        <PlayIcon className="h-5 w-5" />
-        Start cooking
-      </button>
+      <ul className="mt-2 space-y-1.5 text-sm leading-snug" style={{ color: COLOR.ink }}>
+        <li>
+          "<span className="font-semibold">Next</span>" or "
+          <span className="font-semibold">Back</span>" to change steps
+        </li>
+        <li>
+          "<span className="font-semibold">Start the timer</span>" or "
+          <span className="font-semibold">How much time is left?</span>"
+        </li>
+        <li>
+          "<span className="font-semibold">Hey chef</span>, how do I know it&apos;s
+          done?"
+        </li>
+      </ul>
+
+      <p className="mt-3 text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
+        Try it now: say "Hey chef"
+      </p>
     </div>
+  )}
 
-    {/* Bottom: hands-free strip — same card, just a divider, not a second nested box */}
-    {heyChefSupported ? (
-      <div
-        className="flex items-center gap-3 border-t px-5 py-3.5 sm:px-6"
-        style={{ borderColor: `${COLOR.saffronDark}22` }}
-      >
-        <MicIcon className="h-4 w-4 shrink-0" style={{ color: COLOR.saffronDark }} />
-
-        <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold leading-snug" style={{ color: COLOR.ink }}>
-            Cook hands-free
-            <span className="ml-1.5 font-normal" style={{ color: COLOR.inkSoft }}>
-              - say "Hey chef" for any doubt, move to next step, or timers.
-            </span>
+  {!isCooking ? (
+    <div
+      className="overflow-hidden rounded-3xl border"
+      style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+    >
+      <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6">
+        <div className="min-w-0">
+          <p className="font-serif text-lg font-black leading-tight sm:text-xl" style={{ color: COLOR.ink }}>
+            Ready when you are
           </p>
-          {/* {isHeyChefOn && (
-            <p className="mt-0.5 text-xs leading-snug" style={{ color: COLOR.inkSoft }}>
-              Your browser will ask to use the microphone, and may send audio to its speech service.
-            </p>
-          )} */}
+          <p className="mt-0.5 text-sm leading-snug" style={{ color: COLOR.inkSoft }}>
+            {totalSteps} steps, one at a time
+          </p>
         </div>
 
         <button
           type="button"
-          role="switch"
-          aria-checked={isHeyChefOn}
-          aria-label="Cook hands-free with Hey chef"
-          onClick={toggleHeyChef}
-          className="relative h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
-          style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
+          onClick={handleStartCooking}
+          className={`${primaryButton} w-full shrink-0 sm:w-auto`}
+          style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
         >
-          <span
-            aria-hidden="true"
-            className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
-            style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
-          />
+          <PlayIcon className="h-5 w-5" />
+          Start cooking
         </button>
       </div>
-    ) : (
+
+      {heyChefSupported ? (
+        <div
+          className="flex items-center gap-3 border-t px-5 py-3.5 sm:px-6"
+          style={{ borderColor: `${COLOR.saffronDark}22` }}
+        >
+          <MicIcon className="h-4 w-4 shrink-0" style={{ color: COLOR.saffronDark }} />
+
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold leading-snug" style={{ color: COLOR.ink }}>
+              Cook hands-free
+              <span className="ml-1.5 font-normal" style={{ color: COLOR.inkSoft }}>
+                - say "Hey chef" for any doubt, move to next step, or timers.
+              </span>
+            </p>
+          </div>
+
+          <button
+            type="button"
+            role="switch"
+            aria-checked={isHeyChefOn}
+            aria-label="Cook hands-free with Hey chef"
+            onClick={toggleHeyChef}
+            className="relative h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
+            style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
+          >
+            <span
+              aria-hidden="true"
+              className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
+              style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
+            />
+          </button>
+        </div>
+      ) : (
+        <div
+          className="border-t px-5 py-3 text-xs sm:px-6"
+          style={{ borderColor: `${COLOR.saffronDark}22`, color: COLOR.inkSoft }}
+        >
+          Voice control isn't supported in this browser. Try Chrome for hands-free cooking.
+        </div>
+      )}
+    </div>
+  ) : (
+    <div>
       <div
-        className="border-t px-5 py-3 text-xs sm:px-6"
-        style={{ borderColor: `${COLOR.saffronDark}22`, color: COLOR.inkSoft }}
+        aria-live="polite"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => {
+          touchStart.current = null;
+        }}
+        className={`${card} touch-pan-y overflow-hidden p-5 sm:p-8`}
+        style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
       >
-        Voice control isn't supported in this browser. Try Chrome for hands-free cooking.
+        {/* Dot trail — tap any completed step to jump back to it */}
+        <div
+          role="progressbar"
+          aria-valuenow={currentStepIndex + 1}
+          aria-valuemin={1}
+          aria-valuemax={totalSteps}
+          aria-label={`Step ${currentStepIndex + 1} of ${totalSteps}`}
+          className="flex items-center gap-1.5 overflow-x-auto py-1"
+        >
+          {recipe.method.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => handleJumpToStep(i)}
+              aria-label={`Go to step ${i + 1}`}
+              aria-current={i === currentStepIndex ? "step" : undefined}
+              className="shrink-0 rounded-full transition-all duration-300"
+              style={{
+                width: i === currentStepIndex ? 22 : 7,
+                height: 7,
+                backgroundColor: i <= currentStepIndex ? COLOR.saffron : COLOR.border,
+              }}
+            />
+          ))}
+        </div>
+
+        <div key={currentStepIndex} className={stepAnimationClass}>
+          <span
+            className="mt-6 block font-serif text-4xl font-black leading-none sm:text-5xl"
+            style={{ color: COLOR.saffronTint, WebkitTextStroke: `1.5px ${COLOR.saffron}` }}
+          >
+            {String(currentStepIndex + 1).padStart(2, "0")}
+          </span>
+
+          <p
+            className="mt-3 text-xl leading-relaxed sm:text-2xl sm:leading-relaxed"
+            style={{ color: COLOR.ink }}
+          >
+            {currentStep.instruction}
+          </p>
+
+          {currentStep.tip?.title?.trim() && currentStep.tip?.content?.trim() && (
+            <TipCallout tip={currentStep.tip!} />
+          )}
+
+          {stepDurationSeconds !== null && (
+            <StepTimer
+              view={timers.getView(currentStepIndex, stepDurationSeconds)}
+              voiceHints={heyChefActive}
+              onEnableVoice={heyChefSupported && !isHeyChefOn ? toggleHeyChef : undefined}
+              onToggle={toggleCurrentTimer}
+              onAdjust={(delta) =>
+                timers.adjust(currentStepIndex, stepDurationSeconds, delta)
+              }
+              onReset={resetCurrentTimer}
+            />
+          )}
+        </div>
       </div>
-    )}
-  </div>
-) : (
 
-              <div>
-                <div
-                  aria-live="polite"
-                  onTouchStart={handleTouchStart}
-                  onTouchEnd={handleTouchEnd}
-                  onTouchCancel={() => {
-                    touchStart.current = null;
-                  }}
-                  className={`${card} touch-pan-y overflow-hidden p-5 sm:p-8`}
-                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
-                >
-                  {/* Plain, non-interactive progress indicator — no dragging,
-                      just a read-out of how far through the method we are. */}
-                  <div
-                    role="progressbar"
-                    aria-valuenow={currentStepIndex + 1}
-                    aria-valuemin={1}
-                    aria-valuemax={totalSteps}
-                    aria-label={`Step ${currentStepIndex + 1} of ${totalSteps}`}
-                    className="h-1.5 w-full overflow-hidden rounded-full"
-                    style={{ backgroundColor: COLOR.border }}
-                  >
-                    <div
-                      className="h-full rounded-full transition-[width] duration-300 ease-out"
-                      style={{
-                        width:
-                          totalSteps > 1
-                            ? `${(currentStepIndex / (totalSteps - 1)) * 100}%`
-                            : "100%",
-                        backgroundColor: COLOR.saffron,
-                      }}
-                    />
-                  </div>
+      <p className="mt-3 text-center text-xs sm:hidden" style={{ color: COLOR.inkSoft }}>
+        Swipe left or right to change steps
+      </p>
 
-                  <div key={currentStepIndex} className={stepAnimationClass}>
-                    <span
-                      className="mt-6 inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold"
-                      style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
-                    >
-                      {currentStepIndex + 1}
-                    </span>
+      <div className="mt-4 flex items-center gap-3">
+        <button
+          type="button"
+          onClick={handlePrevStep}
+          disabled={currentStepIndex === 0}
+          className={`${secondaryButton} flex-1 sm:flex-none`}
+          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+        >
+          <ChevronLeftIcon className="h-5 w-5" />
+          <span>Previous</span>
+        </button>
 
-                    <p
-                      className="mt-3 text-xl leading-relaxed sm:text-2xl sm:leading-relaxed"
-                      style={{ color: COLOR.ink }}
-                    >
-                      {currentStep.instruction}
-                    </p>
+        {!isLastStep ? (
+          <button
+            type="button"
+            onClick={handleManualNext}
+            className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+          >
+            Next
+            <ChevronRightIcon className="h-5 w-5" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              try {
+                localStorage.removeItem(progressKey);
+              } catch {
+                // ignore
+              }
+              timers.clearAll();
+              onFinishCooking();
+            }}
+            className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+          >
+            I&apos;m done cooking
+          </button>
+        )}
+      </div>
 
-                    {currentStep.tip?.title?.trim() && currentStep.tip?.content?.trim() && (
-                      <TipCallout tip={currentStep.tip!} />
-                    )}
-
-                                          {stepDurationSeconds !== null && (
-                                          <StepTimer
-                        view={timers.getView(currentStepIndex, stepDurationSeconds)}
-                        voiceHints={heyChefActive}
-                        onEnableVoice={heyChefSupported && !isHeyChefOn ? toggleHeyChef : undefined}
-                        onToggle={toggleCurrentTimer}
-                        onAdjust={(delta) =>
-                          timers.adjust(currentStepIndex, stepDurationSeconds, delta)
-                        }
-                        onReset={resetCurrentTimer}
-                      />
-                    )}
-                  </div>
-                </div>
-
-                <p className="mt-3 text-center text-xs sm:hidden" style={{ color: COLOR.inkSoft }}>
-                  Swipe left or right to change steps
-                </p>
-
-                <div className="mt-4 flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={handlePrevStep}
-                    disabled={currentStepIndex === 0}
-                                        className={`${secondaryButton} flex-1 sm:flex-none`}
-                    style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
-                  >
-                    <ChevronLeftIcon className="h-5 w-5" />
-                    <span>Previous</span>
-                  </button>
-
-                                              {!isLastStep ? (
-                    <button
-                      type="button"
-                      onClick={handleManualNext}
-                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                    >
-                      Next
-                      <ChevronRightIcon className="h-5 w-5" />
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        try {
-                          localStorage.removeItem(progressKey);
-                        } catch {
-                          // ignore
-                        }
-                        timers.clearAll();
-                        onFinishCooking();
-                      }}
-                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                    >
-                                          I&apos;m done cooking
-                    </button>
-                  )}
-                </div>
-
-                {showHandsBusyNudge && (
-                  <div
-                    role="status"
-                    className="mt-3 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm"
-                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.mustard, color: COLOR.ink }}
-                  >
-                    <span className="shrink-0" style={{ color: COLOR.saffron }}>
-                      <MicIcon className="h-4 w-4" />
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      Hands busy? Turn on hands-free and just say “next”.
-                    </span>
-                    <button
-                      type="button"
-                      onClick={toggleHeyChef}
-                      className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold"
-                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                    >
-                      Turn on
-                    </button>
-                    <button
-                      type="button"
-                      onClick={dismissHeyChefNudge}
-                      aria-label="Dismiss"
-                      className="shrink-0 text-lg leading-none"
-                      style={{ color: COLOR.inkSoft }}
-                    >
-                      ×
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
+      {showHandsBusyNudge && (
+        <div
+          role="status"
+          className="mt-3 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm"
+          style={{ borderColor: COLOR.border, backgroundColor: COLOR.mustard, color: COLOR.ink }}
+        >
+          <span className="shrink-0" style={{ color: COLOR.saffron }}>
+            <MicIcon className="h-4 w-4" />
+          </span>
+          <span className="min-w-0 flex-1">
+            Hands busy? Turn on hands-free and just say "next".
+          </span>
+          <button
+            type="button"
+            onClick={toggleHeyChef}
+            className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold"
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+          >
+            Turn on
+          </button>
+          <button
+            type="button"
+            onClick={dismissHeyChefNudge}
+            aria-label="Dismiss"
+            className="shrink-0 text-lg leading-none"
+            style={{ color: COLOR.inkSoft }}
+          >
+            ×
+          </button>
+        </div>
+      )}
+    </div>
+  )}
+</section>
                         
           {/* Notes */}
           {recipe.notes && recipe.notes.length > 0 && (
