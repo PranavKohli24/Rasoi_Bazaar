@@ -287,6 +287,16 @@ const STEP_ANIMATION_CSS = `
     color: #6B5238;
   }
 }
+
+
+@keyframes swipe-hint-chevron {
+  0%, 100% { opacity: 0.15; transform: translateX(0); }
+  50% { opacity: 0.7; transform: translateX(4px); }
+}
+.swipe-hint-chevron { animation: swipe-hint-chevron 1.3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .swipe-hint-chevron { animation: none; opacity: 0.3; }
+}
 `;
 
 const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
@@ -370,6 +380,171 @@ const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
           <p>{tip.content}</p>
         </div>
       )}
+    </div>
+  );
+};
+interface SwipeToConfirmProps {
+  label: string;
+  confirmedLabel: string;
+  onConfirm: () => void;
+}
+
+const SWIPE_THUMB_SIZE = 56;
+const SWIPE_TRACK_PADDING = 5;
+const SWIPE_CONFIRM_THRESHOLD = 0.82;
+
+const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, onConfirm }) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [maxDrag, setMaxDrag] = useState(0);
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const dragStartRef = useRef(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () =>
+      setMaxDrag(Math.max(0, track.offsetWidth - SWIPE_THUMB_SIZE - SWIPE_TRACK_PADDING * 2));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
+  const confirm = () => {
+    if (isConfirmed) return;
+    setIsConfirmed(true);
+    setDragX(maxDrag);
+    window.setTimeout(onConfirm, 500);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent) => {
+    if (isConfirmed) return;
+    (event.target as HTMLElement).setPointerCapture(event.pointerId);
+    dragStartRef.current = event.clientX - dragX;
+    setIsDragging(true);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent) => {
+    if (!isDragging || isConfirmed) return;
+    const next = Math.min(Math.max(event.clientX - dragStartRef.current, 0), maxDrag);
+    setDragX(next);
+  };
+
+  const finishDrag = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (maxDrag > 0 && dragX >= maxDrag * SWIPE_CONFIRM_THRESHOLD) {
+      confirm();
+    } else {
+      setDragX(0);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      confirm();
+    }
+  };
+
+  const progressPct = maxDrag === 0 ? 0 : (dragX / maxDrag) * 100;
+  // Fades smoothly as the thumb approaches, instead of vanishing at a hard cutoff.
+  const labelOpacity = isConfirmed ? 0 : Math.max(0, 1 - progressPct / 55);
+  const showHint = dragX === 0 && !isDragging && !isConfirmed;
+
+  return (
+    <div
+      ref={trackRef}
+      className="relative h-[60px] w-full select-none overflow-hidden rounded-full"
+      style={{
+        backgroundColor: COLOR.saffronTint,
+        boxShadow: "inset 0 1px 4px rgba(43,26,12,0.14)",
+      }}
+    >
+      {/* Fill trailing the thumb */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 rounded-full"
+        style={{
+          width: `${SWIPE_THUMB_SIZE + SWIPE_TRACK_PADDING + dragX}px`,
+          backgroundColor: COLOR.saffron,
+          transition: isDragging ? "none" : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+      />
+
+      {/* Idle hint: faint chevrons suggesting the swipe direction */}
+      {showHint && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-6 flex items-center gap-0.5"
+        >
+          {[0, 1, 2].map((i) => (
+            <ChevronRightIcon
+              key={i}
+              className="h-4 w-4 swipe-hint-chevron"
+              style={{ color: COLOR.saffronDark, animationDelay: `${i * 0.15}s` }}
+            />
+          ))}
+        </div>
+      )}
+
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center text-[15px] font-semibold"
+        style={{ color: COLOR.saffronDark, opacity: labelOpacity, transition: isDragging ? "none" : "opacity 0.2s ease" }}
+      >
+        {label}
+      </span>
+
+      {isConfirmed && (
+        <span
+          className="confirm-pop pointer-events-none absolute inset-0 flex items-center justify-center gap-1.5 text-[15px] font-semibold"
+          style={{ color: COLOR.surface }}
+        >
+          <CheckIcon className="h-4 w-4" />
+          {confirmedLabel}
+        </span>
+      )}
+
+      <div
+        role="slider"
+        tabIndex={0}
+        aria-label={label}
+        aria-valuenow={Math.round(progressPct)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishDrag}
+        onPointerCancel={finishDrag}
+        onKeyDown={handleKeyDown}
+        className="absolute top-1/2 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        style={{
+          left: SWIPE_TRACK_PADDING,
+          width: SWIPE_THUMB_SIZE,
+          height: SWIPE_THUMB_SIZE,
+          marginTop: -SWIPE_THUMB_SIZE / 2,
+          backgroundColor: COLOR.surface,
+          color: COLOR.saffronDark,
+          boxShadow: isDragging
+            ? "0 4px 12px rgba(43,26,12,0.28)"
+            : "0 2px 6px rgba(43,26,12,0.18)",
+          transform: `translateX(${dragX}px) scale(${isDragging ? 1.06 : 1})`,
+          transition: isDragging
+            ? "box-shadow 0.15s ease"
+            : "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.15s ease",
+          touchAction: "none",
+          cursor: isConfirmed ? "default" : isDragging ? "grabbing" : "grab",
+        }}
+      >
+        {isConfirmed ? (
+          <CheckIcon className="h-5 w-5" />
+        ) : (
+          <ChevronRightIcon className="h-5 w-5" />
+        )}
+      </div>
     </div>
   );
 };
@@ -1155,6 +1330,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     setCurrentStepIndex(0);
   };
 
+  const handleStartCookingFromIngredients = () => {
+    handleStartCooking();
+    window.setTimeout(() => {
+      methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
   // Lets someone jump straight to the method from the header without
   // committing to step-by-step mode yet.
   const handleJumpToMethod = () => {
@@ -1921,18 +2103,39 @@ const handlePrevStep = () => {
             </ul>
 
             <div className="border-t p-5 sm:p-6" style={{ borderColor: COLOR.border }}>
-              <button
-                type="button"
-                onClick={handleBuyFromInstamart}
-                className={`${secondaryButton} w-full`}
-                style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
-              >
-                <CartIcon className="h-5 w-5" style={{ color: COLOR.saffron }} />
-                Don&apos;t have these? Buy from Instamart
-              </button>
-              <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
-                We&apos;ll only search for what you haven&apos;t ticked.
-              </p>
+              {checkedCount === totalIngredients ? (
+                <div key="ready" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+                  <button
+                    type="button"
+                    onClick={handleStartCookingFromIngredients}
+                    className={`${primaryButton} w-full`}
+                    style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+                  >
+                    <PlayIcon className="h-5 w-5" />
+                    Let's start cooking
+                  </button>
+                  <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
+                    All set — you have everything you need.
+                  </p>
+                </div>
+              ) : (
+                <div key="shopping" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+                  <button
+                    type="button"
+                    onClick={handleBuyFromInstamart}
+                    className={`${secondaryButton} w-full`}
+                    style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+                  >
+                    <CartIcon className="h-5 w-5" style={{ color: COLOR.saffron }} />
+                    Don&apos;t have these? Buy from Instamart
+                  </button>
+                  <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
+                    We&apos;ll only search for what you haven&apos;t ticked.
+                  </p>
+                </div>
+              )}
             </div>
           </section>
         </aside>
@@ -2010,7 +2213,7 @@ const handlePrevStep = () => {
 <section
   ref={methodHeadingRef}
   aria-labelledby="method-heading"
-  className="scroll-mt-4 py-10 sm:scroll-mt-4 lg:py-12"
+  className="scroll-mt-4 py-10 sm:scroll-mt-8 lg:py-12"
 >
   <SectionTitle
     id="method-heading"
@@ -2334,51 +2537,61 @@ const handlePrevStep = () => {
         Swipe left or right to change steps
       </p>
 
-      <div className="mt-4 flex items-center gap-3">
-        <button
-          type="button"
-          onClick={handlePrevStep}
-          disabled={currentStepIndex === 0}
-          className={`${secondaryButton} flex-1 sm:flex-none`}
-          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
-        >
-          <ChevronLeftIcon className="h-5 w-5" />
-          <span>Previous</span>
-        </button>
+      <div className="mt-4">
+  {!isLastStep ? (
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={handlePrevStep}
+        disabled={currentStepIndex === 0}
+        className={`${secondaryButton} flex-1 sm:flex-none`}
+        style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+      >
+        <ChevronLeftIcon className="h-5 w-5" />
+        <span>Previous</span>
+      </button>
 
-        {!isLastStep ? (
-          <button
-            type="button"
-            onClick={handleManualNext}
-            className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-          >
-            Next
-            <ChevronRightIcon className="h-5 w-5" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => {
-              try {
-                localStorage.removeItem(progressKey);
-              } catch {
-                // ignore
-              }
-              timers.clearAll();
-              onFinishCooking();
-            }}
-            className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-          >
-            I&apos;m done cooking
-          </button>
-        )}
-      </div>
+      <button
+        type="button"
+        onClick={handleManualNext}
+        className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+      >
+        Next
+        <ChevronRightIcon className="h-5 w-5" />
+      </button>
+    </div>
+  ) : (
+    <div className="flex flex-col gap-3">
+      <button
+        type="button"
+        onClick={handlePrevStep}
+        disabled={currentStepIndex === 0}
+        className={secondaryButton}
+        style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+      >
+        <ChevronLeftIcon className="h-5 w-5" />
+        <span>Previous</span>
+      </button>
+
+      <SwipeToConfirm
+        label="Slide to finish cooking"
+        confirmedLabel="Enjoy your meal! 🍽️"
+        onConfirm={() => {
+          try {
+            localStorage.removeItem(progressKey);
+          } catch {
+            // ignore
+          }
+          timers.clearAll();
+          onFinishCooking();
+        }}
+      />
+    </div>
+  )}
+</div>
 
       {showHandsBusyNudge && (
         <div
