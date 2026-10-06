@@ -841,23 +841,23 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     const wasLastStep = stepIdx >= recipe.method.length - 1;
     if (isCurrent) timers.acknowledge(stepIdx);
 
-    if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
+        if ("speechSynthesis" in window) {
+      const voiceOn = isVoiceEnabled || heyChefActive;
       // A timer on the step in front of you may interrupt; one finishing
       // in the background waits its turn instead of cutting off speech.
       if (isCurrent) window.speechSynthesis.cancel();
-      // Let the chime land first, then speak, so they don't overlap.
+      // The chime lasts ~0.7s, so wait for it to finish, then speak.
       window.setTimeout(() => {
         const message = !isCurrent
-          ? `Time's up for step ${stepIdx + 1}.`
-          : wasLastStep
-          ? "Time's up."
-          : `Time's up. ${doneHint}`;
+          ? `Time's up for step ${stepIdx + 1}!`
+          : voiceOn && !wasLastStep
+          ? `Time's up! ${doneHint}`
+          : "Time's up!";
         const utterance = new SpeechSynthesisUtterance(message);
         utterance.rate = 0.95;
         window.speechSynthesis.speak(utterance);
-      }, 450);
+      }, 800);
     }
-
   };
 
   const handleTimerCheckIn = (stepIdx: number, markIndex: number): void => {
