@@ -2174,6 +2174,7 @@ const handlePrevStep = () => {
         </li>
         <li>
           "<span className="font-semibold">Start the timer</span>" or "
+          <span className="font-semibold">Pause timer, Resume timer</span>" or "
           <span className="font-semibold">How much time is left?</span>"
         </li>
         <li>
