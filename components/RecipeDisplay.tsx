@@ -2010,7 +2010,7 @@ const handlePrevStep = () => {
 <section
   ref={methodHeadingRef}
   aria-labelledby="method-heading"
-  className="scroll-mt-12 py-10 lg:py-12"
+  className="scroll-mt-4 py-10 sm:scroll-mt-8 lg:py-12"
 >
   <SectionTitle
     id="method-heading"
