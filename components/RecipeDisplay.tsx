@@ -1161,19 +1161,21 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-      const handleNextStep = (): boolean => {
-    if (currentStepIndex >= recipe.method.length - 1) return false;
-    setStepDirection("next");
-    setCurrentStepIndex((prev) => prev + 1);
-    return true;
-  };
-  
-    const handlePrevStep = () => {
-    if (currentStepIndex > 0) {
-      setStepDirection("prev");
-      setCurrentStepIndex((prev) => prev - 1);
-    }
-  };
+  const handleNextStep = (): boolean => {
+  if (currentStepIndex >= recipe.method.length - 1) return false;
+  setStepDirection("next");
+  setCurrentStepIndex((prev) => prev + 1);
+  methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  return true;
+};
+
+const handlePrevStep = () => {
+  if (currentStepIndex > 0) {
+    setStepDirection("prev");
+    setCurrentStepIndex((prev) => prev - 1);
+    methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
 
   // Taps and swipes (not voice) count towards the "hands busy?" nudge.
   const handleManualNext = () => {
