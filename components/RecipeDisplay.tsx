@@ -297,6 +297,10 @@ const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
   processing: "Thinking…",
   speaking: "Speaking…",
 };
+
+const HEY_CHEF_INTRO_KEY = "recipe-heychef-intro-seen";
+const HEY_CHEF_NUDGE_KEY = "recipe-heychef-nudge-dismissed";
+
 /* ---------- Shared UI ---------- */
 
 const primaryButton =
@@ -440,7 +444,8 @@ const StepTimer: React.FC<{
   onToggle: () => void;
   onAdjust: (deltaSeconds: number) => void;
   onReset: () => void;
-}> = ({ view, voiceHints, onToggle, onAdjust, onReset }) => {
+  onEnableVoice?: () => void;
+}> = ({ view, voiceHints, onToggle, onAdjust, onReset, onEnableVoice }) => {
   const { total, remaining, isRunning, isDone, hasStarted } = view;
 
   const [resetArmed, setResetArmed] = useState(false);
@@ -593,8 +598,20 @@ const StepTimer: React.FC<{
           className="mt-2.5 text-center text-[11px]"
           style={{ color: COLOR.inkSoft, opacity: 0.8 }}
         >
-          Say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
+            Say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
         </p>
+      )}
+
+      {!voiceHints && onEnableVoice && !isDone && !hasStarted && (
+        <button
+          type="button"
+          onClick={onEnableVoice}
+          className="mx-auto mt-2.5 flex items-center gap-1.5 text-[11px] font-semibold underline-offset-2 hover:underline"
+          style={{ color: COLOR.saffronDark }}
+        >
+          <MicIcon className="h-3.5 w-3.5" />
+          Hands busy? Say “start timer” instead
+        </button>
       )}
     </div>
   );
@@ -778,7 +795,61 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     return () => window.clearTimeout(id);
   }, [heyChefBlockedAt]);
   
+    /* ---- Hands-free discovery ---- */
+
+  // First-run card with example phrases. Seen once, then never again.
+  const [heyChefIntroSeen, setHeyChefIntroSeen] = useState(() => {
+    try {
+      return localStorage.getItem(HEY_CHEF_INTRO_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+  const dismissHeyChefIntro = () => {
+    setHeyChefIntroSeen(true);
+    try {
+      localStorage.setItem(HEY_CHEF_INTRO_KEY, "true");
+    } catch {
+      /* ignore */
+    }
+  };
+
+  // The first successful use ("Hey chef" or any command) ends the intro.
+  useEffect(() => {
+    if (!heyChefActive || heyChefIntroSeen) return;
+    if (heyChefPhase === "awake" || commandFlash) dismissHeyChefIntro();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heyChefActive, heyChefIntroSeen, heyChefPhase, commandFlash]);
+
+  // Rotates the example phrase shown while it's waiting for "Hey chef".
+  const [heyChefTipIndex, setHeyChefTipIndex] = useState(0);
+  useEffect(() => {
+    if (!heyChefActive || heyChefPhase !== "sleeping") return;
+    const id = window.setInterval(() => setHeyChefTipIndex((i) => i + 1), 5000);
+    return () => window.clearInterval(id);
+  }, [heyChefActive, heyChefPhase]);
+
+  // "Hands busy?" nudge: shown after a few manual Next taps, once ever
+  // (until dismissed), and only while voice is off.
+  const [manualNextCount, setManualNextCount] = useState(0);
+  const [heyChefNudgeDismissed, setHeyChefNudgeDismissed] = useState(() => {
+    try {
+      return localStorage.getItem(HEY_CHEF_NUDGE_KEY) === "true";
+    } catch {
+      return false;
+    }
+  });
+  const dismissHeyChefNudge = () => {
+    setHeyChefNudgeDismissed(true);
+    try {
+      localStorage.setItem(HEY_CHEF_NUDGE_KEY, "true");
+    } catch {
+      /* ignore */
+    }
+  };
+
   // A check-in the companion should say — bumping the id (not just the text)
+
   // guarantees CookingCompanion treats repeats on a later long step as new.
   const [companionCheckIn, setCompanionCheckIn] = useState<{ id: string; text: string } | null>(
     null
@@ -1097,11 +1168,17 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     return true;
   };
   
-  const handlePrevStep = () => {
+    const handlePrevStep = () => {
     if (currentStepIndex > 0) {
       setStepDirection("prev");
       setCurrentStepIndex((prev) => prev - 1);
     }
+  };
+
+  // Taps and swipes (not voice) count towards the "hands busy?" nudge.
+  const handleManualNext = () => {
+    if (!heyChefActive) setManualNextCount((n) => n + 1);
+    handleNextStep();
   };
 
     /* ----- Hey chef: what each spoken command does ----- */
@@ -1239,7 +1316,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     if (Math.abs(dx) < SWIPE_MIN_DISTANCE) return;
     if (Math.abs(dx) < Math.abs(dy) * 1.2) return; // mostly vertical: not a swipe
 
-    if (dx < 0) handleNextStep();
+    if (dx < 0) handleManualNext();
     else handlePrevStep();
   };
 
@@ -1587,7 +1664,16 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const stepDurationSeconds = parseDurationSeconds(currentStep.instruction);
 
   const isLastStep = currentStepIndex >= totalSteps - 1;
-  const backgroundTimers = isCooking ? timers.getBackground(currentStepIndex) : [];
+    const backgroundTimers = isCooking ? timers.getBackground(currentStepIndex) : [];
+
+  // Example phrases for the status line, relevant to the step on screen.
+  const heyChefTips =
+    stepDurationSeconds !== null
+      ? ["start timer", "how much time is left", "pause the timer", "next", "Hey chef, how do I know it's done?"]
+      : ["next", "back", "repeat", "Hey chef, how do I know it's done?"];
+
+  const showHandsBusyNudge =
+    isCooking && heyChefSupported && !isHeyChefOn && !heyChefNudgeDismissed && manualNextCount >= 3;
 
   const stepAnimationClass =
     stepDirection === "next"
@@ -1934,33 +2020,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                                         <span className="text-sm" style={{ color: COLOR.inkSoft }}>
                       Step {currentStepIndex + 1} of {totalSteps}
                     </span>
-                    {heyChefSupported && (
-                      <button
-                        type="button"
-                        onClick={toggleHeyChef}
-                        aria-pressed={isHeyChefOn}
-                        aria-label={
-                          isHeyChefOn
-                            ? "Turn off Hey chef voice control"
-                            : "Turn on Hey chef voice control"
-                        }
-                        title="Hey chef: hands-free voice control"
-                        className="relative flex h-8 w-8 items-center justify-center rounded-full border transition-colors"
-                        style={{
-                          borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
-                          backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
-                          color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
-                        }}
-                      >
-                        <MicIcon className="h-4 w-4" />
-                        {heyChefActive && heyChefPhase !== "paused" && (
-                          <span
-                            aria-hidden="true"
-                            className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-                          />
-                        )}
-                      </button>
-                    )}
+                    
                     <button
                       type="button"
                                             onClick={toggleVoice}
@@ -1997,35 +2057,126 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </p>
             )}
 
-            {heyChefActive && heyChefPhase !== "off" && (
-              <div
-                role="status"
-                className="mb-4 flex items-center gap-2 text-sm font-medium"
-                style={{ color: COLOR.inkSoft }}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-                />
-                <span
-                  className={!commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined}
-                  style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+            {isCooking && heyChefSupported && (
+              <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <button
+                  type="button"
+                  onClick={toggleHeyChef}
+                  aria-pressed={isHeyChefOn}
+                  aria-label={
+                    isHeyChefOn
+                      ? "Turn off hands-free voice control"
+                      : "Turn on hands-free voice control"
+                  }
+                  title="Hands-free: say “Hey chef”"
+                  className="relative inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2"
+                  style={{
+                    borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
+                    backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
+                    color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
+                  }}
                 >
-                                    {commandFlash
-                    ? `✓ ${commandFlash.label}`
-                    : HEY_CHEF_LABEL[heyChefPhase]}
-                </span>
+                  <MicIcon className="h-4 w-4" />
+                  Hands-free
+                  <span
+                    className="rounded-full px-1.5 py-0.5 text-[10px] font-bold"
+                    style={{
+                      backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
+                      color: isHeyChefOn ? COLOR.surface : COLOR.inkSoft,
+                    }}
+                  >
+                    {isHeyChefOn ? "ON" : "OFF"}
+                  </span>
+                  {heyChefActive && heyChefPhase !== "paused" && (
+                    <span
+                      aria-hidden="true"
+                      className={`hey-chef-ring ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+                    />
+                  )}
+                </button>
+
+                {heyChefActive && heyChefPhase !== "off" ? (
+                  <span
+                    role="status"
+                    className="flex min-w-0 items-center gap-2 text-sm font-medium"
+                    style={{ color: COLOR.inkSoft }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`hey-chef-dot ${heyChefPhase === "awake" ? "is-awake" : ""}`}
+                    />
+                    <span
+                      className={
+                        !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
+                      }
+                      style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+                    >
+                      {commandFlash
+                        ? `✓ ${commandFlash.label}`
+                        : heyChefPhase === "sleeping"
+                        ? `Try saying “${heyChefTips[heyChefTipIndex % heyChefTips.length]}”`
+                        : HEY_CHEF_LABEL[heyChefPhase]}
+                    </span>
+                  </span>
+                ) : (
+                  !isHeyChefOn && (
+                    <span className="text-sm" style={{ color: COLOR.inkSoft }}>
+                      Cook with your voice, no touching the screen
+                    </span>
+                  )
+                )}
               </div>
             )}
 
-            {!isCooking ? (
+            {heyChefActive && !heyChefIntroSeen && (
               <div
-                className="flex flex-col gap-5 rounded-3xl border border-dashed p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+                role="status"
+                className="mb-4 rounded-2xl border p-4 sm:p-5"
                 style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
               >
+                <div className="flex items-start justify-between gap-3">
+                  <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
+                    Hands-free is on
+                  </p>
+                  <button
+                    type="button"
+                    onClick={dismissHeyChefIntro}
+                    className="shrink-0 text-xs font-semibold underline-offset-2 hover:underline"
+                    style={{ color: COLOR.inkSoft }}
+                  >
+                    Got it
+                  </button>
+                </div>
+
+                <ul className="mt-2 space-y-1.5 text-sm leading-snug" style={{ color: COLOR.ink }}>
+                  <li>
+                    “<span className="font-semibold">Next</span>” or “
+                    <span className="font-semibold">Back</span>” to change steps
+                  </li>
+                  <li>
+                    “<span className="font-semibold">Start the timer</span>” or “
+                    <span className="font-semibold">How much time is left?</span>”
+                  </li>
+                  <li>
+                    “<span className="font-semibold">Hey chef</span>, how do I know it&apos;s
+                    done?”
+                  </li>
+                </ul>
+
+                <p className="mt-3 text-sm font-semibold" style={{ color: COLOR.saffronDark }}>
+                  Try it now: say “Hey chef”
+                </p>
+              </div>
+            )}
+            {!isCooking ? (
+                            <div
+                className="rounded-3xl border border-dashed p-6 sm:p-8"
+                style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+              >
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
-                    Ready when you are
+                          Ready when you are
                   </p>
                   <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                     We&apos;ll walk you through {totalSteps} steps, one at a time.
@@ -2040,9 +2191,61 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
                   onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
                 >
-                  <PlayIcon className="h-5 w-5" />
+                                   <PlayIcon className="h-5 w-5" />
                   Start cooking
                 </button>
+              </div>
+
+              {heyChefSupported ? (
+                <div
+                  className="mt-5 flex items-start gap-3 rounded-2xl border p-4"
+                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+                >
+                  <span
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffron }}
+                  >
+                    <MicIcon className="h-5 w-5" />
+                  </span>
+
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold leading-snug" style={{ color: COLOR.ink }}>
+                      Cook hands-free
+                    </p>
+                    <p className="mt-0.5 text-sm leading-snug" style={{ color: COLOR.inkSoft }}>
+                      Say “Hey chef” for the next step, timers, or any doubt. It only listens
+                      while you&apos;re cooking.
+                    </p>
+                    {isHeyChefOn && (
+                      <p className="mt-1.5 text-xs leading-snug" style={{ color: COLOR.inkSoft }}>
+                        Your browser will ask to use the microphone, and may send the audio to
+                        its speech service.
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={isHeyChefOn}
+                    aria-label="Cook hands-free with Hey chef"
+                    onClick={toggleHeyChef}
+                    className="relative mt-0.5 h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
+                    style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
+                      style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
+                    />
+                  </button>
+                </div>
+              ) : (
+                <p className="mt-4 text-xs" style={{ color: COLOR.inkSoft }}>
+                  Voice control isn&apos;t supported in this browser. Try Chrome for hands-free
+                  cooking.
+                </p>
+              )}
               </div>
             ) : (
               <div>
@@ -2102,6 +2305,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                                           <StepTimer
                         view={timers.getView(currentStepIndex, stepDurationSeconds)}
                         voiceHints={heyChefActive}
+                        onEnableVoice={heyChefSupported && !isHeyChefOn ? toggleHeyChef : undefined}
                         onToggle={toggleCurrentTimer}
                         onAdjust={(delta) =>
                           timers.adjust(currentStepIndex, stepDurationSeconds, delta)
@@ -2131,7 +2335,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                                               {!isLastStep ? (
                     <button
                       type="button"
-                      onClick={handleNextStep}
+                      onClick={handleManualNext}
                       className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
                       style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
@@ -2157,10 +2361,42 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
                       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
                     >
-                      I&apos;m done cooking
+                                          I&apos;m done cooking
                     </button>
                   )}
                 </div>
+
+                {showHandsBusyNudge && (
+                  <div
+                    role="status"
+                    className="mt-3 flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm"
+                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.mustard, color: COLOR.ink }}
+                  >
+                    <span className="shrink-0" style={{ color: COLOR.saffron }}>
+                      <MicIcon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      Hands busy? Turn on hands-free and just say “next”.
+                    </span>
+                    <button
+                      type="button"
+                      onClick={toggleHeyChef}
+                      className="shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold"
+                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                    >
+                      Turn on
+                    </button>
+                    <button
+                      type="button"
+                      onClick={dismissHeyChefNudge}
+                      aria-label="Dismiss"
+                      className="shrink-0 text-lg leading-none"
+                      style={{ color: COLOR.inkSoft }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </section>
