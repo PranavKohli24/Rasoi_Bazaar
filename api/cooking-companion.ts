@@ -26,8 +26,9 @@ interface RequestBody {
   history: ChatMessage[];
   question: string;
   currentStepNumber: number | null;
-  currentStepInstruction: string | null;
+   currentStepInstruction: string | null;
   totalSteps: number;
+  stream?: boolean;
 }
 
 const isValidHistory = (value: unknown): value is ChatMessage[] =>
@@ -149,6 +150,7 @@ export default async function handler(
     currentStepNumber,
     currentStepInstruction,
     totalSteps,
+    stream,
   } = (req.body ?? {}) as Partial<RequestBody>;
 
   if (!recipe || typeof recipe.dishName !== "string") {
@@ -226,6 +228,7 @@ export default async function handler(
     temperature: 0.6,
     max_tokens: 700,
     reasoning_effort: "low",
+    stream: stream === true,
   };
 
   try {
@@ -254,6 +257,58 @@ export default async function handler(
       return;
     }
 
+        if (stream === true) {
+      if (!response.body) {
+        res.status(502).json({ error: { message: GENERIC_ERROR } });
+        return;
+      }
+
+      res.status(200);
+      res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      res.setHeader("Cache-Control", "no-cache, no-transform");
+      res.setHeader("X-Accel-Buffering", "no");
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let wroteAny = false;
+
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith("data:")) continue;
+            const payload = trimmed.slice(5).trim();
+            if (!payload || payload === "[DONE]") continue;
+
+            try {
+              // Only the answer text: reasoning tokens use a different field.
+              const text = JSON.parse(payload)?.choices?.[0]?.delta?.content;
+              if (typeof text !== "string" || !text) continue;
+              const out = wroteAny ? text : text.trimStart();
+              if (!out) continue;
+              wroteAny = true;
+              res.write(out);
+            } catch {
+              /* partial or non-JSON line: skip */
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Groq stream broke:", error);
+      }
+
+      res.end();
+      return;
+    }
+    
     const data = await response.json();
     const choice = data?.choices?.[0];
     const reply = choice?.message?.content;

@@ -3,6 +3,8 @@ import { createPortal } from "react-dom";
 import { Recipe } from "../types";
 import {
   askCookingCompanion,
+  streamCookingCompanion,
+  createSentenceSplitter,
   CompanionMessage,
 } from "../services/cookingCompanionService";
 
@@ -1427,6 +1429,58 @@ const focusInputWithoutKeyboard = () => {
     }
   };
 
+    // Streaming twin of askByVoice: sentences are handed to the hook as they
+  // arrive so the first one is spoken while the rest is still being written.
+  const askByVoiceStream = async (
+    question: string,
+    emit: (sentence: string) => void
+  ): Promise<boolean> => {
+    // Same instant fast-path as before.
+    const localAnswer = findLocalAnswer(recipe, question);
+    if (localAnswer) {
+      setMessages((current) => [
+        ...current,
+        { role: "user", content: question },
+        { role: "assistant", content: localAnswer },
+      ]);
+      setVoiceReplyText(localAnswer);
+      emit(localAnswer);
+      return true;
+    }
+
+    const history = messagesRef.current;
+    setMessages((current) => [...current, { role: "user", content: question }]);
+
+    // Same idea as clipForSpeech: stop speaking once the answer gets long.
+    let spokenChars = 0;
+    const splitter = createSentenceSplitter((sentence) => {
+      const text = sentence.replace(/[*_#`]/g, "").replace(/\s+/g, " ").trim();
+      if (!text || spokenChars >= 420) return;
+      spokenChars += text.length;
+      emit(text);
+    });
+
+    try {
+      const reply = await streamCookingCompanion(
+        recipe,
+        history,
+        `${question}\n\n${VOICE_STYLE_HINT}`,
+        currentStepNumber,
+        currentStepInstruction,
+        totalSteps,
+        (chunk) => splitter.push(chunk)
+      );
+      splitter.flush();
+      setMessages((current) => [...current, { role: "assistant", content: reply }]);
+      setVoiceReplyText(clipForSpeech(plainTextForSpeech(reply).replace(/\s+/g, " ").trim()));
+      return true;
+    } catch (err) {
+      console.error("Hey chef stream failed:", err);
+      splitter.flush(); // say whatever had already arrived
+      return false;
+    }
+  };
+
   const hc = useHeyChef({
     enabled: !!heyChef?.enabled,
     suspended: isOpen, // the chat sheet (and its dictation mic) has priority
@@ -1434,6 +1488,7 @@ const focusInputWithoutKeyboard = () => {
     stepNumber: currentStepNumber,
     commands: heyChef?.commands ?? NO_COMMANDS,
     onQuestion: askByVoice,
+    onQuestionStream: askByVoiceStream,
     lang: "en-IN",
   });
 

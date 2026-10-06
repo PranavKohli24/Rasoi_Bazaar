@@ -34,7 +34,13 @@ export interface UseHeyChefOptions {
   awaitingConfirm?: boolean;
   commands: HeyChefCommands;
   /** Called with the spoken question; returns text to speak, or null on failure. */
-  onQuestion: (question: string) => Promise<string | null>;
+    onQuestion: (question: string) => Promise<string | null>;
+  /**
+   * Streaming version. Call emit(sentence) for every finished sentence as it
+   * arrives; resolves true if the answer completed. When given, it is used
+   * instead of onQuestion.
+   */
+  onQuestionStream?: (question: string, emit: (sentence: string) => void) => Promise<boolean>;
   lang?: string;
   stepNumber?: number | null;
 }
@@ -239,6 +245,7 @@ export function useHeyChef({
   awaitingConfirm = false,
   commands,
   onQuestion,
+  onQuestionStream,
   lang = "en-IN",
   stepNumber = null,
 }: UseHeyChefOptions) {
@@ -255,8 +262,10 @@ export function useHeyChef({
   // Always-fresh copies of the inputs, so long-lived speech callbacks never go stale.
   const commandsRef = useRef(commands);
   commandsRef.current = commands;
-  const onQuestionRef = useRef(onQuestion);
+    const onQuestionRef = useRef(onQuestion);
   onQuestionRef.current = onQuestion;
+  const onQuestionStreamRef = useRef(onQuestionStream);
+  onQuestionStreamRef.current = onQuestionStream;
   const awaitingConfirmRef = useRef(awaitingConfirm);
   awaitingConfirmRef.current = awaitingConfirm;
   const langRef = useRef(lang);
@@ -498,6 +507,126 @@ export function useHeyChef({
     }
   };
 
+    // Speaks sentences as they arrive instead of waiting for the full answer.
+  const streamQuestion = async (question: string) => {
+    const synth = window.speechSynthesis;
+    const token = ++speakTokenRef.current;
+    const voice = synth.getVoices().find((v) => v.lang === "en-IN" || v.lang === "en_IN");
+
+    let pending = 0; // sentences queued or being spoken
+    let producing = true; // the stream is still arriving
+    let spoke = false;
+    let ended = false;
+    let cut = false; // timed out: ignore late sentences
+    let safety = 0;
+    let resolveDone: () => void = () => {};
+    const done = new Promise<void>((resolve) => (resolveDone = resolve));
+
+    const alive = () => speakTokenRef.current === token;
+
+    const finish = () => {
+      if (ended) return;
+      ended = true;
+      window.clearTimeout(safety);
+      // Only move on if nothing newer took over (barge-in, reset, ...)
+      if (alive() && phaseRef.current === "speaking") {
+        if (!suspendedRef.current) {
+          anchorRef.current = segmentsRef.current.length;
+          ignoreBeforeRef.current = segmentsRef.current.length;
+          setPhase("awake");
+          armIdle();
+        } else {
+          sleep();
+        }
+      }
+      resolveDone();
+    };
+
+    const checkDone = () => {
+      if (!producing && pending === 0) finish();
+    };
+
+    const emit = (sentence: string) => {
+      if (!alive() || ended || cut) return;
+      if (!spoke) {
+        spoke = true;
+        // The answer is here: no more "Hmm, one sec" fillers.
+        if (fillerTimerRef.current !== null) {
+          window.clearTimeout(fillerTimerRef.current);
+          fillerTimerRef.current = null;
+        }
+        setPhase("speaking");
+      }
+      const utterance = new SpeechSynthesisUtterance(sentence);
+      utterance.lang = langRef.current;
+      utterance.rate = 0.97;
+      if (voice) utterance.voice = voice;
+      pending += 1;
+      const end = () => {
+        pending -= 1;
+        checkDone();
+      };
+      utterance.onend = end;
+      utterance.onerror = end; // also fires when barge-in cancels the queue
+      try {
+        synth.speak(utterance);
+      } catch {
+        end();
+      }
+    };
+
+    // Safety valve if onend never fires (some Android browsers).
+    safety = window.setTimeout(() => {
+      try {
+        synth.cancel();
+      } catch {
+        /* nothing to cancel */
+      }
+      producing = false;
+      pending = 0;
+      finish();
+    }, REPLY_TIMEOUT_MS + 30000);
+
+    let ok = false;
+    let timeoutId = 0;
+    try {
+      ok = await Promise.race([
+        onQuestionStreamRef.current!(question, emit),
+        new Promise<boolean>((resolve) => {
+          timeoutId = window.setTimeout(() => {
+            cut = true;
+            resolve(false);
+          }, REPLY_TIMEOUT_MS);
+        }),
+      ]);
+    } catch {
+      ok = false;
+    }
+    window.clearTimeout(timeoutId);
+    producing = false;
+
+    if (!spoke) {
+      // Nothing was said: same as the old failure path.
+      window.clearTimeout(safety);
+      ended = true;
+      if (fillerTimerRef.current !== null) {
+        window.clearTimeout(fillerTimerRef.current);
+        fillerTimerRef.current = null;
+      }
+      const filler = fillerDoneRef.current;
+      fillerDoneRef.current = null;
+      if (filler) await filler;
+      if (currentPhase() !== "processing") return;
+      await say("Sorry, I couldn't get that. Try again?", "awake");
+      return;
+    }
+
+    fillerDoneRef.current = null;
+    void ok; // a partial answer is still worth finishing
+    checkDone();
+    await done;
+  };
+
   const finishQuestion = async () => {
     clearTimers();
     if (phaseRef.current !== "awake") return;
@@ -515,9 +644,14 @@ export function useHeyChef({
     }
 
         ignoreBeforeRef.current = segmentsRef.current.length;
-    setPhase("processing");
+      setPhase("processing");
     softCue();
     startFillerTimer();
+
+    if (onQuestionStreamRef.current) {
+      await streamQuestion(question);
+      return;
+    }
 
         let reply: string | null = null;
     let timeoutId = 0;
