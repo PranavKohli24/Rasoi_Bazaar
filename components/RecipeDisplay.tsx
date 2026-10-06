@@ -1,5 +1,12 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Recipe, Tip } from "../types";
+import {
+  useStepTimers,
+  MIN_TIMER_SECONDS,
+  TimerView,
+  BackgroundTimer,
+} from "../src/hooks/useStepTimers";
 import {
   getSwiggyAddresses,
   searchInstamartProducts,
@@ -416,97 +423,28 @@ const playChime = () => {
   }
 };
 
-// Builds the elapsed-time marks worth a check-in: ~18 seconds in (skipped
-// if that's basically the whole timer), then every 5 minutes, always
-// leaving at least 20s of breathing room before the end so a check-in
-// never lands right on top of the "time's up" chime.
-const buildCheckInMarks = (totalSeconds: number): number[] => {
-  const marks: number[] = [];
-  if (totalSeconds >= 35) marks.push(18);
-  for (let t = 300; t < totalSeconds - 20; t += 300) marks.push(t);
-  return marks;
-};
-
-type StepTimerState = { remaining: number; isRunning: boolean; firedMarks: Set<number>; total: number };
-
 const TICK_COUNT = 24;
-const MIN_TIMER_SECONDS = 30;
 const ADJUST_STEP_SECONDS = 30;
 
-export interface StepTimerHandle {
-  pause: () => void;
-  resume: () => void;
-  adjust: (deltaSeconds: number) => void;
-  reset: () => void;
-    isRunning: () => boolean;
-  isDone: () => boolean;
-  hasStarted: () => boolean;
-  getRemainingSeconds: () => number;
-}
+const formatClock = (totalSeconds: number): string => {
+  const m = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+  const s = (totalSeconds % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
+};
 
-const StepTimer = React.forwardRef<
-  StepTimerHandle,
-  {
-    seconds: number;
-    stepKey: number;
-        onComplete?: () => void;
-    onCheckIn?: (markIndex: number) => void;
-    onReset?: () => void;
-    onStart?: () => void;
-    voiceHints?: boolean;
-    timerState: Map<number, StepTimerState>;
-  }
->(({ seconds, stepKey, onComplete, onCheckIn, onReset, onStart, voiceHints, timerState }, ref) => {
-  const savedRef = useRef(timerState.get(stepKey));
-  const saved = savedRef.current;
-
-  const [total, setTotal] = useState(saved?.total ?? seconds);
-  const [remaining, setRemaining] = useState(saved?.remaining ?? seconds);
-  const [isRunning, setIsRunning] = useState(saved?.isRunning ?? false);
-  const intervalRef = useRef<number | null>(null);
-  const checkInMarksRef = useRef<number[]>(buildCheckInMarks(total));
-  const firedMarksRef = useRef<Set<number>>(saved?.firedMarks ?? new Set());
+// Pure display: the countdown itself lives in useStepTimers, so it keeps
+// running when this unmounts on a step change.
+const StepTimer: React.FC<{
+  view: TimerView;
+  voiceHints?: boolean;
+  onToggle: () => void;
+  onAdjust: (deltaSeconds: number) => void;
+  onReset: () => void;
+}> = ({ view, voiceHints, onToggle, onAdjust, onReset }) => {
+  const { total, remaining, isRunning, isDone, hasStarted } = view;
 
   const [resetArmed, setResetArmed] = useState(false);
   const resetArmTimeoutRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    timerState.set(stepKey, { remaining, isRunning, firedMarks: firedMarksRef.current, total });
-  }, [remaining, isRunning, stepKey, timerState, total]);
-
-  useEffect(() => {
-    checkInMarksRef.current = buildCheckInMarks(total);
-  }, [total]);
-
-  useEffect(() => {
-    if (!isRunning || remaining <= 0) return;
-    const elapsed = total - remaining;
-    checkInMarksRef.current.forEach((mark, index) => {
-      if (elapsed >= mark && !firedMarksRef.current.has(mark)) {
-        firedMarksRef.current.add(mark);
-        onCheckIn?.(index);
-      }
-    });
-  }, [remaining, total, isRunning, onCheckIn]);
-
-  useEffect(() => {
-    if (!isRunning) return;
-    intervalRef.current = window.setInterval(() => {
-      setRemaining((prev) => (prev <= 1 ? 0 : prev - 1));
-    }, 1000);
-    return () => {
-      if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-    };
-  }, [isRunning]);
-
-  useEffect(() => {
-    if (remaining !== 0 || !isRunning) return;
-    if (intervalRef.current !== null) window.clearInterval(intervalRef.current);
-    setIsRunning(false);
-    playChime();
-    onComplete?.();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [remaining]);
 
   useEffect(() => {
     return () => {
@@ -514,28 +452,13 @@ const StepTimer = React.forwardRef<
     };
   }, []);
 
-  const isDone = remaining === 0;
-  const hasStarted = remaining !== total;
   const progressPct = total === 0 ? 0 : ((total - remaining) / total) * 100;
-  const minutes = Math.floor(remaining / 60).toString().padStart(2, "0");
-  const secs = (remaining % 60).toString().padStart(2, "0");
   const litTicks = isDone ? TICK_COUNT : Math.round(TICK_COUNT * (progressPct / 100));
-
-  const adjustTime = (delta: number) => {
-    setTotal((prev) => Math.max(MIN_TIMER_SECONDS, prev + delta));
-    setRemaining((prev) => Math.max(0, prev + delta));
-  };
 
   const doReset = () => {
     if (resetArmTimeoutRef.current !== null) window.clearTimeout(resetArmTimeoutRef.current);
     setResetArmed(false);
-    setTotal(seconds);
-    setRemaining(seconds);
-    setIsRunning(false);
-    firedMarksRef.current = new Set();
-    // Undoes whatever onComplete set up (the Not yet / Yes done prompt) —
-    // restarting the clock means the step is back in progress, not done.
-    onReset?.();
+    onReset();
   };
 
   const handleResetTap = () => {
@@ -552,27 +475,11 @@ const StepTimer = React.forwardRef<
   const tickColor = isDone ? COLOR.clay : COLOR.saffron;
   const steamColor = COLOR.inkSoft;
 
-    useImperativeHandle(ref, () => ({
-    pause: () => setIsRunning(false),
-    resume: () => {
-      if (!isDone) setIsRunning(true);
-    },
-    adjust: (delta: number) => adjustTime(delta),
-    reset: doReset,
-    isRunning: () => isRunning,
-    isDone: () => isDone,
-    hasStarted: () => hasStarted,
-    getRemainingSeconds: () => remaining,
-  }));
-
   return (
     <div
       className="mt-6 w-full max-w-[260px] rounded-2xl border p-4 sm:max-w-xs sm:rounded-3xl sm:p-5"
       style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
     >
-            {/* No "Timer" label — the clock face + steam already say what this
-          is. This row exists only to hold Reset, right-aligned, at a fixed
-          height so it reserves the same space whether Reset is showing or not. */}
       <div className="flex h-5 items-center justify-end">
         {hasStarted && !isDone && (
           <button
@@ -586,9 +493,7 @@ const StepTimer = React.forwardRef<
           </button>
         )}
       </div>
-      {/* The dial: a stove-knob of tick marks that light up as time passes,
-          with a flame perched on the rim that flickers while running and
-          goes dark once the step is done. */}
+
       <div className="relative mx-auto mt-5 h-24 w-24 sm:mt-7 sm:h-32 sm:w-32">
         {!isDone && (
           <div className="absolute left-1/2 -top-5 z-10 -translate-x-1/2 sm:-top-6">
@@ -621,7 +526,7 @@ const StepTimer = React.forwardRef<
             className="font-serif text-2xl font-black tabular-nums leading-none sm:text-3xl"
             style={{ color: COLOR.ink }}
           >
-            {minutes}:{secs}
+            {formatClock(remaining)}
           </span>
           <span className="mt-1 h-3 text-[11px] font-medium" style={{ color: COLOR.inkSoft }}>
             {!isDone && (hasStarted ? (isRunning ? "Running" : "Paused") : `${minuteLabel} min`)}
@@ -633,7 +538,7 @@ const StepTimer = React.forwardRef<
         {!isDone && (
           <button
             type="button"
-            onClick={() => adjustTime(-ADJUST_STEP_SECONDS)}
+            onClick={() => onAdjust(-ADJUST_STEP_SECONDS)}
             disabled={total <= MIN_TIMER_SECONDS}
             aria-label="Subtract 30 seconds"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-bold leading-none transition-colors disabled:cursor-not-allowed disabled:opacity-30"
@@ -643,13 +548,10 @@ const StepTimer = React.forwardRef<
           </button>
         )}
 
-                {!isDone ? (
+        {!isDone ? (
           <button
             type="button"
-            onClick={() => {
-              if (!isRunning && !hasStarted) onStart?.();
-              setIsRunning((running) => !running);
-            }}
+            onClick={onToggle}
             className="flex-1 truncate rounded-full px-4 py-2.5 text-sm font-semibold transition-colors"
             style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
@@ -658,9 +560,6 @@ const StepTimer = React.forwardRef<
             {isRunning ? "Pause" : hasStarted ? "Resume" : "Start the timer"}
           </button>
         ) : (
-          // Done means the countdown did its job — the headline already
-          // says so. Restarting isn't the next likely action (moving on to
-          // the step is), so it's a quiet link, not a competing button.
           <div className="flex flex-1 items-center justify-between">
             <span className="text-sm font-semibold" style={{ color: COLOR.clay }}>
               Time&apos;s up!
@@ -676,10 +575,10 @@ const StepTimer = React.forwardRef<
           </div>
         )}
 
-                {!isDone && (
+        {!isDone && (
           <button
             type="button"
-            onClick={() => adjustTime(ADJUST_STEP_SECONDS)}
+            onClick={() => onAdjust(ADJUST_STEP_SECONDS)}
             aria-label="Add 30 seconds"
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base font-bold leading-none transition-colors"
             style={{ backgroundColor: COLOR.surface, color: COLOR.saffronDark }}
@@ -694,14 +593,58 @@ const StepTimer = React.forwardRef<
           className="mt-2.5 text-center text-[11px]"
           style={{ color: COLOR.inkSoft, opacity: 0.8 }}
         >
-          or say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
+          Say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
         </p>
       )}
     </div>
   );
-});
+};
 
-StepTimer.displayName = "StepTimer";
+// Timers running on other steps. Portaled to <body> for the same reason as
+// the companion: a transformed ancestor would break `fixed`.
+const TimerChips: React.FC<{
+  items: BackgroundTimer[];
+  onJump: (step: number) => void;
+}> = ({ items, onJump }) => {
+  if (items.length === 0) return null;
+
+  return createPortal(
+    <div className="pointer-events-none fixed bottom-5 left-4 z-[55] flex flex-col items-start gap-2 sm:bottom-6 sm:left-6">
+      {items.map((item) => (
+        <button
+          key={item.step}
+          type="button"
+          onClick={() => onJump(item.step)}
+          aria-label={`Step ${item.step + 1} timer, ${
+            item.isDone ? "time's up" : formatClock(item.remaining)
+          }. Go to step.`}
+          className="pointer-events-auto flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-semibold shadow-lg shadow-black/10 transition-transform active:scale-95 focus:outline-none focus-visible:ring-2"
+          style={{
+            borderColor: item.isDone ? COLOR.clay : COLOR.border,
+            backgroundColor: item.isDone ? COLOR.clayTint : COLOR.surface,
+            color: COLOR.ink,
+          }}
+        >
+          <span className="text-xs font-bold" style={{ color: COLOR.inkSoft }}>
+            Step {item.step + 1}
+          </span>
+          <span
+            className="tabular-nums"
+            style={{ color: item.isDone ? COLOR.clay : COLOR.saffronDark }}
+          >
+            {item.isDone ? "Time's up" : formatClock(item.remaining)}
+          </span>
+          {!item.isDone && !item.isRunning && (
+            <span className="text-[11px] font-medium" style={{ color: COLOR.inkSoft }}>
+              paused
+            </span>
+          )}
+        </button>
+      ))}
+    </div>,
+    document.body
+  );
+};
 
 const ProgressRing: React.FC<{ current: number; total: number }> = ({ current, total }) => {
   const r = 16;
@@ -888,16 +831,60 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
-  // Per-step timer progress, keyed by step index. Lives here (not inside
-  // StepTimer) because StepTimer gets unmounted/remounted every time the
-  // person navigates between steps — this ref is what actually survives
-  // that, so a quick "check the previous step" peek doesn't reset the count.
-    const stepTimersRef = useRef<Map<number, StepTimerState>>(new Map());
-  // Always points at whichever step's timer is currently mounted, or null
-  // when the current step has no timer at all. React clears this to null
-  // automatically when StepTimer unmounts (e.g. navigating to a step
-  // without a duration), so heyChefCommands never needs to track that itself.
-  const stepTimerHandleRef = useRef<StepTimerHandle | null>(null);
+    // Timers live in a hook, not inside StepTimer, so they keep counting while
+  // the person is on another step. They run off a real end time, so a
+  // throttled or backgrounded tab doesn't make them drift.
+  // (Return types are explicit so TypeScript doesn't see a circular reference.)
+  const handleTimerComplete = (stepIdx: number): void => {
+    playChime();
+    const isCurrent = stepIdx === currentStepIndex;
+    const wasLastStep = stepIdx >= recipe.method.length - 1;
+    if (isCurrent) timers.acknowledge(stepIdx);
+
+    if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
+      // A timer on the step in front of you may interrupt; one finishing
+      // in the background waits its turn instead of cutting off speech.
+      if (isCurrent) window.speechSynthesis.cancel();
+      // Let the chime land first, then speak, so they don't overlap.
+      window.setTimeout(() => {
+        const message = !isCurrent
+          ? `Time's up for step ${stepIdx + 1}.`
+          : wasLastStep
+          ? "Time's up."
+          : `Time's up. ${doneHint}`;
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+      }, 450);
+    }
+
+    // The done? prompt belongs to the step on screen only.
+    if (isCurrent && !wasLastStep) setShowNextStepConfirm(true);
+  };
+
+  const handleTimerCheckIn = (stepIdx: number, markIndex: number): void => {
+    // A background timer's chip already says enough; don't interrupt.
+    if (stepIdx !== currentStepIndex) return;
+    const line =
+      markIndex === 0
+        ? CHECK_IN_LINES_FIRST[currentStepIndex % CHECK_IN_LINES_FIRST.length]
+        : CHECK_IN_LINES_LATER[(currentStepIndex + markIndex) % CHECK_IN_LINES_LATER.length];
+    setCompanionCheckIn({
+      id: `${currentStepIndex}-${markIndex}-${Date.now()}`,
+      text: line,
+    });
+  };
+
+  const timers = useStepTimers({
+    onComplete: handleTimerComplete,
+    onCheckIn: handleTimerCheckIn,
+  });
+
+  // Visiting a finished step means you've seen it: drop its chip.
+  useEffect(() => {
+    if (isCooking) timers.acknowledge(currentStepIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStepIndex, isCooking]);
 
   const [isVoiceEnabled, setIsVoiceEnabled] = useState(() => {
     try {
@@ -924,10 +911,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     utterance.rate = 0.95;
     window.speechSynthesis.speak(utterance);
 
-    // On a timed step, tell the person they can start the timer by voice.
-    const savedTimer = stepTimersRef.current.get(currentStepIndex);
-    const timerUntouched = !savedTimer || savedTimer.remaining === savedTimer.total;
-    if (heyChefActive && stepDurationSeconds !== null && timerUntouched) {
+        // On a timed step, tell the person they can start the timer by voice.
+    const timerUntouched =
+      stepDurationSeconds !== null &&
+      !timers.getView(currentStepIndex, stepDurationSeconds).hasStarted;
+    if (heyChefActive && timerUntouched) {
       const hint = new SpeechSynthesisUtterance(
         "This step has a timer. Say start timer when you're ready."
       );
@@ -1094,6 +1082,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   };
 
   const handleStartCooking = () => {
+    timers.clearAll();
     setResumePrompt(null);
     setIsCooking(true);
     setStepDirection("none");
@@ -1164,7 +1153,42 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
       const LAST_STEP_MESSAGE =
     "That was the last step.||If you're done cooking, it's time for the best part, eating it!";
-  const TIMER_STARTED_MESSAGE = "Timer started. I'll remind you once it's over.";
+    const TIMER_STARTED_MESSAGE = "Timer started. I'll remind you once it's over.";
+
+  // The current step's timer, or null when the step has none.
+  const currentTimer = () =>
+    stepDurationSeconds === null
+      ? null
+      : {
+          seconds: stepDurationSeconds,
+          view: timers.getView(currentStepIndex, stepDurationSeconds),
+        };
+
+  // Start, pause or resume, same as tapping the button.
+  const toggleCurrentTimer = () => {
+    const t = currentTimer();
+    if (!t || t.view.isDone) return;
+    if (t.view.isRunning) {
+      timers.pause(currentStepIndex);
+      return;
+    }
+    timers.start(currentStepIndex, t.seconds);
+    if (!t.view.hasStarted && (isVoiceEnabled || heyChefActive)) {
+      speakNow(TIMER_STARTED_MESSAGE);
+    }
+  };
+
+  const resetCurrentTimer = () => {
+    timers.reset(currentStepIndex);
+    setShowNextStepConfirm(false);
+  };
+
+  // Tapping a timer chip takes you to that step.
+  const handleJumpToStep = (step: number) => {
+    setStepDirection(step > currentStepIndex ? "next" : "prev");
+    setCurrentStepIndex(step);
+    methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   // A returned string is spoken back; returning nothing stays quiet
   // (the step-reading effect reads the new step by itself).
   const heyChefCommands: HeyChefCommands = {
@@ -1188,37 +1212,46 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       handleCancelNextStep();
       return "Okay, take your time.";
     },
-    pauseTimer: () => {
-      const timer = stepTimerHandleRef.current;
-      if (!timer || timer.isDone()) return "There's no timer running on this step.";
-      if (!timer.isRunning()) return "The timer's already paused.";
-      timer.pause();
+        pauseTimer: () => {
+      const t = currentTimer();
+      if (!t || t.view.isDone) return "There's no timer running on this step.";
+      if (!t.view.hasStarted) return "The timer hasn't started yet.";
+      if (!t.view.isRunning) return "The timer's already paused.";
+      timers.pause(currentStepIndex);
     },
-        resumeTimer: () => {
-      const timer = stepTimerHandleRef.current;
-      if (!timer || timer.isDone()) return "There's no timer on this step.";
-      if (timer.isRunning()) return "The timer's already running.";
-      const firstStart = !timer.hasStarted();
-      timer.resume();
-      return firstStart ? TIMER_STARTED_MESSAGE : "Timer resumed.";
+    resumeTimer: () => {
+      // Also what "start timer" does: first start vs. resuming after a pause.
+      const t = currentTimer();
+      if (!t || t.view.isDone) return "There's no timer on this step.";
+      if (t.view.isRunning) return "The timer's already running.";
+      timers.start(currentStepIndex, t.seconds);
+      return t.view.hasStarted ? "Timer resumed." : TIMER_STARTED_MESSAGE;
     },
     addTime: () => {
-      const timer = stepTimerHandleRef.current;
-      if (!timer || timer.isDone()) return "There's no timer to add time to.";
-      timer.adjust(30);
+      const t = currentTimer();
+      if (!t || t.view.isDone) return "There's no timer to add time to.";
+      timers.adjust(currentStepIndex, t.seconds, 30);
       return "Added 30 seconds.";
     },
     subtractTime: () => {
-      const timer = stepTimerHandleRef.current;
-      if (!timer || timer.isDone()) return "There's no timer to take time off.";
-      timer.adjust(-30);
+      const t = currentTimer();
+      if (!t || t.view.isDone) return "There's no timer to take time off.";
+      timers.adjust(currentStepIndex, t.seconds, -30);
       return "Took off 30 seconds.";
     },
     timeLeft: () => {
-      const timer = stepTimerHandleRef.current;
-      if (!timer) return "There's no timer on this step.";
-      if (timer.isDone()) return "Time's already up.";
-      return `${formatSpokenDuration(timer.getRemainingSeconds())} left.`;
+      const t = currentTimer();
+      if (t) {
+        if (t.view.isDone) return "Time's already up.";
+        if (!t.view.hasStarted) return "The timer hasn't started yet.";
+        return `${formatSpokenDuration(t.view.remaining)} left.`;
+      }
+      // No timer on this step: report any running on other steps.
+      const running = timers.getBackground(currentStepIndex).filter((x) => x.isRunning);
+      if (running.length === 0) return "There's no timer on this step.";
+      return running
+        .map((x) => `Step ${x.step + 1} has ${formatSpokenDuration(x.remaining)} left.`)
+        .join("||");
     },
   };
 
@@ -1594,7 +1627,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const totalSteps = recipe.method.length;
   const currentStep = recipe.method[currentStepIndex];
   const stepDurationSeconds = parseDurationSeconds(currentStep.instruction);
+
   const isLastStep = currentStepIndex >= totalSteps - 1;
+  const backgroundTimers = isCooking ? timers.getBackground(currentStepIndex) : [];
 
   const stepAnimationClass =
     stepDirection === "next"
@@ -2108,42 +2143,14 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     )}
 
                                           {stepDurationSeconds !== null && (
-                                            <StepTimer
-                        ref={stepTimerHandleRef}
-                        seconds={stepDurationSeconds}
-                        stepKey={currentStepIndex}
-                        timerState={stepTimersRef.current}
+                                          <StepTimer
+                        view={timers.getView(currentStepIndex, stepDurationSeconds)}
                         voiceHints={heyChefActive}
-                        onStart={() => {
-                          if (isVoiceEnabled || heyChefActive) speakNow(TIMER_STARTED_MESSAGE);
-                        }}
-                        onReset={() => setShowNextStepConfirm(false)}
-                        onCheckIn={(markIndex) => {
-                          const line =
-                            markIndex === 0
-                              ? CHECK_IN_LINES_FIRST[currentStepIndex % CHECK_IN_LINES_FIRST.length]
-                              : CHECK_IN_LINES_LATER[(currentStepIndex + markIndex) % CHECK_IN_LINES_LATER.length];
-                          setCompanionCheckIn({
-                            id: `${currentStepIndex}-${markIndex}-${Date.now()}`,
-                            text: line,
-                          });
-                        }}
-                        onComplete={() => {
-                            if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
-                            window.speechSynthesis.cancel();
-                            // Let the chime's attention-grabbing ping land first, then speak —
-                            // avoids the beep and voice overlapping into a garbled mess.
-                            window.setTimeout(() => {
-                              const message = isLastStep
-                                ? "Time's up."
-                                : `Time's up. ${doneHint}`;
-                              const utterance = new SpeechSynthesisUtterance(message);
-                              utterance.rate = 0.95;
-                              window.speechSynthesis.speak(utterance);
-                            }, 450);
-                          }
-                          if (!isLastStep) setShowNextStepConfirm(true);
-                        }}
+                        onToggle={toggleCurrentTimer}
+                        onAdjust={(delta) =>
+                          timers.adjust(currentStepIndex, stepDurationSeconds, delta)
+                        }
+                        onReset={resetCurrentTimer}
                       />
                     )}
                   </div>
@@ -2226,6 +2233,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                         } catch {
                           // ignore
                         }
+                        timers.clearAll();
                         onFinishCooking();
                       }}
                       className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
@@ -2265,6 +2273,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
           )}
         </div>
       </div>
+
+      {isCooking && <TimerChips items={backgroundTimers} onJump={handleJumpToStep} />}
 
       {/* Swiggy / Instamart Modal */}
       <SwiggyActionModal
