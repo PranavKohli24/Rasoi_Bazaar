@@ -2169,85 +2169,83 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </div>
             )}
             {!isCooking ? (
-                            <div
-                className="rounded-3xl border border-dashed p-6 sm:p-8"
-                style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
-              >
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
-                          Ready when you are
-                  </p>
-                  <p className="mt-1 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
-                    We&apos;ll walk you through {totalSteps} steps, one at a time.
-                  </p>
-                </div>
+  <div
+    className="overflow-hidden rounded-3xl border"
+    style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+  >
+    {/* Top: pitch + primary action, side by side, no wasted vertical room */}
+    <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-6">
+      <div className="min-w-0">
+        <p className="font-serif text-lg font-black leading-tight sm:text-xl" style={{ color: COLOR.ink }}>
+          Ready when you are
+        </p>
+        <p className="mt-0.5 text-sm leading-snug" style={{ color: COLOR.inkSoft }}>
+          {totalSteps} steps, one at a time
+        </p>
+      </div>
 
-                <button
-                  type="button"
-                  onClick={handleStartCooking}
-                  className={`${primaryButton} w-full shrink-0 sm:w-auto`}
-                  style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                >
-                                   <PlayIcon className="h-5 w-5" />
-                  Start cooking
-                </button>
-              </div>
+      <button
+        type="button"
+        onClick={handleStartCooking}
+        className={`${primaryButton} w-full shrink-0 sm:w-auto`}
+        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+      >
+        <PlayIcon className="h-5 w-5" />
+        Start cooking
+      </button>
+    </div>
 
-              {heyChefSupported ? (
-                <div
-                  className="mt-5 flex items-start gap-3 rounded-2xl border p-4"
-                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
-                >
-                  <span
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffron }}
-                  >
-                    <MicIcon className="h-5 w-5" />
-                  </span>
+    {/* Bottom: hands-free strip — same card, just a divider, not a second nested box */}
+    {heyChefSupported ? (
+      <div
+        className="flex items-center gap-3 border-t px-5 py-3.5 sm:px-6"
+        style={{ borderColor: `${COLOR.saffronDark}22` }}
+      >
+        <MicIcon className="h-4 w-4 shrink-0" style={{ color: COLOR.saffronDark }} />
 
-                  <div className="min-w-0 flex-1">
-                    <p className="font-semibold leading-snug" style={{ color: COLOR.ink }}>
-                      Cook hands-free
-                    </p>
-                    <p className="mt-0.5 text-sm leading-snug" style={{ color: COLOR.inkSoft }}>
-                      Say “Hey chef” for the next step, timers, or any doubt. It only listens
-                      while you&apos;re cooking.
-                    </p>
-                    {isHeyChefOn && (
-                      <p className="mt-1.5 text-xs leading-snug" style={{ color: COLOR.inkSoft }}>
-                        Your browser will ask to use the microphone, and may send the audio to
-                        its speech service.
-                      </p>
-                    )}
-                  </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold leading-snug" style={{ color: COLOR.ink }}>
+            Cook hands-free
+            <span className="ml-1.5 font-normal" style={{ color: COLOR.inkSoft }}>
+              - say "Hey chef" for any doubt, move to next step, or timers.
+            </span>
+          </p>
+          {/* {isHeyChefOn && (
+            <p className="mt-0.5 text-xs leading-snug" style={{ color: COLOR.inkSoft }}>
+              Your browser will ask to use the microphone, and may send audio to its speech service.
+            </p>
+          )} */}
+        </div>
 
-                  <button
-                    type="button"
-                    role="switch"
-                    aria-checked={isHeyChefOn}
-                    aria-label="Cook hands-free with Hey chef"
-                    onClick={toggleHeyChef}
-                    className="relative mt-0.5 h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
-                    style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
-                      style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
-                    />
-                  </button>
-                </div>
-              ) : (
-                <p className="mt-4 text-xs" style={{ color: COLOR.inkSoft }}>
-                  Voice control isn&apos;t supported in this browser. Try Chrome for hands-free
-                  cooking.
-                </p>
-              )}
-              </div>
-            ) : (
+        <button
+          type="button"
+          role="switch"
+          aria-checked={isHeyChefOn}
+          aria-label="Cook hands-free with Hey chef"
+          onClick={toggleHeyChef}
+          className="relative h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
+          style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
+        >
+          <span
+            aria-hidden="true"
+            className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
+            style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
+          />
+        </button>
+      </div>
+    ) : (
+      <div
+        className="border-t px-5 py-3 text-xs sm:px-6"
+        style={{ borderColor: `${COLOR.saffronDark}22`, color: COLOR.inkSoft }}
+      >
+        Voice control isn't supported in this browser. Try Chrome for hands-free cooking.
+      </div>
+    )}
+  </div>
+) : (
+
               <div>
                 <div
                   aria-live="polite"
