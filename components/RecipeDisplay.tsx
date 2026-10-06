@@ -2389,7 +2389,7 @@ const handlePrevStep = () => {
             <MicIcon className="h-4 w-4" />
           </span>
           <span className="min-w-0 flex-1">
-            Hands busy? Turn on hands-free and just say "next".
+            Hands busy? Just say "start timer" and more
           </span>
           <button
             type="button"
