@@ -722,8 +722,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const heyChefActive = isCooking && isHeyChefOn && heyChefSupported;
 
   const doneHint = heyChefActive
-    ? "If you're done with this step, say yes done."
-    : "If you're done with this step, press Yes, done.";
+    ? "Say next when you're ready."
+    : "Tap Next when you're ready.";
 
   const toggleHeyChef = () => {
     const next = !isHeyChefOn;
@@ -858,8 +858,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       }, 450);
     }
 
-    // The done? prompt belongs to the step on screen only.
-    if (isCurrent && !wasLastStep) setShowNextStepConfirm(true);
   };
 
   const handleTimerCheckIn = (stepIdx: number, markIndex: number): void => {
@@ -1019,10 +1017,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   }, [isCooking, currentStepIndex, checkedIngredients, progressKey]);
 
   const [stepDirection, setStepDirection] = useState<"next" | "prev" | "none">("none");
-  // When the current step has a running/relevant timer, "Next" asks for a
-  // confirmation tap first instead of advancing immediately.
-  const [isConfirmingDone, setIsConfirmingDone] = useState(false);
-  const [showNextStepConfirm, setShowNextStepConfirm] = useState(false);
+
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const methodHeadingRef = useRef<HTMLElement>(null);
 
@@ -1095,38 +1090,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  // A fresh step always starts with no pending confirmation.
-  useEffect(() => {
-    setShowNextStepConfirm(false);
-  }, [currentStepIndex]);
-
-    const handleNextStep = (): boolean => {
+      const handleNextStep = (): boolean => {
     if (currentStepIndex >= recipe.method.length - 1) return false;
-
-    const currentHasTimer =
-      parseDurationSeconds(recipe.method[currentStepIndex].instruction) !== null;
-
-    if (currentHasTimer && !showNextStepConfirm) {
-      setShowNextStepConfirm(true);
-      if ((isVoiceEnabled || heyChefActive) && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(doneHint);
-        utterance.rate = 0.95;
-        window.speechSynthesis.speak(utterance);
-      }
-      return false;
-    }
-
-        // "Done" with this step means its timer is no longer needed.
-    timers.reset(currentStepIndex);
-    setShowNextStepConfirm(false);
     setStepDirection("next");
     setCurrentStepIndex((prev) => prev + 1);
     return true;
   };
-
-  const handleCancelNextStep = () => setShowNextStepConfirm(false);
-
+  
   const handlePrevStep = () => {
     if (currentStepIndex > 0) {
       setStepDirection("prev");
@@ -1135,15 +1105,6 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   };
 
     /* ----- Hey chef: what each spoken command does ----- */
-
-  // Skips the "are you sure?" step: this is what "yes done" does.
-  const advanceNow = () => {
-    if (currentStepIndex >= recipe.method.length - 1) return;
-    timers.reset(currentStepIndex);
-    setShowNextStepConfirm(false);
-    setStepDirection("next");
-    setCurrentStepIndex((prev) => prev + 1);
-  };
 
   const speakNow = (text: string) => {
     if (!("speechSynthesis" in window)) return;
@@ -1181,10 +1142,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     }
   };
 
-  const resetCurrentTimer = () => {
-    timers.reset(currentStepIndex);
-    setShowNextStepConfirm(false);
-  };
+    const resetCurrentTimer = () => timers.reset(currentStepIndex);
 
   // Tapping a timer chip takes you to that step.
   const handleJumpToStep = (step: number) => {
@@ -1197,8 +1155,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const heyChefCommands: HeyChefCommands = {
     next: () => {
       if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
-      const advanced = handleNextStep(); // on a timed step this asks "done?" first, as the button does
-      return advanced ? undefined : false; // false: only opened the confirm, nothing to flash yet
+      handleNextStep();
     },
     back: () => {
       if (currentStepIndex === 0) return "You're already on the first step.";
@@ -1207,14 +1164,12 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     repeat: () => {
       speakNow(recipe.method[currentStepIndex].instruction);
     },
-    yesDone: () => {
+        yesDone: () => {
+      // Still understood after "Hey chef", it just means next now.
       if (currentStepIndex >= recipe.method.length - 1) return LAST_STEP_MESSAGE;
-      advanceNow();
+      handleNextStep();
     },
-        notYet: () => {
-      handleCancelNextStep();
-      return "Okay, take your time.";
-    },
+    notYet: () => "Okay, take your time.",
         pauseTimer: () => {
       const t = currentTimer();
       if (!t || t.view.isDone) return "There's no timer running on this step.";
@@ -2056,10 +2011,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                   className={!commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined}
                   style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
                 >
-                  {commandFlash
+                                    {commandFlash
                     ? `✓ ${commandFlash.label}`
-                    : heyChefPhase === "sleeping" && showNextStepConfirm
-                    ? "Say “yes done” or “not yet”"
                     : HEY_CHEF_LABEL[heyChefPhase]}
                 </span>
               </div>
@@ -2168,65 +2121,25 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
                     type="button"
                     onClick={handlePrevStep}
                     disabled={currentStepIndex === 0}
-                    className={`${secondaryButton} ${showNextStepConfirm ? "flex-none px-3.5" : "flex-1 sm:flex-none"
-                      }`}
+                                        className={`${secondaryButton} flex-1 sm:flex-none`}
                     style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
                   >
                     <ChevronLeftIcon className="h-5 w-5" />
-                    <span className={showNextStepConfirm ? "sr-only sm:not-sr-only" : undefined}>
-                      Previous
-                    </span>
+                    <span>Previous</span>
                   </button>
 
-                  {!isLastStep ? (
-                    showNextStepConfirm ? (
-                      <div className="flex flex-1 items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={handleCancelNextStep}
-                          className={`${secondaryButton} flex-1 sm:flex-none`}
-                          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
-                        >
-                          Not yet
-                        </button>
-                        <button
-                          type="button"
-                          disabled={isConfirmingDone}
-                          onClick={() => {
-                            setIsConfirmingDone(true);
-                            window.setTimeout(() => {
-                              setIsConfirmingDone(false);
-                              handleNextStep();
-                            }, 1020);
-                          }}
-                          className={`${primaryButton} flex-1 sm:flex-none sm:px-8 ${isConfirmingDone ? "confirm-pop" : ""}`}
-                          style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                        >
-                          {isConfirmingDone ? (
-                            <CheckIcon className="h-5 w-5" />
-                          ) : (
-                            <>
-                              Yes, done
-                              <ChevronRightIcon className="h-5 w-5" />
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={handleNextStep}
-                        className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
-                        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                      >
-                        Next
-                        <ChevronRightIcon className="h-5 w-5" />
-                      </button>
-                    )
+                                              {!isLastStep ? (
+                    <button
+                      type="button"
+                      onClick={handleNextStep}
+                      className={`${primaryButton} flex-1 sm:flex-none sm:px-8`}
+                      style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
+                    >
+                      Next
+                      <ChevronRightIcon className="h-5 w-5" />
+                    </button>
                   ) : (
                     <button
                       type="button"
@@ -2251,7 +2164,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
               </div>
             )}
           </section>
-
+                        
           {/* Notes */}
           {recipe.notes && recipe.notes.length > 0 && (
             <section aria-labelledby="notes-heading" className="py-10 lg:py-12">
@@ -2319,9 +2232,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
         currentStepInstruction={isCooking ? currentStep.instruction : null}
         totalSteps={totalSteps}
         checkInMessage={companionCheckIn}
-        heyChef={{
+                heyChef={{
           enabled: heyChefActive,
-          awaitingConfirm: showNextStepConfirm,
           commands: heyChefCommands,
           onPhaseChange: setHeyChefPhase,
           onMicBlocked: handleHeyChefBlocked,
