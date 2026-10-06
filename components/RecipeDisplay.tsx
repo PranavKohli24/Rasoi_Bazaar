@@ -1117,6 +1117,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       return false;
     }
 
+        // "Done" with this step means its timer is no longer needed.
+    timers.reset(currentStepIndex);
     setShowNextStepConfirm(false);
     setStepDirection("next");
     setCurrentStepIndex((prev) => prev + 1);
@@ -1137,6 +1139,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   // Skips the "are you sure?" step: this is what "yes done" does.
   const advanceNow = () => {
     if (currentStepIndex >= recipe.method.length - 1) return;
+    timers.reset(currentStepIndex);
     setShowNextStepConfirm(false);
     setStepDirection("next");
     setCurrentStepIndex((prev) => prev + 1);
