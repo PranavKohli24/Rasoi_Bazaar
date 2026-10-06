@@ -2109,7 +2109,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
       className={
         !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
       }
-      style={commandFlash ? { color: COLOR.saffronDark, fontWeight: 600 } : undefined}
+      style={
+        commandFlash
+          ? { color: COLOR.saffronDark, fontWeight: 600 }
+          : heyChefPhase === "sleeping"
+          ? { opacity: 0.65, fontWeight: 400 }
+          : undefined
+      }
     >
       {commandFlash ? (
         `✓ ${commandFlash.label}`
