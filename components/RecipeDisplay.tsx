@@ -610,7 +610,7 @@ const StepTimer: React.FC<{
           style={{ color: COLOR.saffronDark }}
         >
           <MicIcon className="h-3.5 w-3.5" />
-          Hands busy? Say “start timer” instead
+          Hands busy? Just say "start timer" and more
         </button>
       )}
     </div>
