@@ -19614,6 +19614,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mutter poha (peas poha)": {
     "dishName": "Mutter Poha",
+    "image": "/dishes/mutter-poha.webp",
     "description": "Light flattened rice cooked with green peas, onion, peanuts and lemon.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -19725,6 +19726,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mixed veg sabzi": {
     "dishName": "Mixed Veg Sabzi",
+    "image": "/dishes/mixed-veg-sabzi.webp",
     "description": "Simple everyday mixed vegetables cooked with onion, tomato and mild spices.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -19845,6 +19847,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "shukto": {
     "dishName": "Shukto",
+    "image": "/dishes/shukto.webp",
     "description": "Bengali-style mixed vegetable curry with bitter gourd and a gentle mustard finish.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -19987,6 +19990,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "vermicelli (masala seviyan)": {
     "dishName": "Vermicelli (Masala Seviyan)",
+    "image": "/dishes/vermicelli.webp",
     "description": "Quick savory vermicelli cooked with vegetables, peanuts and simple Indian spices.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -20434,6 +20438,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aamti": {
     "dishName": "Aamti",
+    "image": "/dishes/aamti.webp",
     "description": "Maharashtrian-style toor dal with goda masala, tamarind and a little jaggery.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -31353,6 +31358,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gujiya": {
   "dishName": "Gujiya",
+  "image": "/dishes/gujiya.webp",
   "description": "Crisp half-moon pastry filled with sweetened khoya, coconut and nuts.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -31462,6 +31468,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "modak": {
   "dishName": "Ukadiche Modak",
+  "image": "/dishes/modak.webp",
   "description": "Steamed rice-flour dumplings filled with coconut, jaggery and cardamom.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [
@@ -31561,6 +31568,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "malpua": {
   "dishName": "Malpua",
+  "image": "/dishes/malpua.webp",
   "description": "Soft, lacy Indian sweet pancakes fried in ghee and dipped in light sugar syrup.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [
@@ -31660,6 +31668,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kalakand": {
   "dishName": "Kalakand",
+  "image": "/dishes/kalakand.webp",
   "description": "Soft grainy milk fudge made by reducing milk with paneer, sugar and cardamom.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [
@@ -31740,6 +31749,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rava laddu": {
   "dishName": "Rava Laddu",
+  "image": "/dishes/rava-laddu.webp",
   "description": "South Indian semolina ladoos made with sugar, ghee, cardamom and nuts.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -31835,6 +31845,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "soan papdi": {
   "dishName": "Soan Papdi",
+  "image": "/dishes/soan-papdi.webp",
   "description": "Flaky Indian sweet made by roasting besan and flour in ghee and stretching the cooked sugar mixture.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -31934,6 +31945,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mysore pak": {
   "dishName": "Mysore Pak",
+  "image": "/dishes/mysore-pak.webp",
   "description": "Rich South Indian gram-flour sweet cooked with ghee and sugar until tender and crumbly.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
