@@ -1345,19 +1345,19 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     }
   };
 
-  const handleStartCooking = () => {
+    const handleStartCooking = () => {
     timers.clearAll();
     setResumePrompt(null);
     setIsCooking(true);
     setStepDirection("none");
     setCurrentStepIndex(0);
+    window.setTimeout(() => {
+      methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
   };
 
   const handleStartCookingFromIngredients = () => {
     handleStartCooking();
-    window.setTimeout(() => {
-      methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 50);
   };
 
   // Lets someone jump straight to the method from the header without
@@ -2236,7 +2236,7 @@ const handlePrevStep = () => {
 <section
   ref={methodHeadingRef}
   aria-labelledby="method-heading"
-  className="scroll-mt-4 py-10 sm:scroll-mt-8 lg:py-12"
+  className="scroll-mt-3 py-10 sm:scroll-mt-8 lg:py-12"
 >
   <SectionTitle
     id="method-heading"
