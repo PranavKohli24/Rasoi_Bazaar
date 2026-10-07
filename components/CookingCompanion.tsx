@@ -741,17 +741,29 @@ const focusInputWithoutKeyboard = () => {
   window.setTimeout(() => el.removeAttribute("readonly"), 50);
 };
 
-  const speak = (index: number, text: string) => {
-    if (!canSpeak) return;
-    stopSpeaking();
-    const token = speakTokenRef.current;
+  // Cached once and kept fresh via 'voiceschanged' — getVoices() returns []
+// on first call in Chrome because the list loads async, so a per-call
+// lookup silently misses the en-IN voice on a cold page load.
+const cachedVoicesRef = useRef<SpeechSynthesisVoice[]>([]);
 
-    const utterance = new SpeechSynthesisUtterance(plainTextForSpeech(text));
-    const voice = window.speechSynthesis
-      .getVoices()
-      .find((v) => v.lang === "en-IN" || v.lang === "en_IN");
-    if (voice) utterance.voice = voice;
+useEffect(() => {
+  if (!canSpeak) return;
+  const loadVoices = () => { cachedVoicesRef.current = window.speechSynthesis.getVoices(); };
+  loadVoices();
+  window.speechSynthesis.addEventListener("voiceschanged", loadVoices);
+  return () => window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
+}, [canSpeak]);
+const speak = (index: number, text: string) => {
+  if (!canSpeak) return;
+  stopSpeaking();
+  const token = speakTokenRef.current;
 
+  const utterance = new SpeechSynthesisUtterance(plainTextForSpeech(text));
+  const voices = cachedVoicesRef.current.length
+    ? cachedVoicesRef.current
+    : window.speechSynthesis.getVoices(); // last-resort fallback, pre-listener
+  const voice = voices.find((v) => v.lang === "en-IN" || v.lang === "en_IN");
+  if (voice) utterance.voice = voice;
     const finish = () => {
       if (speakTokenRef.current === token) setSpeakingIndex(null);
     };
