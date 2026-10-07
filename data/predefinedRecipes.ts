@@ -35381,6 +35381,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "schezwan noodles": {
     "dishName": "Schezwan Noodles",
+    "image": "/dishes/schezwan-noodles.webp",
     "description": "Spicy Indian-style noodles tossed with vegetables and Schezwan sauce.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -35490,6 +35491,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "veg manchow soup": {
     "dishName": "Vegetable Manchow Soup",
+    "image": "/dishes/veg-manchow-soup.webp",
     "description": "A hot, spicy Indo-Chinese vegetable soup topped with crisp noodles.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -35624,6 +35626,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "hot and sour soup": {
     "dishName": "Hot and Sour Soup",
+    "image": "/dishes/veg-manchow-soup.webp",
     "description": "A spicy and tangy Indo-Chinese soup with finely chopped vegetables and a light thickened broth.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -36224,6 +36227,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "thoran": {
     "dishName": "Vegetable Thoran",
+    "image": "/dishes/thoran.webp",
     "description": "A simple Kerala-style stir-fry of finely chopped vegetables finished with coconut, curry leaves and green chilli.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -36319,6 +36323,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "aloo posto": {
     "dishName": "Aloo Posto",
+    "image": "/dishes/aloo-posto.webp",
     "description": "Bengali potatoes cooked with a simple poppy-seed paste and green chilli.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -36523,6 +36528,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pakhala bhata": {
     "dishName": "Pakhala Bhata",
+    "image": "/dishes/pakhala-bhata.webp",
     "description": "Odisha-style fermented rice soaked in lightly salted water and curd, served cool and refreshing.",
     "prepTime": "Approx. 20 minutes, plus chilling",
     "equipment": [
@@ -36698,6 +36704,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "basundi": {
     "dishName": "Basundi",
+    "image": "/dishes/basundi.webp",
     "description": "Rich Maharashtrian and Gujarati-style reduced milk dessert flavoured with cardamom and nuts.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -37435,6 +37442,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kolukattai": {
     "dishName": "Kolukattai",
+    "image": "/dishes/ukadiche-modak.webp",
     "description": "South Indian rice-flour dumplings filled with sweet coconut and jaggery or served as a savoury steamed snack.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -37524,6 +37532,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "ukadiche modak": {
     "dishName": "Ukadiche Modak",
+    "image": "/dishes/ukadiche-modak.webp",
     "description": "Maharashtrian steamed rice-flour dumplings filled with coconut and jaggery.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
