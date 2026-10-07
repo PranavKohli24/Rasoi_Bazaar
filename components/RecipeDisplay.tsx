@@ -393,11 +393,11 @@ interface SwipeToConfirmProps {
 
 const SWIPE_THUMB_SIZE = 56;
 const SWIPE_TRACK_PADDING = 5;
-const SWIPE_CONFIRM_THRESHOLD = 0.82;
+const SWIPE_CONFIRM_THRESHOLD = 0.65;
 // Icon morphs slightly before the actual confirm point, so the thumb
 // shows a check *before* you let go — the release just completes what
 // you're already seeing.
-const SWIPE_ICON_MORPH_THRESHOLD = 0.72;
+const SWIPE_ICON_MORPH_THRESHOLD = 0.65;
 
 const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, onConfirm }) => {
   const trackRef = useRef<HTMLDivElement>(null);
