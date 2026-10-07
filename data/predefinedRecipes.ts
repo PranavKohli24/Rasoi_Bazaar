@@ -32136,6 +32136,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken chettinad": {
   "dishName": "Chicken Chettinad",
+  "image": "/dishes/pepper-chicken.webp",
   "description": "Tamil Nadu chicken curry with roasted whole spices, coconut and curry leaves.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -32284,6 +32285,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken vindaloo": {
   "dishName": "Chicken Vindaloo",
+  "image": "/dishes/chicken-vindaloo.webp",
   "description": "Goan-style hot and tangy chicken curry made with vinegar, chillies, garlic and spices.",
   "prepTime": "Approx. 50 minutes (plus marinating)",
   "equipment": [
@@ -32427,6 +32429,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken madras": {
   "dishName": "Chicken Madras",
+  "image": "/dishes/chicken-madras.webp",
   "description": "Spicy South Indian-style chicken curry with tomato, chilli, cumin and coriander.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -32555,6 +32558,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pepper chicken": {
   "dishName": "Pepper Chicken",
+  "image": "/dishes/pepper-chicken.webp",
   "description": "South Indian chicken stir-fry scented with freshly crushed black pepper and curry leaves.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -32678,6 +32682,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "nihari": {
   "dishName": "Nihari",
+  "image": "/dishes/nihari.webp",
   "description": "Slow-cooked meat stew with a deeply spiced, silky gravy and warming ginger.",
   "prepTime": "Approx. 90 minutes",
   "equipment": [
@@ -32802,6 +32807,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "haleem": {
   "dishName": "Haleem",
+  "image": "/dishes/haleem.webp",
   "description": "Thick slow-cooked meat, lentil and wheat stew finished with fried onion and lemon.",
   "prepTime": "Approx. 90 minutes",
   "equipment": [
@@ -32950,6 +32956,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "yakhni pulao": {
   "dishName": "Yakhni Pulao",
+  "image": "/dishes/yakhni-pulao.webp",
   "description": "Mild aromatic mutton pulao cooked in a spiced meat broth with caramelized onion.",
   "prepTime": "Approx. 70 minutes",
   "equipment": [
@@ -33083,6 +33090,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "laal maas": {
   "dishName": "Laal Maas",
+  "image": "/dishes/laal-maas.webp",
   "description": "Rajasthani mutton curry built around dried red chillies, garlic and a dark spicy gravy.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -33211,6 +33219,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "fish fry": {
   "dishName": "Fish Fry",
+  "image": "/dishes/fish-fry.webp",
   "description": "Crisp pan-fried fish marinated with chilli, turmeric, lemon and simple spices.",
   "prepTime": "Approx. 40 minutes (plus marinating)",
   "equipment": [
@@ -33311,6 +33320,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "prawn curry": {
   "dishName": "Prawn Curry",
+  "image": "/dishes/prawn-curry.webp",
   "description": "Everyday Indian prawn curry with onion, tomato, ginger, garlic and spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -33426,6 +33436,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "goan fish curry": {
   "dishName": "Goan Fish Curry",
+  "image": "/dishes/goan-fish-curry.webp",
   "description": "Tangy coastal fish curry with coconut, chilli and tamarind.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -33551,6 +33562,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kerala fish curry": {
   "dishName": "Kerala Fish Curry",
+  "image": "/dishes/kerala-fish-curry.webp",
   "description": "Tangy Kerala meen curry made with chilli, spices, kudampuli and coconut milk.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -33675,6 +33687,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "prawn biryani": {
   "dishName": "Prawn Biryani",
+  "image": "/dishes/prawn-biryani.webp",
   "description": "Fragrant basmati rice layered with spiced prawns, onion, herbs and light coconut milk.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [
