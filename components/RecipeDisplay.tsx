@@ -383,6 +383,8 @@ const TipCallout: React.FC<{ tip: Tip }> = ({ tip }) => {
     </div>
   );
 };
+
+
 interface SwipeToConfirmProps {
   label: string;
   confirmedLabel: string;
@@ -392,6 +394,10 @@ interface SwipeToConfirmProps {
 const SWIPE_THUMB_SIZE = 56;
 const SWIPE_TRACK_PADDING = 5;
 const SWIPE_CONFIRM_THRESHOLD = 0.82;
+// Icon morphs slightly before the actual confirm point, so the thumb
+// shows a check *before* you let go — the release just completes what
+// you're already seeing.
+const SWIPE_ICON_MORPH_THRESHOLD = 0.72;
 
 const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, onConfirm }) => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -450,17 +456,18 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
   };
 
   const progressPct = maxDrag === 0 ? 0 : (dragX / maxDrag) * 100;
-  // Fades smoothly as the thumb approaches, instead of vanishing at a hard cutoff.
   const labelOpacity = isConfirmed ? 0 : Math.max(0, 1 - progressPct / 55);
-  const showHint = dragX === 0 && !isDragging && !isConfirmed;
+  const isNearThreshold =
+    isConfirmed || (maxDrag > 0 && dragX / maxDrag >= SWIPE_ICON_MORPH_THRESHOLD);
 
   return (
     <div
       ref={trackRef}
-      className="relative h-[60px] w-full select-none overflow-hidden rounded-full"
+      className="relative h-[60px] w-full select-none overflow-hidden rounded-full border"
       style={{
-        backgroundColor: COLOR.saffronTint,
-        boxShadow: "inset 0 1px 4px rgba(43,26,12,0.14)",
+        backgroundColor: COLOR.surface,
+        borderColor: COLOR.border,
+        boxShadow: "inset 0 1px 3px rgba(43,26,12,0.08)",
       }}
     >
       {/* Fill trailing the thumb */}
@@ -470,30 +477,18 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
         style={{
           width: `${SWIPE_THUMB_SIZE + SWIPE_TRACK_PADDING + dragX}px`,
           backgroundColor: COLOR.saffron,
-          transition: isDragging ? "none" : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+          transition: isDragging ? "none" : "width 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
 
-      {/* Idle hint: faint chevrons suggesting the swipe direction */}
-      {showHint && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-6 flex items-center gap-0.5"
-        >
-          {[0, 1, 2].map((i) => (
-            <ChevronRightIcon
-              key={i}
-              className="h-4 w-4 swipe-hint-chevron"
-              style={{ color: COLOR.saffronDark, animationDelay: `${i * 0.15}s` }}
-            />
-          ))}
-        </div>
-      )}
-
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center text-[15px] font-semibold"
-        style={{ color: COLOR.saffronDark, opacity: labelOpacity, transition: isDragging ? "none" : "opacity 0.2s ease" }}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center text-[15px] font-medium tracking-wide"
+        style={{
+          color: COLOR.saffronDark,
+          opacity: labelOpacity,
+          transition: isDragging ? "none" : "opacity 0.2s ease",
+        }}
       >
         {label}
       </span>
@@ -503,7 +498,6 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
           className="confirm-pop pointer-events-none absolute inset-0 flex items-center justify-center gap-1.5 text-[15px] font-semibold"
           style={{ color: COLOR.surface }}
         >
-          <CheckIcon className="h-4 w-4" />
           {confirmedLabel}
         </span>
       )}
@@ -528,26 +522,55 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
           marginTop: -SWIPE_THUMB_SIZE / 2,
           backgroundColor: COLOR.surface,
           color: COLOR.saffronDark,
-          boxShadow: isDragging
-            ? "0 4px 12px rgba(43,26,12,0.28)"
-            : "0 2px 6px rgba(43,26,12,0.18)",
-          transform: `translateX(${dragX}px) scale(${isDragging ? 1.06 : 1})`,
+          boxShadow: isNearThreshold
+            ? `0 2px 8px rgba(43,26,12,0.18), 0 0 0 4px ${COLOR.saffronTint}`
+            : isDragging
+            ? "0 4px 12px rgba(43,26,12,0.22)"
+            : "0 1px 4px rgba(43,26,12,0.14)",
+          transform: `translateX(${dragX}px) scale(${isDragging ? 1.05 : 1})`,
           transition: isDragging
             ? "box-shadow 0.15s ease"
-            : "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.15s ease",
+            : "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease",
           touchAction: "none",
           cursor: isConfirmed ? "default" : isDragging ? "grabbing" : "grab",
         }}
       >
-        {isConfirmed ? (
-          <CheckIcon className="h-5 w-5" />
-        ) : (
-          <ChevronRightIcon className="h-5 w-5" />
-        )}
+        {/* Icon cross-fades from chevron to check as the thumb nears the
+            confirm point — no separate "pop" state needed on release. */}
+        {/* Icon swap: chevron shown at rest, crossfades to a centered check
+    once the thumb crosses the confirm threshold. Scale-only (no
+    rotation) keeps the swap feeling clean rather than "spinny". */}
+<span className="relative flex h-5 w-5 items-center justify-center">
+  <span
+    className="absolute inset-0 flex items-center justify-center"
+    style={{
+      opacity: isNearThreshold ? 0 : 1,
+      transform: isNearThreshold
+        ? "scale(0.4) rotate(70deg)"
+        : "scale(1) rotate(0deg)",
+      transition: "opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    }}
+  >
+    <ChevronRightIcon className="h-5 w-5" />
+  </span>
+  <span
+    className="absolute inset-0 flex items-center justify-center"
+    style={{
+      opacity: isNearThreshold ? 1 : 0,
+      transform: isNearThreshold
+        ? "scale(1) rotate(0deg)"
+        : "scale(0.4) rotate(-70deg)",
+      transition: "opacity 0.22s ease, transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1)",
+    }}
+  >
+    <CheckIcon className="h-5 w-5" />
+  </span>
+</span>
       </div>
     </div>
   );
 };
+
 
 /* Pulls a cook time out of a step's own words ("simmer for 10 minutes",
    "bake 20-25 mins", "rest 30 seconds") so a timer can offer itself without
