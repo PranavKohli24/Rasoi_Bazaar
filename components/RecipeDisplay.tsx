@@ -1357,6 +1357,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   };
 
   const handleStartCookingFromIngredients = () => {
+    // Already mid-recipe (e.g. finished ticking off ingredients from
+    // step 3 onward): just bring the method card back into view, don't
+    // reset progress back to step 1.
+    if (isCooking) {
+      methodHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     handleStartCooking();
   };
 
@@ -2140,7 +2147,7 @@ const handlePrevStep = () => {
                     Let's start cooking
                   </button>
                   <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
-                    All set — you have everything you need.
+                    All set - you have everything you need.
                   </p>
                 </div>
               ) : (
