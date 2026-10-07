@@ -35856,6 +35856,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dal dhokli": {
     "dishName": "Dal Dhokli",
+    "image": "/dishes/dal-dhokli.webp",
     "description": "Gujarati-style wheat flour dumplings simmered directly in a mildly spiced toor dal.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -35984,6 +35985,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "undhiyu": {
     "dishName": "Undhiyu",
+    "image": "/dishes/beetroot-undhiyu.webp",
     "description": "Gujarati mixed-vegetable preparation with potatoes, brinjal, beans and a fresh coconut-coriander masala.",
     "prepTime": "Approx. 60 minutes",
     "equipment": [
@@ -36127,6 +36129,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "avial": {
     "dishName": "Avial",
+    "image": "/dishes/avial.webp",
     "description": "Kerala-style mixed vegetables cooked with coconut and yogurt into a gently spiced, lightly tangy side dish.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -36414,6 +36417,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "macher jhol": {
     "dishName": "Macher Jhol",
+    "image": "/dishes/macher-jhol.webp",
     "description": "A light Bengali fish curry with potatoes, tomato and warming spices, traditionally served with rice.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -36614,6 +36618,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chhena poda": {
     "dishName": "Chhena Poda",
+    "image": "/dishes/chhena-poda.webp",
     "description": "Odisha-style baked fresh cheese cake with caramelised edges and a lightly sweet centre.",
     "prepTime": "Approx. 60 minutes",
     "equipment": [
@@ -36785,6 +36790,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "shahi tukda": {
     "dishName": "Shahi Tukda",
+    "image": "/dishes/shahi-tukda.webp",
     "description": "Crisp bread soaked with saffron-cardamom milk and finished with nuts for a rich Indian dessert.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -36880,6 +36886,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken nuggets": {
     "dishName": "Chicken Nuggets",
+    "image": "/dishes/chiken-nuggets.webp",
     "description": "Crisp homemade chicken nuggets with a simple spiced coating, cooked in an air fryer or kadai.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -36989,6 +36996,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken kathi roll": {
     "dishName": "Chicken Kathi Roll",
+    "image": "/dishes/chicken-kathi-roll.webp",
     "description": "A popular Indian street-style roll filled with spiced chicken, onion and capsicum in a soft tawa paratha.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -37113,6 +37121,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "thekua": {
     "dishName": "Thekua",
+    "image": "/dishes/thekua.webp",
     "description": "A crisp Bihari and Jharkhandi festive sweet made with wheat flour, jaggery and fennel.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -37202,6 +37211,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "ugadi pachadi": {
     "dishName": "Ugadi Pachadi",
+    "image": "/dishes/ugadi-pachadi.webp",
     "description": "A traditional Ugadi mixture combining sweet, sour, bitter, spicy and fresh flavours in one small serving.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
@@ -37278,6 +37288,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "beetroot kanji": {
     "dishName": "Beetroot Kanji",
+    "image": "/dishes/beetroot-kanji.webp",
     "description": "A tangy North Indian fermented drink made with beetroot, mustard seeds and water.",
     "prepTime": "Approx. 15 minutes, plus fermentation",
     "equipment": [
@@ -37353,6 +37364,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "thiruvathirai kali": {
     "dishName": "Thiruvathirai Kali",
+    "image": "/dishes/thiruvathirai-kali.webp",
     "description": "A traditional Tamil sweet-savoury rice and dal preparation made for the Thiruvathirai festival.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
