@@ -33826,6 +33826,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mint chutney": {
   "dishName": "Mint Chutney",
+  "image": "/dishes/mint-chutney.webp",
   "description": "Fresh mint and coriander chutney blended with green chilli, ginger, lemon and salt.",
   "prepTime": "Approx. 10 minutes",
   "equipment": [
@@ -33917,6 +33918,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "coconut chutney": {
   "dishName": "Coconut Chutney",
+  "image": "/dishes/coconut-chutney.webp",
   "description": "Creamy South Indian coconut chutney with roasted gram, chilli and a simple tempering.",
   "prepTime": "Approx. 10 minutes",
   "equipment": [
@@ -34028,6 +34030,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "tomato chutney": {
   "dishName": "Tomato Chutney",
+  "image": "/dishes/tomato-chutney.webp",
   "description": "South Indian tomato chutney cooked with onion, garlic and mild chilli.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -34124,6 +34127,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "green chutney": {
   "dishName": "Green Chutney",
+  "image": "/dishes/green-chutney.webp",
   "description": "Versatile coriander-mint chutney for sandwiches, chaat, rolls and snacks.",
   "prepTime": "Approx. 10 minutes",
   "equipment": [
@@ -34215,6 +34219,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "tamarind chutney": {
   "dishName": "Tamarind Chutney",
+  "image": "/dishes/tamarind-chutney.webp",
   "description": "Sweet-tangy imli chutney made with tamarind, jaggery and roasted spices.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -34516,6 +34521,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kachumber": {
   "dishName": "Kachumber Salad",
+  "image": "/dishes/kachumber.webp",
   "description": "Fresh Indian chopped salad of onion, tomato, cucumber, lemon and coriander.",
   "prepTime": "Approx. 10 minutes",
   "equipment": [],
@@ -34592,6 +34598,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "masala chaas": {
   "dishName": "Masala Chaas",
+  "image": "/dishes/masala-chaas.webp",
   "description": "Refreshing spiced buttermilk with cumin, coriander, ginger and green chilli.",
   "prepTime": "Approx. 5 minutes",
   "equipment": [
@@ -34674,6 +34681,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "shikanji": {
   "dishName": "Shikanji",
+  "image": "/dishes/shikanji.webp",
   "description": "Indian lemon cooler made with lemon juice, sugar, cumin and chilled water.",
   "prepTime": "Approx. 5 minutes",
   "equipment": [],
@@ -34745,6 +34753,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aam panna": {
   "dishName": "Aam Panna",
+  "image": "/dishes/aam-panna.webp",
   "description": "Tangy summer drink made from raw mango pulp, cumin and black salt.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -34937,6 +34946,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "vegetable ramen": {
     "dishName": "Vegetable Ramen",
+    "image": "/dishes/veg-ramen.webp",
     "description": "A comforting bowl of noodles in a simple savoury vegetable broth with ginger, garlic and soy sauce.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -35046,6 +35056,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken ramen": {
     "dishName": "Chicken Ramen",
+    "image": "/dishes/chicken-ramen.webp",
     "description": "A simple chicken ramen with tender chicken, noodles and a savoury ginger-garlic broth.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -35155,6 +35166,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "spicy ramen": {
     "dishName": "Spicy Ramen",
+    "image": "/dishes/spicy-ramen.webp",
     "description": "A quick spicy noodle bowl with chilli, garlic and soy sauce for a warm, satisfying meal.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
