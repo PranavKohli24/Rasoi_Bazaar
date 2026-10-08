@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDishSearch } from "../utils/dishRoutes";
 import CompactHeader from "../components/CompactHeader";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
@@ -10,7 +11,8 @@ import { useState } from "react";
 
 const ComboRecipePage: React.FC = () => {
   const navigate = useNavigate();
-  const { comboSlug } = useParams<{ comboSlug: string }>();
+    const { go } = useDishSearch();
+    const { comboSlug } = useParams<{ comboSlug: string }>();
   const [showCelebration, setShowCelebration] = useState(false);
 
   const slugs = (comboSlug ?? "").split("+").filter(Boolean);
@@ -43,7 +45,7 @@ const ComboRecipePage: React.FC = () => {
               message="We couldn't load that combo. Try searching again."
               dishName={slugs.join(" + ")}
               suggestions={[]}
-              onSelectDish={() => navigate("/")}
+              onSelectDish={(d) => go(d, { replace: true })}
             />
           )}
 
