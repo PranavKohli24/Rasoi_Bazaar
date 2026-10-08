@@ -1633,23 +1633,62 @@ export const suggestDishCompletion = (query: string): string | null => {
     r.dishName.toLowerCase().startsWith(q)
   );
 
-  if (matches.length === 0) return null;
   if (matches.length === 1) {
     const name = matches[0].dishName;
     return name.toLowerCase() === q ? null : leadingWhitespace + name; // already an exact match
   }
 
-  // Multiple dishes share this prefix — only offer a completion if they're
-  // all just longer variants of the same shortest name, e.g. "Chole Bhature"
-  // and "Chole Bhature (Amritsari style)". Otherwise we'd be guessing.
-  const shortest = matches.reduce((a, b) =>
-    a.dishName.length <= b.dishName.length ? a : b
+  if (matches.length > 1) {
+    // Multiple dishes share this prefix — only offer a completion if they're
+    // all just longer variants of the same shortest name, e.g. "Chole Bhature"
+    // and "Chole Bhature (Amritsari style)". Otherwise we'd be guessing.
+    const shortest = matches.reduce((a, b) =>
+      a.dishName.length <= b.dishName.length ? a : b
+    );
+    const allAgree = matches.every((r) =>
+      r.dishName.toLowerCase().startsWith(shortest.dishName.toLowerCase())
+    );
+
+    if (allAgree && shortest.dishName.toLowerCase() !== q) {
+      return leadingWhitespace + shortest.dishName;
+    }
+  }
+
+  // The full typed string doesn't complete to a single dish — see if it's
+  // a combo in progress instead, e.g. "dal ro" -> "dal roti".
+  return suggestComboCompletion(query);
+};
+
+// Ghost-text completion for a combo query in progress — e.g. "dal ro"
+// completing to "dal roti" — once the first word(s) already resolve to a
+// real dish and only the next dish name is still being typed.
+const suggestComboCompletion = (query: string): string | null => {
+  const leadingWhitespace = query.match(/^\s*/)?.[0] ?? '';
+  const trimmed = query.trimStart();
+  const words = trimmed.split(' ');
+  if (words.length < 2) return null;
+
+  const partial = words[words.length - 1];
+  if (partial.length === 0) return null;
+  const firstDishText = words.slice(0, -1).join(' ');
+
+  // Exact match only (same reasoning as combo-splitting) — fuzzy here
+  // would risk the first part "absorbing" words it shouldn't.
+  const firstDish = resolveSingleDish(firstDishText);
+  if (!firstDish) return null;
+
+  const partialLower = partial.toLowerCase();
+  const matches = allRecipesByDishName.filter(
+    (r) => r.dishName.toLowerCase().startsWith(partialLower) && r.dishName !== firstDish.dishName
   );
+  if (matches.length === 0) return null;
+
+  // Same "only if every match agrees" rule as the single-dish completion.
+  const shortest = matches.reduce((a, b) => (a.dishName.length <= b.dishName.length ? a : b));
   const allAgree = matches.every((r) =>
     r.dishName.toLowerCase().startsWith(shortest.dishName.toLowerCase())
   );
+  if (!allAgree || shortest.dishName.toLowerCase() === partialLower) return null;
 
-  return allAgree && shortest.dishName.toLowerCase() !== q
-    ? leadingWhitespace + shortest.dishName
-    : null;
+  return leadingWhitespace + trimmed.slice(0, trimmed.length - partial.length) + shortest.dishName;
 };
