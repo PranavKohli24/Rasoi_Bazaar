@@ -1508,10 +1508,15 @@ export const findPredefinedRecipe = (query: string): Recipe | null => {
 
 const COMBO_SEPARATORS = /\s*(?:,|\+|&|\band\b|\bwith\b|\baur\b|\bke\s+saath\b)\s*/i;
 
+// Exact-only on purpose — fuzzy matching here is too permissive and ends up
+// "absorbing" leftover words from one split candidate into an unrelated
+// dish (e.g. "chawal roti" fuzzy-matching onto "Roti (Chapati)", treating
+// "chawal" as a typo of "chapati"). A clean alias/key match is required for
+// each half when we're guessing dish boundaries inside a combo query.
 const resolveSingleDish = (text: string): Recipe | null => {
   const cleaned = matchKey(normalizeDishQuery(text)).replace(/\s+recipe$/, "");
   if (!cleaned) return null;
-  return byKey.get(cleaned) ?? fuzzyFindKey(cleaned) ?? null;
+  return byKey.get(cleaned) ?? null;
 };
 
 /** Like findPredefinedRecipe, but also detects "dal roti" / "dal and roti"
