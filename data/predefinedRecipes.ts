@@ -26244,6 +26244,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "navratan korma": {
   "dishName": "Navratan Korma",
+  "image": "/dishes/navratan-korma.webp",
   "description": "Mild creamy mixed-vegetable curry with nuts, peas and a little sweetness.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [
@@ -26383,6 +26384,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "achari aloo": {
   "dishName": "Achari Aloo",
+  "image": "/dishes/achari-aloo.webp",
   "description": "Potatoes tossed in a tangy pickle-spice masala with mustard and fennel.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -26753,6 +26755,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "papad ki sabzi": {
   "dishName": "Papad Ki Sabzi",
+  "image": "/dishes/papad-ki-sabzi.webp",
   "description": "Rajasthani yogurt gravy with roasted papad, tomato and warming spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -27097,6 +27100,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "palak corn": {
   "dishName": "Palak Corn",
+  "image": "/dishes/palak-corn.webp",
   "description": "Creamy spinach gravy with sweet corn, garlic and mild Indian spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -27346,6 +27350,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "misal pav": {
   "dishName": "Misal Pav",
+  "image": "/dishes/misal-pav.webp",
   "description": "Spicy Maharashtrian sprout curry topped with farsan, onion, lemon and served with pav.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -27857,6 +27862,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "handvo": {
   "dishName": "Handvo",
+  "image": "/dishes/handvo.webp",
   "description": "Gujarati savory lentil-rice cake with lauki, sesame and a crisp tempered crust.",
   "prepTime": "Approx. 45 minutes (plus soaking and fermentation)",
   "equipment": [
@@ -28010,6 +28016,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "fafda jalebi": {
   "dishName": "Fafda-Jalebi",
+  "image": "/dishes/fafda-jalebi.webp",
   "description": "Classic Gujarati breakfast pairing of crisp gram-flour fafda and syrupy jalebi.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -28393,6 +28400,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dal baati churma": {
   "dishName": "Dal Baati Churma",
+  "image": "/dishes/dal-baati-churma.webp",
   "description": "Rajasthani meal of baked wheat baati, lentil dal and sweet crumbled churma.",
   "prepTime": "Approx. 1 hour 15 minutes",
   "equipment": [
@@ -28778,6 +28786,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "samosa chaat": {
   "dishName": "Samosa Chaat",
+  "image": "/dishes/samosa-chaat.webp",
   "description": "Crisped samosas served with chole or matar ragda, chutneys, yogurt and sev.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [
@@ -28878,6 +28887,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "frankie": {
   "dishName": "Veg Frankie",
+  "image": "/dishes/frankie.webp",
   "description": "Indian street-style wrap filled with spicy potato, onion and tangy chutney.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -29340,6 +29350,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "veg cutlet": {
   "dishName": "Veg Cutlet",
+  "image": "/dishes/veg-cutlet.webp",
   "description": "Crisp mixed-vegetable patties bound with potato and coated in breadcrumbs.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -29460,6 +29471,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo bonda": {
   "dishName": "Aloo Bonda",
+  "image": "/dishes/aloo-bonda.webp",
   "description": "South Indian-style potato balls coated in seasoned gram-flour batter and fried until crisp.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -29691,6 +29703,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mirchi bajji": {
   "dishName": "Mirchi Bajji",
+  "image": "/dishes/mirchi-bajji.webp",
   "description": "Large green chillies dipped in gram-flour batter and fried until crisp.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -30033,6 +30046,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "veg manchurian": {
   "dishName": "Veg Manchurian",
+  "image": "/dishes/veg-manchurian.webp",
   "description": "Crisp mixed-vegetable balls served in a glossy Indo-Chinese Manchurian sauce.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -30842,6 +30856,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "barfi": {
   "dishName": "Milk Barfi",
+  "image": "/dishes/barfi.webp",
   "description": "Simple milk fudge made with milk powder, sugar and cardamom.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -30931,6 +30946,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "coconut barfi": {
   "dishName": "Coconut Barfi",
+  "image": "/dishes/coconut-barfi.webp",
   "description": "Quick Indian coconut fudge made with desiccated coconut, milk and sugar.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -31011,6 +31027,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "peda": {
   "dishName": "Milk Peda",
+  "image": "/dishes/peda.webp",
   "description": "Soft Indian milk sweets made by cooking milk solids with sugar and cardamom.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -39606,6 +39623,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "amritsari fish": {
       "dishName": "Amritsari Fish",
+      "image": "/dishes/amritsari-fish.webp",
       "description": "Crispy Punjabi-style fish coated in a thin ajwain-spiced besan batter and finished with lemon and chaat masala.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -39814,6 +39832,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "gujarati dal": {
       "dishName": "Gujarati Dal",
+      "image": "/dishes/gujarati-dal.webp",
       "description": "A thin, comforting Gujarati toor dal with a balanced sweet-sour taste from jaggery and kokum or lemon.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -40229,6 +40248,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "kanda bhaji": {
       "dishName": "Kanda Bhaji",
+      "image": "/dishes/kanda-bhaji.webp",
       "description": "Maharashtrian onion fritters made with thinly sliced onions and besan, crisp around the edges and soft inside.",
       "prepTime": "Approx. 30 minutes",
       "equipment": [
@@ -40465,6 +40485,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "dal pitha": {
       "dishName": "Dal Pitha",
+      "image": "/dishes/dal-pitha.webp",
       "description": "Soft Bihari rice-flour dumplings filled with a spicy coarse chana dal mixture and steamed until tender.",
       "prepTime": "Approx. 1 hour 30 minutes (plus soaking)",
       "equipment": [
