@@ -27633,6 +27633,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "puran poli": {
   "dishName": "Puran Poli",
+  "image": "/dishes/puran-poli.webp",
   "description": "Sweet stuffed flatbread filled with jaggery-sweetened chana dal and cardamom.",
   "prepTime": "Approx. 2 hours",
   "equipment": [
@@ -30565,7 +30566,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "schezwan fried rice": {
   "dishName": "Schezwan Fried Rice",
-  "image": "/dishes/shezwan-fried-rice.webp",
+  "image": "/dishes/schezwan-fried-rice.webp",
   "description": "Spicy Indian-Chinese fried rice made with vegetables and Schezwan chilli sauce.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -36022,7 +36023,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "undhiyu": {
     "dishName": "Undhiyu",
-    "image": "/dishes/beetroot-undhiyu.webp",
+    "image": "/dishes/undhiyu.webp",
     "description": "Gujarati mixed-vegetable preparation with potatoes, brinjal, beans and a fresh coconut-coriander masala.",
     "prepTime": "Approx. 60 minutes",
     "equipment": [
@@ -36923,7 +36924,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "chicken nuggets": {
     "dishName": "Chicken Nuggets",
-    "image": "/dishes/chiken-nuggets.webp",
+    "image": "/dishes/chicken-nuggets.webp",
     "description": "Crisp homemade chicken nuggets with a simple spiced coating, cooked in an air fryer or kadai.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -41773,6 +41774,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "mor kootu": {
       "dishName": "Mor Kootu",
+      "image": "/dishes/mor-kootu.webp",
       "description": "A mild South Indian yogurt kootu made with ash gourd, coconut, cumin and green chilli, finished with a mustard tadka.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
