@@ -2745,11 +2745,19 @@ const handlePrevStep = () => {
 
 const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
   const [loaded, setLoaded] = useState<boolean[]>(() => images.map(() => false));
+  const [bounceKeys, setBounceKeys] = useState<number[]>(() => images.map(() => 0));
 
   const markLoaded = (i: number) =>
     setLoaded((prev) => {
       const next = [...prev];
       next[i] = true;
+      return next;
+    });
+
+  const bounce = (i: number) =>
+    setBounceKeys((prev) => {
+      const next = [...prev];
+      next[i] += 1;
       return next;
     });
 
@@ -2759,7 +2767,7 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
         <div
           key={src + i}
           className="relative aspect-square overflow-hidden rounded-2xl border"
-          style={{ borderColor: COLOR.border }}
+          style={{ borderColor: COLOR.border, perspective: "800px" }}
         >
           <div
             aria-hidden="true"
@@ -2769,6 +2777,7 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
             style={{ backgroundColor: COLOR.saffronTint }}
           />
           <img
+            key={bounceKeys[i]}
             src={src}
             alt={alt}
             loading="eager"
@@ -2777,14 +2786,19 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
-              loaded[i] ? "opacity-100" : "opacity-0"
-            }`}
+            onClick={() => bounce(i)}
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+            className={`absolute inset-0 h-full w-full cursor-pointer select-none object-cover transition-opacity duration-300 ${
+              bounceKeys[i] > 0 ? "animate-image-bounce-3d" : ""
+            } ${loaded[i] ? "opacity-100" : "opacity-0"}`}
+            style={{ transformStyle: "preserve-3d", userSelect: "none" }}
           />
         </div>
       ))}
     </div>
   );
 };
+
 
 export default RecipeDisplay;
