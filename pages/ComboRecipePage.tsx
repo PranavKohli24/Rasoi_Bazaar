@@ -5,7 +5,10 @@ import CompactHeader from "../components/CompactHeader";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
 import RecipeError from "../components/RecipeError";
-import { findPredefinedRecipeBySlug } from "../utils/findPredefinedRecipe";
+import {
+  findPredefinedRecipeBySlug,
+  findSimilarRecipes,
+} from "../utils/findPredefinedRecipe";
 import { mergeRecipes } from "../utils/mergeRecipes";
 import { useState } from "react";
 
@@ -16,7 +19,15 @@ const ComboRecipePage: React.FC = () => {
   const [showCelebration, setShowCelebration] = useState(false);
 
   const slugs = (comboSlug ?? "").split("+").filter(Boolean);
-    const resolved = slugs.map((s) => findPredefinedRecipeBySlug(s));
+const resolved = slugs.map((s) => findPredefinedRecipeBySlug(s));
+
+const suggestions = [
+  ...new Set(
+    slugs.flatMap((s) =>
+      findSimilarRecipes(findPredefinedRecipeBySlug(s)?.dishName ?? s, 3)
+    )
+  ),
+];
     const rawRecipes = resolved.filter((r): r is NonNullable<typeof r> => r !== null);
     const recipes = [...new Map(rawRecipes.map((r) => [r.dishName, r])).values()];
     const allResolved = recipes.length >= 2 && rawRecipes.length === slugs.length;
@@ -44,7 +55,7 @@ const ComboRecipePage: React.FC = () => {
               kind="not-a-dish"
               message="We couldn't load that combo. Try searching again."
               dishName={slugs.join(" + ")}
-              suggestions={[]}
+              suggestions={suggestions}
               onSelectDish={(d) => go(d, { replace: true })}
             />
           )}
