@@ -1471,6 +1471,23 @@ const fuzzyFindKey = (query: string): Recipe | null => {
   return best && best.score >= 0.72 ? best.recipe : null;
 };
 
+// Exact-only lookup (no fuzzy fallback) — used so combo-splitting gets a
+// chance to run before we risk a wrong whole-string fuzzy match.
+const findPredefinedRecipeExact = (query: string): Recipe | null => {
+  const raw = matchKey(query);
+  if (!raw) return null;
+
+  const cleaned = matchKey(normalizeDishQuery(query)).replace(/\s+recipe$/, "");
+
+  return (
+    byKey.get(cleaned) ??
+    byKey.get(raw) ??
+    bySlug.get(toSlug(query)) ??
+    bySlug.get(toSlug(cleaned)) ??
+    null
+  );
+};
+
 export const findPredefinedRecipe = (query: string): Recipe | null => {
   const raw = matchKey(query);
   if (!raw) return null;
@@ -1500,12 +1517,16 @@ const resolveSingleDish = (text: string): Recipe | null => {
 /** Like findPredefinedRecipe, but also detects "dal roti" / "dal and roti"
  *  style combo queries and returns each matched dish separately. */
 export const findPredefinedRecipes = (query: string): Recipe[] | null => {
-  const direct = findPredefinedRecipe(query);
-  if (direct) return [direct];
+  // Exact whole-string match first — safe, can't misfire.
+  const exact = findPredefinedRecipeExact(query);
+  if (exact) return [exact];
 
   const raw = query.trim();
   if (!raw) return null;
 
+  // Try splitting into separate dishes BEFORE risking a whole-string fuzzy
+  // match — "dal roti" should become Dal + Roti, not accidentally fuzzy-
+  // match something unrelated like "Moth Dal".
   if (COMBO_SEPARATORS.test(raw)) {
     const parts = raw.split(COMBO_SEPARATORS).map((p) => p.trim()).filter(Boolean);
     if (parts.length >= 2) {
@@ -1533,8 +1554,13 @@ export const findPredefinedRecipes = (query: string): Recipe[] | null => {
     }
   }
 
+  // No combo found — only now risk a whole-string fuzzy match.
+  const fuzzy = findPredefinedRecipe(query);
+  if (fuzzy) return [fuzzy];
+
   return null;
 };
+
 
 /** Direct slug -> predefined recipe lookup, used to resolve /recipe/:slug URLs. */
 export const findPredefinedRecipeBySlug = (slug: string): Recipe | null =>
