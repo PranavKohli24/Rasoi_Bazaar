@@ -26503,6 +26503,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pithla": {
   "dishName": "Pithla",
+  "image": "/dishes/pithla.webp",
   "description": "Simple Maharashtrian gram-flour curry cooked with mustard, cumin, chilli and onion.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [
@@ -26627,6 +26628,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "ker sangri": {
   "dishName": "Ker Sangri",
+  "image": "/dishes/ker-sangri.webp",
   "description": "Traditional Rajasthani dry sabzi made from rehydrated ker berries and sangri beans.",
   "prepTime": "Approx. 55 minutes (plus soaking)",
   "equipment": [
@@ -26989,6 +26991,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo beans": {
   "dishName": "Aloo Beans",
+  "image": "/dishes/aloo-beans.webp",
   "description": "Everyday dry sabzi of potatoes and green beans with cumin and turmeric.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -27213,6 +27216,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kaju curry": {
   "dishName": "Kaju Curry",
+  "image": "/dishes/kaju-curry.webp",
   "description": "Rich onion-tomato gravy with roasted cashews and mild Indian spices.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -27495,6 +27499,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dabeli": {
   "dishName": "Dabeli",
+  "image": "/dishes/dabeli.webp",
   "description": "Gujarati-Kutch street snack of spiced potato stuffed into pav with peanuts and chutneys.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -27737,6 +27742,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khandvi": {
   "dishName": "Khandvi",
+  "image": "/dishes/khandvi.webp",
   "description": "Soft Gujarati gram-flour rolls cooked into a smooth yogurt-based batter and tempered with mustard.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -28142,6 +28148,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pyaz ki kachori": {
   "dishName": "Pyaz Ki Kachori",
+  "image": "/dishes/pyaz-ki-kachori.webp",
   "description": "Flaky Rajasthani kachori filled with spiced onion, fennel and coriander.",
   "prepTime": "Approx. 55 minutes",
   "equipment": [
@@ -28261,6 +28268,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mirchi vada": {
   "dishName": "Mirchi Vada",
+  "image": "/dishes/mirchi-vada.webp",
   "description": "Rajasthani large green chillies stuffed with spiced potato, coated in gram flour and fried.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -28533,6 +28541,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "ragda pattice": {
   "dishName": "Ragda Pattice",
+  "image": "/dishes/ragda-pattice.webp",
   "description": "Mumbai-style potato patties served over creamy white-pea ragda and chaat toppings.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -28662,6 +28671,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo chaat": {
   "dishName": "Aloo Chaat",
+  "image": "/dishes/aloo-chaat.webp",
   "description": "Crisp potatoes tossed with tangy chutneys, chaat masala, onion and coriander.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -28987,6 +28997,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kathi roll": {
   "dishName": "Veg Kathi Roll",
+  "image": "/dishes/kathi-roll.webp",
   "description": "Spiced vegetable and paneer filling wrapped in a flaky tawa-cooked Indian flatbread.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -29112,6 +29123,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "paneer roll": {
   "dishName": "Paneer Roll",
+  "image": "/dishes/paneer-roll.webp",
   "description": "Simple home-style wrap with tawa-cooked paneer, onion, capsicum and chutney.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [
@@ -29227,6 +29239,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bread roll": {
   "dishName": "Bread Roll",
+  "image": "/dishes/bread-roll.webp",
   "description": "Crisp fried bread rolls stuffed with spiced mashed potato.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -29567,6 +29580,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "masala vada": {
   "dishName": "Masala Vada",
+  "image": "/dishes/masala-vada.webp",
   "description": "Crisp chana dal fritters flavoured with onion, chilli, ginger and curry leaves.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
   "equipment": [
@@ -29889,6 +29903,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gobi manchurian": {
   "dishName": "Gobi Manchurian",
+  "image": "/dishes/gobi-manchurian.webp",
   "description": "Crisp cauliflower florets tossed in a tangy, spicy Indo-Chinese Manchurian sauce.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -30147,6 +30162,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "veg fried rice": {
   "dishName": "Veg Fried Rice",
+  "image": "/dishes/veg-fried-rice.webp",
   "description": "High-heat stir-fried rice with crunchy vegetables, soy sauce and garlic.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -30400,6 +30416,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chilli chicken": {
   "dishName": "Chilli Chicken",
+  "image": "/dishes/chilli-chicken.webp",
   "description": "Crisp chicken pieces tossed with capsicum, onion and a spicy Indo-Chinese sauce.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -30534,6 +30551,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "schezwan fried rice": {
   "dishName": "Schezwan Fried Rice",
+  "image": "/dishes/shezwan-fried-rice.webp",
   "description": "Spicy Indian-Chinese fried rice made with vegetables and Schezwan chilli sauce.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -30734,6 +30752,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kaju katli": {
   "dishName": "Kaju Katli",
+  "image": "/dishes/kaju-katli.webp",
   "description": "Thin melt-in-the-mouth cashew fudge made with ground cashews and sugar.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -31077,6 +31096,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "shrikhand": {
   "dishName": "Shrikhand",
+  "image": "/dishes/shrikhand.webp",
   "description": "Thick sweetened strained yogurt flavoured with cardamom and saffron.",
   "prepTime": "Approx. 15 minutes (plus draining)",
   "equipment": [
@@ -39932,6 +39952,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "gujarati kadhi": {
       "dishName": "Gujarati Kadhi",
+      "image": "/dishes/gujarati-kadhi.webp",
       "description": "A light sweet-sour yogurt curry made with curd, besan, ginger, green chilli and a simple tadka.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -40065,6 +40086,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "usal pav": {
       "dishName": "Usal Pav",
+      "image": "/dishes/usal-pav.webp",
       "description": "Maharashtrian spiced sprouted matki curry served with soft pav, onion and lemon.",
       "prepTime": "Approx. 35 minutes",
       "equipment": [
@@ -40315,6 +40337,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "chana ghugni": {
       "dishName": "Chana Ghugni",
+      "image": "/dishes/chana-ghugni.webp",
       "description": "A simple Bihari-style curry of black chickpeas cooked with onion, tomato, mustard oil and everyday spices.",
       "prepTime": "Approx. 35 minutes (using cooked kala chana)",
       "equipment": [
@@ -40573,6 +40596,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     },
     "masor tenga": {
       "dishName": "Masor Tenga",
+      "image": "/dishes/masor-tenga.webp",
       "description": "An Assamese light and tangy fish curry made with tomato, lemon, green chilli and mustard oil.",
       "prepTime": "Approx. 30 minutes",
       "equipment": [
