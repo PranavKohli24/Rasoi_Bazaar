@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import RecipePage from "./pages/Recipepage";
+import ComboRecipePage from "./pages/ComboRecipePage";
 import CookWhatYouHavePage from "./pages/CookWhatYouHavePage";
 import FoodBackground from "./components/FoodBackground";
 
@@ -17,8 +18,6 @@ const ScrollToTop: React.FC = () => {
   const navigationType = useNavigationType();
   const previousPathname = useRef(pathname);
 
-  // `key` changes on every navigation, including clicking a link to the page
-  // you're already on, so depending on pathname alone isn't enough.
   useEffect(() => {
     const samePage = previousPathname.current === pathname;
     previousPathname.current = pathname;
@@ -39,8 +38,6 @@ const ScrollToTop: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  // The cream page colour lives on <body> in index.html; the scattered food
-  // pictures come from <FoodBackground />. This wrapper stays transparent.
   return (
     <div className="flex min-h-screen flex-col font-sans text-stone-200 selection:bg-orange-500/25">
       <ScrollToTop />
@@ -51,6 +48,7 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/cook-what-you-have" element={<CookWhatYouHavePage />} />
           <Route path="/recipe" element={<RecipePage />} />
+          <Route path="/recipe/combo/:comboSlug" element={<ComboRecipePage />} />
           <Route path="/recipe/:slug" element={<RecipePage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
@@ -80,12 +78,6 @@ const App: React.FC = () => {
             <span className="mx-2 text-stone-600" aria-hidden="true">
               ·
             </span>
-            {/* <a
-              href="mailto:kohlipranav24@gmail.com"
-              className="transition-colors hover:text-stone-100"
-            >
-              kohlipranav24@gmail.com
-            </a> */}
           </p>
         </div>
       </footer>

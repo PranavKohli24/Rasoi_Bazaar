@@ -1489,6 +1489,53 @@ export const findPredefinedRecipe = (query: string): Recipe | null => {
   );
 };
 
+const COMBO_SEPARATORS = /\s*(?:,|\+|&|\band\b|\bwith\b|\baur\b|\bke\s+saath\b)\s*/i;
+
+const resolveSingleDish = (text: string): Recipe | null => {
+  const cleaned = matchKey(normalizeDishQuery(text)).replace(/\s+recipe$/, "");
+  if (!cleaned) return null;
+  return byKey.get(cleaned) ?? fuzzyFindKey(cleaned) ?? null;
+};
+
+/** Like findPredefinedRecipe, but also detects "dal roti" / "dal and roti"
+ *  style combo queries and returns each matched dish separately. */
+export const findPredefinedRecipes = (query: string): Recipe[] | null => {
+  const direct = findPredefinedRecipe(query);
+  if (direct) return [direct];
+
+  const raw = query.trim();
+  if (!raw) return null;
+
+  if (COMBO_SEPARATORS.test(raw)) {
+    const parts = raw.split(COMBO_SEPARATORS).map((p) => p.trim()).filter(Boolean);
+    if (parts.length >= 2) {
+      const recipes = parts.map(resolveSingleDish);
+      if (recipes.every((r): r is Recipe => r !== null)) {
+        const unique = [...new Map(recipes.map((r) => [r.dishName, r])).values()];
+        if (unique.length >= 2) return unique;
+      }
+    }
+  }
+
+  const words = matchKey(normalizeDishQuery(raw)).split(" ").filter(Boolean);
+  if (words.length >= 2 && words.length <= 6) {
+    for (let i = 1; i < words.length; i++) {
+      const left = words.slice(0, i).join(" ");
+      const right = words.slice(i).join(" ");
+      if (left.length < 3 || right.length < 3) continue;
+
+      const leftRecipe = resolveSingleDish(left);
+      const rightRecipe = resolveSingleDish(right);
+
+      if (leftRecipe && rightRecipe && leftRecipe.dishName !== rightRecipe.dishName) {
+        return [leftRecipe, rightRecipe];
+      }
+    }
+  }
+
+  return null;
+};
+
 /** Direct slug -> predefined recipe lookup, used to resolve /recipe/:slug URLs. */
 export const findPredefinedRecipeBySlug = (slug: string): Recipe | null =>
   bySlug.get(slug) ?? null;

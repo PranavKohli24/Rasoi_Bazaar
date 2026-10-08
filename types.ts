@@ -19,6 +19,7 @@ export interface MethodStep {
   step: number;
   instruction: string;
   tip?: Tip;
+  isTransition?: boolean;
 }
 
 export interface Nutrition {
@@ -38,4 +39,5 @@ export interface Recipe {
   notes: string[];
   nutrition?: Nutrition;
   image?: string;
+  images?: string[];
 }

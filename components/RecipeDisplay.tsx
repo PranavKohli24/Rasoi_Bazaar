@@ -1875,7 +1875,9 @@ const handlePrevStep = () => {
   const totalIngredients = recipe.ingredients.length;
   const totalSteps = recipe.method.length;
   const currentStep = recipe.method[currentStepIndex];
-  const stepDurationSeconds = parseDurationSeconds(currentStep.instruction);
+  const stepDurationSeconds = currentStep.isTransition
+    ? null
+    : parseDurationSeconds(currentStep.instruction);
 
   const isLastStep = currentStepIndex >= totalSteps - 1;
     const backgroundTimers = isCooking ? timers.getBackground(currentStepIndex) : [];
@@ -1948,44 +1950,48 @@ const handlePrevStep = () => {
         className={`${card} flex flex-col gap-6 p-5 sm:flex-row sm:gap-8 sm:p-8`}
         style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
       >
-        {recipe.image && (
-          <div
-            className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
-            style={{ perspective: "800px" }}
-          >
-            {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
+                {recipe.images && recipe.images.length > 1 ? (
+          <ComboHeaderImages images={recipe.images} alt={recipe.dishName} />
+        ) : (
+          recipe.image && (
             <div
-              aria-hidden="true"
-              className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
-                }`}
-              style={{ backgroundColor: COLOR.saffronTint }}
-            />
-            <img
-              key={imageBounceKey}
-              src={recipe.image}
-              alt={recipe.dishName}
-              width={600}
-              height={600}
-              loading="eager"
-              decoding="sync"
-              {...{ fetchpriority: "high" }}
-              onLoad={() => setIsImageLoaded(true)}
-              onError={(e) => {
-                e.currentTarget.style.display = "none";
-              }}
-              onClick={() => setImageBounceKey((key) => key + 1)}
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
-              className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-                } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-              style={{
-                transformStyle: "preserve-3d",
-                pointerEvents: "auto",
-                userSelect: "none",
-                borderColor: COLOR.border,
-              }}
-            />
-          </div>
+              className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
+              style={{ perspective: "800px" }}
+            >
+              {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
+              <div
+                aria-hidden="true"
+                className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
+                  }`}
+                style={{ backgroundColor: COLOR.saffronTint }}
+              />
+              <img
+                key={imageBounceKey}
+                src={recipe.image}
+                alt={recipe.dishName}
+                width={600}
+                height={600}
+                loading="eager"
+                decoding="sync"
+                {...{ fetchpriority: "high" }}
+                onLoad={() => setIsImageLoaded(true)}
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+                onClick={() => setImageBounceKey((key) => key + 1)}
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+                  } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+                style={{
+                  transformStyle: "preserve-3d",
+                  pointerEvents: "auto",
+                  userSelect: "none",
+                  borderColor: COLOR.border,
+                }}
+              />
+            </div>
+          )
         )}
 
         <div className="min-w-0 flex-1">
@@ -2733,6 +2739,50 @@ const handlePrevStep = () => {
           onCommand: handleHeyChefCommand,
         }}
       />
+    </div>
+  );
+};
+
+const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images, alt }) => {
+  const [loaded, setLoaded] = useState<boolean[]>(() => images.map(() => false));
+
+  const markLoaded = (i: number) =>
+    setLoaded((prev) => {
+      const next = [...prev];
+      next[i] = true;
+      return next;
+    });
+
+  return (
+    <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:w-56 md:w-64">
+      {images.map((src, i) => (
+        <div
+          key={src + i}
+          className="relative aspect-square overflow-hidden rounded-2xl border"
+          style={{ borderColor: COLOR.border }}
+        >
+          <div
+            aria-hidden="true"
+            className={`absolute inset-0 transition-opacity duration-300 ${
+              loaded[i] ? "opacity-0" : "animate-pulse opacity-100"
+            }`}
+            style={{ backgroundColor: COLOR.saffronTint }}
+          />
+          <img
+            src={src}
+            alt={alt}
+            loading="eager"
+            decoding="sync"
+            onLoad={() => markLoaded(i)}
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+            }}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+              loaded[i] ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
+      ))}
     </div>
   );
 };
