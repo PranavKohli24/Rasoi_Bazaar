@@ -12936,6 +12936,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "kofta curry (lauki kofta)": {
     "dishName": "Kofta Curry (Lauki Kofta)",
+    "image": "/dishes/kofta-curry.webp",
     "description": "Soft bottle-gourd koftas cooked in a simple onion-tomato gravy, made fully on the stovetop.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -13063,6 +13064,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "malai kofta": {
     "dishName": "Malai Kofta",
+    "image": "/dishes/kofta-curry.webp",
     "description": "Soft paneer-potato koftas in a mild creamy tomato gravy, simplified for easy home cooking.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -13214,6 +13216,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dum aloo": {
     "dishName": "Dum Aloo",
+    "image": "/dishes/dum-aloo.webp",
     "description": "Baby potatoes simmered in a spiced yogurt-tomato gravy, made easily on the stovetop.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -13351,6 +13354,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "tori sabzi": {
     "dishName": "Tori Sabzi",
+    "image": "/dishes/tori-sabzi.webp",
     "description": "A light everyday sabzi made with ridge gourd, onion and simple Indian spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -13864,6 +13868,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "dahi vada": {
     "dishName": "Dahi Vada",
+    "image": "/dishes/dahi-vada.webp",
     "description": "Soft urad dal vadas soaked in yogurt and topped with simple spices and optional chutneys.",
     "prepTime": "Approx. 45 minutes (plus soaking)",
     "equipment": [
