@@ -79,6 +79,13 @@ export async function POST(request: Request): Promise<Response> {
       }),
     });
 
+    if (swiggyResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const text = await swiggyResponse.text();
     const data = parseSwiggyResponse(text);
 

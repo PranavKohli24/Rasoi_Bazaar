@@ -242,6 +242,13 @@ export async function POST(
         }
       );
 
+    if (beforeResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const beforeText =
       await beforeResponse.text();
 
@@ -433,6 +440,13 @@ export async function POST(
         }
       );
 
+    if (updateResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const updateText =
       await updateResponse.text();
 
@@ -508,6 +522,13 @@ export async function POST(
           }),
         }
       );
+
+    if (afterResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const afterText =
       await afterResponse.text();

@@ -135,6 +135,14 @@ export async function POST(request: Request): Promise<Response> {
       }),
     });
 
+    if (searchResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+
     const searchText = await searchResponse.text();
     const searchData = parseSwiggyResponse(searchText);
 
@@ -315,6 +323,13 @@ export async function POST(request: Request): Promise<Response> {
         }),
       }
     );
+
+    if (cartResponse.status === 401) {
+      return new Response(JSON.stringify({ error: "SWIGGY_NOT_CONNECTED" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     const cartText = await cartResponse.text();
     const cartData = parseSwiggyResponse(cartText);
