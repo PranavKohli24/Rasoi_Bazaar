@@ -125,6 +125,60 @@ const BasketIcon: IconC = ({ className }) => (
   </Svg>
 );
 
+/* ---------- Header glyphs ----------
+   The two things a person can start here are different enough that one
+   generic line icon in a colored tile doesn't say much about either. These
+   sit directly on the paper with no tile, are drawn in full color instead
+   of a single stroke, and echo the same basket-of-produce / plated-dish
+   vocabulary used in the success animations, so the icon you see at the
+   top is a preview of what's coming, not an unrelated glyph. */
+
+const GroceryHeaderIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 44 42" className={className} aria-hidden="true">
+    <path
+      d="M15 16c0-4.6 3.1-7.8 7-7.8s7 3.2 7 7.8"
+      fill="none"
+      stroke={COLOR.stamp}
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M7 16h30l-3.2 18.2a3 3 0 0 1-3 2.5H13.2a3 3 0 0 1-3-2.5L7 16Z"
+      fill={COLOR.stampTint}
+      stroke={COLOR.stamp}
+      strokeWidth="2.2"
+      strokeLinejoin="round"
+    />
+    <path d="M13.5 21.5 14.8 33M22 21.5V33M30.5 21.5 29.2 33" stroke={COLOR.stampDark} strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+const DishHeaderIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 54 42" className={className} aria-hidden="true">
+    <circle cx="27" cy="21" r="12.5" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
+    <circle cx="27" cy="21" r="7" fill="none" stroke={COLOR.stamp} strokeWidth="1.6" opacity="0.55" />
+
+    {/* fork: three tines, a neck where they meet, then the handle */}
+    <g fill={COLOR.stamp}>
+      <rect x="3.3" y="7" width="1.5" height="9" rx="0.75" />
+      <rect x="5.7" y="7" width="1.5" height="9" rx="0.75" />
+      <rect x="8.1" y="7" width="1.5" height="9" rx="0.75" />
+    </g>
+    <path
+      d="M3.3 14.6c0 2.6 1.9 4.3 3.9 4.3s3.9-1.7 3.9-4.3"
+      fill="none"
+      stroke={COLOR.stamp}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <rect x="6.1" y="18.7" width="1.9" height="15.3" rx="0.95" fill={COLOR.stamp} />
+
+    {/* spoon: an oval bowl and a slim handle */}
+    <ellipse cx="47.3" cy="12.4" rx="4.3" ry="5.9" fill={COLOR.stamp} />
+    <rect x="46.3" y="17.7" width="2" height="16.3" rx="1" fill={COLOR.stamp} />
+  </svg>
+);
+
 /* Small, simple produce glyphs for the "items landing in the basket"
    animation — flat shapes, not realistic illustrations, so they read
    instantly at 20px while falling. */
@@ -757,11 +811,8 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
 
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
-              <span
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
-                style={{ backgroundColor: COLOR.stampTint, color: COLOR.stamp }}
-              >
-                {type === "instamart" ? <BasketIcon className="h-5 w-5" /> : <UtensilsIcon className="h-5 w-5" />}
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center">
+                {type === "instamart" ? <GroceryHeaderIcon className="h-11 w-11" /> : <DishHeaderIcon className="h-11 w-11" />}
               </span>
               <div>
                 <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: COLOR.gold }}>
