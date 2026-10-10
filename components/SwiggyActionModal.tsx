@@ -1172,7 +1172,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                     <ClosedStallIcon className="h-14 w-14" />
                   </span>
                   <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
-                    Found it — but they&apos;re closed right now
+                    Found it - but they&apos;re closed right now
                   </h4>
                   <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
                     {restaurants.length} {restaurants.length === 1 ? "place serves" : "places serve"}{" "}
