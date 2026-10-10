@@ -44466,7 +44466,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ]
   },
 
-  "south indian filter coffee": {
+  "Filter coffee": {
     "dishName": "South Indian Filter Coffee",
     "image": "/dishes/south-indian-filter-coffee.webp",
     "description": "Strong South Indian filter-brewed coffee mixed with hot milk and sugar, traditionally served with a frothy top.",
