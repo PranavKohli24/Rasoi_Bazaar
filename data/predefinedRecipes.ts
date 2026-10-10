@@ -43938,6 +43938,874 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "carbs": 27,
       "fat": 0
     }
+  },
+
+  "Custard": {
+    dishName: "Pouring Custard",
+    image: "/dishes/pouring-custard.webp",
+    description: "A smooth, pourable vanilla custard sauce made with milk, egg yolks and vanilla.",
+    prepTime: "Approx. 20 minutes",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "4", commonName: "Ande ki Zardi", englishName: "egg yolks" },
+      { amount: "60 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" }
+    ],
+    method: [
+      { step: 1, instruction: "Heat the milk in a saucepan until steaming, but do not let it boil." },
+      { step: 2, instruction: "Whisk the egg yolks and sugar in a bowl until smooth." },
+      { step: 3, instruction: "Slowly pour the warm milk into the yolks while whisking continuously." },
+      { step: 4, instruction: "Return the mixture to the saucepan. Cook over low heat, stirring constantly, until it lightly coats the back of a spoon and reaches 71°C." },
+      { step: 5, instruction: "Remove from the heat, stir in vanilla and strain through a fine sieve." },
+      { step: 6, instruction: "Serve warm or chill for a cold custard sauce." }
+    ],
+    notes: [
+      "Never let the custard boil, as the eggs may scramble.",
+      "This custard should remain pourable rather than becoming a firm pudding."
+    ]
+  },
+
+  "baked custard": {
+    dishName: "Baked Custard",
+    image: "/dishes/baked-custard.webp",
+    description: "A delicate, creamy egg custard gently baked until just set, with a soft vanilla flavour.",
+    prepTime: "Approx. 50 minutes (plus chilling)",
+    equipment: [
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "3", commonName: "Ande", englishName: "eggs" },
+      { amount: "75 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" },
+      { amount: "1 pinch", commonName: "Jaiphal", englishName: "ground nutmeg, optional" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 160°C." },
+      { step: 2, instruction: "Warm the milk until steaming. In a bowl, whisk the eggs, sugar and vanilla without creating too much foam." },
+      { step: 3, instruction: "Gradually whisk the warm milk into the egg mixture." },
+      { step: 4, instruction: "Strain into individual oven-safe ramekins or one baking dish. Sprinkle with nutmeg if desired." },
+      { step: 5, instruction: "Place the dishes in a deep baking tray and pour hot water into the tray until it reaches halfway up their sides." },
+      { step: 6, instruction: "Bake until the edges are set and the centre has a slight wobble, usually 30 to 40 minutes for individual ramekins." },
+      { step: 7, instruction: "Remove carefully from the water bath, cool and refrigerate until chilled." }
+    ],
+    notes: [
+      "Baking time varies with the depth and size of the dish.",
+      "Avoid overbaking, which can make the custard rubbery or cause it to release water."
+    ]
+  },
+
+  "caramel custard": {
+    dishName: "Caramel Custard",
+    image: "/dishes/caramel-custard.webp",
+    description: "Silky baked vanilla custard topped with a glossy layer of bittersweet caramel sauce.",
+    prepTime: "Approx. 60 minutes (plus chilling)",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null },
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "75 g", commonName: "Cheeni", englishName: "sugar for caramel" },
+      { amount: "1 tbsp", commonName: "Paani", englishName: "water for caramel" },
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "3", commonName: "Ande", englishName: "eggs" },
+      { amount: "75 g", commonName: "Cheeni", englishName: "sugar for custard" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 160°C." },
+      { step: 2, instruction: "Heat the caramel sugar and water in a saucepan until the syrup turns amber. Immediately pour it into individual ramekins or a heatproof pudding mould." },
+      { step: 3, instruction: "Warm the milk until steaming. Whisk the eggs, custard sugar and vanilla in a bowl." },
+      { step: 4, instruction: "Slowly whisk the warm milk into the eggs, then strain the mixture over the set caramel." },
+      { step: 5, instruction: "Place the mould in a deep baking tray. Add hot water halfway up its sides." },
+      { step: 6, instruction: "Bake until the edges are set and the centre gently wobbles. Individual ramekins may take around 30 to 40 minutes; a large mould takes longer." },
+      { step: 7, instruction: "Cool and refrigerate for at least 4 hours." },
+      { step: 8, instruction: "Run a thin knife around the edge, place a serving plate over the mould and invert to release the custard with its caramel sauce." }
+    ],
+    notes: [
+      "Caramel becomes extremely hot, so handle it carefully.",
+      "Chilling is essential for a clean release from the mould."
+    ]
+  },
+
+  "fruit custard": {
+    dishName: "Fruit Custard",
+    image: "/dishes/fruit-custard.webp",
+    description: "Chilled vanilla custard filled with fresh seasonal fruit for a creamy, refreshing dessert.",
+    prepTime: "Approx. 20 minutes (plus chilling)",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "3 tbsp", commonName: "Custard Powder", englishName: "vanilla custard powder" },
+      { amount: "4 tbsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1 medium", commonName: "Seb", englishName: "apple, diced" },
+      { amount: "1", commonName: "Kela", englishName: "banana, sliced" },
+      { amount: "1/2 cup", commonName: "Angoor", englishName: "seedless grapes, halved" },
+      { amount: "1/2 cup", commonName: "Papita", englishName: "papaya, diced" },
+      { amount: "1/4 cup", commonName: "Anaar", englishName: "pomegranate seeds" }
+    ],
+    method: [
+      { step: 1, instruction: "Reserve 4 tablespoons of cold milk and mix it with the custard powder until smooth." },
+      { step: 2, instruction: "Heat the remaining milk with sugar until steaming." },
+      { step: 3, instruction: "Pour in the custard slurry gradually, stirring continuously." },
+      { step: 4, instruction: "Cook over low heat for 4 to 6 minutes until thick and smooth." },
+      { step: 5, instruction: "Transfer to a bowl and cover the surface directly to prevent a skin forming. Cool, then refrigerate." },
+      { step: 6, instruction: "Wash, dry and chop the fruit. Fold it into the completely chilled custard shortly before serving." }
+    ],
+    notes: [
+      "Use seasonal fruit and add it only after the custard has cooled.",
+      "Avoid citrus fruit and very watery fruit, which can make the custard split or turn thin.",
+      "Keep refrigerated and serve cold."
+    ]
+  },
+
+  "chocolate custard": {
+    dishName: "Chocolate Custard",
+    image: "/dishes/chocolate-custard.webp",
+    description: "A smooth, rich chocolate pudding made with milk, cocoa and chocolate.",
+    prepTime: "Approx. 20 minutes (plus chilling)",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "3 tbsp", commonName: "Cocoa Powder", englishName: "unsweetened cocoa powder" },
+      { amount: "2 tbsp", commonName: "Cornflour", englishName: "cornstarch" },
+      { amount: "70 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "50 g", commonName: "Dark Chocolate", englishName: "chopped dark chocolate" },
+      { amount: "1/2 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" }
+    ],
+    method: [
+      { step: 1, instruction: "Reserve 5 tablespoons of cold milk. Whisk the cocoa powder and cornstarch into it until smooth." },
+      { step: 2, instruction: "Heat the remaining milk with sugar in a saucepan until steaming." },
+      { step: 3, instruction: "Whisk in the cocoa mixture and cook over medium-low heat, stirring continuously, until thickened." },
+      { step: 4, instruction: "Remove from the heat and add the chopped chocolate and vanilla. Stir until the chocolate melts completely." },
+      { step: 5, instruction: "Pour into serving bowls and cover the surface directly." },
+      { step: 6, instruction: "Cool and refrigerate for at least 2 hours before serving." }
+    ],
+    notes: [
+      "Use unsweetened cocoa so the chocolate flavour stays balanced.",
+      "The custard thickens further as it cools."
+    ]
+  },
+
+  "set custard": {
+    dishName: "Set Custard",
+    image: "/dishes/set-custard.webp",
+    description: "A firm, chilled vanilla custard pudding that holds its shape when unmoulded.",
+    prepTime: "Approx. 20 minutes (plus setting)",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "500 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "3 tbsp", commonName: "Custard Powder", englishName: "vanilla custard powder" },
+      { amount: "50 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "2 g", commonName: "Agar Agar Powder", englishName: "food-grade agar-agar powder" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" }
+    ],
+    method: [
+      { step: 1, instruction: "Mix the custard powder with 4 tablespoons of cold milk until smooth." },
+      { step: 2, instruction: "Whisk the agar-agar powder into the remaining milk and bring it to a gentle boil, following the package instructions to activate it." },
+      { step: 3, instruction: "Add the sugar and custard slurry while whisking continuously." },
+      { step: 4, instruction: "Cook for 3 to 5 minutes until the mixture is smooth and thick. Stir in vanilla." },
+      { step: 5, instruction: "Pour immediately into lightly rinsed moulds or serving cups." },
+      { step: 6, instruction: "Let cool, then refrigerate until fully set, about 2 to 3 hours." },
+      { step: 7, instruction: "Unmould carefully or serve directly in the cups." }
+    ],
+    notes: [
+      "This version uses agar-agar rather than gelatin, making it vegetarian.",
+      "Agar-agar brands differ in strength, so follow the package instructions and adjust the quantity if needed."
+    ]
+  },
+
+  "suji ki kheer": {
+    dishName: "Suji Ki Kheer",
+    image: "/dishes/suji-ki-kheer.webp",
+    description: "A comforting Indian milk pudding made with roasted semolina, cardamom, nuts and raisins.",
+    prepTime: "Approx. 25 minutes",
+    equipment: [
+      { item: "stove", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "3 tbsp", commonName: "Suji", englishName: "coarse semolina" },
+      { amount: "750 ml", commonName: "Doodh", englishName: "whole milk" },
+      { amount: "4 tbsp", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "1 tbsp", commonName: "Ghee", englishName: "ghee" },
+      { amount: "1/4 tsp", commonName: "Elaichi Powder", englishName: "cardamom powder" },
+      { amount: "2 tbsp", commonName: "Kaju", englishName: "cashews, chopped" },
+      { amount: "1 tbsp", commonName: "Kishmish", englishName: "raisins" }
+    ],
+    method: [
+      { step: 1, instruction: "Heat the ghee in a saucepan. Add the semolina and roast over low heat for 3 to 4 minutes until fragrant, without browning it deeply." },
+      { step: 2, instruction: "Warm the milk separately and gradually pour it into the semolina while stirring to prevent lumps." },
+      { step: 3, instruction: "Simmer gently for 8 to 10 minutes, stirring regularly, until the semolina softens and the kheer thickens slightly." },
+      { step: 4, instruction: "Add sugar and cardamom powder. Simmer for another 2 minutes." },
+      { step: 5, instruction: "Stir in the cashews and raisins. Serve warm or chilled." }
+    ],
+    notes: [
+      "The kheer thickens considerably as it cools, so keep it slightly loose on the stove.",
+      "Add a splash of warm milk before serving if it becomes too thick."
+    ]
+  },
+
+  "vanilla pastry": {
+    dishName: "Vanilla Pastry",
+    image: "/dishes/vanilla-pastry.webp",
+    description: "Soft vanilla sponge layered with lightly sweetened whipped cream and finished with a smooth cream coating.",
+    prepTime: "Approx. 60 minutes (plus chilling)",
+    equipment: [
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "150 g", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "100 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "120 g", commonName: "Dahi", englishName: "plain yogurt" },
+      { amount: "60 ml", commonName: "Tel", englishName: "neutral cooking oil" },
+      { amount: "80 ml", commonName: "Doodh", englishName: "milk" },
+      { amount: "1 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "1 tsp", commonName: "Vanilla Essence", englishName: "vanilla extract" },
+      { amount: "250 ml", commonName: "Whipping Cream", englishName: "chilled whipping cream" },
+      { amount: "2 tbsp", commonName: "Pisi Cheeni", englishName: "icing sugar" },
+      { amount: "3 tbsp", commonName: "Cheeni ka Paani", englishName: "light sugar syrup" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 180°C and line a small rectangular cake tin." },
+      { step: 2, instruction: "Whisk the yogurt, sugar and oil until smooth. Add milk and vanilla." },
+      { step: 3, instruction: "Sift together the flour, baking powder and baking soda. Fold into the wet mixture just until combined." },
+      { step: 4, instruction: "Pour into the tin and bake for 25 to 30 minutes, until a skewer inserted in the centre comes out clean." },
+      { step: 5, instruction: "Cool the cake completely, then slice horizontally into two layers." },
+      { step: 6, instruction: "Whip the cold cream with icing sugar until it holds firm peaks." },
+      { step: 7, instruction: "Lightly brush the sponge with sugar syrup. Spread whipped cream between the layers, stack them and cover the top and sides with cream." },
+      { step: 8, instruction: "Cut into rectangular pastries and refrigerate for at least 30 minutes before serving." }
+    ],
+    notes: [
+      "The cake must be completely cool before frosting.",
+      "Keep the finished pastries refrigerated."
+    ]
+  },
+
+  "chocolate pastry": {
+    dishName: "Chocolate Pastry",
+    image: "/dishes/chocolate-pastry.webp",
+    description: "Moist chocolate sponge layered with chocolate whipped cream and finished with chocolate shavings.",
+    prepTime: "Approx. 65 minutes (plus chilling)",
+    equipment: [
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "130 g", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "25 g", commonName: "Cocoa Powder", englishName: "unsweetened cocoa powder" },
+      { amount: "120 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "120 g", commonName: "Dahi", englishName: "plain yogurt" },
+      { amount: "60 ml", commonName: "Tel", englishName: "neutral cooking oil" },
+      { amount: "100 ml", commonName: "Doodh", englishName: "milk" },
+      { amount: "1 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "250 ml", commonName: "Whipping Cream", englishName: "chilled whipping cream" },
+      { amount: "100 g", commonName: "Dark Chocolate", englishName: "melted dark chocolate, cooled" },
+      { amount: "3 tbsp", commonName: "Cheeni ka Paani", englishName: "light sugar syrup" },
+      { amount: "20 g", commonName: "Chocolate Shavings", englishName: "chocolate shavings for garnish" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 180°C and line a rectangular cake tin." },
+      { step: 2, instruction: "Whisk the yogurt, sugar, oil and milk until smooth." },
+      { step: 3, instruction: "Sift the flour, cocoa, baking powder and baking soda together. Fold into the wet mixture until just combined." },
+      { step: 4, instruction: "Bake for 25 to 30 minutes, until a skewer inserted in the centre comes out clean. Cool completely." },
+      { step: 5, instruction: "Whip the cold cream until soft peaks form. Gradually fold in the cooled melted chocolate until evenly combined." },
+      { step: 6, instruction: "Slice the sponge horizontally into two layers. Brush lightly with sugar syrup and spread chocolate cream between the layers." },
+      { step: 7, instruction: "Cover the top and sides with the remaining cream. Sprinkle chocolate shavings over the top." },
+      { step: 8, instruction: "Cut into rectangular portions and chill for at least 30 minutes before serving." }
+    ],
+    notes: [
+      "Let melted chocolate cool until lukewarm before mixing it into the cream.",
+      "Store the pastries in the refrigerator."
+    ]
+  },
+
+  "strawberry pastry": {
+    dishName: "Strawberry Pastry",
+    image: "/dishes/strawberry-pastry.webp",
+    description: "Soft vanilla sponge filled with strawberry cream and fresh strawberries, finished with a light pink frosting.",
+    prepTime: "Approx. 60 minutes (plus chilling)",
+    equipment: [
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "150 g", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "100 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "120 g", commonName: "Dahi", englishName: "plain yogurt" },
+      { amount: "60 ml", commonName: "Tel", englishName: "neutral cooking oil" },
+      { amount: "80 ml", commonName: "Doodh", englishName: "milk" },
+      { amount: "1 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "250 ml", commonName: "Whipping Cream", englishName: "chilled whipping cream" },
+      { amount: "2 tbsp", commonName: "Pisi Cheeni", englishName: "icing sugar" },
+      { amount: "100 g", commonName: "Strawberry", englishName: "fresh strawberries, finely chopped" },
+      { amount: "2 tbsp", commonName: "Strawberry Jam", englishName: "strawberry jam" },
+      { amount: "3 tbsp", commonName: "Cheeni ka Paani", englishName: "light sugar syrup" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 180°C and line a rectangular cake tin." },
+      { step: 2, instruction: "Whisk the yogurt, sugar, oil and milk. Fold in the sifted flour, baking powder and baking soda." },
+      { step: 3, instruction: "Bake for 25 to 30 minutes, until a skewer inserted in the centre comes out clean. Cool completely." },
+      { step: 4, instruction: "Whip the chilled cream with icing sugar until firm peaks form. Gently fold in the strawberry jam." },
+      { step: 5, instruction: "Slice the sponge horizontally into two layers. Brush lightly with sugar syrup." },
+      { step: 6, instruction: "Spread strawberry cream over the bottom layer and scatter the finely chopped strawberries on top." },
+      { step: 7, instruction: "Place the second sponge layer on top and cover with the remaining cream." },
+      { step: 8, instruction: "Decorate with sliced strawberries, cut into rectangular pastries and refrigerate for at least 30 minutes." }
+    ],
+    notes: [
+      "Dry the strawberries thoroughly after washing so excess moisture does not soften the cream.",
+      "Fresh strawberries are best added shortly before serving."
+    ]
+  },
+
+  "pineapple pastry": {
+    dishName: "Pineapple Pastry",
+    image: "/dishes/pineapple-pastry.webp",
+    description: "Light vanilla sponge layered with whipped cream and juicy pineapple pieces, finished with a creamy topping.",
+    prepTime: "Approx. 60 minutes (plus chilling)",
+    equipment: [
+      { item: "oven", isSpecialized: false, alternative: null }
+    ],
+    ingredients: [
+      { amount: "150 g", commonName: "Maida", englishName: "all-purpose flour" },
+      { amount: "100 g", commonName: "Cheeni", englishName: "sugar" },
+      { amount: "120 g", commonName: "Dahi", englishName: "plain yogurt" },
+      { amount: "60 ml", commonName: "Tel", englishName: "neutral cooking oil" },
+      { amount: "80 ml", commonName: "Doodh", englishName: "milk" },
+      { amount: "1 tsp", commonName: "Baking Powder", englishName: "baking powder" },
+      { amount: "1/4 tsp", commonName: "Baking Soda", englishName: "baking soda" },
+      { amount: "250 ml", commonName: "Whipping Cream", englishName: "chilled whipping cream" },
+      { amount: "2 tbsp", commonName: "Pisi Cheeni", englishName: "icing sugar" },
+      { amount: "150 g", commonName: "Ananas", englishName: "pineapple, finely diced and drained" },
+      { amount: "3 tbsp", commonName: "Cheeni ka Paani", englishName: "light sugar syrup" }
+    ],
+    method: [
+      { step: 1, instruction: "Preheat the oven to 180°C and line a rectangular cake tin." },
+      { step: 2, instruction: "Whisk the yogurt, sugar, oil and milk until smooth. Fold in the sifted flour, baking powder and baking soda." },
+      { step: 3, instruction: "Bake for 25 to 30 minutes, until a skewer inserted in the centre comes out clean. Cool completely." },
+      { step: 4, instruction: "Whip the chilled cream with icing sugar until firm peaks form." },
+      { step: 5, instruction: "Slice the sponge horizontally into two layers and brush lightly with sugar syrup." },
+      { step: 6, instruction: "Spread whipped cream over the bottom layer and scatter the drained pineapple pieces evenly." },
+      { step: 7, instruction: "Place the second layer on top. Cover the top and sides with the remaining whipped cream." },
+      { step: 8, instruction: "Decorate with a few pineapple pieces, cut into rectangular pastries and refrigerate for at least 30 minutes." }
+    ],
+    notes: [
+      "Drain the pineapple thoroughly to prevent the cream from becoming watery.",
+      "Canned pineapple is convenient, but fresh pineapple can also be used."
+    ]
+  },
+
+  "amritsari kulcha": {
+    "dishName": "Amritsari Kulcha",
+    "image": "/dishes/amritsari-kulcha.webp",
+    "description": "Crisp, golden Punjabi stuffed bread filled with spiced potatoes and finished with butter and coriander.",
+    "prepTime": "Approx. 50 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "250 g", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "3 tbsp", "commonName": "Dahi", "englishName": "plain yogurt" },
+      { "amount": "1 tsp", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/2 tsp", "commonName": "Baking Powder", "englishName": "baking powder" },
+      { "amount": "1/4 tsp", "commonName": "Baking Soda", "englishName": "baking soda" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "water for kneading" },
+      { "amount": "3 medium", "commonName": "Aloo", "englishName": "boiled potatoes, mashed" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies, finely chopped" },
+      { "amount": "1 tsp", "commonName": "Adrak", "englishName": "grated ginger" },
+      { "amount": "1/2 tsp", "commonName": "Ajwain", "englishName": "carom seeds" },
+      { "amount": "1 tsp", "commonName": "Anardana Powder", "englishName": "dried pomegranate seed powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "chopped coriander leaves" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "as needed", "commonName": "Makhan", "englishName": "butter for serving" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix flour, yogurt, sugar, baking powder, baking soda, oil and salt. Add water gradually and knead into a soft dough. Cover and rest for 30 minutes." },
+      { "step": 2, "instruction": "Mix mashed potatoes with onion, green chillies, ginger, ajwain, anardana, garam masala, coriander and salt." },
+      { "step": 3, "instruction": "Divide the dough into equal balls. Flatten each ball, place potato filling in the centre and seal the edges." },
+      { "step": 4, "instruction": "Dust lightly with flour and gently roll into thick, round kulchas without allowing the filling to escape." },
+      { "step": 5, "instruction": "Heat a tawa over medium heat. Cook each kulcha until bubbles appear, then flip and cook the other side until golden spots develop." },
+      { "step": 6, "instruction": "Apply a little butter and cook until both sides are crisp and cooked through." },
+      { "step": 7, "instruction": "Serve hot with chole, onion salad and pickle." }
+    ],
+    "notes": [
+      "Keep the potato filling relatively dry to prevent the dough from tearing.",
+      "Anardana gives the characteristic tangy flavour of Amritsari-style filling."
+    ]
+  },
+
+  "jhal muri": {
+    "dishName": "Jhal Muri",
+    "image": "/dishes/jhal-muri.webp",
+    "description": "A crunchy Bengali street-food snack of puffed rice, mustard oil, peanuts, vegetables and tangy spices.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [],
+    "ingredients": [
+      { "amount": "4 cups", "commonName": "Murmura", "englishName": "puffed rice" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1 small", "commonName": "Uble Aloo", "englishName": "boiled potato, diced" },
+      { "amount": "1 small", "commonName": "Kheera", "englishName": "cucumber, diced" },
+      { "amount": "2 tbsp", "commonName": "Moongfali", "englishName": "roasted peanuts" },
+      { "amount": "1/2 cup", "commonName": "Chanachur", "englishName": "Bengali savoury snack mix" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Sarson ka Tel", "englishName": "mustard oil" },
+      { "amount": "1/2 tsp", "commonName": "Bhuna Jeera Powder", "englishName": "roasted cumin powder" },
+      { "amount": "1/2 tsp", "commonName": "Chaat Masala", "englishName": "chaat masala" },
+      { "amount": "1/4 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1", "commonName": "Nimbu", "englishName": "lemon, juiced" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "chopped coriander leaves" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Ensure the puffed rice is crisp. If it has become soft, dry-roast it briefly in a kadai and let it cool completely." },
+      { "step": 2, "instruction": "Combine the chopped onion, potato, cucumber, green chilli, peanuts and coriander in a large bowl." },
+      { "step": 3, "instruction": "Add mustard oil, roasted cumin, chaat masala, red chilli powder and salt." },
+      { "step": 4, "instruction": "Add puffed rice and chanachur. Toss quickly so the seasoning coats everything evenly." },
+      { "step": 5, "instruction": "Add lemon juice, toss once more and serve immediately." }
+    ],
+    "notes": [
+      "Mix only immediately before serving to preserve the crunch.",
+      "Mustard oil provides the characteristic pungent flavour of Bengali jhal muri."
+    ]
+  },
+
+  "kosha mangsho": {
+    "dishName": "Kosha Mangsho",
+    "image": "/dishes/kosha-mangsho.webp",
+    "description": "A traditional Bengali slow-cooked mutton curry with deeply browned onions, warming spices and a rich, reduced gravy.",
+    "prepTime": "Approx. 90 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "750 g", "commonName": "Mutton", "englishName": "bone-in mutton pieces" },
+      { "amount": "250 g", "commonName": "Pyaaz", "englishName": "onions, thinly sliced" },
+      { "amount": "150 g", "commonName": "Dahi", "englishName": "plain yogurt" },
+      { "amount": "2 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Haldi", "englishName": "turmeric powder" },
+      { "amount": "2 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1 tsp", "commonName": "Jeera Powder", "englishName": "cumin powder" },
+      { "amount": "1 tsp", "commonName": "Kashmiri Lal Mirch", "englishName": "Kashmiri red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1 inch", "commonName": "Dalchini", "englishName": "cinnamon stick" },
+      { "amount": "4", "commonName": "Laung", "englishName": "cloves" },
+      { "amount": "3", "commonName": "Elaichi", "englishName": "green cardamom pods" },
+      { "amount": "2", "commonName": "Tej Patta", "englishName": "bay leaves" },
+      { "amount": "5 tbsp", "commonName": "Sarson ka Tel", "englishName": "mustard oil" },
+      { "amount": "1 to 1 1/2 cups", "commonName": "Paani", "englishName": "hot water, as needed" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix the mutton with yogurt, ginger-garlic paste, turmeric, chilli powder, coriander powder, cumin powder and salt. Marinate for at least 30 minutes." },
+      { "step": 2, "instruction": "Heat mustard oil in a heavy kadai until it just begins to smoke, then reduce the heat slightly." },
+      { "step": 3, "instruction": "Add cinnamon, cloves, cardamom and bay leaves. Let them release their aroma." },
+      { "step": 4, "instruction": "Add sliced onions and cook over medium heat, stirring frequently, until deeply golden brown." },
+      { "step": 5, "instruction": "Add the marinated mutton. Cook uncovered, stirring frequently, until the meat changes colour and the masala becomes dark, thick and aromatic." },
+      { "step": 6, "instruction": "Continue bhuno-style cooking, scraping the bottom regularly. Add small splashes of hot water whenever the masala begins sticking." },
+      { "step": 7, "instruction": "Add enough hot water to help the meat cook. Cover and simmer gently for 60 to 90 minutes, stirring occasionally, until the mutton is tender. Add water as needed." },
+      { "step": 8, "instruction": "Remove the lid and cook until the gravy is thick and clings to the meat. Stir in garam masala and adjust salt." },
+      { "step": 9, "instruction": "Rest briefly and serve hot with luchi, paratha or steamed rice." }
+    ],
+    "notes": [
+      "Kosha means slow cooking and reducing the masala; the gravy should be thick rather than watery.",
+      "Cooking time depends on the cut and age of the mutton. Continue simmering until safely cooked and tender."
+    ]
+  },
+
+  "galouti kebab": {
+    "dishName": "Galouti Kebab",
+    "image": "/dishes/galouti-kebab.webp",
+    "description": "Exceptionally tender Awadhi minced-meat kebabs seasoned with aromatic spices and lightly browned in ghee.",
+    "prepTime": "Approx. 45 minutes (plus marination)",
+    "equipment": [
+      { "item": "grinder", "isSpecialized": false, "alternative": null },
+      { "item": "tawa", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "500 g", "commonName": "Mutton Keema", "englishName": "finely minced mutton" },
+      { "amount": "1 tbsp", "commonName": "Kachcha Papita Paste", "englishName": "raw papaya paste" },
+      { "amount": "2 tbsp", "commonName": "Dahi", "englishName": "plain yogurt" },
+      { "amount": "1 medium", "commonName": "Pyaaz", "englishName": "onion, thinly sliced and browned" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1/2 tsp", "commonName": "Jeera Powder", "englishName": "cumin powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/4 tsp", "commonName": "Jaiphal-Javitri", "englishName": "ground nutmeg and mace" },
+      { "amount": "1/2 tsp", "commonName": "Kewra Jal", "englishName": "kewra water, optional" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "finely chopped coriander leaves" },
+      { "amount": "2 tbsp", "commonName": "Ghee", "englishName": "ghee for shallow cooking" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Blend the browned onion into a fine paste. If the mince is coarse, pulse it in a grinder until very fine." },
+      { "step": 2, "instruction": "Combine the mince with raw papaya paste, yogurt, ginger-garlic paste, browned onion paste, ground spices, coriander and salt." },
+      { "step": 3, "instruction": "Mix thoroughly and refrigerate for at least 1 hour to tenderise and develop flavour." },
+      { "step": 4, "instruction": "Shape the mixture into small, flat patties with lightly greased hands. If the mixture is too soft to shape, chill it longer." },
+      { "step": 5, "instruction": "Heat a tawa over low to medium-low heat and grease it lightly with ghee." },
+      { "step": 6, "instruction": "Cook the patties gently in batches, turning carefully, until browned outside and fully cooked through." },
+      { "step": 7, "instruction": "Serve hot with roomali roti, sliced onions and mint chutney." }
+    ],
+    "notes": [
+      "Very finely minced meat and gentle cooking help produce the characteristic soft texture.",
+      "Raw papaya is a tenderiser, so avoid adding excessive quantities or marinating for too long.",
+      "Ensure the minced meat reaches a safe internal temperature of 71°C."
+    ]
+  },
+
+  "south indian filter coffee": {
+    "dishName": "South Indian Filter Coffee",
+    "image": "/dishes/south-indian-filter-coffee.webp",
+    "description": "Strong South Indian filter-brewed coffee mixed with hot milk and sugar, traditionally served with a frothy top.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4 tbsp", "commonName": "Filter Coffee Powder", "englishName": "South Indian filter coffee grounds, preferably with chicory" },
+      { "amount": "200 ml", "commonName": "Ubalta Paani", "englishName": "boiling water" },
+      { "amount": "300 ml", "commonName": "Doodh", "englishName": "whole milk" },
+      { "amount": "2 to 4 tsp", "commonName": "Cheeni", "englishName": "sugar, to taste" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Place the coffee grounds in the upper chamber of a traditional South Indian metal coffee filter and level them gently without packing too tightly." },
+      { "step": 2, "instruction": "Pour boiling water into the upper chamber, fit the lid and allow the decoction to drip slowly into the lower chamber for about 10 minutes." },
+      { "step": 3, "instruction": "Heat the milk in a saucepan until hot, taking care not to let it boil over." },
+      { "step": 4, "instruction": "Add 2 to 3 tablespoons of strong decoction to each serving cup, adjusting the quantity to taste." },
+      { "step": 5, "instruction": "Add hot milk and sugar. Pour between the tumbler and davara a few times to mix and create a light froth." },
+      { "step": 6, "instruction": "Serve immediately while hot." }
+    ],
+    "notes": [
+      "A traditional South Indian metal filter gives the characteristic slow-dripped decoction.",
+      "The coffee filter is assumed to be available; it is not part of the app's standard equipment vocabulary.",
+      "Adjust the decoction-to-milk ratio to control strength."
+    ]
+  },
+
+  "jadoh": {
+    "dishName": "Jadoh",
+    "image": "/dishes/jadoh.webp",
+    "description": "A traditional Khasi rice dish from Meghalaya cooked with pork, ginger, black pepper and aromatic spices.",
+    "prepTime": "Approx. 70 minutes",
+    "equipment": [
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "300 g", "commonName": "Chawal", "englishName": "short-grain rice, preferably Khasi red rice" },
+      { "amount": "400 g", "commonName": "Pork", "englishName": "pork belly or shoulder, diced small" },
+      { "amount": "2 medium", "commonName": "Pyaaz", "englishName": "onions, sliced" },
+      { "amount": "2 tbsp", "commonName": "Adrak", "englishName": "finely chopped ginger" },
+      { "amount": "5 cloves", "commonName": "Lehsun", "englishName": "garlic, chopped" },
+      { "amount": "1 tsp", "commonName": "Haldi", "englishName": "turmeric powder" },
+      { "amount": "1 tsp", "commonName": "Kali Mirch", "englishName": "coarsely crushed black pepper" },
+      { "amount": "2", "commonName": "Tej Patta", "englishName": "bay leaves, optional" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil, if needed" },
+      { "amount": "600 ml", "commonName": "Paani", "englishName": "hot water, adjust as needed" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Wash the rice until the water runs mostly clear. Soak for 20 minutes, then drain well." },
+      { "step": 2, "instruction": "Heat a heavy pot. Add the pork and cook until its fat renders and the pieces develop browned edges. Add a little oil only if necessary." },
+      { "step": 3, "instruction": "Add the onions, ginger and garlic. Cook until the onions soften and begin to brown." },
+      { "step": 4, "instruction": "Stir in turmeric, black pepper, bay leaves and salt." },
+      { "step": 5, "instruction": "Add the drained rice and stir gently so the grains are coated in the pork fat and aromatics." },
+      { "step": 6, "instruction": "Pour in the hot water and bring to a boil. Reduce the heat, cover and simmer until the rice is tender and the pork is fully cooked, about 25 to 35 minutes." },
+      { "step": 7, "instruction": "Check occasionally and add a little hot water if needed. Let the dish rest covered for 5 minutes before fluffing gently." },
+      { "step": 8, "instruction": "Serve hot as a complete one-pot meal." }
+    ],
+    "notes": [
+      "Khasi red rice is traditional, but short-grain rice is a practical substitute.",
+      "Some traditional versions use pig's blood for colour and flavour; this home-style version omits it."
+    ]
+  },
+
+  "thenthuk": {
+    "dishName": "Thenthuk",
+    "image": "/dishes/thenthuk.webp",
+    "description": "A warming Himalayan noodle soup with hand-pulled wheat dough pieces, vegetables, ginger and a savoury broth.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "200 g", "commonName": "Atta", "englishName": "whole-wheat flour" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "water for dough and soup" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "1 medium", "commonName": "Pyaaz", "englishName": "onion, chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak", "englishName": "finely chopped ginger" },
+      { "amount": "3 cloves", "commonName": "Lehsun", "englishName": "garlic, chopped" },
+      { "amount": "1 medium", "commonName": "Tamatar", "englishName": "tomato, chopped" },
+      { "amount": "1 medium", "commonName": "Gajar", "englishName": "carrot, diced" },
+      { "amount": "1 cup", "commonName": "Patta Gobhi", "englishName": "cabbage, chopped" },
+      { "amount": "1/2 cup", "commonName": "Palak", "englishName": "spinach, chopped" },
+      { "amount": "1/2 tsp", "commonName": "Jeera", "englishName": "cumin seeds" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper" },
+      { "amount": "1 litre", "commonName": "Sabzi Stock", "englishName": "vegetable stock or water" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "chopped coriander leaves" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix the flour with a pinch of salt and enough water to make a firm, smooth dough. Knead for 5 minutes, cover and rest for 20 minutes." },
+      { "step": 2, "instruction": "Heat oil in a large pot. Add cumin seeds, onion, ginger and garlic. Cook until fragrant and softened." },
+      { "step": 3, "instruction": "Add tomato, carrot and cabbage. Cook for 3 to 4 minutes, stirring occasionally." },
+      { "step": 4, "instruction": "Pour in the vegetable stock or water. Add salt and black pepper and bring to a simmer." },
+      { "step": 5, "instruction": "Flatten the rested dough into a thin sheet. Pinch or tear off small irregular pieces directly into the gently simmering soup." },
+      { "step": 6, "instruction": "Simmer for 8 to 12 minutes, stirring gently so the dough pieces do not stick together." },
+      { "step": 7, "instruction": "Add spinach and cook for another 2 to 3 minutes, until the vegetables and dough are cooked through." },
+      { "step": 8, "instruction": "Garnish with coriander and serve piping hot." }
+    ],
+    "notes": [
+      "Thenthuk is traditionally made by tearing dough into irregular pieces directly into the soup.",
+      "For a non-vegetarian version, use meat stock and add small pieces of cooked meat."
+    ]
+  },
+
+  "chana madra": {
+    "dishName": "Chana Madra",
+    "image": "/dishes/chana-madra.webp",
+    "description": "A traditional Himachali chickpea curry simmered in a tangy yogurt gravy with whole spices and a gentle richness.",
+    "prepTime": "Approx. 40 minutes (plus soaking)",
+    "equipment": [
+      { "item": "cooker", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "250 g", "commonName": "Kabuli Chana", "englishName": "dried chickpeas, soaked overnight" },
+      { "amount": "250 g", "commonName": "Dahi", "englishName": "plain full-fat yogurt, whisked" },
+      { "amount": "2 tbsp", "commonName": "Ghee", "englishName": "ghee" },
+      { "amount": "1 inch", "commonName": "Dalchini", "englishName": "cinnamon stick" },
+      { "amount": "4", "commonName": "Laung", "englishName": "cloves" },
+      { "amount": "3", "commonName": "Elaichi", "englishName": "green cardamom pods" },
+      { "amount": "1 tsp", "commonName": "Jeera", "englishName": "cumin seeds" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric powder" },
+      { "amount": "1 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1/2 tsp", "commonName": "Saunf Powder", "englishName": "fennel powder" },
+      { "amount": "1/4 tsp", "commonName": "Heeng", "englishName": "asafoetida" },
+      { "amount": "2 tbsp", "commonName": "Kaju", "englishName": "cashews, optional" },
+      { "amount": "1 to 1 1/2 cups", "commonName": "Chane ka Paani", "englishName": "reserved chickpea cooking water" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Drain the soaked chickpeas and pressure-cook with fresh water until tender. Reserve some cooking liquid." },
+      { "step": 2, "instruction": "Whisk the yogurt thoroughly until completely smooth. Keep it at room temperature while preparing the spices." },
+      { "step": 3, "instruction": "Heat ghee in a kadai. Add cumin, cinnamon, cloves, cardamom and asafoetida. Let the spices release their aroma." },
+      { "step": 4, "instruction": "Reduce the heat to low. Add turmeric, coriander powder and fennel powder, stirring briefly without burning them." },
+      { "step": 5, "instruction": "Add the whisked yogurt a little at a time, stirring constantly over low heat to reduce the risk of curdling." },
+      { "step": 6, "instruction": "Cook gently until the yogurt gravy thickens slightly. Add the cooked chickpeas and enough reserved cooking liquid to form a creamy curry." },
+      { "step": 7, "instruction": "Simmer gently for 10 to 15 minutes, stirring occasionally. Add cashews if using and adjust salt and consistency." },
+      { "step": 8, "instruction": "Serve hot with rice or roti." }
+    ],
+    "notes": [
+      "Use full-fat yogurt at room temperature and keep the heat low when adding it.",
+      "Regional versions vary; some use more ghee, nuts or additional whole spices."
+    ]
+  },
+
+  "khaman": {
+    "dishName": "Khaman",
+    "image": "/dishes/khaman.webp",
+    "description": "Soft, airy Gujarati steamed gram-flour cakes topped with a mustard seed, curry leaf and green chilli tempering.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "1 cup", "commonName": "Besan", "englishName": "gram flour" },
+      { "amount": "3/4 cup", "commonName": "Paani", "englishName": "water, adjust for batter consistency" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric powder, optional" },
+      { "amount": "1 tsp", "commonName": "Eno Fruit Salt", "englishName": "unflavoured fruit salt" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil for batter" },
+      { "amount": "1/2 tsp", "commonName": "Rai", "englishName": "mustard seeds" },
+      { "amount": "8", "commonName": "Kadi Patta", "englishName": "curry leaves" },
+      { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies, slit" },
+      { "amount": "1 tsp", "commonName": "Cheeni", "englishName": "sugar for tempering" },
+      { "amount": "1/2 cup", "commonName": "Paani", "englishName": "water for tempering" },
+      { "amount": "1 tbsp", "commonName": "Hara Dhaniya", "englishName": "chopped coriander leaves" },
+      { "amount": "1 tbsp", "commonName": "Nariyal", "englishName": "grated coconut, optional" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Whisk gram flour, water, lemon juice, sugar, turmeric and oil into a smooth, lump-free batter." },
+      { "step": 2, "instruction": "Prepare a steaming setup by placing a heatproof stand inside a large kadai with water below the stand. Cover and bring the water to a boil." },
+      { "step": 3, "instruction": "Grease a heatproof shallow dish that fits inside the kadai." },
+      { "step": 4, "instruction": "Add the fruit salt to the batter and stir gently just until evenly combined. Pour immediately into the prepared dish." },
+      { "step": 5, "instruction": "Place the dish on the stand, cover the kadai and steam for 15 to 20 minutes, until a skewer inserted in the centre comes out clean." },
+      { "step": 6, "instruction": "Let the khaman rest for 5 minutes, then cut into squares." },
+      { "step": 7, "instruction": "Heat a little oil in a small pan or kadai. Add mustard seeds, curry leaves and green chillies." },
+      { "step": 8, "instruction": "Add the water and sugar carefully and bring to a brief simmer. Pour the tempering evenly over the khaman." },
+      { "step": 9, "instruction": "Garnish with coriander and grated coconut if desired. Serve warm or at room temperature." }
+    ],
+    "notes": [
+      "Khaman is made from gram flour; it is distinct from fermented rice-and-lentil dhokla.",
+      "Add fruit salt only immediately before steaming to retain the airy texture.",
+      "Keep the steaming water below the stand so it does not enter the batter."
+    ]
+  },
+
+  "mangalore buns": {
+    "dishName": "Mangalore Buns",
+    "image": "/dishes/mangalore-buns.webp",
+    "description": "Soft, slightly sweet banana puris from coastal Karnataka, made with ripe bananas, yogurt and cumin.",
+    "prepTime": "Approx. 35 minutes (plus 4 to 6 hours resting)",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 medium", "commonName": "Pake Kele", "englishName": "very ripe bananas" },
+      { "amount": "250 g", "commonName": "Maida", "englishName": "all-purpose flour, plus extra for rolling" },
+      { "amount": "3 tbsp", "commonName": "Dahi", "englishName": "plain yogurt" },
+      { "amount": "2 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/2 tsp", "commonName": "Jeera", "englishName": "cumin seeds" },
+      { "amount": "1 pinch", "commonName": "Baking Soda", "englishName": "baking soda" },
+      { "amount": "1/4 tsp", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1 tbsp", "commonName": "Ghee", "englishName": "melted ghee, optional" },
+      { "amount": "as needed", "commonName": "Tel", "englishName": "oil for deep-frying" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mash the ripe bananas until smooth." },
+      { "step": 2, "instruction": "Mix in yogurt, sugar, cumin seeds, baking soda, salt and ghee if using." },
+      { "step": 3, "instruction": "Add flour gradually and knead into a soft dough. It should be slightly sticky but firm enough to roll. Avoid adding water." },
+      { "step": 4, "instruction": "Cover and rest at room temperature for 4 to 6 hours so the dough softens and develops flavour." },
+      { "step": 5, "instruction": "Divide into small balls. Dust with flour and roll into thick rounds, roughly 10 to 12 cm wide." },
+      { "step": 6, "instruction": "Heat oil in a kadai over medium heat. Slide in one round at a time and gently press with a slotted spoon to help it puff." },
+      { "step": 7, "instruction": "Turn and fry until both sides are golden brown. Drain well." },
+      { "step": 8, "instruction": "Serve warm with coconut chutney, yogurt or South Indian filter coffee." }
+    ],
+    "notes": [
+      "Very ripe bananas provide sweetness and moisture, so additional water is usually unnecessary.",
+      "Resting is important for the characteristic soft texture.",
+      "Keep the oil at medium heat so the buns cook through without darkening too quickly."
+    ]
+  },
+
+  "afghani chaap": {
+    "dishName": "Afghani Chaap",
+    "image": "/dishes/afghani-chaap.webp",
+    "description": "Restaurant-style soy chaap coated in a creamy yogurt, cashew and aromatic spice marinade, then roasted until lightly charred.",
+    "prepTime": "Approx. 40 minutes (plus marination)",
+    "equipment": [
+      { "item": "oven", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "500 g", "commonName": "Soy Chaap", "englishName": "soy chaap pieces, thawed if frozen" },
+      { "amount": "150 g", "commonName": "Dahi", "englishName": "thick plain yogurt" },
+      { "amount": "12", "commonName": "Kaju", "englishName": "cashews, soaked" },
+      { "amount": "2 tbsp", "commonName": "Malai", "englishName": "fresh cream" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Kali Mirch", "englishName": "black pepper powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/2 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1 tsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "1 tbsp", "commonName": "Kasuri Methi", "englishName": "dried fenugreek leaves, crushed" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Prepare the soy chaap according to its package instructions. Drain, cool enough to handle and cut into thick pieces." },
+      { "step": 2, "instruction": "Grind the soaked cashews with a little water into a smooth paste." },
+      { "step": 3, "instruction": "Mix yogurt, cashew paste, cream, ginger-garlic paste, pepper, garam masala, coriander powder, lemon juice, oil, kasuri methi and salt." },
+      { "step": 4, "instruction": "Coat the chaap thoroughly with the marinade and refrigerate for at least 30 minutes." },
+      { "step": 5, "instruction": "Preheat the oven to 220°C. Arrange the chaap on a lined tray in a single layer." },
+      { "step": 6, "instruction": "Roast for 18 to 25 minutes, turning halfway, until heated through and lightly charred at the edges." },
+      { "step": 7, "instruction": "For extra colour, finish briefly under the grill while watching carefully." },
+      { "step": 8, "instruction": "Serve hot with mint chutney, onion rings and lemon wedges." }
+    ],
+    "notes": [
+      "If an oven is unavailable, cook the marinated chaap in a lightly greased kadai over medium-low heat, turning regularly.",
+      "Check the package instructions because ready-made chaap products differ in preparation and cooking requirements."
+    ]
+  },
+
+  "malai chaap": {
+    "dishName": "Malai Chaap",
+    "image": "/dishes/malai-chaap.webp",
+    "description": "Tender soy chaap marinated in yogurt, cream, cheese and mild spices for a rich, creamy North Indian starter.",
+    "prepTime": "Approx. 35 minutes (plus marination)",
+    "equipment": [
+      { "item": "oven", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "500 g", "commonName": "Soy Chaap", "englishName": "soy chaap pieces, thawed if frozen" },
+      { "amount": "150 g", "commonName": "Dahi", "englishName": "thick plain yogurt" },
+      { "amount": "3 tbsp", "commonName": "Malai", "englishName": "fresh cream" },
+      { "amount": "50 g", "commonName": "Paneer", "englishName": "finely grated paneer" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper powder" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "green cardamom powder" },
+      { "amount": "1/2 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "1/2 tsp", "commonName": "Kasuri Methi", "englishName": "dried fenugreek leaves, crushed" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Prepare the soy chaap according to its package instructions. Drain and cut into manageable pieces." },
+      { "step": 2, "instruction": "Mix yogurt, cream, grated paneer, ginger-garlic paste, black pepper, cardamom, coriander powder, lemon juice, oil, kasuri methi and salt into a thick marinade." },
+      { "step": 3, "instruction": "Coat the chaap evenly and refrigerate for at least 30 minutes." },
+      { "step": 4, "instruction": "Preheat the oven to 220°C. Arrange the chaap on a lined tray, leaving space between the pieces." },
+      { "step": 5, "instruction": "Roast for 18 to 25 minutes, turning halfway, until hot throughout and lightly golden at the edges." },
+      { "step": 6, "instruction": "Finish briefly under the grill if desired, watching carefully so the cream coating does not burn." },
+      { "step": 7, "instruction": "Serve immediately with mint chutney, onion rings and lemon wedges." }
+    ],
+    "notes": [
+      "Malai chaap should be creamy and mild rather than strongly red or chilli-heavy.",
+      "For stovetop cooking, use a greased kadai over medium-low heat and turn the pieces regularly.",
+      "Follow the package cooking instructions for the specific soy chaap product."
+    ]
+  },
+
+  "mezhukkuvaratty": {
+    "dishName": "Mezhukkuvaratty",
+    "image": "/dishes/mezhukkuvaratty.webp",
+    "description": "A traditional Kerala vegetable side dish of tender green beans stir-fried with coconut oil, curry leaves, chilli and black pepper.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "300 g", "commonName": "Beans", "englishName": "fresh green beans, trimmed and cut into pieces" },
+      { "amount": "2 tbsp", "commonName": "Nariyal Tel", "englishName": "coconut oil" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion or shallots, sliced" },
+      { "amount": "3 cloves", "commonName": "Lehsun", "englishName": "garlic, sliced" },
+      { "amount": "1 sprig", "commonName": "Kadi Patta", "englishName": "curry leaves" },
+      { "amount": "1/2 tsp", "commonName": "Lal Mirch Flakes", "englishName": "crushed red chilli flakes" },
+      { "amount": "1 pinch", "commonName": "Haldi", "englishName": "turmeric powder" },
+      { "amount": "1/4 tsp", "commonName": "Kali Mirch", "englishName": "black pepper powder" },
+      { "amount": "2 tbsp", "commonName": "Paani", "englishName": "water, only as needed" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Wash and drain the beans, then cut them into medium-length pieces." },
+      { "step": 2, "instruction": "Heat coconut oil in a kadai. Add sliced onion or shallots and cook until softened." },
+      { "step": 3, "instruction": "Add garlic and curry leaves. Stir briefly until fragrant." },
+      { "step": 4, "instruction": "Add the beans, chilli flakes, turmeric, black pepper and salt. Toss until evenly coated." },
+      { "step": 5, "instruction": "Cover and cook over low to medium-low heat for 8 to 12 minutes, stirring occasionally. Add only a small splash of water if the beans begin sticking before they soften." },
+      { "step": 6, "instruction": "Remove the lid and continue stir-frying until the beans are tender and the excess moisture has evaporated." },
+      { "step": 7, "instruction": "Serve hot with Kerala matta rice, sambar or another curry." }
+    ],
+    "notes": [
+      "Mezhukkuvaratty is a Kerala-style oil-roasted vegetable preparation; beans are one common version.",
+      "Coconut oil and curry leaves provide the characteristic flavour.",
+      "Avoid adding too much water because the finished dish should be relatively dry rather than saucy."
+    ]
   }
 
 }
