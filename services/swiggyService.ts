@@ -200,6 +200,20 @@ export const startSwiggyLogin = (): boolean => {
   return true;
 };
 
+/**
+ * A person-initiated retry — e.g. tapping "Sign in to Swiggy" after the
+ * throttle in startSwiggyLogin blocked an automatic redirect. A deliberate
+ * tap isn't a loop, so this clears the throttle and redirects immediately.
+ */
+export const retrySwiggyLogin = (): void => {
+  try {
+    sessionStorage.setItem(LOGIN_ATTEMPT_KEY, String(Date.now()));
+  } catch {
+    /* ignore storage problems */
+  }
+  window.location.href = "/api/swiggy/auth/start";
+};
+
 /* ------------------------------------------------------------------ */
 /* Addresses                                                           */
 /* ------------------------------------------------------------------ */

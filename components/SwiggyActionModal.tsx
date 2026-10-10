@@ -41,6 +41,8 @@ interface SwiggyActionModalProps {
   onMinimize: () => void;
   onClose: () => void;
   dishName?: string;
+  needsSwiggyReconnect?: boolean;
+  onRetrySwiggyLogin?: () => void;   
 }
 
 type Step = "address" | "products" | "done";
@@ -205,6 +207,22 @@ const ClosedStallIcon: IconC = ({ className }) => (
     <path d="M9 25.5h38M9 32h38" stroke={COLOR.stamp} strokeWidth="1.6" opacity="0.55" />
     <circle cx="44" cy="35" r="7" fill={COLOR.paper} stroke={COLOR.stampDark} strokeWidth="2" />
     <path d="M44 31.5v3.5l2.3 2.3" stroke={COLOR.stampDark} strokeWidth="1.6" strokeLinecap="round" fill="none" />
+  </svg>
+);
+
+/* "Reconnect" — a door with an arrow stepping back through it. Calm, not an error. */
+const ReconnectIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 52 48" className={className} aria-hidden="true">
+    <rect x="8" y="5" width="22" height="38" rx="2" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
+    <circle cx="25" cy="24" r="1.6" fill={COLOR.stampDark} />
+    <path
+      d="M33 24h14m0 0-5-5m5 5-5 5"
+      fill="none"
+      stroke={COLOR.stampDark}
+      strokeWidth="2.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -754,6 +772,8 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   onAddDishToCart,
   foodCartAdded,
   dishName,
+  needsSwiggyReconnect, 
+  onRetrySwiggyLogin,     
   error,
   onMinimize,
   onClose,
@@ -919,18 +939,42 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
 
         {/* Scrollable content */}
         <div className="modal-scroll flex-1 overflow-y-auto px-5 py-5 sm:px-6">
-          {error && (
-            <div
-              role="alert"
-              className="mb-5 flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
-              style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
-            >
-              <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error }} />
-              <p>{error}</p>
+          {needsSwiggyReconnect ? (
+            <div className="py-10 text-center">
+              <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
+                <ReconnectIcon className="h-14 w-14" />
+              </span>
+              <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                Reconnect to Swiggy
+              </h4>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                We tried signing you in a moment ago and it didn&apos;t go through. Let&apos;s try again.
+              </p>
+              {onRetrySwiggyLogin && (
+                <button
+                  type="button"
+                  onClick={onRetrySwiggyLogin}
+                  className="mt-5 inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold uppercase tracking-wide shadow-sm transition-all duration-150 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+                >
+                  Sign in to Swiggy
+                </button>
+              )}
             </div>
-          )}
+          ) : (
+            <>
+              {error && (
+                <div
+                  role="alert"
+                  className="mb-5 flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
+                  style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
+                >
+                  <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error }} />
+                  <p>{error}</p>
+                </div>
+              )}
 
-          {isInitialLoading ? (
+              {isInitialLoading ? (
             loadingStage === "addresses" ? (
               <AddressStageLoader />
             ) : loadingStage === "restaurants" ? (
@@ -1219,11 +1263,13 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                 </ul>
               )}
             </>
+           )}
+            </>
           )}
         </div>
 
         {/* Footers */}
-        {!isInitialLoading && hasAddresses && showAddressScreen && (
+        {!isInitialLoading && !needsSwiggyReconnect && hasAddresses && showAddressScreen && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
             <button
               type="button"
@@ -1241,7 +1287,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
           </div>
         )}
 
-        {!isInitialLoading && type === "instamart" && !cartAdded && hasAddresses && !showAddressScreen && !noItemsAtAll && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && !cartAdded && hasAddresses && !showAddressScreen && !noItemsAtAll && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
             <div className="mb-2.5 flex items-center justify-between font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.inkFaint }}>
               <span>{selectedCount} of {instamartNames.length} picked</span>
@@ -1269,7 +1315,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
           </div>
         )}
 
-        {!isInitialLoading && type === "swiggy" && !foodCartAdded && hasAddresses && !showAddressScreen && selectedRestaurant && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && !foodCartAdded && hasAddresses && !showAddressScreen && selectedRestaurant && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
             <button
               type="button"

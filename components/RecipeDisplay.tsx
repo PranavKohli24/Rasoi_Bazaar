@@ -14,6 +14,7 @@ import {
   searchRestaurants,
   addDishToFoodCart,
   startSwiggyLogin,
+  retrySwiggyLogin,
   MAX_CART_QUANTITY,
   SwiggyAddress,
   InstamartProduct,
@@ -1321,12 +1322,18 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [restaurants, setRestaurants] = useState<SwiggyRestaurant[]>([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<SwiggyRestaurant | null>(null);
   const [foodCartAdded, setFoodCartAdded] = useState(false);
+  const [needsSwiggyReconnect, setNeedsSwiggyReconnect] = useState(false);
 
   // Sends the person to sign in with Swiggy; if it can't, say so.
-  const redirectToLogin = () => {
+const redirectToLogin = () => {
     if (!startSwiggyLogin()) {
-      setSwiggyError("We couldn't sign you in to Swiggy. Please try again in a minute.");
+      setNeedsSwiggyReconnect(true);
     }
+  };
+
+  const handleRetrySwiggyLogin = () => {
+    setNeedsSwiggyReconnect(false);
+    retrySwiggyLogin();
   };
 
   /* ----- Recipe handlers ----- */
@@ -1602,6 +1609,7 @@ const handlePrevStep = () => {
     setRestaurants([]);
     setSelectedRestaurant(null);
     setFoodCartAdded(false);
+    setNeedsSwiggyReconnect(false);
     setLoadingStage(null);
     setSearchIngredientNames([]);
     setPendingIngredientNames([]);
@@ -2719,6 +2727,8 @@ const handlePrevStep = () => {
         onAddDishToCart={handleAddDishToSwiggyCart}
         foodCartAdded={foodCartAdded}
         dishName={recipe.dishName}
+        needsSwiggyReconnect={needsSwiggyReconnect}
+        onRetrySwiggyLogin={handleRetrySwiggyLogin}
         error={swiggyError}
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}
