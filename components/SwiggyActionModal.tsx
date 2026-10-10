@@ -40,6 +40,7 @@ interface SwiggyActionModalProps {
   error?: string | null;
   onMinimize: () => void;
   onClose: () => void;
+  dishName?: string;
 }
 
 type Step = "address" | "products" | "done";
@@ -176,6 +177,34 @@ const DishHeaderIcon: IconC = ({ className }) => (
     {/* spoon: an oval bowl and a slim handle */}
     <ellipse cx="47.3" cy="12.4" rx="4.3" ry="5.9" fill={COLOR.stamp} />
     <rect x="46.3" y="17.7" width="2" height="16.3" rx="1" fill={COLOR.stamp} />
+  </svg>
+);
+
+/* "Not found" — a plate being searched, nothing on it. */
+const DishSearchIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 56 48" className={className} aria-hidden="true">
+    <circle cx="23" cy="28" r="17" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
+    <circle cx="23" cy="28" r="9.5" fill="none" stroke={COLOR.stamp} strokeWidth="1.3" opacity="0.5" />
+    <circle cx="37" cy="15" r="9" fill={COLOR.paper} stroke={COLOR.stampDark} strokeWidth="2.6" />
+    <line x1="43.3" y1="21.3" x2="50" y2="28" stroke={COLOR.stampDark} strokeWidth="3" strokeLinecap="round" />
+  </svg>
+);
+
+/* "Found, but closed" — a stall with its shutter down. */
+const ClosedStallIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 56 46" className={className} aria-hidden="true">
+    <path d="M5 15 10 4h36l5 11Z" fill={COLOR.stampDark} />
+    <path
+      d="M5 15q3.1 4.2 6.2 0t6.2 0 6.2 0 6.2 0 6.2 0 6.2 0 6.2 0"
+      fill="none"
+      stroke={COLOR.paper}
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+    <rect x="9" y="19" width="38" height="21" rx="1.5" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
+    <path d="M9 25.5h38M9 32h38" stroke={COLOR.stamp} strokeWidth="1.6" opacity="0.55" />
+    <circle cx="44" cy="35" r="7" fill={COLOR.paper} stroke={COLOR.stampDark} strokeWidth="2" />
+    <path d="M44 31.5v3.5l2.3 2.3" stroke={COLOR.stampDark} strokeWidth="1.6" strokeLinecap="round" fill="none" />
   </svg>
 );
 
@@ -724,6 +753,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   onSelectRestaurant,
   onAddDishToCart,
   foodCartAdded,
+  dishName,
   error,
   onMinimize,
   onClose,
@@ -746,6 +776,25 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [type, onMinimize]);
 
+  // Tracks whether a restaurant search has actually completed, so an empty
+  // result can show a "nothing found" message instead of silently bouncing
+  // back to the address screen (which looks like nothing happened at all).
+  const [hasSearchedRestaurants, setHasSearchedRestaurants] = useState(false);
+  const wasLoadingRestaurants = loadingStage === "restaurants" && isLoading;
+
+  useEffect(() => {
+    if (wasLoadingRestaurants) {
+      setHasSearchedRestaurants(true);
+    }
+  }, [wasLoadingRestaurants]);
+
+  // A fresh address choice invalidates the previous search result.
+  useEffect(() => {
+    if (isChoosingAddress) {
+      setHasSearchedRestaurants(false);
+    }
+  }, [isChoosingAddress]);
+
   if (!type) return null;
 
   const hasAddresses = !!addresses && addresses.length > 0;
@@ -761,7 +810,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
 
   const showAddressScreen =
     type === "swiggy"
-      ? isChoosingAddress || !hasRestaurants
+      ? isChoosingAddress || (!hasRestaurants && !hasSearchedRestaurants)
       : !cartAdded && (isChoosingAddress || !hasInstamartProducts);
 
   const instamartNames =
@@ -1093,10 +1142,70 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
                   eyebrow="Swiggy cart"
                   text={`Your dish from ${selectedRestaurant?.name} is in your Swiggy cart.`}
                 />
+
+              // AFTER
               ) : restaurants.length === 0 ? (
-                <p className="py-4 text-center text-sm" style={{ color: COLOR.inkFaint }}>
-                  No restaurants found near this address for this dish.
-                </p>
+                <div className="py-10 text-center">
+                  <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
+                    <DishSearchIcon className="h-14 w-14" />
+                  </span>
+                  <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                    {dishName ? `${dishName} isn't on Swiggy near you` : "Couldn't find this dish nearby"}
+                  </h4>
+                  <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                    No restaurants delivering to this address have it on their menu right now.
+                  </p>
+                  {onGoToAddress && (
+                    <button
+                      type="button"
+                      onClick={onGoToAddress}
+                      className="mt-5 border px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+                      style={{ borderColor: COLOR.line, color: COLOR.ink, backgroundColor: COLOR.paper }}
+                    >
+                      Try another address
+                    </button>
+                  )}
+                </div>
+              ) : restaurants.every((restaurant) => !restaurant.isOpen) ? (
+                <div className="py-10 text-center">
+                  <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
+                    <ClosedStallIcon className="h-14 w-14" />
+                  </span>
+                  <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                    Found it — but they&apos;re closed right now
+                  </h4>
+                  <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                    {restaurants.length} {restaurants.length === 1 ? "place serves" : "places serve"}{" "}
+                    {dishName ?? "this dish"} near you, just not at this hour.
+                  </p>
+
+                  <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left">
+                    {restaurants.slice(0, 4).map((restaurant) => (
+                      <li
+                        key={restaurant.id}
+                        className="flex items-center justify-between gap-3 rounded-lg px-3 py-2"
+                        style={{ backgroundColor: COLOR.paperSunken }}
+                      >
+                        <span className="min-w-0 truncate text-xs font-semibold" style={{ color: COLOR.ink }}>
+                          {restaurant.name}
+                        </span>
+                        {restaurant.nextOpenText && (
+                          <span
+                            className="shrink-0 font-mono text-[10px] uppercase tracking-wide"
+                            style={{ color: COLOR.stampDark }}
+                          >
+                            {restaurant.nextOpenText}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                    {restaurants.length > 4 && (
+                      <li className="text-center font-mono text-[10px] uppercase tracking-wide" style={{ color: COLOR.inkFaint }}>
+                        +{restaurants.length - 4} more nearby
+                      </li>
+                    )}
+                  </ul>
+                </div>
               ) : (
                 <ul className="animate-fade-in-up space-y-3" style={{ animationDuration: "0.25s" }}>
                   {restaurants.map((restaurant) => (

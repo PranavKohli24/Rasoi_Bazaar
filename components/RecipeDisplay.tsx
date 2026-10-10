@@ -2718,6 +2718,7 @@ const handlePrevStep = () => {
         onSelectRestaurant={handleSelectRestaurant}
         onAddDishToCart={handleAddDishToSwiggyCart}
         foodCartAdded={foodCartAdded}
+        dishName={recipe.dishName}
         error={swiggyError}
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}

@@ -50,6 +50,8 @@ export interface SwiggyRestaurant {
   /** True for pure-veg restaurants */
   veg?: boolean;
   isOpen: boolean;
+  /** e.g. "Opens next at 6 am, today" — only present when closed */
+  nextOpenText?: string;
 }
 
 /** The most of one product a person can add from our modal (they can change it in Instamart later). */
@@ -317,6 +319,7 @@ const normalizeRestaurant = (raw: any): SwiggyRestaurant => {
     isOpen:
       raw?.availabilityStatus === undefined ||
       raw?.availabilityStatus === "OPEN",
+    nextOpenText: typeof raw?.nextOpenTime === "string" ? raw.nextOpenTime : undefined,
   };
 };
 
