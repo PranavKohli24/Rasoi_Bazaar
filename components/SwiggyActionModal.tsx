@@ -567,10 +567,7 @@ const EmptyAddresses: React.FC = () => (
 );
 
 const SingleAddressConfirm: React.FC<{ address: SwiggyAddress }> = ({ address }) => (
-  <div
-    className="rounded-xl border-2 px-4 py-4"
-    style={{ borderColor: COLOR.stamp, backgroundColor: COLOR.stampTint }}
-  >
+  <div className="rounded-xl border-2 px-4 py-4" style={{ borderColor: COLOR.stamp, backgroundColor: COLOR.stampTint }}>
     <div className="flex items-start gap-3.5">
       <span
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
@@ -630,11 +627,11 @@ const AddressList: React.FC<{
               {selected && <CheckIcon className="h-3 w-3" />}
             </span>
 
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
                 {address.addressTag || address.addressCategory || "Address"}
               </p>
-              <p className="mt-0.5 truncate text-xs" style={{ color: COLOR.inkSoft }}>
+              <p className="mt-0.5 text-xs leading-relaxed" style={{ color: COLOR.inkSoft }}>
                 {address.addressLine}
               </p>
             </div>
