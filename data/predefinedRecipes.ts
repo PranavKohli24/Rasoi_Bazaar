@@ -44154,7 +44154,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     ]
   },
 
-  "vanilla pastry": {
+  "Pastry": {
     dishName: "Vanilla Pastry",
     image: "/dishes/vanilla-pastry.webp",
     description: "Soft vanilla sponge layered with lightly sweetened whipped cream and finished with a smooth cream coating.",
