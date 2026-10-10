@@ -43942,7 +43942,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "Custard": {
     dishName: "Pouring Custard",
-    image: "/dishes/pouring-custard.webp",
+    image: "/dishes/custard.webp",
     description: "A smooth, pourable vanilla custard sauce made with milk, egg yolks and vanilla.",
     prepTime: "Approx. 20 minutes",
     equipment: [
