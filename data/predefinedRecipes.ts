@@ -15358,6 +15358,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "arbi masala": {
     "dishName": "Arbi Masala",
+    "image": "/dishes/arbi-masala.webp",
     "description": "Crisp-edged colocasia cooked with ajwain, turmeric and tangy Indian spices.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -15953,6 +15954,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fish curry (fish masala)": {
     "dishName": "Fish Curry",
+    "image": "/dishes/fish-curry.webp",
     "description": "Simple Indian fish curry with onion, tomato and warm spices.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -16085,6 +16087,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "fish fingers": {
     "dishName": "Fish Fingers",
+    "image": "/dishes/fish-fingers.webp",
     "description": "Crispy homemade fish fingers made in the oven or air fryer with a.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -16333,6 +16336,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "keema matar": {
     "dishName": "Keema Matar",
+    "image": "/dishes/keema-matar.webp",
     "description": "Home-style minced mutton cooked with green peas, onion, tomato and everyday spices.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -16469,6 +16473,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "karela sabzi": {
     "dishName": "Karela Sabzi",
+    "image": "/dishes/karela-sabzi.webp",
     "description": "Simple bitter gourd sabzi cooked with onion and spices for an everyday Indian meal.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -16936,6 +16941,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "tomato rice": {
     "dishName": "Tomato Rice",
+    "image": "/dishes/tomato-rice.webp",
     "description": "Tangy South Indian tomato rice made with cooked rice, tomatoes and simple tempering spices.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
