@@ -682,9 +682,10 @@ const TicketTabs: React.FC<{
   step: Step;
   hasProducts: boolean;
   secondLabel: string;
+  showCheckoutTab?: boolean;
   onAddressClick?: () => void;
   onIngredientsClick?: () => void;
-}> = ({ step, hasProducts, secondLabel, onAddressClick, onIngredientsClick }) => {
+}> = ({ step, hasProducts, secondLabel, showCheckoutTab = false, onAddressClick, onIngredientsClick }) => {
   const order: Step[] = ["address", "products", "done"];
   const activeIndex = order.indexOf(step);
   const tabs: { key: Step; label: string; onClick?: () => void; clickable: boolean }[] = [
@@ -692,7 +693,7 @@ const TicketTabs: React.FC<{
       key: "address",
       label: "Address",
       onClick: onAddressClick,
-      clickable: step === "products" && !!onAddressClick,
+      clickable: step !== "address" && !!onAddressClick,
     },
     {
       key: "products",
@@ -701,6 +702,10 @@ const TicketTabs: React.FC<{
       clickable: step === "address" && hasProducts && !!onIngredientsClick,
     },
   ];
+
+  if (showCheckoutTab) {
+    tabs.push({ key: "done", label: "Checkout", clickable: false });
+  }
 
   return (
     <div className="mt-4 flex items-center gap-4">
@@ -1013,6 +1018,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
               step={currentStep}
               hasProducts={!!hasResults}
               secondLabel={type === "swiggy" ? "Restaurants" : "Ingredients"}
+              showCheckoutTab={type === "instamart"}
               onAddressClick={onGoToAddress}
               onIngredientsClick={onConfirmAddress}
             />
