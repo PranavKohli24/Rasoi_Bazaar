@@ -11,6 +11,8 @@ import {
   getSwiggyAddresses,
   searchInstamartProducts,
   addToInstamartCart,
+  getInstamartCart,
+  checkoutInstamartOrder,
   searchRestaurants,
   addDishToFoodCart,
   startSwiggyLogin,
@@ -19,9 +21,11 @@ import {
   SwiggyAddress,
   InstamartProduct,
   InstamartVariation,
+  InstamartCartSummary,
   SwiggyRestaurant,
 } from "../services/swiggyService";
 import SwiggyActionModal from "./SwiggyActionModal";
+import OrderTrackerModal from "./OrderTrackerModal";
 
 import NutritionInfo from "./NutritionInfo";
 import CookingCompanionChat from "./CookingCompanion";
@@ -1312,6 +1316,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [productQuantities, setProductQuantities] = useState<Record<string, number>>({});
   const [instamartCartAdded, setInstamartCartAdded] = useState(false);
   const [swiggyError, setSwiggyError] = useState<string | null>(null);
+  const [cartSummary, setCartSummary] = useState<InstamartCartSummary | null>(null);
+  const [isLoadingCartSummary, setIsLoadingCartSummary] = useState(false);
+  const [cartSummaryError, setCartSummaryError] = useState<string | null>(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [trackedOrderId, setTrackedOrderId] = useState<string | null>(null);
   const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<string | null>(null);
   const [lastSearchedAddressId, setLastSearchedAddressId] = useState<string | null>(null);
   const [isChoosingAddress, setIsChoosingAddress] = useState(false);
@@ -1613,6 +1622,9 @@ const handlePrevStep = () => {
     setLoadingStage(null);
     setSearchIngredientNames([]);
     setPendingIngredientNames([]);
+    setCartSummary(null);
+    setCartSummaryError(null);
+    setIsLoadingCartSummary(false);
   };
 
   const handleSelectAddress = (addressId: string) => setSelectedAddressId(addressId);
@@ -1767,6 +1779,7 @@ const handlePrevStep = () => {
 
       await addToInstamartCart(selectedAddressId, items);
       setInstamartCartAdded(true);
+      fetchInstamartCartSummary();
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Could not update your Instamart cart.";
@@ -1783,8 +1796,44 @@ const handlePrevStep = () => {
     }
   };
 
-  /* ----- Food ordering ----- */
+  const fetchInstamartCartSummary = async () => {
+    setIsLoadingCartSummary(true);
+    setCartSummaryError(null);
+    try {
+      const summary = await getInstamartCart();
+      setCartSummary(summary);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't load your cart.";
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+      setCartSummaryError(message);
+    } finally {
+      setIsLoadingCartSummary(false);
+    }
+  };
 
+  const handleCheckoutInstamart = async () => {
+    setIsCheckingOut(true);
+    setCartSummaryError(null);
+    try {
+      const { orderId } = await checkoutInstamartOrder();
+      setTrackedOrderId(orderId);
+      handleCloseModal();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't place your order.";
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+      setCartSummaryError(message);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
+  /* ----- Food ordering ----- */
   const handleSearchRestaurants = async () => {
     if (!selectedAddressId) {
       setSwiggyError("Please select a delivery address.");
@@ -2722,6 +2771,11 @@ const handlePrevStep = () => {
         onSelectProduct={handleSelectProduct}
         onAddIngredients={handleAddIngredientsToCart}
         cartAdded={instamartCartAdded}
+        cartSummary={cartSummary}
+        isLoadingCartSummary={isLoadingCartSummary}
+        cartSummaryError={cartSummaryError}
+        onCheckout={handleCheckoutInstamart}
+        isCheckingOut={isCheckingOut}
         selectedRestaurant={selectedRestaurant}
         onSelectRestaurant={handleSelectRestaurant}
         onAddDishToCart={handleAddDishToSwiggyCart}
@@ -2732,6 +2786,22 @@ const handlePrevStep = () => {
         error={swiggyError}
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}
+      />
+
+      {/* TEMP — for testing OrderTrackerModal against a real existing order.
+          Delete this button once tracking is confirmed working. */}
+      <button
+        type="button"
+        onClick={() => setTrackedOrderId("250709389995794")}
+        className="fixed bottom-4 right-4 z-[60] rounded-full bg-black px-4 py-2 text-xs font-bold text-white"
+      >
+        Test Tracker
+      </button>
+
+      <OrderTrackerModal
+        orderId={trackedOrderId}
+        onMinimize={() => setTrackedOrderId(null)}
+        onClose={() => setTrackedOrderId(null)}
       />
 
       {/* Floating so it's reachable from anywhere on the page, not just after

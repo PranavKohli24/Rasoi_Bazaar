@@ -57,6 +57,71 @@ export interface SwiggyRestaurant {
 /** The most of one product a person can add from our modal (they can change it in Instamart later). */
 export const MAX_CART_QUANTITY = 9;
 
+/** ---- Cart review (pre-checkout) ---- */
+
+export interface InstamartCartLineItem {
+  name: string;
+  quantity: number;
+  price?: string;
+}
+
+export interface InstamartBillLineItem {
+  label: string;
+  value: string;
+}
+
+export interface InstamartBill {
+  lineItems: InstamartBillLineItem[];
+  toPay: InstamartBillLineItem;
+}
+
+export interface InstamartCartSummary {
+  items: InstamartCartLineItem[];
+  bill: InstamartBill | null;
+  minOrderNotMet: boolean;
+  minOrderPaise: number;
+}
+
+/** ---- Checkout ---- */
+
+export interface InstamartCheckoutResult {
+  orderId: string;
+  verifiedViaOrderHistory: boolean;
+}
+
+/** ---- Order tracking ---- */
+
+export interface InstamartTrackedOrder {
+  orderId: string;
+  orderTitle?: string;
+  orderSubtitle?: string;
+  status?: { statusMessage?: string; subStatusMessage?: string };
+  storeInfo?: { name?: string; address?: string };
+  deliveryInfo?: { addressLabel?: string; fullAddress?: string };
+  items?: { name: string; quantity: number; price: string }[];
+  itemCount?: number;
+  placedAt?: string;
+  /**
+   * -1 means "stop polling, this order is in a final state" (e.g.
+   * delivered). A positive number is how many seconds to wait before
+   * polling again. Confirmed from a real delivered-order response; the
+   * in-progress shape (ETA field, intermediate statusMessage values) is
+   * not yet confirmed — see the `etaMinutes` field below.
+   */
+  pollingIntervalSeconds?: number;
+  /**
+   * PLACEHOLDER — the real field carrying a live ETA for an in-progress
+   * order hasn't been confirmed yet (we've only seen a delivered-order
+   * response, which has no ETA left to report). Once you track a real
+   * in-progress order, check `raw` below for the actual field and wire
+   * it in here.
+   */
+  etaMinutes?: number | null;
+  /** The unprocessed structuredContent, so nothing is lost while field
+   * names above get confirmed against real responses. */
+  raw?: unknown;
+}
+
 /* ------------------------------------------------------------------ */
 /* Requests                                                            */
 /* ------------------------------------------------------------------ */
@@ -284,6 +349,103 @@ export const addToInstamartCart = async (
   }
 
   return data;
+};
+
+/**
+ * The cart review step, right before checkout: what's in it, the bill, and
+ * whether the ₹99 Instamart minimum has been met.
+ */
+export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
+  const data = await getApiResponse<any>(
+    "/api/swiggy/get-instamart-cart",
+    undefined,
+    {
+      retries: 1,
+      fallbackError: "Couldn't load your cart. Please try again.",
+    }
+  );
+
+  if (data?.success !== true) {
+    throw new Error("Couldn't load your cart. Please try again.");
+  }
+
+  return {
+    items: data.items ?? [],
+    bill: data.bill ?? null,
+    minOrderNotMet: Boolean(data.minOrderNotMet),
+    minOrderPaise: data.minOrderPaise ?? 9900,
+  };
+};
+
+/**
+ * Places the order with Instamart — v1 is Cash on Delivery only. Never
+ * retried automatically: the backend already does its own safety check
+ * (via get_orders) before reporting a failure, so a client-side retry on
+ * top of that would only reintroduce the double-order risk the backend
+ * check exists to prevent.
+ */
+export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult> => {
+  const data = await getApiResponse<any>(
+    "/api/swiggy/checkout-instamart",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paymentMethod: "COD" }),
+    },
+    {
+      fallbackError: "Couldn't place your order. Please try again.",
+    }
+  );
+
+  if (data?.success !== true || !data?.orderId) {
+    console.error("Instamart checkout was not confirmed:", data?.error);
+    throw new Error("Couldn't place your order. Please try again.");
+  }
+
+  return {
+    orderId: String(data.orderId),
+    verifiedViaOrderHistory: Boolean(data.verifiedViaOrderHistory),
+  };
+};
+
+/**
+ * Live status for one Instamart order. Poll no faster than every 10
+ * seconds (per Swiggy's own guidance), and stop entirely once
+ * `pollingIntervalSeconds` comes back as -1 — that's the signal the order
+ * has reached a final state (e.g. delivered).
+ */
+export const trackInstamartOrder = async (
+  orderId: string
+): Promise<InstamartTrackedOrder> => {
+  const data = await getApiResponse<any>(
+    `/api/swiggy/track-instamart-order?orderId=${encodeURIComponent(orderId)}`,
+    undefined,
+    {
+      fallbackError: "Couldn't check your order status. Please try again.",
+    }
+  );
+
+  if (data?.success !== true) {
+    throw new Error("Couldn't check your order status. Please try again.");
+  }
+
+  const tracking = data.tracking ?? {};
+
+  return {
+    orderId: String(tracking.orderId ?? orderId),
+    orderTitle: tracking.orderTitle,
+    orderSubtitle: tracking.orderSubtitle,
+    status: tracking.status,
+    storeInfo: tracking.storeInfo,
+    deliveryInfo: tracking.deliveryInfo,
+    items: tracking.items,
+    itemCount: tracking.itemCount,
+    placedAt: tracking.placedAt,
+    pollingIntervalSeconds: tracking.pollingIntervalSeconds,
+    // PLACEHOLDER — see the InstamartTrackedOrder.etaMinutes comment above.
+    etaMinutes: tracking.etaMinutes ?? tracking.eta ?? null,
+    raw: tracking,
+  };
 };
 
 /* ------------------------------------------------------------------ */

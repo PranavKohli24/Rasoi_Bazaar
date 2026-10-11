@@ -6,6 +6,7 @@ import {
   InstamartProduct,
   InstamartVariation,
   SwiggyRestaurant,
+  InstamartCartSummary,
   MAX_CART_QUANTITY,
 } from "../services/swiggyService";
 
@@ -33,6 +34,11 @@ interface SwiggyActionModalProps {
   onSelectProduct?: (ingredientName: string, variation: InstamartVariation) => void;
   onAddIngredients?: () => void;
   cartAdded?: boolean;
+  cartSummary?: InstamartCartSummary | null;
+  isLoadingCartSummary?: boolean;
+  cartSummaryError?: string | null;
+  onCheckout?: () => void;
+  isCheckingOut?: boolean;
   selectedRestaurant?: SwiggyRestaurant | null;
   onSelectRestaurant?: (restaurant: SwiggyRestaurant) => void;
   onAddDishToCart?: () => void;
@@ -417,6 +423,85 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
     </div>
   );
 };
+const CartReviewStep: React.FC<{
+  summary: InstamartCartSummary | null;
+  isLoading: boolean;
+  error?: string | null;
+}> = ({ summary, isLoading, error }) => {
+  if (isLoading && !summary) {
+    return (
+      <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
+        <div className="relative flex h-16 w-16 items-center justify-center">
+          <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.stamp }} />
+          <BasketIcon className="relative h-7 w-7" style={{ color: COLOR.stamp } as React.CSSProperties} />
+        </div>
+        <p className="mt-5 font-serif text-lg font-black" style={{ color: COLOR.ink }}>Loading your cart</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-10 text-center">
+        <p className="text-sm" style={{ color: COLOR.inkSoft }}>{error}</p>
+      </div>
+    );
+  }
+
+  if (!summary) return null;
+
+  return (
+    <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
+      <p className="font-mono text-xs font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
+        Review your cart
+      </p>
+
+      <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.line }}>
+        {summary.items.map((item, i) => (
+          <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-2.5 text-sm">
+            <span className="min-w-0 truncate" style={{ color: COLOR.ink }}>
+              {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
+            </span>
+            {item.price && (
+              <span className="shrink-0 font-mono tabular-nums" style={{ color: COLOR.inkSoft }}>
+                {item.price}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {summary.bill && (
+        <div className="rounded-xl border px-3.5 py-3" style={{ borderColor: COLOR.line }}>
+          {summary.bill.lineItems.map((line, i) => (
+            <div key={i} className="flex items-center justify-between py-1 text-xs" style={{ color: COLOR.inkSoft }}>
+              <span>{line.label}</span>
+              <span className="font-mono tabular-nums">{line.value}</span>
+            </div>
+          ))}
+          <div
+            className="mt-1.5 flex items-center justify-between border-t pt-1.5 text-sm font-bold"
+            style={{ borderColor: COLOR.line, color: COLOR.ink }}
+          >
+            <span>{summary.bill.toPay.label}</span>
+            <span className="font-mono tabular-nums">{summary.bill.toPay.value}</span>
+          </div>
+        </div>
+      )}
+
+      {summary.minOrderNotMet && (
+        <div
+          role="alert"
+          className="flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
+          style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
+        >
+          <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error } as React.CSSProperties} />
+          <p>Add a little more — Instamart has a ₹{(summary.minOrderPaise / 100).toFixed(0)} minimum order.</p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 /* ---------- Address-stage loader ----------
    Usually just one or two rows come back, so a list-shaped skeleton would
@@ -593,7 +678,6 @@ const RestaurantRow: React.FC<{
     </li>
   );
 };
-
 const TicketTabs: React.FC<{
   step: Step;
   hasProducts: boolean;
@@ -767,6 +851,11 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   onSelectProduct,
   onAddIngredients,
   cartAdded,
+  cartSummary,
+  isLoadingCartSummary,
+  cartSummaryError,
+  onCheckout,
+  isCheckingOut,
   selectedRestaurant,
   onSelectRestaurant,
   onAddDishToCart,
@@ -985,10 +1074,10 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
           ) : type === "instamart" ? (
             <>
               {cartAdded ? (
-                <SuccessStage
-                  variant="grocery"
-                  eyebrow="Instamart cart"
-                  text="Your selected ingredients are in your Instamart cart, alongside anything already there."
+                <CartReviewStep
+                  summary={cartSummary ?? null}
+                  isLoading={!!isLoadingCartSummary}
+                  error={cartSummaryError}
                 />
               ) : !hasAddresses ? (
                 <EmptyAddresses />
@@ -1311,6 +1400,19 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
               ) : (
                 "Select items to continue"
               )}
+            </button>
+          </div>
+        )}
+        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && (
+          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+            <button
+              type="button"
+              onClick={onCheckout}
+              disabled={isCheckingOut || !cartSummary || !!cartSummary?.minOrderNotMet}
+              className={primaryButton}
+              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+            >
+              {isCheckingOut ? <AddingToCart label="Placing your order" /> : "Pay with Cash on Delivery"}
             </button>
           </div>
         )}
