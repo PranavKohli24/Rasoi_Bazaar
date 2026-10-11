@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import {
@@ -896,6 +896,22 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   const [hasSearchedRestaurants, setHasSearchedRestaurants] = useState(false);
   const wasLoadingRestaurants = loadingStage === "restaurants" && isLoading;
 
+  // Instamart: a brief success animation plays before the cart review step.
+const [instamartStage, setInstamartStage] = useState<"success" | "review">("success");
+const wasCartAdded = useRef(false);
+
+useEffect(() => {
+  if (cartAdded && !wasCartAdded.current) {
+    setInstamartStage("success");
+    const timer = window.setTimeout(() => setInstamartStage("review"), FILL_DURATION_MS + 1100);
+    wasCartAdded.current = true;
+    return () => window.clearTimeout(timer);
+  }
+  if (!cartAdded) {
+    wasCartAdded.current = false;
+  }
+}, [cartAdded]);
+
   useEffect(() => {
     if (wasLoadingRestaurants) {
       setHasSearchedRestaurants(true);
@@ -1079,7 +1095,13 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
             )
           ) : type === "instamart" ? (
             <>
-              {cartAdded ? (
+              {cartAdded && instamartStage === "success" ? (
+                <SuccessStage
+                  variant="grocery"
+                  eyebrow="Instamart cart"
+                  text="Your selected ingredients are in your Instamart cart, alongside anything already there."
+                />
+              ) : cartAdded ? (
                 <CartReviewStep
                   summary={cartSummary ?? null}
                   isLoading={!!isLoadingCartSummary}
@@ -1409,7 +1431,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
             </button>
           </div>
         )}
-        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && instamartStage === "review" && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
             <button
               type="button"
