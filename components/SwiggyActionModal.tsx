@@ -1029,16 +1029,16 @@ useEffect(() => {
             </div>
           </div>
 
-          {!isInitialLoading && (
-            <TicketTabs
-              step={currentStep}
-              hasProducts={!!hasResults}
-              secondLabel={type === "swiggy" ? "Restaurants" : "Ingredients"}
-              showCheckoutTab={type === "instamart"}
-              onAddressClick={onGoToAddress}
-              onIngredientsClick={onConfirmAddress}
-            />
-          )}
+      
+          <TicketTabs
+            step={currentStep}
+            hasProducts={!!hasResults}
+            secondLabel={type === "swiggy" ? "Restaurants" : "Ingredients"}
+            showCheckoutTab={type === "instamart"}
+            onAddressClick={onGoToAddress}
+            onIngredientsClick={onConfirmAddress}
+          />
+
         </div>
 
         {/* seam between header and body */}
