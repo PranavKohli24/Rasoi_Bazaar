@@ -261,7 +261,7 @@ export const startSwiggyLogin = (): boolean => {
     /* ignore storage problems */
   }
 
-  window.location.href = "/api/swiggy/auth/start";
+  window.location.href = "/api/swiggy/start";
   return true;
 };
 
@@ -276,7 +276,7 @@ export const retrySwiggyLogin = (): void => {
   } catch {
     /* ignore storage problems */
   }
-  window.location.href = "/api/swiggy/auth/start";
+  window.location.href = "/api/swiggy/start";
 };
 
 /* ------------------------------------------------------------------ */
