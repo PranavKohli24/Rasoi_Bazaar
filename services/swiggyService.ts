@@ -330,17 +330,14 @@ export const addToInstamartCart = async (
   addressId: string,
   items: InstamartCartItem[]
 ) => {
-  // No retries here: we never want to risk sending a cart update twice.
   const data = await getApiResponse<any>(
-    "/api/swiggy/add-to-cart",
+    "/api/swiggy/instamart-cart",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ addressId, items }),
+      body: JSON.stringify({ action: "add", addressId, items }),
     },
-    {
-      fallbackError: "Couldn't update your Instamart cart. Please try again.",
-    }
+    { fallbackError: "Couldn't update your Instamart cart. Please try again." }
   );
 
   if (data?.success !== true) {
@@ -351,13 +348,35 @@ export const addToInstamartCart = async (
   return data;
 };
 
+export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult> => {
+  const data = await getApiResponse<any>(
+    "/api/swiggy/instamart-cart",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "checkout", paymentMethod: "COD" }),
+    },
+    { fallbackError: "Couldn't place your order. Please try again." }
+  );
+
+  if (data?.success !== true || !data?.orderId) {
+    console.error("Instamart checkout was not confirmed:", data?.error);
+    throw new Error("Couldn't place your order. Please try again.");
+  }
+
+  return {
+    orderId: String(data.orderId),
+    verifiedViaOrderHistory: Boolean(data.verifiedViaOrderHistory),
+  };
+};
+
 /**
  * The cart review step, right before checkout: what's in it, the bill, and
  * whether the ₹99 Instamart minimum has been met.
  */
 export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
   const data = await getApiResponse<any>(
-    "/api/swiggy/get-instamart-cart",
+    "/api/swiggy/instamart-cart",
     undefined,
     {
       retries: 1,
@@ -374,37 +393,6 @@ export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
     bill: data.bill ?? null,
     minOrderNotMet: Boolean(data.minOrderNotMet),
     minOrderPaise: data.minOrderPaise ?? 9900,
-  };
-};
-
-/**
- * Places the order with Instamart — v1 is Cash on Delivery only. Never
- * retried automatically: the backend already does its own safety check
- * (via get_orders) before reporting a failure, so a client-side retry on
- * top of that would only reintroduce the double-order risk the backend
- * check exists to prevent.
- */
-export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult> => {
-  const data = await getApiResponse<any>(
-    "/api/swiggy/checkout-instamart",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paymentMethod: "COD" }),
-    },
-    {
-      fallbackError: "Couldn't place your order. Please try again.",
-    }
-  );
-
-  if (data?.success !== true || !data?.orderId) {
-    console.error("Instamart checkout was not confirmed:", data?.error);
-    throw new Error("Couldn't place your order. Please try again.");
-  }
-
-  return {
-    orderId: String(data.orderId),
-    verifiedViaOrderHistory: Boolean(data.verifiedViaOrderHistory),
   };
 };
 

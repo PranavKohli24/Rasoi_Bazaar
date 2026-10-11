@@ -2790,13 +2790,13 @@ const handlePrevStep = () => {
 
       {/* TEMP — for testing OrderTrackerModal against a real existing order.
           Delete this button once tracking is confirmed working. */}
-      <button
+      {/* <button
         type="button"
         onClick={() => setTrackedOrderId("250709389995794")}
         className="fixed bottom-4 right-4 z-[60] rounded-full bg-black px-4 py-2 text-xs font-bold text-white"
       >
         Test Tracker
-      </button>
+      </button> */}
 
       <OrderTrackerModal
         orderId={trackedOrderId}
