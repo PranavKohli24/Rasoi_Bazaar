@@ -468,12 +468,12 @@ const CartReviewStep: React.FC<{
 
       <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.line }}>
         {items.map((item, i) => (
-          <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-2.5 text-sm">
-            <span className="min-w-0 truncate" style={{ color: COLOR.ink }}>
+          <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm">
+            <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
               {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
             </span>
             {item.price && (
-              <span className="shrink-0 font-mono tabular-nums" style={{ color: COLOR.inkSoft }}>
+              <span className="shrink-0 pt-px font-mono tabular-nums" style={{ color: COLOR.inkSoft }}>
                 {item.price}
               </span>
             )}
