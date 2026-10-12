@@ -2014,7 +2014,7 @@ const handlePrevStep = () => {
 
   const isLastStep = currentStepIndex >= totalSteps - 1;
     const backgroundTimers = isCooking ? timers.getBackground(currentStepIndex) : [];
-
+ 
   // Example phrases for the status line, relevant to the step on screen.
   const heyChefTips =
     stepDurationSeconds !== null
