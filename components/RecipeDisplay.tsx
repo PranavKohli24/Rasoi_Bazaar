@@ -1327,6 +1327,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const trackedOrderKey = `recipe-tracked-instamart-order:${recipe.dishName}`;
 const [isTrackerOpen, setIsTrackerOpen] = useState(false);
 const [orderStatusLabel, setOrderStatusLabel] = useState<string | null>(null);
+// True only for the order just placed in this session — tells the tracker
+// to play its "Order placed!" beat once. Never restored from storage, so
+// an order resumed after a refresh (or reopened via "tap to see status")
+// goes straight to live tracking instead of replaying the beat.
+const [orderJustPlaced, setOrderJustPlaced] = useState(false);
 const [trackedOrderId, setTrackedOrderId] = useState<string | null>(() => {
   try {
     return localStorage.getItem(trackedOrderKey);
@@ -1872,6 +1877,7 @@ const handlePrevStep = () => {
     setCartSummaryError(null);
     try {
       const { orderId } = await checkoutInstamartOrder();
+      setOrderJustPlaced(true);
       setTrackedOrderId(orderId);
       setIsTrackerOpen(true);
       handleCloseModal();
@@ -2908,11 +2914,13 @@ const handlePrevStep = () => {
       <OrderTrackerModal
         orderId={trackedOrderId}
         isOpen={isTrackerOpen}
+        justPlaced={orderJustPlaced}
         onMinimize={() => setIsTrackerOpen(false)}
         onClose={() => {
           setTrackedOrderId(null);
           setIsTrackerOpen(false);
           setOrderStatusLabel(null);
+          setOrderJustPlaced(false);
         }}
         onStatusChange={setOrderStatusLabel}
       />

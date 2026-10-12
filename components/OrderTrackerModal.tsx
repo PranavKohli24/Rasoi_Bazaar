@@ -172,18 +172,88 @@ function stageFromStatusMessage(statusMessage?: string): Stage {
 
 const POLL_FLOOR_SECONDS = 10; // never poll faster than this, per Swiggy's guidance
 
+/* ---------- "Order placed" beat ----------
+   Plays once, right after checkout, before the tracker starts polling
+   for live status. A stamp drops in with a little overshoot, then a
+   checkmark draws itself the same way SwiggyActionModal's add-to-cart
+   stamp does — same family of motion, kept local to this file since it
+   has its own small palette rather than importing that one. */
+// The stamp/check draws in over ~1.3s (see the animation-delays below),
+// then sits fully settled for a ~3s beat before handing off to the
+// scooter — long enough to actually read "Order placed!" rather than
+// having it brushed past on the way to the next animation.
+const ORDER_PLACED_SETTLE_MS = 1300;
+const ORDER_PLACED_GAP_MS = 3000;
+const ORDER_PLACED_DURATION_MS = ORDER_PLACED_SETTLE_MS + ORDER_PLACED_GAP_MS;
+// Minimum time the scooter "finding your order" beat stays up once it
+// starts, so it's never skipped just because the status fetch already
+// finished during the "placed" beat above.
+const FINDING_MIN_DURATION_MS = 1600;
+
+const OrderPlacedScene: React.FC<{ subtitle?: string }> = ({ subtitle }) => (
+  <div className="flex flex-col items-center justify-center py-12 text-center" role="status" aria-live="polite">
+    <div className="relative flex h-20 w-20 items-center justify-center">
+      <span className="stamp-drop-ring absolute inset-0 rounded-full" style={{ backgroundColor: COLOR.stampTint }} aria-hidden="true" />
+      <svg viewBox="0 0 64 64" className="stamp-drop relative h-16 w-16">
+        <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.stamp} strokeWidth="4" pathLength={100} className="order-tick-circle" />
+        <path
+          d="M20 33l8 8 16-18"
+          fill="none"
+          stroke={COLOR.stamp}
+          strokeWidth="4.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          pathLength={100}
+          className="order-tick-check"
+        />
+      </svg>
+    </div>
+
+    <p className="order-placed-label mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: COLOR.stamp }}>
+      Order confirmed
+    </p>
+    <h4 className="order-placed-label mt-1 font-serif text-2xl font-black" style={{ color: COLOR.ink }}>
+      Order placed!
+    </h4>
+    {subtitle && (
+      <p className="order-placed-label mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+        {subtitle}
+      </p>
+    )}
+  </div>
+);
+
 interface OrderTrackerModalProps {
   orderId: string | null;
   isOpen: boolean;
   onMinimize: () => void;
   onClose: () => void;
   onStatusChange?: (label: string) => void;
+  /** True right after checkout succeeded for this orderId — plays the
+   *  "Order placed!" beat once before falling through to live tracking.
+   *  Leave false/unset when reopening a tracker for an order placed
+   *  earlier (e.g. restored from storage, or the "tap to see status"
+   *  re-entry point) so the beat doesn't replay. */
+  justPlaced?: boolean;
 }
 
-const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, onMinimize, onClose, onStatusChange }) => {
+const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, onMinimize, onClose, onStatusChange, justPlaced }) => {
   const [order, setOrder] = useState<InstamartTrackedOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Three beats for a freshly-placed order: "placed" (the stamp/checkmark),
+  // "finding" (the scooter — always shown for a minimum stretch, even if
+  // the status fetch already came back during "placed", so both animations
+  // are guaranteed to play in sequence rather than the second one being
+  // skipped by a fast response), then "tracking" (the usual loading/stage/
+  // ETA view). Keyed off orderId so a new order gets its own sequence, but
+  // reopening the same order (minimize -> "tap to see status") skips
+  // straight to "tracking" and just resumes wherever it left off.
+  const [stage, setStage] = useState<"placed" | "finding" | "tracking">(
+    justPlaced ? "placed" : "tracking"
+  );
+  const stageTimeoutRef = useRef<number | null>(null);
 
   const [displayedEta, setDisplayedEta] = useState<number | null>(null);
   const etaAnchorRef = useRef<{ minutes: number; receivedAt: number } | null>(null);
@@ -221,8 +291,35 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, 
     return () => {
       isMountedRef.current = false;
       if (pollTimeoutRef.current !== null) window.clearTimeout(pollTimeoutRef.current);
+      if (stageTimeoutRef.current !== null) window.clearTimeout(stageTimeoutRef.current);
     };
   }, []);
+
+  // Kicks off the sequence for a freshly-placed order: "placed" for
+  // ORDER_PLACED_DURATION_MS, then on to "finding".
+  useEffect(() => {
+    if (!orderId) return;
+    if (stageTimeoutRef.current !== null) window.clearTimeout(stageTimeoutRef.current);
+
+    if (justPlaced) {
+      setStage("placed");
+      stageTimeoutRef.current = window.setTimeout(() => setStage("finding"), ORDER_PLACED_DURATION_MS);
+    } else {
+      setStage("tracking");
+    }
+  }, [orderId, justPlaced]);
+
+  // "finding" (the scooter) always plays for at least FINDING_MIN_DURATION_MS,
+  // whether or not the status fetch has come back yet — that's what
+  // guarantees it's seen rather than skipped when the fetch during
+  // "placed" already finished. If the fetch is still running once this
+  // timer fires, the normal isLoading check below keeps the scooter up
+  // until it resolves.
+  useEffect(() => {
+    if (stage !== "finding") return;
+    const id = window.setTimeout(() => setStage("tracking"), FINDING_MIN_DURATION_MS);
+    return () => window.clearTimeout(id);
+  }, [stage]);
 
   useEffect(() => {
     if (order?.etaMinutes != null) {
@@ -275,9 +372,9 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, 
   
 if (!orderId || !isOpen) return null;
 
-const stage = stageFromStatusMessage(order?.status?.statusMessage);
-const stageIndex = STAGES.findIndex((s) => s.key === stage);
-const isDelivered = stage === "delivered";
+const trackingStage = stageFromStatusMessage(order?.status?.statusMessage);
+const stageIndex = STAGES.findIndex((s) => s.key === trackingStage);
+const isDelivered = trackingStage === "delivered";
 const canFullyClose = isDelivered || (!!error && !order);
 
 
@@ -306,7 +403,11 @@ return createPortal(
                 Instamart Order
               </p>
               <h3 id="order-tracker-title" className="font-serif text-xl font-black leading-tight tracking-tight sm:text-2xl" style={{ color: COLOR.ink }}>
-                {order?.orderSubtitle ?? "Tracking your order"}
+                {stage === "placed"
+                  ? "Order placed"
+                  : stage === "finding"
+                  ? "Finding your order"
+                  : order?.orderSubtitle ?? "Tracking your order"}
               </h3>
             </div>
 
@@ -314,7 +415,7 @@ return createPortal(
               <button type="button" onClick={onMinimize} aria-label="Minimize" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
                 <MinusIcon className="h-4 w-4" />
               </button>
-              {canFullyClose && (
+              {canFullyClose && stage === "tracking" && (
                 <button type="button" onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
                   <CloseIcon className="h-4 w-4" />
                 </button>
@@ -327,14 +428,16 @@ return createPortal(
 
         {/* Content */}
         <div className="modal-scroll flex-1 overflow-y-auto px-5 py-5 sm:px-6">
-          {error && (
+          {error && stage === "tracking" && (
             <div role="alert" className="mb-5 flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed" style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}>
               <InfoIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#A23E2B]" />
               <p>{error}</p>
             </div>
           )}
 
-          {isLoading && !order ? (
+          {stage === "placed" ? (
+            <OrderPlacedScene subtitle="Hang tight, we're pulling up its live status next." />
+          ) : stage === "finding" || (isLoading && !order) ? (
             <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
               <div className="relative flex h-14 w-32 items-center justify-center overflow-hidden">
                 <span className="scooter-dash" style={{ backgroundColor: COLOR.line, animationDelay: "0ms" }} />
@@ -454,7 +557,7 @@ return createPortal(
           ) : null}
         </div>
 
-        {isDelivered && (
+        {isDelivered && stage === "tracking" && (
           <div className="border-t px-5 py-4 sm:px-6" style={{ borderColor: COLOR.line }}>
             <button
               type="button"
@@ -492,8 +595,51 @@ return createPortal(
           100% { opacity: 0; transform: translate(-30px, -1px); }
         }
 
+        @keyframes stamp-drop {
+          0% { transform: scale(1.6) rotate(-10deg); opacity: 0; }
+          55% { transform: scale(0.92) rotate(2deg); opacity: 1; }
+          75% { transform: scale(1.06) rotate(-1deg); }
+          100% { transform: scale(1) rotate(0deg); }
+        }
+        .stamp-drop { animation: stamp-drop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        @keyframes stamp-drop-ring {
+          0% { transform: scale(0.6); opacity: 0.55; }
+          100% { transform: scale(1.7); opacity: 0; }
+        }
+        .stamp-drop-ring { animation: stamp-drop-ring 0.7s ease-out both; animation-delay: 0.05s; }
+
+        @keyframes order-tick-draw {
+          from { stroke-dashoffset: 100; }
+          to { stroke-dashoffset: 0; }
+        }
+        .order-tick-circle {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          animation: order-tick-draw 0.4s ease-out forwards;
+          animation-delay: 0.38s;
+        }
+        .order-tick-check {
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          animation: order-tick-draw 0.3s ease-out forwards;
+          animation-delay: 0.72s;
+        }
+
+        @keyframes order-placed-label-in {
+          0% { opacity: 0; transform: translateY(4px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .order-placed-label { animation: order-placed-label-in 0.35s ease-out both; animation-delay: 0.9s; }
+
         @media (prefers-reduced-motion: reduce) {
-          .scooter-drive, .scooter-dash { animation: none !important; opacity: 1; }
+          .scooter-drive, .scooter-dash,
+          .stamp-drop, .stamp-drop-ring, .order-tick-circle, .order-tick-check, .order-placed-label {
+            animation: none !important;
+            opacity: 1;
+            transform: none;
+            stroke-dashoffset: 0 !important;
+          }
         }
       `}</style>
     </div>,
