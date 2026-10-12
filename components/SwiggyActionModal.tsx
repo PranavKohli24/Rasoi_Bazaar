@@ -981,6 +981,11 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    // A tap on a button (Minimize, Close, or a TicketTabs tab) is a tap,
+    // not a drag — let its own onClick handle it instead of starting a drag.
+    if (event.target instanceof Element && event.target.closest("button")) {
+      return;
+    }
     dragStartYRef.current = event.clientY;
     setIsDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -1146,17 +1151,21 @@ useEffect(() => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="px-5 pb-4 pt-3 sm:px-6 sm:pt-5" style={{ backgroundColor: COLOR.paperSunken }}>
-          <div
-            className="-mx-5 -mt-3 mb-2 flex touch-none cursor-grab justify-center px-5 pb-2.5 pt-3 active:cursor-grabbing sm:hidden"
-            onPointerDown={handleDragStart}
-            onPointerMove={handleDragMove}
-            onPointerUp={handleDragEnd}
-            onPointerCancel={handleDragEnd}
-          >
-            <span className="h-1 w-10 rounded-full" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
-          </div>
+        {/* Header — the drag handlers sit on this whole block (handle, title
+            row, and ticket tabs), not just the visible grab bar, so there's
+            a generous target for dragging to minimize. The guard inside
+            handleDragStart keeps every button in here (Minimize, Close, and
+            the TicketTabs tabs) tappable as normal. */}
+        <div
+          className="touch-none px-5 pb-4 pt-3 cursor-grab active:cursor-grabbing sm:cursor-auto sm:px-6 sm:pt-5"
+          style={{ backgroundColor: COLOR.paperSunken }}
+          onPointerDown={handleDragStart}
+          onPointerMove={handleDragMove}
+          onPointerUp={handleDragEnd}
+          onPointerCancel={handleDragEnd}
+        >
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
+
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center">
@@ -1210,7 +1219,6 @@ useEffect(() => {
             onCheckoutClick={hasCartDataToReturnTo ? handleCheckoutTabClick : undefined}
           />
         </div>
-
         {/* seam between header and body */}
         <div
           className="h-[3px]"
