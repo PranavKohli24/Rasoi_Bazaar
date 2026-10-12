@@ -1618,6 +1618,18 @@ const handlePrevStep = () => {
     }
   };
 
+    // Ticket-bar "Checkout" tab, reached from the products step: just flips
+  // the cart-added flag back on so the existing review screen shows again.
+  // Never calls addToInstamartCart / addDishToFoodCart — only the actual
+  // "Add items to cart" / "Add this dish to cart" buttons do that.
+  const handleGoToCheckout = () => {
+    if (modalType === "instamart" && cartSummary) {
+      setInstamartCartAdded(true);
+    } else if (modalType === "swiggy" && foodCartSummary) {
+      setFoodCartAdded(true);
+    }
+  };
+
   // Minimize keeps all state; Close resets the whole flow.
   const handleMinimizeModal = () => setModalType(null);
 
@@ -2818,6 +2830,7 @@ const handlePrevStep = () => {
         isLoading={isModalLoading}
         loadingStage={loadingStage}
         onBackToProducts={handleBackToProducts}
+        onGoToCheckout={handleGoToCheckout}
         restaurants={restaurants}
         addresses={swiggyAddresses}
         selectedAddressId={selectedAddressId}

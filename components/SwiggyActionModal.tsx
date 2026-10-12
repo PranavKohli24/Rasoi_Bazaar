@@ -15,6 +15,7 @@ interface SwiggyActionModalProps {
   type: "instamart" | "swiggy" | null;
   isLoading: boolean;
   onBackToProducts?: () => void;
+  onGoToCheckout?: () => void;
   loadingStage?: "addresses" | "restaurants" | "ingredients" | "cart" | null;
   restaurants: SwiggyRestaurant[];
   addresses?: SwiggyAddress[];
@@ -694,6 +695,7 @@ const TicketTabs: React.FC<{
   onAddressClick?: () => void;
   onIngredientsClick?: () => void;
   onBackToProductsClick?: () => void;
+  onCheckoutClick?: () => void;
 }> = ({
   step,
   hasProducts,
@@ -702,6 +704,7 @@ const TicketTabs: React.FC<{
   onAddressClick,
   onIngredientsClick,
   onBackToProductsClick,
+  onCheckoutClick,
 }) => {
   const order: Step[] = ["address", "products", "done"];
   const activeIndex = order.indexOf(step);
@@ -725,10 +728,18 @@ const TicketTabs: React.FC<{
       clickable: step !== "products" && hasProducts && !!productsHandler,
     },
   ];
-  if (showCheckoutTab) {
-    tabs.push({ key: "done", label: "Checkout", clickable: false });
-  }
 
+  if (showCheckoutTab) {
+    tabs.push({
+      key: "done",
+      label: "Checkout",
+      // Pure navigation — jumps back to whatever was last added, without
+      // calling any add-to-cart API. Only enabled once there's cart data
+      // to show, and only from an earlier step (not already on "done").
+      onClick: onCheckoutClick,
+      clickable: step !== "done" && !!onCheckoutClick,
+    });
+  }
   return (
     <div className="mt-4 flex items-center gap-4">
       {tabs.map((t, i) => {
@@ -860,6 +871,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   isLoading,
   loadingStage,
   onBackToProducts,
+  onGoToCheckout,
   restaurants,
   addresses,
   selectedAddressId,
@@ -967,6 +979,24 @@ useEffect(() => {
       setHasSearchedRestaurants(false);
     }
   }, [isChoosingAddress]);
+
+  // Ticket-bar "Checkout" tab: pure navigation back to the last-added
+  // cart, never a new add-to-cart call. Marks the success animation as
+  // already seen so the effects above don't replay it — jumps straight
+  // to the review screen instead.
+  const handleCheckoutTabClick = () => {
+    if (type === "instamart") {
+      wasCartAdded.current = true;
+      setInstamartStage("review");
+    } else if (type === "swiggy") {
+      wasFoodCartAdded.current = true;
+      setFoodStage("review");
+    }
+    onGoToCheckout?.();
+  };
+
+  const hasCartDataToReturnTo =
+    type === "instamart" ? !!cartSummary : type === "swiggy" ? !!foodCartSummary : false;
 
   if (!type) return null;
 
@@ -1081,6 +1111,7 @@ useEffect(() => {
             onAddressClick={onGoToAddress}
             onIngredientsClick={onConfirmAddress}
             onBackToProductsClick={onBackToProducts}
+            onCheckoutClick={hasCartDataToReturnTo ? handleCheckoutTabClick : undefined}
           />
         </div>
 
