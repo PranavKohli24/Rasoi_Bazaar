@@ -15,6 +15,8 @@ import {
   checkoutInstamartOrder,
   searchRestaurants,
   addDishToFoodCart,
+  getFoodCart,
+  checkoutFoodOrder,
   startSwiggyLogin,
   retrySwiggyLogin,
   MAX_CART_QUANTITY,
@@ -22,6 +24,7 @@ import {
   InstamartProduct,
   InstamartVariation,
   InstamartCartSummary,
+  SwiggyFoodCartSummary,
   SwiggyRestaurant,
 } from "../services/swiggyService";
 import SwiggyActionModal from "./SwiggyActionModal";
@@ -307,7 +310,7 @@ const STEP_ANIMATION_CSS = `
 const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
   off: "",
   paused: "Hey chef is paused while the chat is open",
-  sleeping: "Say “Hey chef”, or just “next” / “back”",
+  sleeping: "Say \u201cHey chef\u201d, or just \u201cnext\u201d / \u201cback\u201d",
   awake: "Listening…",
   processing: "Thinking…",
   speaking: "Speaking…",
@@ -801,7 +804,7 @@ const StepTimer: React.FC<{
           className="mt-2.5 text-center text-[11px]"
           style={{ color: COLOR.inkSoft, opacity: 0.8 }}
         >
-            Say “{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}”
+            Say "{isRunning ? "pause timer" : hasStarted ? "resume timer" : "start timer"}"
         </p>
       )}
 
@@ -1331,6 +1334,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [restaurants, setRestaurants] = useState<SwiggyRestaurant[]>([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<SwiggyRestaurant | null>(null);
   const [foodCartAdded, setFoodCartAdded] = useState(false);
+  const [foodCartSummary, setFoodCartSummary] = useState<SwiggyFoodCartSummary | null>(null);
+  const [isLoadingFoodCartSummary, setIsLoadingFoodCartSummary] = useState(false);
+  const [foodCartSummaryError, setFoodCartSummaryError] = useState<string | null>(null);
+  const [isCheckingOutFood, setIsCheckingOutFood] = useState(false);
   const [needsSwiggyReconnect, setNeedsSwiggyReconnect] = useState(false);
 
   // Sends the person to sign in with Swiggy; if it can't, say so.
@@ -1625,6 +1632,9 @@ const handlePrevStep = () => {
     setCartSummary(null);
     setCartSummaryError(null);
     setIsLoadingCartSummary(false);
+    setFoodCartSummary(null);
+    setFoodCartSummaryError(null);
+    setIsLoadingFoodCartSummary(false);
   };
 
   const handleSelectAddress = (addressId: string) => setSelectedAddressId(addressId);
@@ -1907,6 +1917,7 @@ const handlePrevStep = () => {
         recipe.dishName
       );
       setFoodCartAdded(true);
+      fetchFoodCartSummary(selectedAddressId);
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "Could not add this dish to your Swiggy cart.";
@@ -1918,6 +1929,48 @@ const handlePrevStep = () => {
     } finally {
       setIsModalLoading(false);
       setLoadingStage(null);
+    }
+  };
+
+  const fetchFoodCartSummary = async (addressId: string) => {
+    setIsLoadingFoodCartSummary(true);
+    setFoodCartSummaryError(null);
+    try {
+      const summary = await getFoodCart(addressId);
+      setFoodCartSummary(summary);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't load your cart.";
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+      setFoodCartSummaryError(message);
+    } finally {
+      setIsLoadingFoodCartSummary(false);
+    }
+  };
+
+  const handleCheckoutFood = async () => {
+    if (!selectedAddressId) return;
+    setIsCheckingOutFood(true);
+    setFoodCartSummaryError(null);
+    try {
+      const { orderId } = await checkoutFoodOrder(selectedAddressId);
+      // Food order tracking isn't wired into OrderTrackerModal yet (it
+      // currently assumes an Instamart order) — close the modal and let the
+      // success state stand rather than opening a tracker built for the
+      // wrong order type.
+      void orderId;
+      handleCloseModal();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Couldn't place your order.";
+      if (message === "SWIGGY_NOT_CONNECTED") {
+        redirectToLogin();
+        return;
+      }
+      setFoodCartSummaryError(message);
+    } finally {
+      setIsCheckingOutFood(false);
     }
   };
 
@@ -2780,6 +2833,11 @@ const handlePrevStep = () => {
         onSelectRestaurant={handleSelectRestaurant}
         onAddDishToCart={handleAddDishToSwiggyCart}
         foodCartAdded={foodCartAdded}
+        foodCartSummary={foodCartSummary}
+        isLoadingFoodCartSummary={isLoadingFoodCartSummary}
+        foodCartSummaryError={foodCartSummaryError}
+        onCheckoutFood={handleCheckoutFood}
+        isCheckingOutFood={isCheckingOutFood}
         dishName={recipe.dishName}
         needsSwiggyReconnect={needsSwiggyReconnect}
         onRetrySwiggyLogin={handleRetrySwiggyLogin}
@@ -2792,7 +2850,7 @@ const handlePrevStep = () => {
           Delete this button once tracking is confirmed working. */}
       {/* <button
         type="button"
-        onClick={() => setTrackedOrderId("250709389995794")}
+        onClick={() => setTrackedOrderId("250780698930835")}
         className="fixed bottom-4 right-4 z-[60] rounded-full bg-black px-4 py-2 text-xs font-bold text-white"
       >
         Test Tracker

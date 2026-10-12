@@ -82,6 +82,22 @@ export interface InstamartCartSummary {
   minOrderPaise: number;
 }
 
+/** ---- Food cart review (pre-checkout) ----
+ * Mirrors InstamartCartSummary, but the limit runs the other way: Swiggy
+ * food orders (Builders Club, v1) have a hard ₹1000 *ceiling* rather than
+ * a minimum, so this tracks "over the cap" instead of "under the minimum".
+ */
+export interface SwiggyFoodCartSummary {
+  items: InstamartCartLineItem[];
+  bill: InstamartBill | null;
+  exceedsMaxOrder: boolean;
+  maxOrderPaise: number;
+}
+
+export interface FoodCheckoutResult {
+  orderId: string;
+}
+
 /** ---- Checkout ---- */
 
 export interface InstamartCheckoutResult {
@@ -431,7 +447,7 @@ export const trackInstamartOrder = async (
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     // PLACEHOLDER — see the InstamartTrackedOrder.etaMinutes comment above.
-    etaMinutes: tracking.etaMinutes ?? tracking.eta ?? null,
+    etaMinutes: tracking.status?.etaMinutes ?? null,
     raw: tracking,
   };
 };
@@ -551,4 +567,92 @@ export const addDishToFoodCart = async (
   }
 
   return data;
+};
+
+/**
+ * The food-cart review step, right before checkout: what's in it, the
+ * bill, and whether the ₹1000 Builders Club cap has been exceeded. Unlike
+ * Instamart's cart (tied to the session), the food cart is tied to a
+ * restaurant + address, so addressId is required here.
+ */
+export const getFoodCart = async (
+  addressId: string
+): Promise<SwiggyFoodCartSummary> => {
+  const data = await getApiResponse<any>(
+    `/api/swiggy/food-cart?addressId=${encodeURIComponent(addressId)}`,
+    undefined,
+    {
+      retries: 1,
+      fallbackError: "Couldn't load your Swiggy cart. Please try again.",
+    }
+  );
+
+  if (data?.success !== true) {
+    throw new Error("Couldn't load your Swiggy cart. Please try again.");
+  }
+
+  return {
+    items: data.items ?? [],
+    bill: data.bill ?? null,
+    exceedsMaxOrder: Boolean(data.exceedsMaxOrder),
+    maxOrderPaise: data.maxOrderPaise ?? 100000,
+  };
+};
+
+export const checkoutFoodOrder = async (
+  addressId: string
+): Promise<FoodCheckoutResult> => {
+  const data = await getApiResponse<any>(
+    "/api/swiggy/food-cart",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "checkout", addressId, paymentMethod: "COD" }),
+    },
+    { fallbackError: "Couldn't place your order. Please try again." }
+  );
+
+  if (data?.success !== true || !data?.orderId) {
+    console.error("Food checkout was not confirmed:", data?.error);
+    throw new Error("Couldn't place your order. Please try again.");
+  }
+
+  return { orderId: String(data.orderId) };
+};
+
+/**
+ * Live status for one food order. Same polling rules as Instamart: no
+ * faster than every 10 seconds, stop once `pollingIntervalSeconds` is -1.
+ */
+export const trackFoodOrder = async (
+  orderId: string
+): Promise<InstamartTrackedOrder> => {
+  const data = await getApiResponse<any>(
+    `/api/swiggy/track-food-order?orderId=${encodeURIComponent(orderId)}`,
+    undefined,
+    {
+      fallbackError: "Couldn't check your order status. Please try again.",
+    }
+  );
+
+  if (data?.success !== true) {
+    throw new Error("Couldn't check your order status. Please try again.");
+  }
+
+  const tracking = data.tracking ?? {};
+
+  return {
+    orderId: String(tracking.orderId ?? orderId),
+    orderTitle: tracking.orderTitle,
+    orderSubtitle: tracking.orderSubtitle,
+    status: tracking.status,
+    storeInfo: tracking.storeInfo,
+    deliveryInfo: tracking.deliveryInfo,
+    items: tracking.items,
+    itemCount: tracking.itemCount,
+    placedAt: tracking.placedAt,
+    pollingIntervalSeconds: tracking.pollingIntervalSeconds,
+    etaMinutes: tracking.etaMinutes ?? tracking.eta ?? null,
+    raw: tracking,
+  };
 };

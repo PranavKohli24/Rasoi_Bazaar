@@ -164,8 +164,8 @@ const STAGES: { key: Stage; label: string }[] = [
 
 function stageFromStatusMessage(statusMessage?: string): Stage {
   const text = (statusMessage ?? "").toLowerCase();
-  if (text.includes("deliver")) return "delivered";
-  if (text.includes("way") || text.includes("transit") || text.includes("rider")) return "onTheWay";
+  if (text === "delivered" || text.includes("order delivered") || text.includes("has been delivered")) return "delivered";
+  if (text.includes("arrived") || text.includes("out for delivery") || text.includes("way") || text.includes("transit") || text.includes("rider")) return "onTheWay";
   if (text.includes("pack")) return "packed";
   return "placed";
 }
@@ -182,6 +182,9 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
   const [order, setOrder] = useState<InstamartTrackedOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [displayedEta, setDisplayedEta] = useState<number | null>(null);
+  const etaAnchorRef = useRef<{ minutes: number; receivedAt: number } | null>(null);
 
   const pollTimeoutRef = useRef<number | null>(null);
   const isMountedRef = useRef(true);
@@ -218,6 +221,26 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
       if (pollTimeoutRef.current !== null) window.clearTimeout(pollTimeoutRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (order?.etaMinutes != null) {
+      etaAnchorRef.current = { minutes: order.etaMinutes, receivedAt: Date.now() };
+      setDisplayedEta(order.etaMinutes);
+    } else {
+      etaAnchorRef.current = null;
+      setDisplayedEta(null);
+    }
+  }, [order?.etaMinutes]);
+
+  useEffect(() => {
+    if (!etaAnchorRef.current) return;
+    const id = window.setInterval(() => {
+      if (!etaAnchorRef.current) return;
+      const elapsedMin = (Date.now() - etaAnchorRef.current.receivedAt) / 60000;
+      setDisplayedEta(Math.max(0, Math.round(etaAnchorRef.current.minutes - elapsedMin)));
+    }, 30000);
+    return () => window.clearInterval(id);
+  }, [order?.etaMinutes]);
 
   useEffect(() => {
     if (!orderId) return;
@@ -307,10 +330,19 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
               {/* ETA — placeholder until a real in-progress response confirms the field */}
               {!isDelivered && (
                 <div className="rounded-xl border-2 px-4 py-4 text-center" style={{ borderColor: COLOR.stamp, backgroundColor: COLOR.stampTint }}>
-                  {order.etaMinutes != null ? (
+                  {(order.status?.statusMessage ?? "").toLowerCase().includes("arrived") ? (
+                    <>
+                      <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
+                        {order.status?.statusMessage}
+                      </p>
+                      <p className="mt-1 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
+                        Your order is here
+                      </p>
+                    </>
+                  ) : displayedEta != null ? (
                     <>
                       <p className="font-serif text-3xl font-black" style={{ color: COLOR.ink }}>
-                        {order.etaMinutes} min
+                        {displayedEta} min
                       </p>
                       <p className="mt-1 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
                         Estimated arrival
@@ -328,7 +360,6 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
                   )}
                 </div>
               )}
-
               {/* Stage tracker */}
               <div className="flex items-center" aria-label="Order progress">
                 {STAGES.map((s, i) => {

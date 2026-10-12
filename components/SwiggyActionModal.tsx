@@ -7,6 +7,7 @@ import {
   InstamartVariation,
   SwiggyRestaurant,
   InstamartCartSummary,
+  SwiggyFoodCartSummary,
   MAX_CART_QUANTITY,
 } from "../services/swiggyService";
 
@@ -43,6 +44,11 @@ interface SwiggyActionModalProps {
   onSelectRestaurant?: (restaurant: SwiggyRestaurant) => void;
   onAddDishToCart?: () => void;
   foodCartAdded?: boolean;
+  foodCartSummary?: SwiggyFoodCartSummary | null;
+  isLoadingFoodCartSummary?: boolean;
+  foodCartSummaryError?: string | null;
+  onCheckoutFood?: () => void;
+  isCheckingOutFood?: boolean;
   error?: string | null;
   onMinimize: () => void;
   onClose: () => void;
@@ -424,11 +430,14 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
   );
 };
 const CartReviewStep: React.FC<{
-  summary: InstamartCartSummary | null;
+  items: import("../services/swiggyService").InstamartCartLineItem[];
+  bill: import("../services/swiggyService").InstamartBill | null;
   isLoading: boolean;
   error?: string | null;
-}> = ({ summary, isLoading, error }) => {
-  if (isLoading && !summary) {
+  /** Shown as a warning banner below the bill — e.g. a minimum not met, or a cap exceeded. */
+  warning?: string | null;
+}> = ({ items, bill, isLoading, error, warning }) => {
+  if (isLoading && items.length === 0 && !bill) {
     return (
       <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
         <div className="relative flex h-16 w-16 items-center justify-center">
@@ -448,8 +457,6 @@ const CartReviewStep: React.FC<{
     );
   }
 
-  if (!summary) return null;
-
   return (
     <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
       <p className="font-mono text-xs font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
@@ -457,7 +464,7 @@ const CartReviewStep: React.FC<{
       </p>
 
       <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.line }}>
-        {summary.items.map((item, i) => (
+        {items.map((item, i) => (
           <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-2.5 text-sm">
             <span className="min-w-0 truncate" style={{ color: COLOR.ink }}>
               {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
@@ -471,9 +478,9 @@ const CartReviewStep: React.FC<{
         ))}
       </ul>
 
-      {summary.bill && (
+      {bill && (
         <div className="rounded-xl border px-3.5 py-3" style={{ borderColor: COLOR.line }}>
-          {summary.bill.lineItems.map((line, i) => (
+          {bill.lineItems.map((line, i) => (
             <div key={i} className="flex items-center justify-between py-1 text-xs" style={{ color: COLOR.inkSoft }}>
               <span>{line.label}</span>
               <span className="font-mono tabular-nums">{line.value}</span>
@@ -483,20 +490,20 @@ const CartReviewStep: React.FC<{
             className="mt-1.5 flex items-center justify-between border-t pt-1.5 text-sm font-bold"
             style={{ borderColor: COLOR.line, color: COLOR.ink }}
           >
-            <span>{summary.bill.toPay.label}</span>
-            <span className="font-mono tabular-nums">{summary.bill.toPay.value}</span>
+            <span>{bill.toPay.label}</span>
+            <span className="font-mono tabular-nums">{bill.toPay.value}</span>
           </div>
         </div>
       )}
 
-      {summary.minOrderNotMet && (
+      {warning && (
         <div
           role="alert"
           className="flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
           style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
         >
           <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error } as React.CSSProperties} />
-          <p>Add a little more — Instamart has a ₹{(summary.minOrderPaise / 100).toFixed(0)} minimum order.</p>
+          <p>{warning}</p>
         </div>
       )}
     </div>
@@ -865,6 +872,11 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   onSelectRestaurant,
   onAddDishToCart,
   foodCartAdded,
+  foodCartSummary,
+  isLoadingFoodCartSummary,
+  foodCartSummaryError,
+  onCheckoutFood,
+  isCheckingOutFood,
   dishName,
   needsSwiggyReconnect, 
   onRetrySwiggyLogin,     
@@ -911,6 +923,22 @@ useEffect(() => {
     wasCartAdded.current = false;
   }
 }, [cartAdded]);
+
+  // Swiggy food: the same two-beat success-then-review pattern as Instamart.
+  const [foodStage, setFoodStage] = useState<"success" | "review">("success");
+  const wasFoodCartAdded = useRef(false);
+
+  useEffect(() => {
+    if (foodCartAdded && !wasFoodCartAdded.current) {
+      setFoodStage("success");
+      const timer = window.setTimeout(() => setFoodStage("review"), FILL_DURATION_MS + 1100);
+      wasFoodCartAdded.current = true;
+      return () => window.clearTimeout(timer);
+    }
+    if (!foodCartAdded) {
+      wasFoodCartAdded.current = false;
+    }
+  }, [foodCartAdded]);
 
   useEffect(() => {
     if (wasLoadingRestaurants) {
@@ -1034,7 +1062,7 @@ useEffect(() => {
             step={currentStep}
             hasProducts={!!hasResults}
             secondLabel={type === "swiggy" ? "Restaurants" : "Ingredients"}
-            showCheckoutTab={type === "instamart"}
+            showCheckoutTab
             onAddressClick={onGoToAddress}
             onIngredientsClick={onConfirmAddress}
           />
@@ -1103,9 +1131,15 @@ useEffect(() => {
                 />
               ) : cartAdded ? (
                 <CartReviewStep
-                  summary={cartSummary ?? null}
+                  items={cartSummary?.items ?? []}
+                  bill={cartSummary?.bill ?? null}
                   isLoading={!!isLoadingCartSummary}
                   error={cartSummaryError}
+                  warning={
+                    cartSummary?.minOrderNotMet
+                      ? `Add a little more — Instamart has a ₹${(cartSummary.minOrderPaise / 100).toFixed(0)} minimum order.`
+                      : null
+                  }
                 />
               ) : !hasAddresses ? (
                 <EmptyAddresses />
@@ -1297,11 +1331,23 @@ useEffect(() => {
                     <AddressList addresses={addresses} selectedAddressId={selectedAddressId} onSelectAddress={onSelectAddress} />
                   )}
                 </div>
-              ) : foodCartAdded ? (
+              ) : foodCartAdded && foodStage === "success" ? (
                 <SuccessStage
                   variant="dish"
                   eyebrow="Swiggy cart"
                   text={`Your dish from ${selectedRestaurant?.name} is in your Swiggy cart.`}
+                />
+              ) : foodCartAdded ? (
+                <CartReviewStep
+                  items={foodCartSummary?.items ?? []}
+                  bill={foodCartSummary?.bill ?? null}
+                  isLoading={!!isLoadingFoodCartSummary}
+                  error={foodCartSummaryError}
+                  warning={
+                    foodCartSummary?.exceedsMaxOrder
+                      ? `Your cart is over the ₹${(foodCartSummary.maxOrderPaise / 100).toFixed(0)} order limit — please remove an item.`
+                      : null
+                  }
                 />
 
               // AFTER
@@ -1455,6 +1501,20 @@ useEffect(() => {
               style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
             >
               {isSubmitting ? <AddingToCart /> : "Add this dish to cart"}
+            </button>
+          </div>
+        )}
+
+        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && foodCartAdded && foodStage === "review" && (
+          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+            <button
+              type="button"
+              onClick={onCheckoutFood}
+              disabled={isCheckingOutFood || !foodCartSummary || !!foodCartSummary?.exceedsMaxOrder}
+              className={primaryButton}
+              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+            >
+              {isCheckingOutFood ? <AddingToCart label="Placing your order" /> : "Pay with Cash on Delivery"}
             </button>
           </div>
         )}
