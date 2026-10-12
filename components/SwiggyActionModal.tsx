@@ -927,51 +927,57 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   // (minimize vs. full close), so a ref tracks which one a pending
   // history.back() should resolve to.
   const pushedHistoryStateRef = useRef(false);
-  const nextPopActionRef = useRef<"minimize" | "close">("minimize");
+const suppressNextPopRef = useRef(false);
 
-  useEffect(() => {
-    if (type && !pushedHistoryStateRef.current) {
-      window.history.pushState({ __swiggyModal: true }, "");
-      pushedHistoryStateRef.current = true;
+useEffect(() => {
+  if (type && !pushedHistoryStateRef.current) {
+    window.history.pushState({ __swiggyModal: true }, "");
+    pushedHistoryStateRef.current = true;
+  }
+}, [type]);
+
+useEffect(() => {
+  const onPopState = () => {
+    if (!pushedHistoryStateRef.current) return;
+    pushedHistoryStateRef.current = false;
+    if (suppressNextPopRef.current) {
+      // We already minimized/closed synchronously from a button tap —
+      // this popstate is just that tap's own history.back() resolving.
+      suppressNextPopRef.current = false;
+      return;
     }
-  }, [type]);
-
-  useEffect(() => {
-    const onPopState = () => {
-      if (!pushedHistoryStateRef.current) return;
-      pushedHistoryStateRef.current = false;
-      const action = nextPopActionRef.current;
-      nextPopActionRef.current = "minimize";
-      if (action === "close") onClose();
-      else onMinimize();
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, [onMinimize, onClose]);
-
-  // Modal closed some other way (e.g. parent calls handleCloseModal()
-  // directly after checkout) without going through triggerMinimize/
-  // triggerClose below — clean up the dummy history entry so a later real
-  // back press doesn't get silently eaten.
-  useEffect(() => {
-    if (!type && pushedHistoryStateRef.current) {
-      pushedHistoryStateRef.current = false;
-      window.history.back();
-    }
-  }, [type]);
-
-  const triggerMinimize = () => {
-    nextPopActionRef.current = "minimize";
-    if (pushedHistoryStateRef.current) window.history.back();
-    else onMinimize();
+    // A real hardware/browser back press — same as before, just minimizes.
+    onMinimize();
   };
+  window.addEventListener("popstate", onPopState);
+  return () => window.removeEventListener("popstate", onPopState);
+}, [onMinimize]);
 
-  const triggerClose = () => {
-    nextPopActionRef.current = "close";
-    if (pushedHistoryStateRef.current) window.history.back();
-    else onClose();
-  };
+useEffect(() => {
+  if (!type && pushedHistoryStateRef.current) {
+    suppressNextPopRef.current = true;
+    pushedHistoryStateRef.current = false;
+    window.history.back();
+  }
+}, [type]);
 
+const triggerMinimize = () => {
+  if (pushedHistoryStateRef.current) {
+    suppressNextPopRef.current = true;
+    pushedHistoryStateRef.current = false;
+    window.history.back();
+  }
+  onMinimize();
+};
+
+const triggerClose = () => {
+  if (pushedHistoryStateRef.current) {
+    suppressNextPopRef.current = true;
+    pushedHistoryStateRef.current = false;
+    window.history.back();
+  }
+  onClose();
+};
   // Drag-to-minimize on the mobile grab handle. Only downward pulls move
   // the sheet; crossing the threshold minimizes (through the same
   // triggerMinimize path as the button/backdrop/Escape, so the back-button
