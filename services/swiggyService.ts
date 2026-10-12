@@ -141,6 +141,36 @@ export interface InstamartTrackedOrder {
 /* ------------------------------------------------------------------ */
 /* Requests                                                            */
 /* ------------------------------------------------------------------ */
+/** TEMP — mocks add-to-cart, cart review, and checkout so you can test the
+ * full flow without touching your real Instamart cart or placing a real
+ * order. Address fetching and product search still hit the real Swiggy
+ * API. MUST be false before shipping — this isn't like the tracker mock,
+ * it will swallow real checkouts if left on. */
+const MOCK_CHECKOUT = true;
+
+/** Populated from real search results so the mock cart can look up
+ * name/price by spinId even though search itself isn't mocked. */
+const mockProductCache = new Map<string, InstamartVariation>();
+
+let mockCartItems: InstamartCartLineItem[] = [];
+
+const buildMockCartSummary = (): InstamartCartSummary => {
+  const totalPaise = mockCartItems.reduce((sum, item) => {
+    const n = Number((item.price ?? "₹0").replace(/[^\d.]/g, ""));
+    return sum + n * 100;
+  }, 0);
+  const minOrderPaise = 9900;
+
+  return {
+    items: mockCartItems,
+    bill: {
+      lineItems: [{ label: "Items total", value: `₹${(totalPaise / 100).toFixed(0)}` }],
+      toPay: { label: "To pay", value: `₹${(totalPaise / 100).toFixed(0)}` },
+    },
+    minOrderNotMet: totalPaise < minOrderPaise,
+    minOrderPaise,
+  };
+};
 
 const NOT_CONNECTED = "SWIGGY_NOT_CONNECTED";
 
@@ -333,7 +363,13 @@ export const searchInstamartProducts = async (
     }
   );
 
-  return response?.result?.structuredContent?.products ?? [];
+    const products: InstamartProduct[] = response?.result?.structuredContent?.products ?? [];
+
+  products.forEach((product) =>
+    (product.variations ?? []).forEach((variation) => mockProductCache.set(variation.spinId, variation))
+  );
+
+  return products;
 };
 
 export interface InstamartCartItem {
@@ -341,11 +377,24 @@ export interface InstamartCartItem {
   skuId: string;
   quantity: number;
 }
-
 export const addToInstamartCart = async (
   addressId: string,
   items: InstamartCartItem[]
 ) => {
+  if (MOCK_CHECKOUT) {
+    await sleep(400);
+    mockCartItems = items.map((item) => {
+      const variation = mockProductCache.get(item.spinId);
+      const unitPrice = variation?.price.offerPrice ?? 0;
+      return {
+        name: variation?.displayName ?? "Item",
+        quantity: item.quantity,
+        price: `₹${unitPrice * item.quantity}`,
+      };
+    });
+    return { success: true };
+  }
+
   const data = await getApiResponse<any>(
     "/api/swiggy/instamart-cart",
     {
@@ -365,6 +414,12 @@ export const addToInstamartCart = async (
 };
 
 export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult> => {
+  if (MOCK_CHECKOUT) {
+    await sleep(500);
+    mockCartItems = [];
+    return { orderId: `MOCK-${Date.now()}`, verifiedViaOrderHistory: true };
+  }
+
   const data = await getApiResponse<any>(
     "/api/swiggy/instamart-cart",
     {
@@ -391,6 +446,11 @@ export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult>
  * whether the ₹99 Instamart minimum has been met.
  */
 export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
+  if (MOCK_CHECKOUT) {
+    await sleep(300);
+    return buildMockCartSummary();
+  }
+
   const data = await getApiResponse<any>(
     "/api/swiggy/instamart-cart",
     undefined,
