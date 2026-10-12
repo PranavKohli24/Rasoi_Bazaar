@@ -920,15 +920,65 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
     };
   }, [type]);
 
+  // Back-button trap: an open modal should swallow one back press to
+  // minimize itself, not navigate the page away. Mirrors the pattern used
+  // by the Cooking Companion sheet, but this modal has two close actions
+  // (minimize vs. full close), so a ref tracks which one a pending
+  // history.back() should resolve to.
+  const pushedHistoryStateRef = useRef(false);
+  const nextPopActionRef = useRef<"minimize" | "close">("minimize");
+
+  useEffect(() => {
+    if (type && !pushedHistoryStateRef.current) {
+      window.history.pushState({ __swiggyModal: true }, "");
+      pushedHistoryStateRef.current = true;
+    }
+  }, [type]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (!pushedHistoryStateRef.current) return;
+      pushedHistoryStateRef.current = false;
+      const action = nextPopActionRef.current;
+      nextPopActionRef.current = "minimize";
+      if (action === "close") onClose();
+      else onMinimize();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [onMinimize, onClose]);
+
+  // Modal closed some other way (e.g. parent calls handleCloseModal()
+  // directly after checkout) without going through triggerMinimize/
+  // triggerClose below — clean up the dummy history entry so a later real
+  // back press doesn't get silently eaten.
+  useEffect(() => {
+    if (!type && pushedHistoryStateRef.current) {
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+  }, [type]);
+
+  const triggerMinimize = () => {
+    nextPopActionRef.current = "minimize";
+    if (pushedHistoryStateRef.current) window.history.back();
+    else onMinimize();
+  };
+
+  const triggerClose = () => {
+    nextPopActionRef.current = "close";
+    if (pushedHistoryStateRef.current) window.history.back();
+    else onClose();
+  };
+
   useEffect(() => {
     if (!type) return;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onMinimize();
+      if (event.key === "Escape") triggerMinimize();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [type, onMinimize]);
-
+  }, [type]);
   // Tracks whether a restaurant search has actually completed, so an empty
   // result can show a "nothing found" message instead of silently bouncing
   // back to the address screen (which looks like nothing happened at all).
@@ -1047,7 +1097,7 @@ useEffect(() => {
     <div
       className="fixed inset-0 z-50 flex animate-fade-in-up items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
       style={{ animationDuration: "0.2s", backgroundColor: "rgba(36,22,8,0.4)" }}
-      onClick={onMinimize}
+      onClick={triggerMinimize}
     >
       <div
         role="dialog"
@@ -1083,7 +1133,7 @@ useEffect(() => {
             <div className="-mr-1 mt-0.5 flex items-center gap-1.5">
               <button
                 type="button"
-                onClick={onMinimize}
+                onClick={triggerMinimize}
                 aria-label="Minimize"
                 className={iconButton}
                 style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}
@@ -1092,7 +1142,7 @@ useEffect(() => {
               </button>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={triggerClose}
                 aria-label="Close"
                 className={iconButton}
                 style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}
