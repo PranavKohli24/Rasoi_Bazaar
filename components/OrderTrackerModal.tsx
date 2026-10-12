@@ -429,9 +429,18 @@ return createPortal(
         {/* Content */}
         <div className="modal-scroll flex-1 overflow-y-auto px-5 py-5 sm:px-6">
           {error && stage === "tracking" && (
-            <div role="alert" className="mb-5 flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed" style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}>
-              <InfoIcon className="mt-0.5 h-5 w-5 shrink-0 text-[#A23E2B]" />
-              <p>{error}</p>
+            <div
+              role="alert"
+              className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
+              style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
+            >
+              <span
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+              >
+                <InfoIcon className="h-4 w-4" />
+              </span>
+              <p className="pt-0.5">{error}</p>
             </div>
           )}
 

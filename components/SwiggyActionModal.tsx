@@ -501,12 +501,17 @@ const CartReviewStep: React.FC<{
 
       {warning && (
         <div
-          role="alert"
-          className="flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
-          style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
+          role="status"
+          className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
+          style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
         >
-          <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error } as React.CSSProperties} />
-          <p>{warning}</p>
+          <span
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+            style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+          >
+            <InfoIcon className="h-4 w-4" />
+          </span>
+          <p className="pt-0.5">{warning}</p>
         </div>
       )}
     </div>
@@ -1261,11 +1266,16 @@ useEffect(() => {
               {error && (
                 <div
                   role="alert"
-                  className="mb-5 flex gap-3 rounded-xl border-2 px-4 py-3 text-sm leading-relaxed"
-                  style={{ borderColor: COLOR.error, backgroundColor: COLOR.errorTint, color: COLOR.ink }}
+                  className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
+                  style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
                 >
-                  <InfoIcon className="mt-0.5 h-5 w-5 shrink-0" style={{ color: COLOR.error }} />
-                  <p>{error}</p>
+                  <span
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                    style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+                  >
+                    <InfoIcon className="h-4 w-4" />
+                  </span>
+                  <p className="pt-0.5">{error}</p>
                 </div>
               )}
 
