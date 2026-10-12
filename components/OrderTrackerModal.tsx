@@ -174,11 +174,13 @@ const POLL_FLOOR_SECONDS = 10; // never poll faster than this, per Swiggy's guid
 
 interface OrderTrackerModalProps {
   orderId: string | null;
+  isOpen: boolean;
   onMinimize: () => void;
   onClose: () => void;
+  onStatusChange?: (label: string) => void;
 }
 
-const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimize, onClose }) => {
+const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, onMinimize, onClose, onStatusChange }) => {
   const [order, setOrder] = useState<InstamartTrackedOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -252,20 +254,35 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
   }, [orderId, fetchStatus]);
 
   useEffect(() => {
-    if (!orderId) return;
+    if (!isOpen) return;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [orderId]);
+  }, [isOpen]);
 
-  if (!orderId) return null;
-
+  useEffect(() => {
+  if (!onStatusChange || !orderId) return;
   const stage = stageFromStatusMessage(order?.status?.statusMessage);
-  const stageIndex = STAGES.findIndex((s) => s.key === stage);
-  const isDelivered = stage === "delivered";
+  const label =
+    stage === "delivered"
+      ? "Delivered"
+      : displayedEta != null
+      ? `${displayedEta} min away`
+      : order?.status?.statusMessage ?? "Tracking your order…";
+  onStatusChange(label);
+}, [orderId, order, displayedEta, onStatusChange]);
+  
+if (!orderId || !isOpen) return null;
 
-  return createPortal(
+const stage = stageFromStatusMessage(order?.status?.statusMessage);
+const stageIndex = STAGES.findIndex((s) => s.key === stage);
+const isDelivered = stage === "delivered";
+const canFullyClose = isDelivered || (!!error && !order);
+
+
+
+return createPortal(
     <div
       className="fixed inset-0 z-50 flex animate-fade-in-up items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
       style={{ animationDuration: "0.2s", backgroundColor: "rgba(36,22,8,0.4)" }}
@@ -297,9 +314,11 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, onMinimi
               <button type="button" onClick={onMinimize} aria-label="Minimize" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
                 <MinusIcon className="h-4 w-4" />
               </button>
-              <button type="button" onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
-                <CloseIcon className="h-4 w-4" />
-              </button>
+              {canFullyClose && (
+                <button type="button" onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
+                  <CloseIcon className="h-4 w-4" />
+                </button>
+              )}
             </div>
           </div>
         </div>

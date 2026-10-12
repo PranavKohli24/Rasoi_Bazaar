@@ -1323,7 +1323,27 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [isLoadingCartSummary, setIsLoadingCartSummary] = useState(false);
   const [cartSummaryError, setCartSummaryError] = useState<string | null>(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [trackedOrderId, setTrackedOrderId] = useState<string | null>(null);
+  
+  const trackedOrderKey = `recipe-tracked-instamart-order:${recipe.dishName}`;
+const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+const [orderStatusLabel, setOrderStatusLabel] = useState<string | null>(null);
+const [trackedOrderId, setTrackedOrderId] = useState<string | null>(() => {
+  try {
+    return localStorage.getItem(trackedOrderKey);
+  } catch {
+    return null;
+  }
+});
+
+useEffect(() => {
+  try {
+    if (trackedOrderId) localStorage.setItem(trackedOrderKey, trackedOrderId);
+    else localStorage.removeItem(trackedOrderKey);
+  } catch {
+    // storage unavailable — tracking just won't survive a refresh
+  }
+}, [trackedOrderId, trackedOrderKey]);
+
   const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<string | null>(null);
   const [lastSearchedAddressId, setLastSearchedAddressId] = useState<string | null>(null);
   const [isChoosingAddress, setIsChoosingAddress] = useState(false);
@@ -1853,6 +1873,7 @@ const handlePrevStep = () => {
     try {
       const { orderId } = await checkoutInstamartOrder();
       setTrackedOrderId(orderId);
+      setIsTrackerOpen(true);
       handleCloseModal();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Couldn't place your order.";
@@ -2274,14 +2295,7 @@ const handlePrevStep = () => {
             <div className="border-t p-5 sm:p-6" style={{ borderColor: COLOR.border }}>
               {checkedCount === totalIngredients ? (
                 <div key="ready" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
-                  <button
-                    type="button"
-                    onClick={handleStartCookingFromIngredients}
-                    className={`${primaryButton} w-full`}
-                    style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}
-                  >
+                  <button type="button" onClick={handleStartCookingFromIngredients} className={`${primaryButton} w-full`} style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }} onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffronDark)} onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = COLOR.saffron)}>
                     <PlayIcon className="h-5 w-5" />
                     Let's start cooking
                   </button>
@@ -2289,14 +2303,24 @@ const handlePrevStep = () => {
                     All set - you have everything you need.
                   </p>
                 </div>
-              ) : (
-                <div key="shopping" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+              ) : trackedOrderId ? (
+                <div key="tracking" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
                   <button
                     type="button"
-                    onClick={handleBuyFromInstamart}
+                    onClick={() => setIsTrackerOpen(true)}
                     className={`${secondaryButton} w-full`}
-                    style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+                    style={{ borderColor: COLOR.saffron, color: COLOR.ink, backgroundColor: COLOR.saffronTint }}
                   >
+                    <CartIcon className="h-5 w-5" style={{ color: COLOR.saffron }} />
+                    {orderStatusLabel ?? "Tracking your Instamart order"}
+                  </button>
+                  <p className="mt-2.5 text-center text-xs" style={{ color: COLOR.inkSoft }}>
+                    Tap to see delivery status
+                  </p>
+                </div>
+              ) : (
+                <div key="shopping" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+                  <button type="button" onClick={handleBuyFromInstamart} className={`${secondaryButton} w-full`} style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}>
                     <CartIcon className="h-5 w-5" style={{ color: COLOR.saffron }} />
                     Don&apos;t have these? Buy from Instamart
                   </button>
@@ -2883,8 +2907,14 @@ const handlePrevStep = () => {
 
       <OrderTrackerModal
         orderId={trackedOrderId}
-        onMinimize={() => setTrackedOrderId(null)}
-        onClose={() => setTrackedOrderId(null)}
+        isOpen={isTrackerOpen}
+        onMinimize={() => setIsTrackerOpen(false)}
+        onClose={() => {
+          setTrackedOrderId(null);
+          setIsTrackerOpen(false);
+          setOrderStatusLabel(null);
+        }}
+        onStatusChange={setOrderStatusLabel}
       />
 
       {/* Floating so it's reachable from anywhere on the page, not just after
