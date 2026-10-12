@@ -412,6 +412,128 @@ export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
   };
 };
 
+/* ------------------------------------------------------------------ */
+/* Mock order tracking — dev/testing only, never hits Swiggy           */
+/* ------------------------------------------------------------------ */
+
+const MOCK_ITEMS = [
+  { name: "1 x Cadbury Bournville Rich Cocoa 70% Dark Chocolate Bar", quantity: 1, price: "₹142" },
+  { name: "1 x Harvest Gold White Bread", quantity: 1, price: "₹35" },
+  { name: "1 x NOICE Freshly Ground Sharbati Atta (Whole Wheat Flour)", quantity: 1, price: "₹1" },
+  { name: "2 x Cadbury Oreo Strawberry Flavour Crème Sandwich Biscuit", quantity: 1, price: "₹20" },
+  { name: "4 x Amul Taaza Milk 1 Ltr", quantity: 1, price: "₹232" },
+  { name: "1 x Supreme Harvest Crystal Sugar", quantity: 1, price: "₹68" },
+];
+
+const MOCK_ORDER_STAGES: any[] = [
+  {
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: { statusMessage: "Order Placed" },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 5,
+  },
+  {
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: { statusMessage: "Packing your order" },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 5,
+  },
+  {
+    orderId: "250780698930835",
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: {
+      statusMessage: "Out for delivery",
+      subStatusMessage: "AVINASH KUMAR is on the way to deliver your order",
+      etaMinutes: 10,
+      etaText: "10 mins",
+    },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 30,
+  },
+  {
+    orderId: "250780698930835",
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: {
+      statusMessage: "Out for delivery",
+      subStatusMessage: "AVINASH KUMAR is on the way to deliver your order",
+      etaMinutes: 4,
+      etaText: "4 mins",
+    },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 30,
+  },
+  {
+    orderId: "250780698930835",
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: { statusMessage: "Arrived at location", subStatusMessage: "AVINASH KUMAR has reached your location" },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 30,
+  },
+  {
+    orderId: "250780698930835",
+    orderTitle: "Instamart order",
+    orderSubtitle: "06:48 PM • 6 items",
+    status: { statusMessage: "Order Delivered" },
+    storeInfo: { name: "Instamart", address: "UGF, Azadpur, A-78 Industrial area near Hand Cinema Delhi-110009" },
+    deliveryInfo: { addressLabel: "Delivered to Home", fullAddress: "House Number 12, Ishwar Colony, Ishwar Colony, Kalyan Vihar, Delhi, 110033, India" },
+    items: MOCK_ITEMS,
+    itemCount: 6,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: -1,
+  },
+];
+
+const mockOrderProgress = new Map<string, number>();
+
+export const isMockOrderId = (orderId: string) => orderId.startsWith("MOCK-");
+
+const trackMockInstamartOrder = async (orderId: string): Promise<InstamartTrackedOrder> => {
+  await sleep(400);
+  const i = mockOrderProgress.get(orderId) ?? 0;
+  const tracking = MOCK_ORDER_STAGES[Math.min(i, MOCK_ORDER_STAGES.length - 1)];
+  mockOrderProgress.set(orderId, i + 1);
+
+  return {
+    orderId,
+    orderTitle: tracking.orderTitle,
+    orderSubtitle: tracking.orderSubtitle,
+    status: tracking.status,
+    storeInfo: tracking.storeInfo,
+    deliveryInfo: tracking.deliveryInfo,
+    items: tracking.items,
+    itemCount: tracking.itemCount,
+    placedAt: tracking.placedAt,
+    pollingIntervalSeconds: tracking.pollingIntervalSeconds,
+    etaMinutes: tracking.status?.etaMinutes ?? null,
+    raw: tracking,
+  };
+};
+
 /**
  * Live status for one Instamart order. Poll no faster than every 10
  * seconds (per Swiggy's own guidance), and stop entirely once
@@ -421,6 +543,7 @@ export const getInstamartCart = async (): Promise<InstamartCartSummary> => {
 export const trackInstamartOrder = async (
   orderId: string
 ): Promise<InstamartTrackedOrder> => {
+  if (isMockOrderId(orderId)) return trackMockInstamartOrder(orderId);
   const data = await getApiResponse<any>(
     `/api/swiggy/track-instamart-order?orderId=${encodeURIComponent(orderId)}`,
     undefined,
