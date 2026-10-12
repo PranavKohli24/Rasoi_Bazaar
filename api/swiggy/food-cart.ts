@@ -51,10 +51,20 @@ function getCartItems(data: any): any[] {
 
 function getCartTotal(data: any): number {
   const content = getCartContent(data);
-  const total = content?.data?.total ?? content?.total ?? 0;
+  const total = content?.data?.pricing?.to_pay ?? content?.data?.total ?? content?.total ?? 0;
   const parsed = Number(total);
   return Number.isFinite(parsed) ? parsed : 0;
 }
+
+function getCartPricing(data: any): any {
+  const content = getCartContent(data);
+  return content?.data?.pricing ?? {};
+}
+
+const formatRupees = (value: unknown): string => {
+  const n = Number(value);
+  return Number.isFinite(n) ? `₹${n % 1 === 0 ? n : n.toFixed(2)}` : "₹0";
+};
 
 async function callFoodMcp(
   accessToken: string,
@@ -128,26 +138,35 @@ export async function GET(request: Request): Promise<Response> {
 
     const rawItems = getCartItems(cartData);
     const total = getCartTotal(cartData);
+    const pricing = getCartPricing(cartData);
 
-    const items = rawItems.map((item: any) => ({
-      name: String(item?.name ?? item?.itemName ?? "Item"),
-      quantity: Number(item?.quantity ?? 1),
-      price:
-        item?.price !== undefined
-          ? `₹${item.price}`
-          : item?.finalPrice !== undefined
-          ? `₹${item.finalPrice}`
-          : undefined,
-    }));
+    const items = rawItems.map((item: any) => {
+      const unitPrice = item?.final_price ?? item?.total ?? item?.subtotal ?? item?.price;
+      return {
+        name: String(item?.name ?? item?.itemName ?? "Item"),
+        quantity: Number(item?.quantity ?? 1),
+        price: unitPrice !== undefined ? formatRupees(unitPrice) : undefined,
+      };
+    });
+
+    const lineItems: { label: string; value: string }[] = [];
+    if (pricing?.item_total !== undefined) {
+      lineItems.push({ label: "Item total", value: formatRupees(pricing.item_total) });
+    }
+    if (pricing?.delivery_charge !== undefined) {
+      lineItems.push({
+        label: "Delivery",
+        value: Number(pricing.delivery_charge) === 0 ? "FREE" : formatRupees(pricing.delivery_charge),
+      });
+    }
+    if (pricing?.taxes_and_charges !== undefined) {
+      lineItems.push({ label: "Taxes & charges", value: formatRupees(pricing.taxes_and_charges) });
+    }
 
     const bill =
       total > 0
-        ? {
-            lineItems: [] as { label: string; value: string }[],
-            toPay: { label: "To pay", value: `₹${total}` },
-          }
+        ? { lineItems, toPay: { label: "To pay", value: formatRupees(total) } }
         : null;
-
     return json({
       success: true,
       items,
