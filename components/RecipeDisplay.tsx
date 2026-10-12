@@ -1607,6 +1607,17 @@ const handlePrevStep = () => {
     }
   };
 
+    // "Done/checkout" tab back to "products" tab: just un-set the cart-added
+  // flag for whichever flow is active. Selections (products/restaurant)
+  // are left untouched, so the person lands back exactly where they were.
+  const handleBackToProducts = () => {
+    if (modalType === "instamart") {
+      setInstamartCartAdded(false);
+    } else if (modalType === "swiggy") {
+      setFoodCartAdded(false);
+    }
+  };
+
   // Minimize keeps all state; Close resets the whole flow.
   const handleMinimizeModal = () => setModalType(null);
 
@@ -2806,6 +2817,7 @@ const handlePrevStep = () => {
         type={modalType}
         isLoading={isModalLoading}
         loadingStage={loadingStage}
+        onBackToProducts={handleBackToProducts}
         restaurants={restaurants}
         addresses={swiggyAddresses}
         selectedAddressId={selectedAddressId}

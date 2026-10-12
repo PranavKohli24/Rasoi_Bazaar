@@ -146,7 +146,7 @@ export interface InstamartTrackedOrder {
  * order. Address fetching and product search still hit the real Swiggy
  * API. MUST be false before shipping — this isn't like the tracker mock,
  * it will swallow real checkouts if left on. */
-const MOCK_CHECKOUT = true;
+const MOCK_CHECKOUT = false;
 
 /** Populated from real search results so the mock cart can look up
  * name/price by spinId even though search itself isn't mocked. */

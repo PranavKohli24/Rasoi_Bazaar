@@ -14,6 +14,7 @@ import {
 interface SwiggyActionModalProps {
   type: "instamart" | "swiggy" | null;
   isLoading: boolean;
+  onBackToProducts?: () => void;
   loadingStage?: "addresses" | "restaurants" | "ingredients" | "cart" | null;
   restaurants: SwiggyRestaurant[];
   addresses?: SwiggyAddress[];
@@ -692,9 +693,24 @@ const TicketTabs: React.FC<{
   showCheckoutTab?: boolean;
   onAddressClick?: () => void;
   onIngredientsClick?: () => void;
-}> = ({ step, hasProducts, secondLabel, showCheckoutTab = false, onAddressClick, onIngredientsClick }) => {
+  onBackToProductsClick?: () => void;
+}> = ({
+  step,
+  hasProducts,
+  secondLabel,
+  showCheckoutTab = false,
+  onAddressClick,
+  onIngredientsClick,
+  onBackToProductsClick,
+}) => {
   const order: Step[] = ["address", "products", "done"];
   const activeIndex = order.indexOf(step);
+
+  // Forward (address -> products) and backward (done -> products) land on
+  // the same tab, so pick whichever handler applies to the current step.
+  const productsHandler =
+    step === "address" ? onIngredientsClick : step === "done" ? onBackToProductsClick : undefined;
+
   const tabs: { key: Step; label: string; onClick?: () => void; clickable: boolean }[] = [
     {
       key: "address",
@@ -705,11 +721,10 @@ const TicketTabs: React.FC<{
     {
       key: "products",
       label: secondLabel,
-      onClick: onIngredientsClick,
-      clickable: step === "address" && hasProducts && !!onIngredientsClick,
+      onClick: productsHandler,
+      clickable: step !== "products" && hasProducts && !!productsHandler,
     },
   ];
-
   if (showCheckoutTab) {
     tabs.push({ key: "done", label: "Checkout", clickable: false });
   }
@@ -840,11 +855,11 @@ const AddressList: React.FC<{
 );
 
 /* ---------- Modal ---------- */
-
 const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   type,
   isLoading,
   loadingStage,
+  onBackToProducts,
   restaurants,
   addresses,
   selectedAddressId,
@@ -1065,8 +1080,8 @@ useEffect(() => {
             showCheckoutTab
             onAddressClick={onGoToAddress}
             onIngredientsClick={onConfirmAddress}
+            onBackToProductsClick={onBackToProducts}
           />
-
         </div>
 
         {/* seam between header and body */}
