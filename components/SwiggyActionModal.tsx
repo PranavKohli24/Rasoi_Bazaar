@@ -308,6 +308,7 @@ const AddingToCart: React.FC<{ label?: string }> = ({ label = "Adding to cart" }
 
 type SuccessPhase = "filling" | "done";
 const FILL_DURATION_MS = 2150;
+const DRAG_MINIMIZE_THRESHOLD = 90;
 
 const GroceryFillScene: React.FC = () => (
   <>
@@ -971,6 +972,37 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
     else onClose();
   };
 
+  // Drag-to-minimize on the mobile grab handle. Only downward pulls move
+  // the sheet; crossing the threshold minimizes (through the same
+  // triggerMinimize path as the button/backdrop/Escape, so the back-button
+  // history entry gets cleaned up consistently either way).
+  const dragStartYRef = useRef<number | null>(null);
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    dragStartYRef.current = event.clientY;
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handleDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartYRef.current === null) return;
+    const delta = event.clientY - dragStartYRef.current;
+    setDragY(Math.max(0, delta));
+  };
+
+  const handleDragEnd = () => {
+    if (dragStartYRef.current === null) return;
+    dragStartYRef.current = null;
+    setIsDragging(false);
+    if (dragY > DRAG_MINIMIZE_THRESHOLD) {
+      setDragY(0);
+      triggerMinimize();
+    } else {
+      setDragY(0); // wasn't pulled far enough — snap back open
+    }
+  };
   useEffect(() => {
     if (!type) return;
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -1104,13 +1136,27 @@ useEffect(() => {
         aria-modal="true"
         aria-labelledby="swiggy-modal-title"
         className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-2xl border-2 shadow-2xl sm:max-h-[82vh] sm:rounded-2xl"
-        style={{ borderColor: COLOR.line, backgroundColor: COLOR.paper, boxShadow: "0 24px 48px rgba(36,22,8,0.25)" }}
+        style={{
+          borderColor: COLOR.line,
+          backgroundColor: COLOR.paper,
+          boxShadow: "0 24px 48px rgba(36,22,8,0.25)",
+          transform: `translateY(${dragY}px)`,
+          transition: isDragging ? "none" : "transform 0.2s ease",
+          opacity: 1 - Math.min(dragY / 400, 0.4),
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="px-5 pb-4 pt-3 sm:px-6 sm:pt-5" style={{ backgroundColor: COLOR.paperSunken }}>
-          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
-
+          <div
+            className="-mx-5 -mt-3 mb-2 flex touch-none cursor-grab justify-center px-5 pb-2.5 pt-3 active:cursor-grabbing sm:hidden"
+            onPointerDown={handleDragStart}
+            onPointerMove={handleDragMove}
+            onPointerUp={handleDragEnd}
+            onPointerCancel={handleDragEnd}
+          >
+            <span className="h-1 w-10 rounded-full" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
+          </div>
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center">
