@@ -146,7 +146,7 @@ export interface InstamartTrackedOrder {
  * order. Address fetching and product search still hit the real Swiggy
  * API. MUST be false before shipping — this isn't like the tracker mock,
  * it will swallow real checkouts if left on. */
-const MOCK_CHECKOUT = false;
+const MOCK_CHECKOUT = true;
 
 /** Populated from real search results so the mock cart can look up
  * name/price by spinId even though search itself isn't mocked. */
@@ -722,11 +722,12 @@ export const addDishToFoodCart = async (
 ) => {
   // No retries here: a food cart update should never risk being sent twice.
   const data = await getApiResponse<any>(
-    "/api/swiggy/add-dish-to-food-cart",
+    "/api/swiggy/food-cart",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        action: "add",
         addressId,
         restaurantId,
         restaurantName,

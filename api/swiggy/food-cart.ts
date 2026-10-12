@@ -1,9 +1,10 @@
+// api/swiggy/food-cart.ts
+
 function getCookie(request: Request, name: string): string | null {
   const cookieHeader = request.headers.get("cookie") ?? "";
 
   for (const cookie of cookieHeader.split(";")) {
     const [key, ...parts] = cookie.trim().split("=");
-
     if (key === name) {
       return decodeURIComponent(parts.join("="));
     }
@@ -21,11 +22,8 @@ function parseSwiggyResponse(text: string): any {
 
   for (const line of text.split(/\r?\n/)) {
     if (!line.startsWith("data:")) continue;
-
     const data = line.slice(5).trim();
-
     if (!data) continue;
-
     try {
       return JSON.parse(data);
     } catch {
@@ -96,10 +94,16 @@ const notConnected = () =>
     headers: { "Content-Type": "application/json" },
   });
 
-/**
- * GET ?addressId=... — the cart review step, right before checkout: what's
- * in it, the bill, and whether the ₹1000 cap has been exceeded.
- */
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+
+/* ------------------------------------------------------------------ */
+/* GET ?addressId=... — the cart review step, right before checkout    */
+/* ------------------------------------------------------------------ */
+
 export async function GET(request: Request): Promise<Response> {
   try {
     const session = getSession(request);
@@ -109,24 +113,17 @@ export async function GET(request: Request): Promise<Response> {
     const addressId = url.searchParams.get("addressId");
 
     if (!addressId) {
-      return new Response(JSON.stringify({ error: "Missing addressId" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return json({ error: "Missing addressId" }, 400);
     }
 
     const cartResponse = await callFoodMcp(session.accessToken, "get_food_cart", { addressId });
-
     if (cartResponse.status === 401) return notConnected();
 
     const cartText = await cartResponse.text();
     const cartData = parseSwiggyResponse(cartText);
 
     if (!cartData) {
-      return new Response(
-        JSON.stringify({ error: "Could not parse Swiggy food cart response" }),
-        { status: 502, headers: { "Content-Type": "application/json" } }
-      );
+      return json({ error: "Could not parse Swiggy food cart response" }, 502);
     }
 
     const rawItems = getCartItems(cartData);
@@ -151,70 +148,263 @@ export async function GET(request: Request): Promise<Response> {
           }
         : null;
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        items,
-        bill,
-        exceedsMaxOrder: total > MAX_FOOD_ORDER_RUPEES,
-        maxOrderPaise: MAX_FOOD_ORDER_RUPEES * 100,
-      }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return json({
+      success: true,
+      items,
+      bill,
+      exceedsMaxOrder: total > MAX_FOOD_ORDER_RUPEES,
+      maxOrderPaise: MAX_FOOD_ORDER_RUPEES * 100,
+    });
   } catch (error) {
     console.error("Get food cart error:", error);
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Failed to load Swiggy food cart",
-      }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return json({ error: error instanceof Error ? error.message : "Failed to load Swiggy food cart" }, 500);
   }
 }
 
-/**
- * POST { action: "checkout", addressId, paymentMethod } — places the food
- * order via place_food_order. The ₹1000 cap is checked again here (not
- * just client-side) before calling Swiggy, since that's a cheaper failure
- * than a rejected order.
- */
+/* ------------------------------------------------------------------ */
+/* POST — dispatches on body.action: "add" | "checkout"                */
+/* ------------------------------------------------------------------ */
+
 export async function POST(request: Request): Promise<Response> {
+  const session = getSession(request);
+  if (!session) return notConnected();
+
+  let body: any;
   try {
-    const session = getSession(request);
-    if (!session) return notConnected();
+    body = await request.json();
+  } catch {
+    return json({ error: "Invalid JSON body" }, 400);
+  }
 
-    const body = await request.json();
-    const action = body?.action;
+  const action = body?.action;
+
+  if (action === "add") {
+    return handleAddDish(session.accessToken, body);
+  }
+
+  if (action === "checkout") {
+    return handleCheckout(session.accessToken, body);
+  }
+
+  return json({ error: "Missing or unknown action. Use 'add' or 'checkout'." }, 400);
+}
+
+/* ---- add dish (formerly add-dish-to-food-cart.ts) ---- */
+
+async function handleAddDish(accessToken: string, body: any): Promise<Response> {
+  try {
     const addressId = body?.addressId;
+    const restaurantId = body?.restaurantId;
+    const restaurantName = body?.restaurantName;
+    const dishName = body?.dishName;
 
-    if (action !== "checkout") {
-      return new Response(JSON.stringify({ error: "Unsupported action" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    if (!addressId) return json({ error: "Missing addressId" }, 400);
+    if (!restaurantId) return json({ error: "Missing restaurantId" }, 400);
+    if (!dishName || typeof dishName !== "string" || !dishName.trim()) {
+      return json({ error: "Missing dishName" }, 400);
     }
 
-    if (!addressId) {
-      return new Response(JSON.stringify({ error: "Missing addressId" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    /*
+     * 1. Search for this dish INSIDE the selected restaurant
+     */
+    const searchResponse = await callFoodMcp(accessToken, "search_menu", {
+      addressId,
+      query: dishName.trim(),
+      restaurantIdOfAddedItem: restaurantId,
+    });
+
+    if (searchResponse.status === 401) return notConnected();
+
+    const searchText = await searchResponse.text();
+    const searchData = parseSwiggyResponse(searchText);
+
+    if (!searchData) {
+      return json({ error: "Could not parse Swiggy menu search response" }, 502);
     }
 
-    const cartResponse = await callFoodMcp(session.accessToken, "get_food_cart", { addressId });
+    const items =
+      searchData?.result?.structuredContent?.items ??
+      searchData?.result?.structuredContent?.data?.items ??
+      [];
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return json(
+        { error: `Couldn't find ${dishName} at ${restaurantName ?? "this restaurant"}.` },
+        404
+      );
+    }
+
+    /*
+     * 2. Pick the closest matching dish
+     */
+    const normalizedQuery = dishName.trim().toLowerCase();
+
+    const exactMatch =
+      items.find((item: any) => String(item?.name ?? "").trim().toLowerCase() === normalizedQuery) ?? null;
+
+    const partialMatch =
+      items.find((item: any) => {
+        const name = String(item?.name ?? "").trim().toLowerCase();
+        return name.includes(normalizedQuery) || normalizedQuery.includes(name);
+      }) ?? null;
+
+    const selectedItem = exactMatch ?? partialMatch ?? items[0];
+    const menuItemId = selectedItem?.menu_item_id ?? selectedItem?.id ?? null;
+
+    if (!menuItemId) {
+      return json(
+        { error: `Couldn't identify ${dishName} at ${restaurantName ?? "this restaurant"}.` },
+        502
+      );
+    }
+
+    /*
+     * 3. Handle variants when Swiggy provides them
+     */
+    const cartItem: any = {
+      menu_item_id: String(menuItemId),
+      quantity: 1,
+    };
+
+    if (Array.isArray(selectedItem?.variations) && selectedItem.variations.length > 0) {
+      const availableVariation =
+        selectedItem.variations.find(
+          (variation: any) => Number(variation?.inStock ?? 1) > 0 && Number(variation?.default ?? 0) === 1
+        ) ?? selectedItem.variations.find((variation: any) => Number(variation?.inStock ?? 1) > 0);
+
+      if (availableVariation?.id) {
+        cartItem.variants = [
+          { group_id: availableVariation.groupId, variation_id: availableVariation.id },
+        ];
+      }
+    }
+
+    if (Array.isArray(selectedItem?.variantsV2) && selectedItem.variantsV2.length > 0) {
+      const resolvedVariants: { group_id: string; variation_id: string }[] = [];
+
+      for (const group of selectedItem.variantsV2) {
+        const variations = Array.isArray(group?.variations) ? group.variations : [];
+
+        const chosen =
+          variations.find((v: any) => Number(v?.inStock ?? 1) > 0 && Number(v?.default ?? 0) === 1) ??
+          variations.find((v: any) => Number(v?.inStock ?? 1) > 0);
+
+        if (!chosen?.id) {
+          return json(
+            { error: `${selectedItem.name} requires a customization before it can be added to the cart.` },
+            409
+          );
+        }
+
+        resolvedVariants.push({ group_id: group.groupId, variation_id: chosen.id });
+      }
+
+      cartItem.variantsV2 = resolvedVariants;
+    }
+
+    /*
+     * 4. Add the resolved menu item to the food cart
+     */
+    const cartResponse = await callFoodMcp(accessToken, "update_food_cart", {
+      restaurantId,
+      addressId,
+      cartItems: [cartItem],
+    });
+
     if (cartResponse.status === 401) return notConnected();
 
     const cartText = await cartResponse.text();
     const cartData = parseSwiggyResponse(cartText);
-    console.log("FOOD CART RAW:", JSON.stringify(cartData, null, 2));
+
+    if (!cartData) {
+      return json({ error: "Could not parse Swiggy cart response" }, 502);
+    }
+
+    const cartContent = cartData?.result?.structuredContent;
+
+    const toolError =
+      cartData?.result?.isError ||
+      cartContent?.success === false ||
+      cartContent?.successful === false ||
+      (Array.isArray(cartContent?.errorCodes) && cartContent.errorCodes.length > 0);
+
+    if (toolError) {
+      return json(
+        {
+          error:
+            cartContent?.titleMessage ??
+            cartContent?.statusMessage ??
+            cartContent?.error?.message ??
+            cartContent?.message ??
+            "Swiggy could not update the food cart.",
+        },
+        502
+      );
+    }
+
+    /*
+     * 5. VERIFY — re-fetch the cart and confirm the item is really there
+     */
+    const verifyResponse = await callFoodMcp(accessToken, "get_food_cart", { addressId });
+    if (verifyResponse.status === 401) return notConnected();
+
+    const verifyText = await verifyResponse.text();
+    const verifyData = parseSwiggyResponse(verifyText);
+
+    const verifiedItems = getCartItems(verifyData);
+
+    const isConfirmed = verifiedItems.some(
+      (item: any) => String(item?.menu_item_id ?? item?.id ?? "") === String(menuItemId)
+    );
+
+    if (!isConfirmed) {
+      return json(
+        {
+          error: "Swiggy accepted the cart update, but the item could not be verified in the cart afterward.",
+          cart: verifyData,
+        },
+        409
+      );
+    }
+
+    return json({
+      success: true,
+      restaurantId,
+      restaurantName,
+      dishName: selectedItem.name,
+      menuItemId: String(menuItemId),
+      verifiedCart: verifyData,
+    });
+  } catch (error) {
+    console.error("Add dish to food cart error:", error);
+    return json(
+      { error: error instanceof Error ? error.message : "Failed to add dish to Swiggy cart" },
+      500
+    );
+  }
+}
+
+/* ---- checkout ---- */
+
+async function handleCheckout(accessToken: string, body: any): Promise<Response> {
+  try {
+    const addressId = body?.addressId;
+
+    if (!addressId) {
+      return json({ error: "Missing addressId" }, 400);
+    }
+
+    const cartResponse = await callFoodMcp(accessToken, "get_food_cart", { addressId });
+    if (cartResponse.status === 401) return notConnected();
+
+    const cartText = await cartResponse.text();
+    const cartData = parseSwiggyResponse(cartText);
     const total = getCartTotal(cartData);
 
     if (total > MAX_FOOD_ORDER_RUPEES) {
-      return new Response(
-        JSON.stringify({
-          error: `Your cart is over the ₹${MAX_FOOD_ORDER_RUPEES} order limit — please remove an item.`,
-        }),
-        { status: 409, headers: { "Content-Type": "application/json" } }
+      return json(
+        { error: `Your cart is over the ₹${MAX_FOOD_ORDER_RUPEES} order limit — please remove an item.` },
+        409
       );
     }
 
@@ -222,20 +412,14 @@ export async function POST(request: Request): Promise<Response> {
     // 5xx, the caller should check get_food_orders before retrying rather
     // than calling this again blindly (see the MCP recipe's "What can go
     // wrong" section). We don't auto-retry here for that reason.
-    const orderResponse = await callFoodMcp(session.accessToken, "place_food_order", {
-      paymentMethod: "COD",
-    });
-
+    const orderResponse = await callFoodMcp(accessToken, "place_food_order", { paymentMethod: "COD" });
     if (orderResponse.status === 401) return notConnected();
 
     const orderText = await orderResponse.text();
     const orderData = parseSwiggyResponse(orderText);
 
     if (!orderData) {
-      return new Response(
-        JSON.stringify({ error: "Could not parse Swiggy order response" }),
-        { status: 502, headers: { "Content-Type": "application/json" } }
-      );
+      return json({ error: "Could not parse Swiggy order response" }, 502);
     }
 
     const orderContent = orderData?.result?.structuredContent;
@@ -247,42 +431,31 @@ export async function POST(request: Request): Promise<Response> {
       (Array.isArray(orderContent?.errorCodes) && orderContent.errorCodes.length > 0);
 
     if (toolError) {
-      return new Response(
-        JSON.stringify({
+      return json(
+        {
           error:
             orderContent?.titleMessage ??
             orderContent?.statusMessage ??
             orderContent?.error?.message ??
             orderContent?.message ??
             "Swiggy could not place this order.",
-        }),
-        { status: 502, headers: { "Content-Type": "application/json" } }
+        },
+        502
       );
     }
 
     const orderId = orderContent?.orderId ?? orderContent?.data?.orderId ?? null;
 
     if (!orderId) {
-      return new Response(
-        JSON.stringify({
-          error: "Swiggy accepted the order but didn't return an order ID.",
-          raw: orderContent,
-        }),
-        { status: 502, headers: { "Content-Type": "application/json" } }
+      return json(
+        { error: "Swiggy accepted the order but didn't return an order ID.", raw: orderContent },
+        502
       );
     }
 
-    return new Response(
-      JSON.stringify({ success: true, orderId: String(orderId) }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return json({ success: true, orderId: String(orderId) });
   } catch (error) {
     console.error("Food checkout error:", error);
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : "Failed to place Swiggy order",
-      }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return json({ error: error instanceof Error ? error.message : "Failed to place Swiggy order" }, 500);
   }
 }
