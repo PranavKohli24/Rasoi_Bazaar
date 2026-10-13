@@ -965,7 +965,7 @@ useEffect(() => {
     window.history.back();
   }
 }, [type]);
-
+ 
 const triggerMinimize = () => {
   if (pushedHistoryStateRef.current) {
     suppressNextPopRef.current = true;
