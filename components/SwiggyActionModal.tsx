@@ -265,6 +265,255 @@ const LeafIcon: IconC = ({ className }) => (
   </svg>
 );
 
+/* ---------- Shop shelf (Instamart "aisle") ----------
+   Pure presentation, grafted onto the existing product grid: a canvas-drawn
+   wooden plank under each ingredient's row, a pegboard back wall behind it,
+   and a cartoon trolley that products visibly fly into (and back out of).
+   None of this reads selection state on its own — it's driven entirely by
+   the same selectedProducts/onSelectProduct data the grid already used. */
+
+const SHELF_WOOD = {
+  top: "#E7BD7C",
+  topDeep: "#C98A2B",
+  front: "#B97A33",
+  frontDeep: "#8A5726",
+};
+
+// Drawn fresh at the shelf's actual pixel size (not stretched from a fixed
+// asset) so the grain stays crisp at any width and under devicePixelRatio.
+const drawShelfPlank = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+  ctx.clearRect(0, 0, w, h);
+
+  const topH = Math.min(9, h * 0.4);
+  const frontH = h - topH;
+
+  const topGrad = ctx.createLinearGradient(0, 0, 0, topH);
+  topGrad.addColorStop(0, SHELF_WOOD.top);
+  topGrad.addColorStop(1, SHELF_WOOD.topDeep);
+  ctx.fillStyle = topGrad;
+  ctx.fillRect(0, 0, w, topH);
+
+  const frontGrad = ctx.createLinearGradient(0, topH, 0, h);
+  frontGrad.addColorStop(0, SHELF_WOOD.front);
+  frontGrad.addColorStop(1, SHELF_WOOD.frontDeep);
+  ctx.fillStyle = frontGrad;
+  ctx.fillRect(0, topH, w, frontH);
+
+  // lit top edge, as if a light sits just above the shelf
+  ctx.strokeStyle = "rgba(255,255,255,0.45)";
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(0, 0.5);
+  ctx.lineTo(w, 0.5);
+  ctx.stroke();
+
+  // a handful of wandering grain lines, seeded off the plank's own width so
+  // repeated renders of the same shelf look identical rather than jittery
+  let seed = Math.round(w * 97) % 1000;
+  const rand = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+  ctx.strokeStyle = "rgba(0,0,0,0.14)";
+  for (let i = 0; i < 4; i++) {
+    const y = topH + 3 + (i + rand() * 0.6) * (frontH / 4.2);
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.bezierCurveTo(w * 0.33, y + (rand() - 0.5) * 3, w * 0.66, y + (rand() - 0.5) * 3, w, y);
+    ctx.stroke();
+  }
+
+  // shadowed underside, grounding whatever sits on the shelf above it
+  const edgeGrad = ctx.createLinearGradient(0, h - 5, 0, h);
+  edgeGrad.addColorStop(0, "rgba(0,0,0,0)");
+  edgeGrad.addColorStop(1, "rgba(0,0,0,0.32)");
+  ctx.fillStyle = edgeGrad;
+  ctx.fillRect(0, h - 5, w, 5);
+};
+
+const ShelfPlank: React.FC<{ className?: string }> = ({ className }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const parent = canvas?.parentElement;
+    if (!canvas || !parent) return;
+
+    const render = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = parent.getBoundingClientRect();
+      if (width === 0 || height === 0) return;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawShelfPlank(ctx, width, height);
+    };
+
+    render();
+    const observer = new ResizeObserver(render);
+    observer.observe(parent);
+    return () => observer.disconnect();
+  }, []);
+
+  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
+};
+
+// Faint dot-grid "pegboard" wall sitting behind every shelf row — cheap
+// enough to be a plain CSS background rather than another canvas.
+const shopWallStyle: React.CSSProperties = {
+  backgroundColor: COLOR.paperSunken,
+  backgroundImage: `radial-gradient(${COLOR.line} 1px, transparent 1.6px)`,
+  backgroundSize: "15px 15px",
+  backgroundPosition: "-4px -4px",
+};
+
+const TrolleyIcon: IconC = ({ className }) => (
+  <svg viewBox="0 0 48 44" className={className} aria-hidden="true">
+    <path d="M3 4h4l2.4 5" stroke={COLOR.stampDark} strokeWidth="2.4" strokeLinecap="round" fill="none" />
+    <path
+      d="M10 9h31l-4 16a3 3 0 0 1-2.9 2.3H16a3 3 0 0 1-2.9-2.3L10 9Z"
+      fill={COLOR.stampTint}
+      stroke={COLOR.stamp}
+      strokeWidth="2.4"
+      strokeLinejoin="round"
+    />
+    <path d="M15 9l2.2 18.3M24.5 9v18.3M34 9l-2.2 18.3" stroke={COLOR.stampDark} strokeWidth="1.4" opacity="0.55" />
+    <circle cx="18" cy="38" r="3.4" fill={COLOR.stampDark} />
+    <circle cx="33" cy="38" r="3.4" fill={COLOR.stampDark} />
+    <circle cx="18" cy="38" r="1.2" fill={COLOR.stampTint} />
+    <circle cx="33" cy="38" r="1.2" fill={COLOR.stampTint} />
+  </svg>
+);
+
+// Pinned bottom-right of the ingredient list via `sticky` (its nearest
+// scrolling ancestor is the modal's own content area), so it stays in view
+// as the shelves scroll past it. `ref` is the landing target every flying
+// product animates toward.
+const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKey: number }>(
+  ({ count, bounceKey }, ref) => (
+    <div className="pointer-events-none sticky bottom-1 z-20 flex justify-end pr-0.5">
+      <div
+        key={bounceKey}
+        ref={ref}
+        className={`pointer-events-none relative flex h-14 w-14 items-center justify-center rounded-full border-2 ${
+          bounceKey > 0 ? "trolley-bounce" : ""
+        }`}
+        style={{
+          borderColor: COLOR.stamp,
+          backgroundColor: COLOR.paper,
+          boxShadow: "0 8px 18px rgba(36,22,8,0.3)",
+        }}
+      >
+        <TrolleyIcon className="h-8 w-8" />
+        {count > 0 && (
+          <span
+            className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 font-mono text-[11px] font-bold"
+            style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
+          >
+            {count}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+);
+TrolleyWidget.displayName = "TrolleyWidget";
+
+/* Arcs a cloned product thumbnail between a shelf slot and the trolley —
+   a real parabola (computed frame-by-frame), not a CSS transition between
+   two points, so a "select" visibly lands in the basket and an "unselect"
+   visibly leaves it, same as a hand tossing something in or lifting it
+   back out. Purely visual: it never touches selection state itself. */
+
+type FlyDirection = "in" | "out";
+
+interface FlyItem {
+  id: number;
+  imageUrl: string;
+  fromRect: DOMRect;
+  toRect: DOMRect;
+  direction: FlyDirection;
+}
+
+const FLY_DURATION_MS = 560;
+const FLY_ARC_HEIGHT = 64;
+
+const FlyingItemSprite: React.FC<{ item: FlyItem; onDone: () => void }> = ({ item, onDone }) => {
+  const [t, setT] = useState(0);
+  const startTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    let raf = 0;
+    const tick = (now: number) => {
+      if (startTimeRef.current === null) startTimeRef.current = now;
+      const progress = Math.min(1, (now - startTimeRef.current) / FLY_DURATION_MS);
+      setT(progress);
+      if (progress < 1) raf = requestAnimationFrame(tick);
+      else onDone();
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // "in" (selecting) throws shelf -> trolley; "out" (deselecting) throws
+  // trolley -> shelf — the same two rects, read in reverse.
+  const from = item.direction === "in" ? item.fromRect : item.toRect;
+  const to = item.direction === "in" ? item.toRect : item.fromRect;
+  const ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
+
+  const fromCx = from.left + from.width / 2;
+  const fromCy = from.top + from.height / 2;
+  const toCx = to.left + to.width / 2;
+  const toCy = to.top + to.height / 2;
+
+  const cx = fromCx + (toCx - fromCx) * ease;
+  // a sine lift on top of the straight interpolation gives a thrown arc
+  // instead of a flat slide
+  const cy = fromCy + (toCy - fromCy) * ease - Math.sin(Math.PI * t) * FLY_ARC_HEIGHT;
+
+  const startSize = item.direction === "in" ? 46 : 20;
+  const endSize = item.direction === "in" ? 20 : 46;
+  const size = startSize + (endSize - startSize) * ease;
+
+  const opacity = t < 0.88 ? 1 : 1 - (t - 0.88) / 0.12;
+  const spin = (item.direction === "in" ? 1 : -1) * 22 * ease;
+
+  return (
+    <img
+      src={item.imageUrl}
+      alt=""
+      aria-hidden="true"
+      style={{
+        position: "fixed",
+        left: cx - size / 2,
+        top: cy - size / 2,
+        width: size,
+        height: size,
+        borderRadius: 9,
+        objectFit: "cover",
+        pointerEvents: "none",
+        zIndex: 70,
+        opacity,
+        transform: `rotate(${spin}deg)`,
+        boxShadow: "0 10px 18px rgba(36,22,8,0.35)",
+      }}
+    />
+  );
+};
+
+const FlyingIngredients: React.FC<{ items: FlyItem[]; onDone: (id: number) => void }> = ({ items, onDone }) => (
+  <>
+    {items.map((item) => (
+      <FlyingItemSprite key={item.id} item={item} onDone={() => onDone(item.id)} />
+    ))}
+  </>
+);
+
 /* ---------- Shared bits ---------- */
 
 const notchLg: React.CSSProperties = {
@@ -1066,6 +1315,47 @@ useEffect(() => {
     }
   }, [foodCartAdded]);
 
+  /* ---- Shop-shelf trolley animation (Instamart ingredient picking) ----
+     Purely visual: it reads the same selectedProducts prop the grid
+     already renders from, and the actual click still calls the real
+     onSelectProduct handler unchanged — this only decides whether to also
+     throw a flying thumbnail before/after that call. */
+  const trolleyRef = useRef<HTMLDivElement>(null);
+  const productButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const [flyingItems, setFlyingItems] = useState<FlyItem[]>([]);
+  const flyIdRef = useRef(0);
+  const [trolleyBounceKey, setTrolleyBounceKey] = useState(0);
+
+  const registerProductRef = (spinId: string) => (el: HTMLButtonElement | null) => {
+    if (el) productButtonRefs.current.set(spinId, el);
+    else productButtonRefs.current.delete(spinId);
+  };
+
+  const removeFlyingItem = (id: number) =>
+    setFlyingItems((items) => items.filter((item) => item.id !== id));
+
+  const handlePickProduct = (ingredientName: string, variation: InstamartVariation) => {
+    const wasSelected = selectedProducts?.[ingredientName]?.spinId === variation.spinId;
+    const buttonEl = productButtonRefs.current.get(variation.spinId);
+    const trolleyEl = trolleyRef.current;
+
+    if (buttonEl && trolleyEl && variation.imageUrl) {
+      const fromRect = buttonEl.getBoundingClientRect();
+      const toRect = trolleyEl.getBoundingClientRect();
+      const id = flyIdRef.current++;
+      setFlyingItems((items) => [
+        ...items,
+        { id, imageUrl: variation.imageUrl as string, fromRect, toRect, direction: wasSelected ? "out" : "in" },
+      ]);
+      if (!wasSelected) {
+        window.setTimeout(() => setTrolleyBounceKey((k) => k + 1), FLY_DURATION_MS - 90);
+      }
+    }
+
+    // Unchanged: the real handler, same signature, same call.
+    onSelectProduct?.(ingredientName, variation);
+  };
+
   useEffect(() => {
     if (wasLoadingRestaurants) {
       setHasSearchedRestaurants(true);
@@ -1347,7 +1637,7 @@ useEffect(() => {
                   )}
                 </div>
               ) : (
-                <div className="animate-fade-in-up space-y-6" style={{ animationDuration: "0.25s" }}>
+                <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
                   {instamartNames.map((ingredientName) => {
                     const isPending = pendingIngredientNames?.includes(ingredientName);
                     const products = ingredientProducts?.[ingredientName] ?? [];
@@ -1356,7 +1646,7 @@ useEffect(() => {
 
                     return (
                       <div key={ingredientName}>
-                        <div className="mb-3 flex items-baseline justify-between gap-3">
+                        <div className="mb-2 flex items-baseline justify-between gap-3">
                           <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
                             {ingredientName}
                           </p>
@@ -1382,60 +1672,99 @@ useEffect(() => {
                             Not available at your address.
                           </p>
                         ) : (
-                          <div className="modal-scroll -mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2">
-                            {products.flatMap((product) =>
-                              (product.variations ?? []).map((variation) => {
-                                const selected = chosen?.spinId === variation.spinId;
-                                const unavailable = !variation.isInStockAndAvailable || !product.inStock;
+                          // The "shelf": a pegboard back wall holding the row of
+                          // products, sitting on a canvas-drawn wood plank. Same
+                          // scroll container as before, just dressed as a fixture.
+                          <div className="relative overflow-hidden rounded-2xl border" style={{ borderColor: COLOR.line, ...shopWallStyle }}>
+                            <div
+                              className="modal-scroll -mb-px flex snap-x items-end gap-3.5 overflow-x-auto px-3 pb-3 pt-4"
+                              style={{ perspective: "640px" }}
+                            >
+                              {products.flatMap((product) =>
+                                (product.variations ?? []).map((variation) => {
+                                  const selected = chosen?.spinId === variation.spinId;
+                                  const unavailable = !variation.isInStockAndAvailable || !product.inStock;
 
-                                return (
-                                  <button
-                                    key={variation.spinId}
-                                    type="button"
-                                    disabled={unavailable}
-                                    aria-pressed={selected}
-                                    onClick={() => onSelectProduct?.(ingredientName, variation)}
-                                    className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
-                                    style={{
-                                      borderColor: selected ? COLOR.stamp : COLOR.line,
-                                      backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
-                                      boxShadow: selected ? `inset 0 0 0 1px ${COLOR.stamp}` : "none",
-                                    }}
-                                  >
-                                    {selected && (
-                                      <span
-                                        aria-hidden="true"
-                                        className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full"
-                                        style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
-                                      >
-                                        <CheckIcon className="h-2.5 w-2.5" />
-                                      </span>
-                                    )}
+                                  return (
+                                    <button
+                                      key={variation.spinId}
+                                      ref={registerProductRef(variation.spinId)}
+                                      type="button"
+                                      disabled={unavailable}
+                                      aria-pressed={selected}
+                                      onClick={() => handlePickProduct(ingredientName, variation)}
+                                      className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+                                      style={{
+                                        borderColor: selected ? COLOR.stamp : COLOR.line,
+                                        backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
+                                        boxShadow: selected
+                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 12px 16px -9px rgba(36,22,8,0.4)`
+                                          : "0 7px 10px -7px rgba(36,22,8,0.3)",
+                                        transform: selected
+                                          ? "perspective(640px) rotateX(0deg) translateY(-3px)"
+                                          : "perspective(640px) rotateX(7deg)",
+                                        transformOrigin: "bottom center",
+                                      }}
+                                    >
+                                      {selected && (
+                                        <span
+                                          aria-hidden="true"
+                                          className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full"
+                                          style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
+                                        >
+                                          <CheckIcon className="h-2.5 w-2.5" />
+                                        </span>
+                                      )}
 
-                                    {variation.imageUrl && (
-                                      <img
-                                        src={variation.imageUrl}
-                                        alt={product.displayName}
-                                        className="mx-auto mb-2.5 h-14 w-14 rounded-lg border bg-white object-cover"
-                                        style={{ borderColor: COLOR.line }}
-                                      />
-                                    )}
+                                      {variation.imageUrl && (
+                                        <span className="relative mx-auto mb-2.5 block h-14 w-14">
+                                          <img
+                                            src={variation.imageUrl}
+                                            alt={product.displayName}
+                                            className="h-14 w-14 rounded-lg border bg-white object-cover"
+                                            style={{
+                                              borderColor: COLOR.line,
+                                              filter: "drop-shadow(0 5px 4px rgba(36,22,8,0.3))",
+                                            }}
+                                          />
+                                          {/* gloss highlight — a cheap stand-in for studio lighting
+                                              so the photo reads as a lit product, not a flat sticker */}
+                                          <span
+                                            aria-hidden="true"
+                                            className="pointer-events-none absolute inset-0 rounded-lg"
+                                            style={{
+                                              background:
+                                                "linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%)",
+                                            }}
+                                          />
+                                          {/* grounded shadow — pins the item to the shelf instead of floating */}
+                                          <span
+                                            aria-hidden="true"
+                                            className="absolute -bottom-1 left-1/2 h-1.5 w-8 -translate-x-1/2 rounded-full"
+                                            style={{ backgroundColor: "rgba(36,22,8,0.24)", filter: "blur(2px)" }}
+                                          />
+                                        </span>
+                                      )}
 
-                                    <p className="line-clamp-2 text-xs font-medium leading-tight" style={{ color: COLOR.ink }}>
-                                      {variation.quantityDescription}
-                                    </p>
-                                    <p className="mt-1.5 font-mono text-sm font-bold tabular-nums" style={{ color: COLOR.stampDark }}>
-                                      ₹{variation.price.offerPrice}
-                                    </p>
-                                    {unavailable && (
-                                      <p className="mt-0.5 font-mono text-[10px] uppercase" style={{ color: COLOR.inkFaint }}>
-                                        Unavailable
+                                      <p className="line-clamp-2 text-xs font-medium leading-tight" style={{ color: COLOR.ink }}>
+                                        {variation.quantityDescription}
                                       </p>
-                                    )}
-                                  </button>
-                                );
-                              })
-                            )}
+                                      <p className="mt-1.5 font-mono text-sm font-bold tabular-nums" style={{ color: COLOR.stampDark }}>
+                                        ₹{variation.price.offerPrice}
+                                      </p>
+                                      {unavailable && (
+                                        <p className="mt-0.5 font-mono text-[10px] uppercase" style={{ color: COLOR.inkFaint }}>
+                                          Unavailable
+                                        </p>
+                                      )}
+                                    </button>
+                                  );
+                                })
+                              )}
+                            </div>
+                            <div className="relative h-[11px]">
+                              <ShelfPlank className="absolute inset-0 h-full w-full" />
+                            </div>
                           </div>
                         )}
 
@@ -1479,6 +1808,8 @@ useEffect(() => {
                       </div>
                     );
                   })}
+
+                  <TrolleyWidget ref={trolleyRef} count={selectedCount} bounceKey={trolleyBounceKey} />
                 </div>
               )}
             </>
@@ -1687,6 +2018,12 @@ useEffect(() => {
         )}
       </div>
 
+      {/* Flying product thumbnails live at the overlay level, not inside the
+          dialog, so their `position: fixed` coordinates (read straight off
+          the clicked button and the trolley) aren't affected by the
+          dialog's own drag-to-minimize transform. */}
+      <FlyingIngredients items={flyingItems} onDone={removeFlyingItem} />
+
       <style>{`
         .modal-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
         .modal-scroll::-webkit-scrollbar-thumb { background: ${COLOR.inkFaint}55; border-radius: 4px; }
@@ -1781,10 +2118,19 @@ useEffect(() => {
         }
         .stamp-label { animation: stamp-label-in 0.35s ease-out both; animation-delay: 0.28s; }
 
+        @keyframes trolley-bounce {
+          0% { transform: scale(1) rotate(0deg); }
+          30% { transform: scale(1.18) rotate(-5deg); }
+          55% { transform: scale(0.94) rotate(4deg); }
+          80% { transform: scale(1.05) rotate(-1.5deg); }
+          100% { transform: scale(1) rotate(0deg); }
+        }
+        .trolley-bounce { animation: trolley-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
         @media (prefers-reduced-motion: reduce) {
           .skeleton-shimmer, .punch-pulse, .sweep, .veggie-fall, .basket-wobble,
           .cloche-lift, .steam-rise, .utensil-slide-left, .utensil-slide-right,
-          .tick-circle, .tick-check, .stamp-label {
+          .tick-circle, .tick-check, .stamp-label, .trolley-bounce {
             animation: none !important;
             opacity: 1;
             transform: none;
