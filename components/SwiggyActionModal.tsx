@@ -943,14 +943,15 @@ useEffect(() => {
 
 useEffect(() => {
   const onPopState = () => {
-    if (!pushedHistoryStateRef.current) return;
-    pushedHistoryStateRef.current = false;
     if (suppressNextPopRef.current) {
       // We already minimized/closed synchronously from a button tap —
       // this popstate is just that tap's own history.back() resolving.
       suppressNextPopRef.current = false;
+      pushedHistoryStateRef.current = false;
       return;
     }
+    if (!pushedHistoryStateRef.current) return;
+    pushedHistoryStateRef.current = false;
     // A real hardware/browser back press — same as before, just minimizes.
     onMinimize();
   };
