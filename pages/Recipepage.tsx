@@ -12,6 +12,7 @@ import {
   findSimilarRecipes,
 } from "../utils/findPredefinedRecipe";
 import { RECIPE_PATH, toSlug, fromSlug, useDishSearch } from "../utils/dishRoutes";
+import { useDishTint } from "../src/hooks/useDishTint";
 
 // Shown instead of any technical error text.
 const FRIENDLY_ERROR =
@@ -33,6 +34,8 @@ const RecipePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(!!slug);
   const [error, setError] = useState<{ message: string; kind: ErrorKind } | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
+
+  useDishTint(recipe);
 
   useEffect(() => {
     if (!slug) return; // bare /recipe: nothing to load

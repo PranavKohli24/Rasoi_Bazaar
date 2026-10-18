@@ -57,14 +57,21 @@
       html .font-hand  { font-family: 'Caveat', cursive; }
       html .font-brand { font-family: 'Playfair Display', ui-serif, Georgia, serif; }
 
+      :root {
+        --bg-tint: #FFF8F1;
+      }
+
       /*
-       * Background: flat cream. The scattered food and equipment pictures are
-       * drawn by <FoodBackground /> (src/components/FoodBackground.tsx).
+       * Background: a soft per-recipe tint (--bg-tint, set by useDishTint),
+       * falling back to flat cream when there's no recipe. The scattered
+       * food and equipment pictures are drawn by <FoodBackground />
+       * (src/components/FoodBackground.tsx).
        */
       body {
         font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
         color: #3E2E23;
-        background-color: #FFF8F1;;
+        background-color: var(--bg-tint, #FFF8F1);
+        transition: background-color 0.6s ease;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
       }
