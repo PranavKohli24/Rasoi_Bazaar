@@ -29,6 +29,7 @@
 
 import { Recipe } from "../types";
 import dishTints from "../data/dishTints.json";
+import dishTintOverrides from "../data/dishTintOverrides.json";
 
 export type RGB = [number, number, number];
 type LAB = [number, number, number];
@@ -266,7 +267,7 @@ const hueDistance = (a: number, b: number): number => {
 export const toBackgroundTint = (rgb: RGB): string => {
   const [h, s] = rgbToHsl(...rgb);
   const tintSaturation = Math.min(55, Math.max(18, s * 0.9));
-  const tintLightness = 90;
+  const tintLightness = 80;
   return `hsl(${Math.round(h)}, ${Math.round(tintSaturation)}%, ${tintLightness}%)`;
 };
 
@@ -328,8 +329,12 @@ const extractThemeColorFromImage = (imageUrl: string): Promise<string> => {
 
 const TINT_CACHE_PREFIX = "rasoi:tint:";
 const tints: Record<string, string> = dishTints;
+const overrides: Record<string, string> = dishTintOverrides;
 
 export const getDishTint = async (recipe: Recipe): Promise<string> => {
+  const override = overrides[recipe.dishName];
+  if (override) return override;
+
   const precomputed = tints[recipe.dishName];
   if (precomputed) return precomputed;
 
