@@ -45603,6 +45603,193 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nutrition": { "calories": 210, "protein": 6, "carbs": 32, "fat": 6 }
   },
 
+  "pazham pori": {
+    "dishName": "Pazham Pori",
+    "image": "/dishes/pazham-pori.webp",
+    "description": "Kerala-style ripe banana fritters coated in a sweet maida batter and fried until golden.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "3", "commonName": "Nendran Pazham", "englishName": "ripe plantains or very ripe bananas" },
+      { "amount": "1 cup", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "2 tbsp", "commonName": "Chawal Ka Atta", "englishName": "rice flour" },
+      { "amount": "2 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/4 tsp", "commonName": "Haldi", "englishName": "turmeric, for colour" },
+      { "amount": "1 pinch", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "3/4 cup", "commonName": "Paani", "englishName": "water, as needed" },
+      { "amount": "2 cups", "commonName": "Tel", "englishName": "oil, for deep frying" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Peel the bananas and slice them lengthwise into 2 or 3 long pieces." },
+      { "step": 2, "instruction": "Mix maida, rice flour, sugar, turmeric and salt. Add water gradually to make a medium-thick, smooth batter." },
+      { "step": 3, "instruction": "Heat oil in a kadai on medium heat." },
+      { "step": 4, "instruction": "Dip each banana slice into the batter, coating it fully." },
+      { "step": 5, "instruction": "Slide gently into the hot oil and fry until golden brown on both sides.", "tip": { "title": "Use very ripe fruit", "content": "Well-ripened, naturally sweet bananas give the best flavour and golden colour." } },
+      { "step": 6, "instruction": "Drain on paper and serve hot with tea or coffee." }
+    ],
+    "notes": ["Nendran plantains are traditional, but any very ripe sweet banana works well."],
+    "nutrition": { "calories": 220, "protein": 2, "carbs": 38, "fat": 8 }
+  },
+
+  "shami kebab": {
+    "dishName": "Shami Kebab",
+    "image": "/dishes/shami-kebab.webp",
+    "description": "A classic Lucknowi kebab made from minced meat and chana dal, cooked together and ground into a soft, spiced patty.",
+    "prepTime": "Approx. 1 hour",
+    "equipment": [
+      { "item": "cooker", "isSpecialized": false, "alternative": null },
+      { "item": "mixer", "isSpecialized": false, "alternative": null },
+      { "item": "tawa", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "500 g", "commonName": "Mutton Keema", "englishName": "minced mutton" },
+      { "amount": "1/2 cup", "commonName": "Chana Dal", "englishName": "chana dal, soaked 30 minutes" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies" },
+      { "amount": "1 inch", "commonName": "Dalchini", "englishName": "cinnamon" },
+      { "amount": "4", "commonName": "Laung", "englishName": "cloves" },
+      { "amount": "2", "commonName": "Elaichi", "englishName": "green cardamom" },
+      { "amount": "1", "commonName": "Tej Patta", "englishName": "bay leaf" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1", "commonName": "Anda", "englishName": "egg, beaten" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves, chopped" },
+      { "amount": "1/2 cup", "commonName": "Paani", "englishName": "water" },
+      { "amount": "3 tbsp", "commonName": "Tel ya Ghee", "englishName": "oil or ghee, for shallow frying" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Add mince, soaked dal, ginger-garlic paste, green chillies, whole spices, chilli powder, salt and water to a cooker." },
+      { "step": 2, "instruction": "Pressure cook for 4 to 5 whistles until the meat and dal are fully cooked and soft. Cool slightly." },
+      { "step": 3, "instruction": "Remove the whole spices (cinnamon, cloves, cardamom, bay leaf)." },
+      { "step": 4, "instruction": "Drain any excess liquid and grind the mixture in a mixer until smooth and sticky, without adding extra water." },
+      { "step": 5, "instruction": "Mix in chopped onion, coriander and beaten egg until well combined." },
+      { "step": 6, "instruction": "Shape into small, flat round patties.", "tip": { "title": "Chill before frying", "content": "If the mixture feels soft, chill the shaped kebabs for 15 minutes so they hold together better while cooking." } },
+      { "step": 7, "instruction": "Heat oil or ghee on a tawa. Shallow-fry the kebabs on medium heat until golden brown on both sides." },
+      { "step": 8, "instruction": "Serve hot with mint chutney and sliced onions." }
+    ],
+    "notes": ["Cook minced meat until fully cooked through; it should be opaque with no raw centre."],
+    "nutrition": { "calories": 270, "protein": 20, "carbs": 10, "fat": 17 }
+  },
+
+  "sheermal": {
+    "dishName": "Sheermal",
+    "image": "/dishes/sheermal.webp",
+    "description": "A soft, mildly sweet Awadhi flatbread flavoured with saffron and milk, traditionally served with rich kebabs or korma.",
+    "prepTime": "Approx. 2 hours (mostly resting)",
+    "equipment": [
+      { "item": "oven", "isSpecialized": false, "alternative": null },
+      { "item": "tawa", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 cups", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "2 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/2 tsp", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1/2 tsp", "commonName": "Baking Powder", "englishName": "baking powder" },
+      { "amount": "1/3 cup", "commonName": "Doodh", "englishName": "warm milk" },
+      { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron, soaked in 2 tbsp warm milk" },
+      { "amount": "3 tbsp", "commonName": "Ghee", "englishName": "ghee, plus extra for brushing" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "water, as needed" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix maida, sugar, salt and baking powder." },
+      { "step": 2, "instruction": "Add warm milk, saffron milk and ghee. Knead into a soft, smooth dough, adding a little water if needed." },
+      { "step": 3, "instruction": "Cover and rest in a warm place for 1.5 hours." },
+      { "step": 4, "instruction": "Divide into balls and roll each into a round, slightly thicker than a chapati." },
+      { "step": 5, "instruction": "If using an oven, preheat to 200°C and bake the sheermal on a tray for 8 to 10 minutes until lightly golden with a few brown spots." },
+      { "step": 6, "instruction": "If using a tawa, cook on medium heat, covered, flipping occasionally, until both sides are golden and cooked through.", "tip": { "title": "Keep it soft", "content": "Sheermal should stay soft and slightly sweet, not crisp like naan — avoid overcooking." } },
+      { "step": 7, "instruction": "Brush with warm ghee and serve with korma, kebabs or nihari." }
+    ],
+    "notes": ["Sheermal is meant to be mildly sweet and soft, pairing well with rich, spiced dishes."],
+    "nutrition": { "calories": 240, "protein": 5, "carbs": 36, "fat": 9 }
+  },
+
+  "keema pav": {
+    "dishName": "Keema Pav",
+    "image": "/dishes/keema-pav.webp",
+    "description": "A popular Mumbai breakfast of spicy minced meat cooked with onion, tomato and peas, served with buttered pav.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "500 g", "commonName": "Keema", "englishName": "minced mutton or chicken" },
+      { "amount": "2", "commonName": "Pyaaz", "englishName": "onions, finely chopped" },
+      { "amount": "2", "commonName": "Tamatar", "englishName": "tomatoes, chopped" },
+      { "amount": "1/2 cup", "commonName": "Matar", "englishName": "green peas" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, chopped" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1.5 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1 tsp", "commonName": "Dhaniya Powder", "englishName": "coriander powder" },
+      { "amount": "1 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "3 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "1 cup", "commonName": "Paani", "englishName": "water" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves" },
+      { "amount": "8", "commonName": "Pav", "englishName": "pav buns" },
+      { "amount": "2 tbsp", "commonName": "Makhan", "englishName": "butter, for pav" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Heat oil in a kadai. Add onions and cook until golden brown." },
+      { "step": 2, "instruction": "Add ginger-garlic paste and green chilli. Cook for a minute." },
+      { "step": 3, "instruction": "Add tomatoes, turmeric, chilli powder, coriander powder and salt. Cook until soft and the oil separates." },
+      { "step": 4, "instruction": "Add the keema and cook on medium-high heat, breaking up lumps, until it changes colour." },
+      { "step": 5, "instruction": "Add peas and water. Cover and simmer for 15 to 20 minutes, stirring occasionally, until the keema is fully cooked and tender.", "tip": { "title": "Break it up well", "content": "Keep mashing and stirring the mince as it cooks so you get fine, evenly cooked keema rather than clumps." } },
+      { "step": 6, "instruction": "Sprinkle garam masala, mix and cook for 2 more minutes." },
+      { "step": 7, "instruction": "Garnish with coriander. Toast the pav on a tawa with butter and serve hot alongside the keema." }
+    ],
+    "notes": ["Cook minced meat until fully cooked through, with no raw centre remaining."],
+    "nutrition": { "calories": 420, "protein": 24, "carbs": 35, "fat": 20 }
+  },
+
+  "patra": {
+    "dishName": "Patra",
+    "image": "/dishes/patra.webp",
+    "description": "A Gujarati snack of colocasia leaves spread with a spiced gram-flour paste, rolled, steamed and then pan-tempered.",
+    "prepTime": "Approx. 1 hour",
+    "equipment": [
+      { "item": "cooker", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "8", "commonName": "Arbi ke Patte", "englishName": "colocasia (arbi) leaves" },
+      { "amount": "1.5 cups", "commonName": "Besan", "englishName": "gram flour" },
+      { "amount": "2 tbsp", "commonName": "Imli", "englishName": "tamarind pulp" },
+      { "amount": "2 tbsp", "commonName": "Gud", "englishName": "jaggery, grated" },
+      { "amount": "1 tsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1/2 tsp", "commonName": "Ajwain", "englishName": "carom seeds" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1/2 tsp", "commonName": "Rai", "englishName": "mustard seeds" },
+      { "amount": "1 tsp", "commonName": "Til", "englishName": "sesame seeds" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves" },
+      { "amount": "2 tbsp", "commonName": "Nariyal", "englishName": "grated coconut, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Wash the colocasia leaves well and pat dry. Trim the thick central stems flat with a knife." },
+      { "step": 2, "instruction": "Mix besan, tamarind pulp, jaggery, ginger-garlic paste, chilli powder, turmeric, ajwain and salt with a little water into a thick, spreadable paste." },
+      { "step": 3, "instruction": "Place one leaf vein-side up on a flat surface. Spread a thin layer of the paste evenly over it." },
+      { "step": 4, "instruction": "Stack another leaf on top, facing the opposite direction, and spread paste again. Repeat with 3 to 4 leaves per stack." },
+      { "step": 5, "instruction": "Fold the sides inward and roll tightly into a log, like a swiss roll." },
+      { "step": 6, "instruction": "Add water to a cooker with a steaming stand. Place the rolls on the stand and steam without pressure for 20 to 25 minutes.", "tip": { "title": "Check doneness", "content": "Insert a knife into a roll — if it comes out clean, the patra is cooked through." } },
+      { "step": 7, "instruction": "Let the rolls cool slightly, then slice into round pieces." },
+      { "step": 8, "instruction": "Heat oil in a kadai. Add mustard seeds and sesame seeds and let them crackle." },
+      { "step": 9, "instruction": "Add the sliced patra and lightly pan-fry on both sides until golden at the edges." },
+      { "step": 10, "instruction": "Garnish with coriander and coconut. Serve warm." }
+    ],
+    "notes": ["Colocasia leaves can cause an itchy sensation if undercooked, so ensure the steaming step is thorough."],
+    "nutrition": { "calories": 190, "protein": 7, "carbs": 26, "fat": 7 }
+  },
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
