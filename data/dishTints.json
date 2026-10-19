@@ -411,5 +411,18 @@
   "Vanilla Pastry": "hsl(36, 42%, 80%)",
   "Chocolate Pastry": "hsl(11, 51%, 80%)",
   "Strawberry Pastry": "hsl(10, 45%, 80%)",
-  "Pineapple Pastry": "hsl(32, 42%, 80%)"
+  "Pineapple Pastry": "hsl(32, 42%, 80%)",
+  "Amritsari Kulcha": "hsl(37, 55%, 80%)",
+  "Jhal Muri": "hsl(35, 55%, 80%)",
+  "Kosha Mangsho": "hsl(17, 55%, 80%)",
+  "Galouti Kebab": "hsl(12, 55%, 80%)",
+  "South Indian Filter Coffee": "hsl(23, 55%, 80%)",
+  "Jadoh": "hsl(24, 55%, 80%)",
+  "Thenthuk": "hsl(37, 55%, 80%)",
+  "Chana Madra": "hsl(36, 55%, 80%)",
+  "Khaman": "hsl(43, 55%, 80%)",
+  "Mangalore Buns": "hsl(25, 55%, 80%)",
+  "Afghani Chaap": "hsl(38, 55%, 80%)",
+  "Malai Chaap": "hsl(31, 49%, 80%)",
+  "Mezhukkuvaratty": "hsl(27, 54%, 80%)"
 }

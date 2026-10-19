@@ -2630,9 +2630,9 @@ const handlePrevStep = () => {
 
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold leading-snug" style={{ color: COLOR.ink }}>
-              Cook hands-free
+              Cook hands-free:
               <span className="ml-1.5 font-normal" style={{ color: COLOR.inkSoft }}>
-                - say "Hey chef" for any doubt, move to next step, or timers.
+                say "Hey chef" for any doubt, move to next step, or timers.
               </span>
             </p>
           </div>

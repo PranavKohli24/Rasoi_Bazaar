@@ -44468,7 +44468,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "Filter coffee": {
     "dishName": "South Indian Filter Coffee",
-    "image": "/dishes/south-indian-filter-coffee.webp",
+    "image": "/dishes/filter-coffee.webp",
     "description": "Strong South Indian filter-brewed coffee mixed with hot milk and sugar, traditionally served with a frothy top.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
@@ -44616,7 +44616,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khaman": {
     "dishName": "Khaman",
-    "image": "/dishes/khaman.webp",
+    "image": "/dishes/dhokla.webp",
     "description": "Soft, airy Gujarati steamed gram-flour cakes topped with a mustard seed, curry leaf and green chilli tempering.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -44695,7 +44695,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "afghani chaap": {
     "dishName": "Afghani Chaap",
-    "image": "/dishes/afghani-chaap.webp",
+    "image": "/dishes/afgani-chaap.webp",
     "description": "Restaurant-style soy chaap coated in a creamy yogurt, cashew and aromatic spice marinade, then roasted until lightly charred.",
     "prepTime": "Approx. 40 minutes (plus marination)",
     "equipment": [
