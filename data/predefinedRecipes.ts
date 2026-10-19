@@ -45790,6 +45790,215 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nutrition": { "calories": 190, "protein": 7, "carbs": 26, "fat": 7 }
   },
 
+    "egg roll": {
+    "dishName": "Egg Roll",
+    "image": "/dishes/egg-roll.webp",
+    "description": "A street-food classic - a paratha cooked with a thin layer of egg, rolled with onions, chutney and a squeeze of lemon.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 cups", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "1/2 tsp", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil, for dough" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "water" },
+      { "amount": "4", "commonName": "Ande", "englishName": "eggs" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, thinly sliced" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, chopped" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "2 tbsp", "commonName": "Tomato Ketchup", "englishName": "tomato ketchup" },
+      { "amount": "1/2 tsp", "commonName": "Chaat Masala", "englishName": "chaat masala" },
+      { "amount": "1", "commonName": "Nimbu", "englishName": "lemon" },
+      { "amount": "3 tbsp", "commonName": "Tel", "englishName": "cooking oil, for cooking" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix maida, salt and 2 tbsp oil. Add water gradually and knead into a soft dough. Rest covered for 20 minutes." },
+      { "step": 2, "instruction": "Divide into 4 balls and roll each into a thin paratha." },
+      { "step": 3, "instruction": "Heat a tawa with a little oil. Cook each paratha on both sides until light golden with a few brown spots. Set aside." },
+      { "step": 4, "instruction": "Whisk one egg with a little salt and pepper." },
+      { "step": 5, "instruction": "Heat a little oil on the tawa, pour the whisked egg and quickly place one cooked paratha on top before the egg fully sets.", "tip": { "title": "Stick the egg on", "content": "Press the paratha gently onto the wet egg so it sticks as one layer instead of cooking separately." } },
+      { "step": 6, "instruction": "Flip once the egg is set and cook for 30 seconds on the other side. Repeat for all parathas." },
+      { "step": 7, "instruction": "Place the egg side up. Spread green chutney and ketchup, sprinkle chaat masala, add sliced onion, green chilli and a squeeze of lemon." },
+      { "step": 8, "instruction": "Roll tightly and serve hot, wrapped in paper if desired." }
+    ],
+    "notes": ["For a double-egg roll, use two eggs per paratha for a thicker egg layer."],
+    "nutrition": { "calories": 380, "protein": 14, "carbs": 46, "fat": 15 }
+  },
+
+  "bread omelette": {
+    "dishName": "Bread Omelette",
+    "image": "/dishes/bread-omelette.webp",
+    "description": "A quick everyday Indian breakfast of spiced omelette cooked together with slices of bread on a tawa.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4 slices", "commonName": "Bread", "englishName": "bread slices" },
+      { "amount": "3", "commonName": "Ande", "englishName": "eggs" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves, chopped" },
+      { "amount": "1/4 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "2 tbsp", "commonName": "Tel ya Makhan", "englishName": "oil or butter" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Whisk the eggs with onion, green chilli, coriander, chilli powder and salt." },
+      { "step": 2, "instruction": "Heat a tawa with a little oil or butter on medium heat." },
+      { "step": 3, "instruction": "Pour a thin layer of the egg mixture, just enough to cover an area the size of a bread slice." },
+      { "step": 4, "instruction": "Immediately place a bread slice on top and press gently so it soaks up the egg below it.", "tip": { "title": "Work quickly", "content": "Place the bread on the egg while it's still runny so it sticks together as it sets." } },
+      { "step": 5, "instruction": "Once the egg is mostly set, flip the whole thing so the bread side cooks and turns lightly golden." },
+      { "step": 6, "instruction": "Repeat with the remaining bread and egg mixture." },
+      { "step": 7, "instruction": "Serve hot with ketchup or chutney." }
+    ],
+    "notes": ["Slightly stale bread works best as it holds together better while soaking up the egg."],
+    "nutrition": { "calories": 220, "protein": 10, "carbs": 18, "fat": 12 }
+  },
+
+  "boondi ladoo": {
+    "dishName": "Boondi Ladoo",
+    "image": "/dishes/boondi-ladoo.webp",
+    "description": "A festive Indian sweet made from tiny fried gram-flour droplets soaked in sugar syrup and shaped into round ladoos.",
+    "prepTime": "Approx. 50 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "1.5 cups", "commonName": "Besan", "englishName": "gram flour" },
+      { "amount": "1 cup", "commonName": "Paani", "englishName": "water, for batter" },
+      { "amount": "a pinch", "commonName": "Kesar", "englishName": "saffron or a pinch of yellow food colour, optional" },
+      { "amount": "1.5 cups", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "3/4 cup", "commonName": "Paani", "englishName": "water, for syrup" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+      { "amount": "2 tbsp", "commonName": "Kaju aur Kishmish", "englishName": "chopped cashews and raisins" },
+      { "amount": "2 cups", "commonName": "Tel ya Ghee", "englishName": "oil or ghee, for frying" },
+      { "amount": "1 tsp", "commonName": "Ghee", "englishName": "ghee, for greasing hands" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Whisk besan with 1 cup water and the saffron or food colour into a smooth, lump-free batter of medium-flowing consistency." },
+      { "step": 2, "instruction": "Boil sugar and 3/4 cup water for 5 to 6 minutes until the syrup is slightly sticky. Add cardamom and keep warm." },
+      { "step": 3, "instruction": "Heat oil in a kadai on medium heat. Hold a boondi ladle (a perforated flat spoon) over the hot oil and pour a ladleful of batter over it so small droplets fall into the oil." },
+      { "step": 4, "instruction": "Fry the boondi lightly, without browning too much, and remove with a slotted spoon.", "tip": { "title": "Keep boondi soft", "content": "Boondi for ladoo should be fried just until set and pale, not crisp — crisp boondi won't bind into soft ladoos." } },
+      { "step": 5, "instruction": "Repeat with the remaining batter in batches." },
+      { "step": 6, "instruction": "While still warm, drop the fried boondi into the warm sugar syrup along with the nuts and raisins. Mix and let it soak for 5 minutes." },
+      { "step": 7, "instruction": "Once the boondi has absorbed most of the syrup and is warm enough to handle, grease your palms with ghee and shape into round ladoos." },
+      { "step": 8, "instruction": "Let them cool and firm up before serving or storing." }
+    ],
+    "notes": ["A boondi ladle with small, even holes gives the best uniform droplets."],
+    "nutrition": { "calories": 150, "protein": 2, "carbs": 24, "fat": 6 }
+  },
+
+  "semiya kheer (vermicelli kheer)": {
+    "dishName": "Semiya Kheer (Vermicelli Kheer)",
+    "image": "/dishes/semiya-kheer.webp",
+    "description": "A quick, comforting South Indian milk pudding made with roasted vermicelli, sugar, cardamom and nuts.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "1/2 cup", "commonName": "Seviyan", "englishName": "thin vermicelli, broken into short pieces" },
+      { "amount": "1 litre", "commonName": "Doodh", "englishName": "full-fat milk" },
+      { "amount": "1/3 cup", "commonName": "Cheeni", "englishName": "sugar" },
+      { "amount": "1/2 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+      { "amount": "2 tbsp", "commonName": "Kaju", "englishName": "cashews" },
+      { "amount": "2 tbsp", "commonName": "Kishmish", "englishName": "raisins" },
+      { "amount": "2 tbsp", "commonName": "Ghee", "englishName": "ghee" },
+      { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron, optional" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Heat ghee in a kadai. Fry cashews and raisins until golden and the raisins puff up. Set aside." },
+      { "step": 2, "instruction": "In the same ghee, roast the vermicelli on low heat until it turns light golden and smells toasted." },
+      { "step": 3, "instruction": "Add the milk and bring to a gentle boil, stirring to prevent sticking at the bottom." },
+      { "step": 4, "instruction": "Lower the heat and simmer for 8 to 10 minutes, stirring occasionally, until the vermicelli is fully cooked and soft.", "tip": { "title": "Don't let it stick", "content": "Milk-based kheer can catch at the bottom quickly — stir every minute or so, especially once it thickens." } },
+      { "step": 5, "instruction": "Add sugar, cardamom and saffron if using. Simmer for 3 to 4 more minutes." },
+      { "step": 6, "instruction": "Stir in the fried cashews and raisins, saving a few for garnish." },
+      { "step": 7, "instruction": "Serve warm or chilled." }
+    ],
+    "notes": ["Semiya kheer thickens further as it cools, so stop cooking while it's still slightly thinner than desired."],
+    "nutrition": { "calories": 240, "protein": 6, "carbs": 32, "fat": 10 }
+  },
+
+  "kerala vegetable stew (ishtu)": {
+    "dishName": "Kerala Vegetable Stew (Ishtu)",
+    "image": "/dishes/kerala-vegetable-stew.webp",
+    "description": "A mild, fragrant Kerala coconut-milk stew with vegetables and whole spices, the classic pairing for appam and idiyappam.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 medium", "commonName": "Aloo", "englishName": "potatoes, cubed" },
+      { "amount": "1", "commonName": "Gajar", "englishName": "carrot, cubed" },
+      { "amount": "1/2 cup", "commonName": "French Beans", "englishName": "beans, chopped" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, thinly sliced" },
+      { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies, slit" },
+      { "amount": "1 inch", "commonName": "Adrak", "englishName": "ginger, julienned" },
+      { "amount": "1 inch", "commonName": "Dalchini", "englishName": "cinnamon" },
+      { "amount": "3", "commonName": "Laung", "englishName": "cloves" },
+      { "amount": "2", "commonName": "Elaichi", "englishName": "green cardamom" },
+      { "amount": "a few", "commonName": "Kadi Patta", "englishName": "curry leaves" },
+      { "amount": "1 cup", "commonName": "Nariyal ka Thin Doodh", "englishName": "thin coconut milk (second extract or diluted)" },
+      { "amount": "1/2 cup", "commonName": "Nariyal ka Gaadha Doodh", "englishName": "thick coconut milk (first extract)" },
+      { "amount": "2 tbsp", "commonName": "Nariyal Tel", "englishName": "coconut oil" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Heat coconut oil in a kadai. Add cinnamon, cloves, cardamom and curry leaves. Let them sizzle for a few seconds." },
+      { "step": 2, "instruction": "Add onion, green chillies and ginger. Cook until the onion softens, without browning it much." },
+      { "step": 3, "instruction": "Add potatoes, carrot and beans. Stir for 2 minutes." },
+      { "step": 4, "instruction": "Add the thin coconut milk and salt. Cover and simmer for 12 to 15 minutes until the vegetables are tender." },
+      { "step": 5, "instruction": "Lower the heat and stir in the thick coconut milk.", "tip": { "title": "Don't boil the thick milk", "content": "Add thick coconut milk only on low heat and avoid a rolling boil, or the stew can split." } },
+      { "step": 6, "instruction": "Simmer gently for 2 to 3 minutes, then turn off the heat." },
+      { "step": 7, "instruction": "Serve hot with appam, idiyappam or bread." }
+    ],
+    "notes": ["Ishtu is meant to be mild — go easy on spice powders and let the coconut milk and whole spices lead the flavour."],
+    "nutrition": { "calories": 220, "protein": 4, "carbs": 20, "fat": 15 }
+  },
+
+  "cheese paratha": {
+    "dishName": "Cheese Paratha",
+    "image": "/dishes/cheese-paratha.webp",
+    "description": "A popular everyday stuffed paratha filled with grated cheese, onion and mild spices, cooked crisp on a tawa.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 cups", "commonName": "Atta", "englishName": "whole wheat flour" },
+      { "amount": "1 cup", "commonName": "Cheese", "englishName": "grated cheese (processed or mozzarella)" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, finely chopped" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves, chopped" },
+      { "amount": "1/4 tsp", "commonName": "Lal Mirch Flakes", "englishName": "red chilli flakes, optional" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1 tbsp", "commonName": "Tel", "englishName": "oil, for dough" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "water" },
+      { "amount": "2 tbsp", "commonName": "Ghee ya Makhan", "englishName": "ghee or butter, for cooking" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Knead the atta with a little oil, salt and water into a soft dough. Rest covered for 15 minutes." },
+      { "step": 2, "instruction": "Mix grated cheese with onion, green chilli, coriander and chilli flakes." },
+      { "step": 3, "instruction": "Divide the dough into balls. Flatten one ball, place a portion of the cheese filling in the centre and seal the edges.", "tip": { "title": "Keep cheese from leaking", "content": "Seal the edges well and roll gently — rolling too hard can push melted cheese out while cooking." } },
+      { "step": 4, "instruction": "Dust lightly and roll out carefully into a paratha, not too thin." },
+      { "step": 5, "instruction": "Heat a tawa on medium heat. Cook the paratha on one side, flip, then apply ghee or butter on both sides." },
+      { "step": 6, "instruction": "Cook until both sides are golden with light brown spots and the cheese inside has melted." },
+      { "step": 7, "instruction": "Serve hot with ketchup, pickle or curd." }
+    ],
+    "notes": ["Cook on medium, not high, heat so the cheese melts fully before the outside over-browns."],
+    "nutrition": { "calories": 310, "protein": 11, "carbs": 35, "fat": 15 }
+  },
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -46118,4 +46327,11 @@ export const predefinedRecipeServings: Record<string, number> = {
   "mathri": 12,
   "falooda": 2,
   "mango lassi": 2,
+
+  "egg roll": 4,
+  "bread omelette": 2,
+  "boondi ladoo": 12,
+  "semiya kheer (vermicelli kheer)": 4,
+  "kerala vegetable stew (ishtu)": 4,
+  "cheese paratha": 6,
 };
