@@ -44873,7 +44873,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "luchi": {
     "dishName": "Luchi",
-    "image": "/dishes/luchi.webp",
+    "image": "/dishes/poori.webp",
     "description": "Bengali deep-fried puris made with maida, soft and slightly puffy, classic for festive breakfasts.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -45363,7 +45363,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "phirni": {
     "dishName": "Phirni",
-    "image": "/dishes/phirni.webp",
     "description": "A creamy North Indian rice pudding made with coarsely ground rice, milk and cardamom, chilled and served in clay bowls.",
     "prepTime": "Approx. 35 minutes (plus chilling)",
     "equipment": [
@@ -45393,7 +45392,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "imarti": {
     "dishName": "Imarti",
-    "image": "/dishes/imarti.webp",
     "description": "A flower-shaped, crisp fried sweet made from urad dal batter, soaked in sugar syrup.",
     "prepTime": "Approx. 1 hour (plus 4 hours soaking)",
     "equipment": [
@@ -45425,7 +45423,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sheer khurma": {
     "dishName": "Sheer Khurma",
-    "image": "/dishes/sheer-khurma.webp",
     "description": "A festive Eid dessert of vermicelli cooked in milk with dates, nuts and cardamom.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -45459,7 +45456,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "nankhatai": {
     "dishName": "Nankhatai",
-    "image": "/dishes/nankhatai.webp",
     "description": "Crumbly, melt-in-the-mouth Indian shortbread cookies made with ghee, flour and gram flour.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -45491,7 +45487,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "til chikki": {
     "dishName": "Til Chikki (Sesame Brittle)",
-    "image": "/dishes/til-chikki.webp",
     "description": "A crunchy jaggery-sesame brittle, popular as a winter snack across India.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45518,7 +45513,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mathri": {
     "dishName": "Mathri",
-    "image": "/dishes/mathri.webp",
     "description": "Crisp, flaky deep-fried North Indian savoury crackers, flavoured with ajwain and black pepper.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -45605,7 +45599,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pazham pori": {
     "dishName": "Pazham Pori",
-    "image": "/dishes/pazham-pori.webp",
     "description": "Kerala-style ripe banana fritters coated in a sweet maida batter and fried until golden.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45636,7 +45629,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "shami kebab": {
     "dishName": "Shami Kebab",
-    "image": "/dishes/shami-kebab.webp",
     "description": "A classic Lucknowi kebab made from minced meat and chana dal, cooked together and ground into a soft, spiced patty.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -45677,7 +45669,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sheermal": {
     "dishName": "Sheermal",
-    "image": "/dishes/sheermal.webp",
     "description": "A soft, mildly sweet Awadhi flatbread flavoured with saffron and milk, traditionally served with rich kebabs or korma.",
     "prepTime": "Approx. 2 hours (mostly resting)",
     "equipment": [
@@ -45709,7 +45700,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "keema pav": {
     "dishName": "Keema Pav",
-    "image": "/dishes/keema-pav.webp",
     "description": "A popular Mumbai breakfast of spicy minced meat cooked with onion, tomato and peas, served with buttered pav.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -45790,7 +45780,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nutrition": { "calories": 190, "protein": 7, "carbs": 26, "fat": 7 }
   },
 
-    "egg roll": {
+  "egg roll": {
     "dishName": "Egg Roll",
     "image": "/dishes/egg-roll.webp",
     "description": "A street-food classic - a paratha cooked with a thin layer of egg, rolled with onions, chutney and a squeeze of lemon.",
@@ -45897,7 +45887,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "semiya kheer (vermicelli kheer)": {
     "dishName": "Semiya Kheer (Vermicelli Kheer)",
-    "image": "/dishes/semiya-kheer.webp",
     "description": "A quick, comforting South Indian milk pudding made with roasted vermicelli, sugar, cardamom and nuts.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45929,7 +45918,6 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kerala vegetable stew (ishtu)": {
     "dishName": "Kerala Vegetable Stew (Ishtu)",
-    "image": "/dishes/kerala-vegetable-stew.webp",
     "description": "A mild, fragrant Kerala coconut-milk stew with vegetables and whole spices, the classic pairing for appam and idiyappam.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
