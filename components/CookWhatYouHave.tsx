@@ -1235,7 +1235,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 >
                   +
                 </button>
-
+ 
                 {suggestions.length > 0 && (
                   <ul
                     id="ingredient-suggestions"
