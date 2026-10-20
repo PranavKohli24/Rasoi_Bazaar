@@ -727,6 +727,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   ).length;
 
   const sectionRef = useRef<HTMLElement>(null);
+  const pantryHeadingRef = useRef<HTMLHeadingElement>(null);
   const isFirstRender = useRef(true);
   const requestIdRef = useRef(0); // ignores late answers from searches the user already left
 
@@ -768,6 +769,8 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
       isFirstRender.current = false;
       return;
     }
+
+    if (step === 2) return; // handled by the "Next: ingredients" button's own scroll
 
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -1103,6 +1106,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                   setSavedKitchen(equipment);
                   setError(null);
                   setStep(2);
+                  window.setTimeout(() => {
+                    pantryHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 50);
                 }}
                 className={`${footerButton} shrink-0 whitespace-nowrap`}
               >
@@ -1121,7 +1127,10 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
         {step === 2 && (
           <>
             <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
-              <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+              <h3
+                ref={pantryHeadingRef}
+                className="scroll-mt-24 font-serif text-2xl font-black text-orange-50 sm:text-3xl"
+              >
                 What&apos;s in your pantry?
               </h3>
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
