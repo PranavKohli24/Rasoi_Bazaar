@@ -45989,6 +45989,794 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nutrition": { "calories": 310, "protein": 11, "carbs": 35, "fat": 15 }
   },
 
+  "rose kulfi": {
+    "dishName": "Rose Kulfi",
+    "image": "/dishes/rose-kulfi.webp",
+    "description": "Creamy homemade kulfi with a sweet rose flavour.",
+    "prepTime": "Approx. 35 minutes plus 6-8 hours freezing",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kulfi moulds",
+        "isSpecialized": false,
+        "alternative": "small freezer-safe cups"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 litre",
+        "commonName": "Doodh",
+        "englishName": "full-fat milk"
+      },
+      {
+        "amount": "2-3 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar, adjust to taste"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Rose Syrup",
+        "englishName": "rose syrup or Rooh Afza"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Pista",
+        "englishName": "chopped pistachios, optional"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pour the milk into a deep pan and bring it to a boil."
+      },
+      {
+        "step": 2,
+        "instruction": "Lower the heat and cook for 25-30 minutes, stirring often, until the milk reduces and becomes thicker."
+      },
+      {
+        "step": 3,
+        "instruction": "Add sugar and stir until it dissolves. Cook for 2 more minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Turn off the heat and let the milk cool completely."
+      },
+      {
+        "step": 5,
+        "instruction": "Add rose syrup and cardamom powder. Mix well and add the pistachios."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour the mixture into kulfi moulds or small cups."
+      },
+      {
+        "step": 7,
+        "instruction": "Freeze for 6-8 hours or overnight until firm."
+      },
+      {
+        "step": 8,
+        "instruction": "Dip the moulds in warm water for a few seconds and remove the kulfi carefully."
+      }
+    ],
+    "notes": [
+      "Rose syrup is already sweet, so taste the mixture before adding more sugar.",
+      "Cool the mixture completely before freezing."
+    ],
+    "nutrition": {
+      "calories": 190,
+      "protein": 6,
+      "carbs": 25,
+      "fat": 7
+    }
+  },
+
+  "mango kulfi": {
+    "dishName": "Mango Kulfi",
+    "image": "/dishes/mango-kulfi.webp",
+    "description": "Creamy frozen mango dessert made with ripe mangoes and milk.",
+    "prepTime": "Approx. 20 minutes plus 6-8 hours freezing",
+    "equipment": [
+      {
+        "item": "pan",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kulfi moulds",
+        "isSpecialized": false,
+        "alternative": "small freezer-safe cups"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Doodh",
+        "englishName": "full-fat milk"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Aam",
+        "englishName": "ripe mango pulp"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Condensed Milk",
+        "englishName": "sweetened condensed milk"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder, optional"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Badam",
+        "englishName": "chopped almonds, optional"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat the milk in a pan and bring it to a boil."
+      },
+      {
+        "step": 2,
+        "instruction": "Lower the heat and simmer for 8-10 minutes, stirring often. Turn off the heat and let the milk cool completely."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the condensed milk and mix well."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the mango pulp and cardamom powder. Mix until smooth."
+      },
+      {
+        "step": 5,
+        "instruction": "Taste the mixture. Add a little sugar only if needed."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour into moulds or small freezer-safe cups. Add chopped almonds if using."
+      },
+      {
+        "step": 7,
+        "instruction": "Freeze for 6-8 hours or overnight until firm."
+      },
+      {
+        "step": 8,
+        "instruction": "Dip each mould in warm water for a few seconds and remove the kulfi carefully."
+      }
+    ],
+    "notes": [
+      "Use ripe, sweet mangoes for the best flavour.",
+      "Always cool the milk before adding mango pulp to help prevent the mixture from splitting.",
+      "The sweetness depends on the mangoes, so taste before adding sugar."
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein": 5,
+      "carbs": 28,
+      "fat": 9
+    }
+  },
+
+  "rabri kulfi": {
+    "dishName": "Rabri Kulfi",
+    "image": "/dishes/rabri-kulfi.webp",
+    "description": "Rich kulfi made with thickened milk, creamy milk layers, cardamom and nuts.",
+    "prepTime": "Approx. 45 minutes plus 6-8 hours freezing",
+    "equipment": [
+      {
+        "item": "heavy-bottomed pan",
+        "isSpecialized": false,
+        "alternative": "deep kadai"
+      },
+      {
+        "item": "kulfi moulds",
+        "isSpecialized": false,
+        "alternative": "small freezer-safe cups"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 litre",
+        "commonName": "Doodh",
+        "englishName": "full-fat milk"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Badam",
+        "englishName": "chopped almonds"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pista",
+        "englishName": "chopped pistachios"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pour the milk into a heavy-bottomed pan and bring it to a boil."
+      },
+      {
+        "step": 2,
+        "instruction": "Lower the heat and cook gently, stirring often so the milk does not burn."
+      },
+      {
+        "step": 3,
+        "instruction": "As a creamy layer forms on top, gently scrape it from the sides of the pan and mix it back into the milk."
+      },
+      {
+        "step": 4,
+        "instruction": "Continue cooking until the milk reduces to about half its original amount and becomes thick."
+      },
+      {
+        "step": 5,
+        "instruction": "Add sugar and cardamom powder. Stir until the sugar dissolves."
+      },
+      {
+        "step": 6,
+        "instruction": "Mix in most of the chopped almonds and pistachios."
+      },
+      {
+        "step": 7,
+        "instruction": "Turn off the heat and let the mixture cool completely."
+      },
+      {
+        "step": 8,
+        "instruction": "Pour into kulfi moulds, top with the remaining nuts and freeze for 6-8 hours or overnight."
+      },
+      {
+        "step": 9,
+        "instruction": "Remove from the moulds carefully and serve chilled."
+      }
+    ],
+    "notes": [
+      "Keep the heat low and stir often to stop the milk from sticking to the bottom.",
+      "The mixture should be thick before freezing for a creamy result."
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein": 7,
+      "carbs": 25,
+      "fat": 9
+    }
+  },
+
+  "paneer cutlet": {
+    "dishName": "Paneer Cutlet",
+    "image": "/dishes/paneer-cutlet.webp",
+    "description": "Crispy paneer and potato patties with simple Indian spices.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "mixing bowl",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": "non-stick pan"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "200 g",
+        "commonName": "Paneer",
+        "englishName": "grated or crumbled paneer"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "boiled and mashed potatoes"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "finely chopped onion, optional"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "finely chopped green chilli, optional"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "cumin powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour for binding"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Breadcrumbs",
+        "englishName": "breadcrumbs for coating"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "oil for shallow frying"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mash the boiled potatoes in a large bowl until no large lumps remain."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the crumbled paneer, onion, green chilli, coriander, cumin powder, garam masala, salt and cornflour."
+      },
+      {
+        "step": 3,
+        "instruction": "Mix everything well until the mixture holds together. If it feels too soft, add a little more cornflour."
+      },
+      {
+        "step": 4,
+        "instruction": "Divide the mixture into equal portions and shape each one into a flat, round cutlet."
+      },
+      {
+        "step": 5,
+        "instruction": "Press each cutlet gently into the breadcrumbs to coat both sides."
+      },
+      {
+        "step": 6,
+        "instruction": "Heat a little oil in a pan over medium heat."
+      },
+      {
+        "step": 7,
+        "instruction": "Cook the cutlets for 3-4 minutes on each side until golden and crisp. Turn them carefully."
+      },
+      {
+        "step": 8,
+        "instruction": "Serve hot with green chutney or tomato ketchup."
+      }
+    ],
+    "notes": [
+      "Use cooled boiled potatoes so the mixture is easier to shape.",
+      "Do not turn the cutlets too early. Let one side become golden first."
+    ],
+    "nutrition": {
+      "calories": 230,
+      "protein": 10,
+      "carbs": 21,
+      "fat": 12
+    }
+  },
+
+  "rice dhokla": {
+    "dishName": "Rice Dhokla",
+    "image": "/dishes/rice-dhokla.webp",
+    "description": "Soft steamed rice and lentil dhokla served with a simple mustard seed tempering.",
+    "prepTime": "Approx. 35 minutes plus 4 hours soaking",
+    "equipment": [
+      {
+        "item": "mixer grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "steamer",
+        "isSpecialized": false,
+        "alternative": "large pot with a stand and lid"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Chawal",
+        "englishName": "raw rice"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Urad Dal",
+        "englishName": "split white urad dal"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "plain curd"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak",
+        "englishName": "grated ginger"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, optional"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt, or to taste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Eno",
+        "englishName": "fruit salt"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Rai",
+        "englishName": "mustard seeds for tempering"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Til",
+        "englishName": "sesame seeds, optional"
+      },
+      {
+        "amount": "a few",
+        "commonName": "Kadi Patta",
+        "englishName": "curry leaves"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "oil for greasing and tempering"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the rice and urad dal. Soak them together in water for about 4 hours."
+      },
+      {
+        "step": 2,
+        "instruction": "Drain the water. Grind the rice and dal with the curd and a little water to make a thick, slightly coarse batter."
+      },
+      {
+        "step": 3,
+        "instruction": "Mix in the grated ginger, chopped green chilli and salt. Let the batter rest for about 15-20 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Grease a shallow steel plate or cake tin with oil. Bring the water in the steamer or pot to a boil."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the Eno to the batter and mix gently. Pour the batter into the greased plate immediately."
+      },
+      {
+        "step": 6,
+        "instruction": "Steam for 15-20 minutes, until a toothpick inserted in the middle comes out clean."
+      },
+      {
+        "step": 7,
+        "instruction": "Let the dhokla rest for 5 minutes, then cut it into squares."
+      },
+      {
+        "step": 8,
+        "instruction": "Heat oil in a small pan. Add mustard seeds, sesame seeds and curry leaves. Let them sizzle, then pour the tempering over the dhokla."
+      },
+      {
+        "step": 9,
+        "instruction": "Serve warm with green chutney."
+      }
+    ],
+    "notes": [
+      "Add Eno only when the steamer is ready and you are about to cook the batter.",
+      "The batter should be thick but easy to pour. Add a little water if needed.",
+      "Keep the steaming water below the stand so it does not enter the dhokla batter."
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein": 5,
+      "carbs": 31,
+      "fat": 4
+    }
+  },
+
+  "paneer pakoda": {
+    "dishName": "Paneer Pakoda",
+    "image": "/dishes/paneer-pakoda.webp",
+    "description": "Crispy paneer pieces coated in a spiced gram flour batter.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "mixing bowl",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": "deep frying pan"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "200 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, cut into thick pieces"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Besan",
+        "englishName": "gram flour"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Chawal Ka Atta",
+        "englishName": "rice flour, optional for extra crispness"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Ajwain",
+        "englishName": "carom seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste, optional"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water for the batter"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Tel",
+        "englishName": "oil for deep frying"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Cut the paneer into thick squares or rectangles."
+      },
+      {
+        "step": 2,
+        "instruction": "In a bowl, mix besan, rice flour, turmeric, red chilli powder, ajwain, ginger-garlic paste if using, and salt."
+      },
+      {
+        "step": 3,
+        "instruction": "Add water little by little and mix until you get a smooth, thick batter that coats a spoon."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat oil in a kadai over medium heat."
+      },
+      {
+        "step": 5,
+        "instruction": "Dip each paneer piece into the batter and coat it on all sides."
+      },
+      {
+        "step": 6,
+        "instruction": "Carefully place the coated paneer into the hot oil. Fry in small batches until golden and crisp, turning as needed."
+      },
+      {
+        "step": 7,
+        "instruction": "Remove with a slotted spoon and drain on kitchen paper."
+      },
+      {
+        "step": 8,
+        "instruction": "Serve hot with green chutney or tomato ketchup."
+      }
+    ],
+    "notes": [
+      "Keep the batter thick enough to stick to the paneer.",
+      "Do not overcrowd the kadai. Frying too many pieces at once can lower the oil temperature."
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein": 12,
+      "carbs": 22,
+      "fat": 15
+    }
+  },
+
+  "red velvet pastry (eggless)": {
+    "dishName": "Eggless Red Velvet Pastry",
+    "image": "/dishes/red-velvet-pastry.webp",
+    "description": "Soft red cocoa cake layered with sweet whipped cream and cut into small pastries.",
+    "prepTime": "Approx. 50 minutes plus cooling",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": true,
+        "alternative": null
+      },
+      {
+        "item": "mixing bowl",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "cake tin",
+        "isSpecialized": false,
+        "alternative": "oven-safe baking dish"
+      },
+      {
+        "item": "whisk",
+        "isSpecialized": false,
+        "alternative": "electric beater or hand whisk"
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "plain curd"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Tel",
+        "englishName": "neutral cooking oil"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Doodh",
+        "englishName": "milk, add as needed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Cocoa Powder",
+        "englishName": "unsweetened cocoa powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Baking Powder",
+        "englishName": "baking powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Baking Soda",
+        "englishName": "baking soda"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Vanilla Essence",
+        "englishName": "vanilla essence"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Vinegar",
+        "englishName": "white vinegar or lemon juice"
+      },
+      {
+        "amount": "a few drops",
+        "commonName": "Red Food Colour",
+        "englishName": "red food colouring, as directed on the pack"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Whipping Cream",
+        "englishName": "chilled whipping cream"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Icing Sugar",
+        "englishName": "icing sugar for the cream"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Preheat the oven to 180°C. Grease a small cake tin and line the bottom with baking paper if available."
+      },
+      {
+        "step": 2,
+        "instruction": "In a bowl, whisk the curd and sugar until smooth."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the oil, vanilla essence, vinegar and red food colouring. Mix well."
+      },
+      {
+        "step": 4,
+        "instruction": "In another bowl, mix the flour, cocoa powder, baking powder and baking soda."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the dry ingredients to the curd mixture. Fold gently and add enough milk to make a smooth, thick batter."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour the batter into the tin and bake for 20-25 minutes. Insert a toothpick into the centre. If it comes out clean, the cake is ready."
+      },
+      {
+        "step": 7,
+        "instruction": "Let the cake cool completely before removing it from the tin."
+      },
+      {
+        "step": 8,
+        "instruction": "Whip the chilled cream with icing sugar until thick enough to spread. Keep it chilled."
+      },
+      {
+        "step": 9,
+        "instruction": "Cut the cooled cake horizontally into two layers. Spread cream over the first layer, then place the second layer on top."
+      },
+      {
+        "step": 10,
+        "instruction": "Cover the top and sides with the remaining cream. Chill for at least 1 hour."
+      },
+      {
+        "step": 11,
+        "instruction": "Cut into small square or rectangle-shaped pastries and serve chilled."
+      }
+    ],
+    "notes": [
+      "Let the cake cool fully before adding the cream, or the cream will melt.",
+      "Use only a small amount of cocoa powder. Red velvet should have a mild cocoa flavour.",
+      "For easier cutting, chill the assembled cake before slicing."
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein": 4,
+      "carbs": 38,
+      "fat": 15
+    }
+  }
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */

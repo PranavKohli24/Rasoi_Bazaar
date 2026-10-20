@@ -452,6 +452,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "halwa": "atta halwa (wheat flour halwa)",
   "kada prasad": "atta halwa (wheat flour halwa)",
   "suji halwa": "rava kesari (semolina halwa)",
+  "kesari halwa" : "rava kesari (semolina halwa)",
   "sooji halwa": "rava kesari (semolina halwa)",
   "suji ka halwa": "rava kesari (semolina halwa)",
   "sooji ka halwa": "rava kesari (semolina halwa)",
@@ -1257,6 +1258,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "kachauri": "kachori (moong dal kachori)",
   "dal kachori": "kachori (moong dal kachori)",
   "dal kachauri": "kachori (moong dal kachori)",
+  "onion kachori" : "pyaz ki kachori",
 
   "jalebi recipe": "jalebi",
   "jilebi": "jalebi",
