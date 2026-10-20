@@ -273,104 +273,7 @@ const LeafIcon: IconC = ({ className }) => (
    None of this reads selection state on its own — it's driven entirely by
    the same selectedProducts/onSelectProduct data the grid already used. */
 
-const SHELF_WOOD = {
-  top: "#E7BD7C",
-  topDeep: "#C98A2B",
-  front: "#B97A33",
-  frontDeep: "#8A5726",
-};
 
-// Drawn fresh at the shelf's actual pixel size (not stretched from a fixed
-// asset) so the grain stays crisp at any width and under devicePixelRatio.
-const drawShelfPlank = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
-  ctx.clearRect(0, 0, w, h);
-
-  const topH = Math.min(9, h * 0.4);
-  const frontH = h - topH;
-
-  const topGrad = ctx.createLinearGradient(0, 0, 0, topH);
-  topGrad.addColorStop(0, SHELF_WOOD.top);
-  topGrad.addColorStop(1, SHELF_WOOD.topDeep);
-  ctx.fillStyle = topGrad;
-  ctx.fillRect(0, 0, w, topH);
-
-  const frontGrad = ctx.createLinearGradient(0, topH, 0, h);
-  frontGrad.addColorStop(0, SHELF_WOOD.front);
-  frontGrad.addColorStop(1, SHELF_WOOD.frontDeep);
-  ctx.fillStyle = frontGrad;
-  ctx.fillRect(0, topH, w, frontH);
-
-  // lit top edge, as if a light sits just above the shelf
-  ctx.strokeStyle = "rgba(255,255,255,0.45)";
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, 0.5);
-  ctx.lineTo(w, 0.5);
-  ctx.stroke();
-
-  // a handful of wandering grain lines, seeded off the plank's own width so
-  // repeated renders of the same shelf look identical rather than jittery
-  let seed = Math.round(w * 97) % 1000;
-  const rand = () => {
-    seed = (seed * 9301 + 49297) % 233280;
-    return seed / 233280;
-  };
-  ctx.strokeStyle = "rgba(0,0,0,0.14)";
-  for (let i = 0; i < 4; i++) {
-    const y = topH + 3 + (i + rand() * 0.6) * (frontH / 4.2);
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.bezierCurveTo(w * 0.33, y + (rand() - 0.5) * 3, w * 0.66, y + (rand() - 0.5) * 3, w, y);
-    ctx.stroke();
-  }
-
-  // shadowed underside, grounding whatever sits on the shelf above it
-  const edgeGrad = ctx.createLinearGradient(0, h - 5, 0, h);
-  edgeGrad.addColorStop(0, "rgba(0,0,0,0)");
-  edgeGrad.addColorStop(1, "rgba(0,0,0,0.32)");
-  ctx.fillStyle = edgeGrad;
-  ctx.fillRect(0, h - 5, w, 5);
-};
-
-const ShelfPlank: React.FC<{ className?: string }> = ({ className }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const parent = canvas?.parentElement;
-    if (!canvas || !parent) return;
-
-    const render = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const { width, height } = parent.getBoundingClientRect();
-      if (width === 0 || height === 0) return;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawShelfPlank(ctx, width, height);
-    };
-
-    render();
-    const observer = new ResizeObserver(render);
-    observer.observe(parent);
-    return () => observer.disconnect();
-  }, []);
-
-  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
-};
-
-// Faint dot-grid "pegboard" wall sitting behind every shelf row — cheap
-// enough to be a plain CSS background rather than another canvas.
-const shopWallStyle: React.CSSProperties = {
-  backgroundColor: COLOR.paperSunken,
-  backgroundImage: `radial-gradient(${COLOR.line} 1px, transparent 1.6px)`,
-  backgroundSize: "15px 15px",
-  backgroundPosition: "-4px -4px",
-};
 
 const TrolleyIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 48 44" className={className} aria-hidden="true">
@@ -1678,11 +1581,9 @@ useEffect(() => {
                           // The "shelf": a pegboard back wall holding the row of
                           // products, sitting on a canvas-drawn wood plank. Same
                           // scroll container as before, just dressed as a fixture.
-                          <div className="relative overflow-hidden rounded-2xl border" style={{ borderColor: COLOR.line, ...shopWallStyle }}>
-                            <div
-                              className="modal-scroll -mb-px flex snap-x items-end gap-3.5 overflow-x-auto px-3 pb-3 pt-4"
-                              style={{ perspective: "640px" }}
-                            >
+                          <div
+                            className="modal-scroll -mx-1 flex gap-3.5 overflow-x-auto px-1 pb-2"
+                          >
                               {products.flatMap((product) =>
                                 (product.variations ?? []).map((variation) => {
                                   const selected = chosen?.spinId === variation.spinId;
@@ -1696,17 +1597,13 @@ useEffect(() => {
                                       disabled={unavailable}
                                       aria-pressed={selected}
                                       onClick={() => handlePickProduct(ingredientName, variation)}
-                                      className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+                                      className="relative w-28 shrink-0 rounded-xl border-2 p-2.5 text-left transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
                                       style={{
                                         borderColor: selected ? COLOR.stamp : COLOR.line,
                                         backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
                                         boxShadow: selected
-                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 12px 16px -9px rgba(36,22,8,0.4)`
-                                          : "0 7px 10px -7px rgba(36,22,8,0.3)",
-                                        transform: selected
-                                          ? "perspective(640px) rotateX(0deg) translateY(-3px)"
-                                          : "perspective(640px) rotateX(7deg)",
-                                        transformOrigin: "bottom center",
+                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 6px 10px -6px rgba(36,22,8,0.35)`
+                                          : "0 3px 6px -4px rgba(36,22,8,0.25)",
                                       }}
                                     >
                                       {selected && (
@@ -1764,10 +1661,6 @@ useEffect(() => {
                                   );
                                 })
                               )}
-                            </div>
-                            <div className="relative h-[11px]">
-                              <ShelfPlank className="absolute inset-0 h-full w-full" />
-                            </div>
                           </div>
                         )}
 
