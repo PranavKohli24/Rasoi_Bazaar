@@ -739,6 +739,28 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     setEquipmentCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 2);
   };
 
+    // Capture the hardware/browser back button while on step 2, so it
+  // returns to step 1 instead of leaving the page.
+  useEffect(() => {
+    if (step === 2) {
+      window.history.pushState({ cookStep: 2 }, "");
+    }
+  }, [step]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (step === 2) {
+        setStep(1);
+        window.setTimeout(() => {
+          equipmentHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 50);
+      }
+    };
+
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [step]);
+  
   useEffect(() => {
   if (step !== 2) return;
   updateEquipmentFade();
