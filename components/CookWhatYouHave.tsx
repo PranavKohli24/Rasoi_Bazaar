@@ -739,10 +739,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   };
 
   useEffect(() => {
-    updateEquipmentFade();
-    window.addEventListener("resize", updateEquipmentFade);
-    return () => window.removeEventListener("resize", updateEquipmentFade);
-  }, [equipment]);
+  if (step !== 2) return;
+  updateEquipmentFade();
+  window.addEventListener("resize", updateEquipmentFade);
+  return () => window.removeEventListener("resize", updateEquipmentFade);
+}, [equipment, step]);
+
   const isFirstRender = useRef(true);
   const requestIdRef = useRef(0); // ignores late answers from searches the user already left
 
@@ -1154,27 +1156,25 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
                   <div
-                  ref={equipmentScrollRef}
-                  onScroll={updateEquipmentFade}
-                  className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
-                  style={{ scrollbarWidth: "none" }}
-                >
-                  <p
-                    className="whitespace-nowrap text-sm text-stone-200"
-                    style={
-                      equipmentCanScrollRight
+                    ref={equipmentScrollRef}
+                    onScroll={updateEquipmentFade}
+                    className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
+                    style={{
+                      scrollbarWidth: "none",
+                      ...(equipmentCanScrollRight
                         ? {
-                            maskImage: "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                            maskImage: "linear-gradient(to right, black calc(100% - 28px), transparent 100%)",
                             WebkitMaskImage:
-                              "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                              "linear-gradient(to right, black calc(100% - 28px), transparent 100%)",
                           }
-                        : undefined
-                    }
+                        : {}),
+                    }}
                   >
-                    <span className="text-stone-500">Cooking with </span>
-                    {equipment.join(", ")}
-                  </p>
-                </div>
+                    <p className="whitespace-nowrap text-sm text-stone-200">
+                      <span className="text-stone-500">Cooking with </span>
+                      {equipment.join(", ")}
+                    </p>
+                  </div>
                   <button
                     type="button"
                     onClick={() => {
