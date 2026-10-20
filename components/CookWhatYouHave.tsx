@@ -1032,7 +1032,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     >
       <div className="rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_12px_40px_rgba(120,70,30,0.10)]">
         <header className="px-5 pb-6 pt-8 text-center sm:px-12 sm:pb-8 sm:pt-12">
-          <h2 className="font-serif text-3xl font-black tracking-tight text-orange-50 sm:text-4xl">
+          <h2 className="font-serif text-[22px] font-black tracking-tight text-orange-50 sm:text-4xl">
             Cook what you have
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-400 sm:text-base">

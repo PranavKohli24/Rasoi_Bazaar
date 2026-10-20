@@ -49,7 +49,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
 
   return (
     <div className="w-full overflow-visible">
-      <div className="mb-10 sm:mb-14">
+      <div className="mb-4 sm:mb-14">
         <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
           What&apos;s in your kitchen?
         </h3>
@@ -59,7 +59,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
       </div>
 
       {/* Kitchen scene (positions unchanged) */}
-      <div className="px-2 pt-3 sm:px-4 sm:pt-5">
+      <div className="px-2 pt-0 sm:px-4 sm:pt-5">
         <div className="relative aspect-[3/2] w-full origin-center scale-[1.12]">
           <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700 bg-stone-800 shadow-lg">
             <img
