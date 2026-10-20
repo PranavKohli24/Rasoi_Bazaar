@@ -622,6 +622,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   const [savedKitchen, setSavedKitchen] = useState<string[] | null>(loadKitchen);
   const [hasEditedEquipmentThisSession, setHasEditedEquipmentThisSession] = useState(false);
 
+  const [expandedDishes, setExpandedDishes] = useState<Set<string>>(new Set());
   const [step, setStep] = useState<1 | 2 | 3>(() => {
     if (!saved) return 1;
     if (saved.results.length > 0) return 3;
@@ -1545,21 +1546,26 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                       {shown.length > 0 && (
                         <div className="mt-3 flex flex-wrap items-center gap-1.5">
                           <span className="mr-1 text-xs text-stone-500">Uses</span>
-                          {shown.map((ingredient) => (
-                            <span
-                              key={ingredient}
-                              className="rounded-full bg-[#DDEBD3] px-2.5 py-1 text-xs font-medium text-stone-200"
-                            >
-                              {ingredient}
-                            </span>
-                          ))}
-                          {extra.length > 0 && (
-                            <span
-                              title={extra.join(", ")}
-                              className="rounded-full border border-stone-700 px-2.5 py-1 text-xs text-stone-400"
+                          {(expandedDishes.has(recipe.dishName) ? recipe.ingredientsUsed : shown).map(
+                            (ingredient) => (
+                              <span
+                                key={ingredient}
+                                className="rounded-full bg-[#DDEBD3] px-2.5 py-1 text-xs font-medium text-stone-200"
+                              >
+                                {ingredient}
+                              </span>
+                            )
+                          )}
+                          {extra.length > 0 && !expandedDishes.has(recipe.dishName) && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpandedDishes((current) => new Set(current).add(recipe.dishName))
+                              }
+                              className="rounded-full border border-stone-700 px-2.5 py-1 text-xs text-stone-400 transition-colors hover:border-orange-300/70 hover:text-orange-200"
                             >
                               +{extra.length}
-                            </span>
+                            </button>
                           )}
                         </div>
                       )}
