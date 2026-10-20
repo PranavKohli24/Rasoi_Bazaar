@@ -729,6 +729,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
   const sectionRef = useRef<HTMLElement>(null);
   const pantryHeadingRef = useRef<HTMLHeadingElement>(null);
+  const equipmentHeadingRef = useRef<HTMLDivElement>(null);
   const equipmentScrollRef = useRef<HTMLDivElement>(null);
   const [equipmentCanScrollRight, setEquipmentCanScrollRight] = useState(false);
 
@@ -1064,7 +1065,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
         {step === 1 && (
           <>
-            <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
+            <div ref={equipmentHeadingRef} className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
               {savedKitchen && equipment.length === 0 && !hasEditedEquipmentThisSession && (
                 <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
                   <div className="min-w-0">
@@ -1180,6 +1181,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     onClick={() => {
                       setError(null);
                       setStep(1);
+                      window.setTimeout(() => {
+                        equipmentHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 50);
                     }}
                     className="shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
                   >
@@ -1378,6 +1382,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 onClick={() => {
                   setError(null);
                   setStep(1);
+                  window.setTimeout(() => {
+                    equipmentHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 50);
                 }}
                 className={`${ghostButton} shrink-0`}
               >
