@@ -47,6 +47,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
 
   const allSelected = selectedEquipment.length === equipmentItems.length;
   const [kitchenLoaded, setKitchenLoaded] = useState(false);
+  const [loadedIcons, setLoadedIcons] = useState<Set<string>>(new Set());
+
+  const markIconLoaded = (id: string) =>
+    setLoadedIcons((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));    
 
   return (
     <div className="w-full overflow-visible">
@@ -83,6 +87,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
           >
           {equipmentItems.map((item) => {
             const selected = selectedEquipment.includes(item.name);
+            const iconLoaded = loadedIcons.has(item.id);
 
             return (
               <button
@@ -99,10 +104,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   zIndex: item.zIndex,
                 }}
               >
-                {/* Selection ring */}
+                {/* Selection ring — only once this item's own icon has loaded */}
                 <span
                   className={`pointer-events-none absolute inset-[-6%] rounded-2xl border-2 transition-all duration-300 ${
-                    selected
+                    selected && iconLoaded
                       ? 'border-orange-400 bg-orange-400/15 shadow-[0_0_24px_rgba(252,108,38,0.6)]'
                       : 'border-transparent group-hover:border-orange-300/70 group-hover:bg-orange-300/10'
                   }`}
@@ -115,8 +120,9 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   height={item.naturalHeight}
                   decoding="async"
                   draggable={false}
+                  onLoad={() => markIconLoaded(item.id)}
                   className={`pointer-events-none relative block h-auto w-full select-none transition-all duration-300 ${
-                    selected
+                    selected && iconLoaded
                       ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(252,108,38,0.7)]'
                       : 'group-hover:scale-[1.025]'
                   }`}
@@ -133,7 +139,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   {item.label}
                 </span>
 
-                {selected && (
+                {selected && iconLoaded && (
                   <span className="absolute -right-1 -top-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-orange-200 text-[8px] font-black text-white shadow-lg sm:-right-2 sm:-top-2 sm:h-6 sm:w-6 sm:text-xs">
                     ✓
                   </span>
