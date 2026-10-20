@@ -620,6 +620,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 }) => {
   const [saved] = useState(loadSaved);
   const [savedKitchen, setSavedKitchen] = useState<string[] | null>(loadKitchen);
+  const [hasEditedEquipmentThisSession, setHasEditedEquipmentThisSession] = useState(false);
 
   const [step, setStep] = useState<1 | 2 | 3>(() => {
     if (!saved) return 1;
@@ -1048,7 +1049,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
         {step === 1 && (
           <>
             <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
-              {savedKitchen && equipment.length === 0 && (
+              {savedKitchen && equipment.length === 0 && !hasEditedEquipmentThisSession && (
                 <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-orange-50">
@@ -1080,7 +1081,10 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
               <KitchenEquipmentSelector
                 selectedEquipment={equipment}
-                onChange={setEquipment}
+                onChange={(next) => {
+                  setHasEditedEquipmentThisSession(true);
+                  setEquipment(next);
+                }}
               />
             </div>
 
