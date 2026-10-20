@@ -44,7 +44,7 @@ interface RecipeDisplayProps {
    Saffron carries the brand, every primary action, and "this is done/
    checked" state. Mustard is reserved for quiet info tags (prep time,
    notes). Clay marks equipment that needs a workaround, so it doesn't get
-   lost among everything else. No gradients anywhere. */
+   lost among everything else. The Hey chef switch uses its own subtle glass gradient. */
 
 const COLOR = {
   surface: "#FFFEFA",
@@ -294,6 +294,37 @@ const STEP_ANIMATION_CSS = `
     -webkit-text-fill-color: #6B5238;
     color: #6B5238;
   }
+}
+
+.glass-switch-track {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-switch-track::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+}
+.glass-switch-track.is-off {
+  background: linear-gradient(135deg, #D8CDB4 0%, #BFB190 55%, #D2C6A9 100%);
+  border-color: rgba(107, 82, 56, 0.45);
+  box-shadow: inset 0 2px 5px rgba(43,26,12,0.32), inset 0 -1px 1px rgba(255,255,255,0.25);
+}
+.glass-switch-track.is-on {
+  background: linear-gradient(115deg, #FFB34D 0%, #FF8A2D 44%, #F96B1D 100%);
+  border-color: rgba(242, 112, 27, 0.55);
+  box-shadow: inset 0 2px 5px rgba(140,50,0,0.35), inset 0 -1px 1px rgba(255,255,255,0.3);
+}
+.glass-switch-thumb::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 50%);
+  pointer-events: none;
 }
 
 
@@ -2658,13 +2689,21 @@ const handlePrevStep = () => {
             aria-checked={isHeyChefOn}
             aria-label="Cook hands-free with Hey chef"
             onClick={toggleHeyChef}
-            className="relative h-7 w-12 shrink-0 rounded-full transition-colors focus:outline-none focus-visible:ring-2"
-            style={{ backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border }}
+            className={`glass-switch-track ${isHeyChefOn ? "is-on" : "is-off"} relative h-7 w-12 shrink-0 rounded-full border focus:outline-none focus-visible:ring-2`}
           >
             <span
               aria-hidden="true"
-              className="absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform"
-              style={{ transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)" }}
+              className="glass-switch-thumb absolute h-[22px] w-[22px] rounded-full border transition-transform duration-300"
+              style={{
+                top: "2.5px",
+                left: "2.5px",
+                transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)",
+                background: isHeyChefOn
+                  ? "linear-gradient(155deg, #FFFFFF 0%, rgba(255,255,255,0.98) 35%, #FFF9F1 68%, #FFE3C7 100%)"
+                  : "linear-gradient(155deg, #FFFFFF 0%, #FCFBF8 38%, #F0EEE8 72%, #E3DFD6 100%)",
+                borderColor: "rgba(255, 255, 255, 0.98)",
+                boxShadow: "0 1px 3px rgba(43,26,12,0.25), 0 1px 1px rgba(43,26,12,0.1)",
+              }}
             />
           </button>
         </div>
