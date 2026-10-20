@@ -45487,6 +45487,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "til chikki": {
     "dishName": "Til Chikki (Sesame Brittle)",
+    "image": "/dishes/til-chikki.webp",
     "description": "A crunchy jaggery-sesame brittle, popular as a winter snack across India.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45513,6 +45514,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mathri": {
     "dishName": "Mathri",
+    "image": "/dishes/mathri.webp",
     "description": "Crisp, flaky deep-fried North Indian savoury crackers, flavoured with ajwain and black pepper.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [

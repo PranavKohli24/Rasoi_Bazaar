@@ -816,7 +816,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "gulab jamun": "gulab jamun (home-style, with milk powder)",
   "chicken 65": "chicken 65",
   "chicken 65 recipe": "chicken 65",
-  "naan": "butter naan",
   "garlic naan": "garlic naan on tawa",
   "jeera rice": "jeera rice",
   "aloo paratha": "aloo paratha",
@@ -1337,6 +1336,117 @@ const MANUAL_ALIASES: Record<string, string> = {
   "simple sabzi": "mixed veg sabzi",
   "daily dal": "dal tadka",
   "everyday dal": "dal tadka",
+
+    // --- fix dangling alias + new recipe aliases (idli, naan, etc.) ---
+  "naan": "butter naan (tawa style)",
+  "plain idli": "idli (plain steamed idli)",
+  "steamed idli": "idli (plain steamed idli)",
+  "idli recipe": "idli (plain steamed idli)",
+
+  "luchi recipe": "luchi",
+  "bengali luchi": "luchi",
+  "bengali poori": "luchi",
+
+  "hara bhara kabab": "hara bhara kebab",
+  "spinach kebab": "hara bhara kebab",
+  "veg kebab": "hara bhara kebab",
+
+  "malai tikka": "reshmi kebab (malai tikka)",
+  "reshmi kabab": "reshmi kebab (malai tikka)",
+  "chicken malai tikka": "reshmi kebab (malai tikka)",
+
+  "parsi dhansak": "dhansak",
+  "mutton dhansak": "dhansak",
+  "dhansak dal": "dhansak",
+
+  "do pyaza": "paneer do pyaza",
+  "paneer do pyaaza": "paneer do pyaza",
+
+  "prawn malai curry": "chingri malai curry",
+  "chingri malai": "chingri malai curry",
+  "bengali prawn curry": "chingri malai curry",
+
+  "anda biryani": "egg biryani",
+  "egg biryani recipe": "egg biryani",
+
+  "sindhi kadi": "sindhi kadhi",
+  "sindhi koki": "koki",
+
+  "raj kachori chaat": "raj kachori",
+  "matar kulche": "matar kulcha",
+  "safed matar kulcha": "matar kulcha",
+
+  "moong halwa": "moong dal halwa",
+  "moong ki dal ka halwa": "moong dal halwa",
+
+  "firni": "phirni",
+  "phirni recipe": "phirni",
+
+  "amrati": "imarti",
+  "imarati": "imarti",
+
+  "sheerkhurma": "sheer khurma",
+  "eid sheer khurma": "sheer khurma",
+  "seviyan sheer khurma": "sheer khurma",
+
+  "nan khatai": "nankhatai",
+  "nankhatai recipe": "nankhatai",
+
+  "chikki": "til chikki (sesame brittle)",
+  "sesame chikki": "til chikki (sesame brittle)",
+  "tilgul": "til chikki (sesame brittle)",
+  "til gul": "til chikki (sesame brittle)",
+
+  "mathri recipe": "mathri",
+  "mathiri": "mathri",
+
+  "rose falooda": "falooda",
+  "falooda recipe": "falooda",
+
+  "aam lassi": "mango lassi",
+  "mango lassi recipe": "mango lassi",
+
+  "pazham pori recipe": "pazham pori",
+  "banana fritters": "pazham pori",
+  "ethakka appam": "pazham pori",
+  "kerala banana fry": "pazham pori",
+
+  "shami kabab": "shami kebab",
+  "shami kebab recipe": "shami kebab",
+
+  "sheermal roti": "sheermal",
+  "awadhi sheermal": "sheermal",
+
+  "keema pao": "keema pav",
+  "mutton keema pav": "keema pav",
+  "chicken keema pav": "keema pav",
+
+  "patra recipe": "patra",
+  "gujarati patra": "patra",
+  "alu vadi": "patra",
+  "aluwadi": "patra",
+  "patrode": "patra",
+
+  "kolkata egg roll": "egg roll (kolkata style)",
+  "egg kathi roll": "egg roll (kolkata style)",
+  "egg roll recipe": "egg roll (kolkata style)",
+
+  "bread omlette": "bread omelette",
+  "omelette bread": "bread omelette",
+
+  "boondi laddu": "boondi ladoo",
+  "boondi ke ladoo": "boondi ladoo",
+
+  "semiya payasam": "semiya kheer (vermicelli kheer)",
+  "vermicelli payasam": "semiya kheer (vermicelli kheer)",
+  "vermicelli kheer recipe": "semiya kheer (vermicelli kheer)",
+
+  "veg stew": "kerala vegetable stew (ishtu)",
+  "kerala stew": "kerala vegetable stew (ishtu)",
+  "ishtu recipe": "kerala vegetable stew (ishtu)",
+
+  "cheese parantha": "cheese paratha",
+  "cheese paratha recipe": "cheese paratha",
 
 };
 
