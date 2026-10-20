@@ -272,7 +272,59 @@ const LeafIcon: IconC = ({ className }) => (
    and a cartoon trolley that products visibly fly into (and back out of).
    None of this reads selection state on its own — it's driven entirely by
    the same selectedProducts/onSelectProduct data the grid already used. */
+const drawShelfBackWall = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
+  ctx.clearRect(0, 0, w, h);
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, "#F3E3BE");
+  grad.addColorStop(1, "#E9D2A4");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
 
+  // vertical board seams — gives the wall its own plank structure
+  ctx.strokeStyle = "rgba(138,87,38,0.16)";
+  ctx.lineWidth = 1;
+  const boardWidth = 44;
+  for (let x = boardWidth; x < w; x += boardWidth) {
+    ctx.beginPath();
+    ctx.moveTo(x + 0.5, 0);
+    ctx.lineTo(x + 0.5, h);
+    ctx.stroke();
+  }
+
+  // dark seam where the back wall meets the ceiling of the cubby
+  const topShadow = ctx.createLinearGradient(0, 0, 0, 16);
+  topShadow.addColorStop(0, "rgba(36,22,8,0.3)");
+  topShadow.addColorStop(1, "rgba(36,22,8,0)");
+  ctx.fillStyle = topShadow;
+  ctx.fillRect(0, 0, w, 16);
+};
+
+const ShelfBackWall: React.FC<{ className?: string }> = ({ className }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const parent = canvas?.parentElement;
+    if (!canvas || !parent) return;
+    const render = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = parent.getBoundingClientRect();
+      if (width === 0 || height === 0) return;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawShelfBackWall(ctx, width, height);
+    };
+    render();
+    const observer = new ResizeObserver(render);
+    observer.observe(parent);
+    return () => observer.disconnect();
+  }, []);
+  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
+};
 
 
 const TrolleyIcon: IconC = ({ className }) => (
@@ -1582,8 +1634,31 @@ useEffect(() => {
                           // products, sitting on a canvas-drawn wood plank. Same
                           // scroll container as before, just dressed as a fixture.
                           <div
-                            className="modal-scroll -mx-1 flex gap-3.5 overflow-x-auto px-1 pb-2"
+                            className="relative overflow-hidden rounded-2xl border-2"
+                            style={{
+                              borderColor: COLOR.line,
+                              boxShadow:
+                                "inset 0 12px 20px -14px rgba(36,22,8,0.5), inset 0 -4px 10px -6px rgba(36,22,8,0.3)",
+                            }}
                           >
+                            <ShelfBackWall className="absolute inset-0 h-full w-full" />
+
+                            {/* side walls, receding slightly — sells the cubby */}
+                            <div
+                              className="pointer-events-none absolute inset-y-0 left-0 w-4"
+                              style={{ background: "linear-gradient(90deg, rgba(36,22,8,0.28), rgba(36,22,8,0))" }}
+                              aria-hidden="true"
+                            />
+                            <div
+                              className="pointer-events-none absolute inset-y-0 right-0 w-4"
+                              style={{ background: "linear-gradient(270deg, rgba(36,22,8,0.28), rgba(36,22,8,0))" }}
+                              aria-hidden="true"
+                            />
+
+                            <div
+                              className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6"
+                              style={{ perspective: "900px" }}
+                            >
                               {products.flatMap((product) =>
                                 (product.variations ?? []).map((variation) => {
                                   const selected = chosen?.spinId === variation.spinId;
@@ -1597,13 +1672,17 @@ useEffect(() => {
                                       disabled={unavailable}
                                       aria-pressed={selected}
                                       onClick={() => handlePickProduct(ingredientName, variation)}
-                                      className="relative w-28 shrink-0 rounded-xl border-2 p-2.5 text-left transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+                                      className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
                                       style={{
                                         borderColor: selected ? COLOR.stamp : COLOR.line,
                                         backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
                                         boxShadow: selected
-                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 6px 10px -6px rgba(36,22,8,0.35)`
-                                          : "0 3px 6px -4px rgba(36,22,8,0.25)",
+                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 14px 18px -10px rgba(36,22,8,0.45)`
+                                          : "0 8px 12px -8px rgba(36,22,8,0.35)",
+                                        transform: selected
+                                          ? "perspective(900px) rotateX(0deg) translateY(-5px) translateZ(14px)"
+                                          : "perspective(900px) rotateX(9deg)",
+                                        transformOrigin: "bottom center",
                                       }}
                                     >
                                       {selected && (
@@ -1624,24 +1703,21 @@ useEffect(() => {
                                             className="h-14 w-14 rounded-lg border bg-white object-cover"
                                             style={{
                                               borderColor: COLOR.line,
-                                              filter: "drop-shadow(0 5px 4px rgba(36,22,8,0.3))",
+                                              filter: "drop-shadow(0 6px 5px rgba(36,22,8,0.35))",
                                             }}
                                           />
-                                          {/* gloss highlight — a cheap stand-in for studio lighting
-                                              so the photo reads as a lit product, not a flat sticker */}
                                           <span
                                             aria-hidden="true"
                                             className="pointer-events-none absolute inset-0 rounded-lg"
                                             style={{
                                               background:
-                                                "linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 55%)",
+                                                "linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 55%)",
                                             }}
                                           />
-                                          {/* grounded shadow — pins the item to the shelf instead of floating */}
                                           <span
                                             aria-hidden="true"
-                                            className="absolute -bottom-1 left-1/2 h-1.5 w-8 -translate-x-1/2 rounded-full"
-                                            style={{ backgroundColor: "rgba(36,22,8,0.24)", filter: "blur(2px)" }}
+                                            className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full"
+                                            style={{ backgroundColor: "rgba(36,22,8,0.3)", filter: "blur(2.5px)" }}
                                           />
                                         </span>
                                       )}
@@ -1661,6 +1737,23 @@ useEffect(() => {
                                   );
                                 })
                               )}
+                            </div>
+
+                            <div
+                              className="relative h-[13px] border-t"
+                              style={{
+                                borderColor: COLOR.line,
+                                background:
+                                  "linear-gradient(180deg, #C99552 0%, #A96F35 35%, #805027 100%)",
+                                boxShadow: "0 4px 8px rgba(36,22,8,0.25)",
+                              }}
+                            >
+                              <div
+                                className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
+                                style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
+                                aria-hidden="true"
+                              />
+                            </div>
                           </div>
                         )}
 
