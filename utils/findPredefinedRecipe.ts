@@ -94,7 +94,8 @@ const matchKey = (s: string): string =>
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    .replace(/\bvegetables?\b/g, "veg");
 
 // Descriptive words people don't type ("quick 20-minute paneer bhurji")
 const LEADING_QUALIFIERS =
