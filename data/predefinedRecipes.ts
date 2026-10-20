@@ -46624,8 +46624,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
     }
   },
 
-  "red velvet pastry (eggless)": {
-    "dishName": "Eggless Red Velvet Pastry",
+  "red velvet pastry": {
+    "dishName": "Red Velvet Eggless Pastry )",
     "image": "/dishes/red-velvet-pastry.webp",
     "description": "Soft red cocoa cake layered with sweet whipped cream and cut into small pastries.",
     "prepTime": "Approx. 50 minutes plus cooling",
