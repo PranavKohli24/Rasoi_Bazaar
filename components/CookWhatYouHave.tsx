@@ -1129,7 +1129,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
             <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
               <h3
                 ref={pantryHeadingRef}
-                className="scroll-mt-4 font-serif text-2xl font-black text-orange-50 sm:text-3xl"
+                className="scroll-mt-6 font-serif text-2xl font-black text-orange-50 sm:text-3xl"
               >
                 What&apos;s in your pantry?
               </h3>
