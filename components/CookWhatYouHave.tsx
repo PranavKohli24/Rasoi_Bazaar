@@ -182,7 +182,7 @@ const Chip: React.FC<{
     aria-label={`Remove ${label}`}
     data-ingredient-chip={label.toLowerCase()}
     data-glide={label.toLowerCase()}
-    className={`inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
+    className={`inline-flex select-none items-center gap-2 rounded-full border border-orange-400/40 bg-orange-400/10 py-1.5 pl-3.5 pr-2.5 text-sm text-orange-100 transition-colors hover:bg-orange-400/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
       hidden ? "invisible" : ""
       }`}
   >
@@ -1154,7 +1154,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     pantryHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 50);
                 }}
-                className={`${footerButton} shrink-0 whitespace-nowrap`}
+                className={`${footerButton} select-none shrink-0 whitespace-nowrap`}
               >
                 Next: ingredients
                 <span
@@ -1208,7 +1208,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                         equipmentHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                       }, 50);
                     }}
-                    className="shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
+                    className="select-none shrink-0 text-sm font-medium text-orange-200 transition-colors hover:text-orange-100 focus:outline-none focus-visible:underline"
                   >
                     Edit
                   </button>
@@ -1228,7 +1228,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     type="button"
                     aria-expanded={showStaplesInfo}
                     onClick={() => setShowStaplesInfo((open) => !open)}
-                    className="shrink-0 text-xs text-stone-500 underline-offset-2 transition-colors hover:text-orange-200 hover:underline focus:outline-none focus-visible:underline"
+                    className="select-none shrink-0 text-xs text-stone-500 underline-offset-2 transition-colors hover:text-orange-200 hover:underline focus:outline-none focus-visible:underline"
                   >
                     {showStaplesInfo ? "Hide" : "What's included?"}
                   </button>
@@ -1413,7 +1413,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     equipmentHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }, 50);
                 }}
-                className={`${ghostButton} shrink-0`}
+                className={`${ghostButton} select-none shrink-0`}
               >
                 <span aria-hidden="true">←</span> Back
               </button>
@@ -1434,7 +1434,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 type="button"
                 onClick={handleFindRecipes}
                 disabled={ingredients.length === 0 && !ingredientInput.trim()}
-                className={`${footerButton} shrink-0 whitespace-nowrap`}
+                className={`${footerButton} select-none shrink-0 whitespace-nowrap`}
               >
                 Find dishes
               </button>

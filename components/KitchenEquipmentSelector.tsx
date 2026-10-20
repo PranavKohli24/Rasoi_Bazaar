@@ -96,7 +96,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 aria-label={`Select ${item.name}`}
                 aria-pressed={selected}
                 onClick={() => toggleEquipment(item.name)}
-                className="group absolute outline-none"
+                className="group absolute select-none outline-none"
                 style={{
                   left: `${item.left}%`,
                   top: `${item.top}%`,
@@ -166,7 +166,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
             onClick={() =>
               onChange(allSelected ? [] : equipmentItems.map((i) => i.name))
             }
-            className="text-sm text-stone-500 transition-colors hover:text-orange-200 focus:outline-none focus-visible:underline"
+            className="select-none text-sm text-stone-500 transition-colors hover:text-orange-200 focus:outline-none focus-visible:underline"
           >
             {allSelected ? 'Clear all' : 'Select all'}
           </button>
@@ -182,7 +182,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   type="button"
                   aria-pressed={selected}
                   onClick={() => toggleEquipment(item.name)}
-                  className={`relative flex h-full w-full items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left text-[13px] font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:gap-2.5 sm:px-3 sm:text-sm ${
+                  className={`relative flex h-full w-full select-none items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left text-[13px] font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:gap-2.5 sm:px-3 sm:text-sm ${
                     selected
                       ? 'border-orange-400 bg-orange-400/10 text-stone-100'
                       : 'border-stone-700 bg-stone-900 text-stone-300 hover:border-orange-300/70 hover:text-stone-100'
