@@ -1211,12 +1211,16 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                   </button>
                 </div>
 
-                {showStaplesInfo && (
-                  <p className="mt-2 text-xs leading-relaxed text-stone-400">
+                <div
+                  className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                    showStaplesInfo ? "mt-2 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                >
+                  <p className="min-h-0 text-xs leading-relaxed text-stone-400">
                     Salt, oil, ghee, sugar, haldi, jeera, chilli and coriander powder,
                     garam masala, pepper, mustard seeds
                   </p>
-                )}
+                </div>
               </div>
 
               <label htmlFor="ingredient-input" className="sr-only">
