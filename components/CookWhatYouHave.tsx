@@ -1139,16 +1139,20 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               </h3>
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1 overflow-hidden">
                   <p
-                    className="min-w-0 truncate text-sm text-stone-200"
+                    className="whitespace-nowrap text-sm text-stone-200"
                     title={equipment.join(", ")}
+                    style={{
+                      maskImage: "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                      WebkitMaskImage:
+                        "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                    }}
                   >
                     <span className="text-stone-500">Cooking with </span>
-                    {equipment.slice(0, 2).join(", ")}
-                    {equipment.length > 2 && (
-                      <span className="text-stone-400"> +{equipment.length - 2}</span>
-                    )}
+                    {equipment.join(", ")}
                   </p>
+                </div>
                   <button
                     type="button"
                     onClick={() => {
