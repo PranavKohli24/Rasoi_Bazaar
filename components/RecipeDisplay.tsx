@@ -1324,6 +1324,7 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [cartSummary, setCartSummary] = useState<InstamartCartSummary | null>(null);
   const [isLoadingCartSummary, setIsLoadingCartSummary] = useState(false);
   const [cartSummaryError, setCartSummaryError] = useState<string | null>(null);
+  const [cartShortageWarning, setCartShortageWarning] = useState<string | null>(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   
   const trackedOrderKey = `recipe-tracked-instamart-order:${recipe.dishName}`;
@@ -1681,6 +1682,7 @@ const handlePrevStep = () => {
     setPendingIngredientNames([]);
     setCartSummary(null);
     setCartSummaryError(null);
+    setCartShortageWarning(null);
     setIsLoadingCartSummary(false);
     setFoodCartSummary(null);
     setFoodCartSummaryError(null);
@@ -1829,6 +1831,7 @@ const handlePrevStep = () => {
     setIsModalLoading(true);
     setLoadingStage("cart");
     setSwiggyError(null);
+    setCartShortageWarning(null);
 
     try {
       const items = selectedEntries.map(([ingredientName, variation]) => ({
@@ -1837,7 +1840,19 @@ const handlePrevStep = () => {
         quantity: productQuantities[ingredientName] ?? 1,
       }));
 
-      await addToInstamartCart(selectedAddressId, items);
+      const result = await addToInstamartCart(selectedAddressId, items);
+
+      if (result?.shortages?.length) {
+        const spinIdToIngredient = Object.fromEntries(
+          selectedEntries.map(([name, variation]) => [variation.spinId, name])
+        );
+        const lines = result.shortages.map(
+          (s: { spinId: string; requested: number; added: number }) =>
+            `${spinIdToIngredient[s.spinId] ?? "an item"} (only ${s.added} of ${s.requested})`
+        );
+        setCartShortageWarning(`Instamart was short on stock for ${lines.join(", ")}.`);
+      }
+
       setInstamartCartAdded(true);
       fetchInstamartCartSummary();
     } catch (error) {
@@ -2884,6 +2899,7 @@ const handlePrevStep = () => {
         cartSummary={cartSummary}
         isLoadingCartSummary={isLoadingCartSummary}
         cartSummaryError={cartSummaryError}
+        shortageWarning={cartShortageWarning}
         onCheckout={handleCheckoutInstamart}
         isCheckingOut={isCheckingOut}
         selectedRestaurant={selectedRestaurant}

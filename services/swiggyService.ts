@@ -377,6 +377,12 @@ export interface InstamartCartItem {
   skuId: string;
   quantity: number;
 }
+export interface InstamartCartShortage {
+  spinId: string;
+  requested: number;
+  added: number;
+}
+
 export const addToInstamartCart = async (
   addressId: string,
   items: InstamartCartItem[]
@@ -392,7 +398,7 @@ export const addToInstamartCart = async (
         price: `₹${unitPrice * item.quantity}`,
       };
     });
-    return { success: true };
+    return { success: true, shortages: [] as InstamartCartShortage[] };
   }
 
   const data = await getApiResponse<any>(

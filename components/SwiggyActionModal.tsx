@@ -40,6 +40,7 @@ interface SwiggyActionModalProps {
   cartSummary?: InstamartCartSummary | null;
   isLoadingCartSummary?: boolean;
   cartSummaryError?: string | null;
+  shortageWarning?: string | null;
   onCheckout?: () => void;
   isCheckingOut?: boolean;
   selectedRestaurant?: SwiggyRestaurant | null;
@@ -1148,6 +1149,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   cartSummary,
   isLoadingCartSummary,
   cartSummaryError,
+  shortageWarning,
   onCheckout,
   isCheckingOut,
   selectedRestaurant,
@@ -1593,9 +1595,10 @@ useEffect(() => {
                   isLoading={!!isLoadingCartSummary}
                   error={cartSummaryError}
                   warning={
-                    cartSummary?.minOrderNotMet
+                    shortageWarning ??
+                    (cartSummary?.minOrderNotMet
                       ? `Add a little more — Instamart has a ₹${(cartSummary.minOrderPaise / 100).toFixed(0)} minimum order.`
-                      : null
+                      : null)
                   }
                 />
               ) : !hasAddresses ? (

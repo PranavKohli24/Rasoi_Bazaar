@@ -496,7 +496,10 @@ async function handleAddToCart(accessToken: string, body: any): Promise<Response
 
     const afterItems = getCartItemsRaw(afterData);
 
-    // Verify EVERY requested item.
+    // Verify every requested item; collect shortfalls instead of failing hard —
+    // whatever DID land is already a real cart change, so don't throw it away.
+    const shortages: { spinId: string; requested: number; added: number }[] = [];
+
     for (const requestedItem of items) {
       const beforeItem = beforeItems.find((item: any) => getItemSpinId(item) === requestedItem.spinId);
       const afterItem = afterItems.find((item: any) => getItemSpinId(item) === requestedItem.spinId);
@@ -504,19 +507,10 @@ async function handleAddToCart(accessToken: string, body: any): Promise<Response
       const beforeQuantity = beforeItem ? getItemQuantity(beforeItem) : 0;
       const afterQuantity = afterItem ? getItemQuantity(afterItem) : 0;
       const requestedQuantity = Number(requestedItem.quantity) > 0 ? Number(requestedItem.quantity) : 1;
+      const added = Math.max(0, afterQuantity - beforeQuantity);
 
-      if (afterQuantity < beforeQuantity + requestedQuantity) {
-        return json(
-          {
-            error:
-              "Swiggy accepted the cart update, but the item quantity did not increase in the verified cart.",
-            spinId: requestedItem.spinId,
-            beforeQuantity,
-            afterQuantity,
-            requestedQuantity,
-          },
-          409
-        );
+      if (added < requestedQuantity) {
+        shortages.push({ spinId: requestedItem.spinId, requested: requestedQuantity, added });
       }
     }
 
@@ -524,6 +518,7 @@ async function handleAddToCart(accessToken: string, body: any): Promise<Response
       success: true,
       message: "All selected items were added to your Instamart cart.",
       cart: afterData,
+      shortages,
     });
   } catch (error) {
     console.error("Add to cart error:", error);
