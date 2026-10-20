@@ -1,17 +1,16 @@
 
 {
-  "Paneer Butter Masala": "hsl(25, 62%, 77%)",
-  "Chicken Biryani": "hsl(38, 55%, 80%)",
-  "Masala Dosa": "hsl(36, 48%, 78%)",
+  "Paneer Butter Masala": "hsl(25, 62%, 81%)",
+  "Chicken Biryani": "hsl(43, 45%, 84%)",
+  "Masala Dosa": "hsl(30, 42%, 76%)",
   "Aloo Gobi": "hsl(50, 60%, 80%)",
   "Dal Makhani": "hsl(25, 25%, 77%)",
-  "Samosa": "hsl(39, 48%, 82%)",
-  
+  "Samosa": "hsl(40, 55%, 85%)",
+
   "Strawberry Cake": "hsl(345, 42%, 86%)",
   "Strawberry Pastry": "hsl(345, 40%, 85%)",
   "Strawberry Ice Cream": "hsl(345, 30%, 88%)",
   "Strawberry Milkshake": "hsl(345, 35%, 86%)",
-
 
   "Cake (Simple Eggless Vanilla Cake)": "hsl(42, 20%, 86%)",
   "Vanilla Ice Cream": "hsl(45, 18%, 90%)",
