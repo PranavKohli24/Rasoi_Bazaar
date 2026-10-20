@@ -1341,7 +1341,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               )}
             </div>
 
-            <div data-sticky-footer className={footerBar}>
+            <div
+              data-sticky-footer
+              className={`${footerBar.replace("sticky bottom-0 ", "")} ${
+                inputFocused ? "static sm:sticky sm:bottom-0" : "sticky bottom-0"
+                }`}
+            >
               <button
                 type="button"
                 onClick={() => {
