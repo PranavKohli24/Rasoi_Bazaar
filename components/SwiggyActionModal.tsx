@@ -1812,7 +1812,9 @@ useEffect(() => {
                     );
                   })}
 
-                  <TrolleyWidget ref={trolleyRef} count={selectedCount} bounceKey={trolleyBounceKey} />
+                  {instamartSearchDone && (
+                    <TrolleyWidget ref={trolleyRef} count={selectedCount} bounceKey={trolleyBounceKey} />
+                  )}
                 </div>
               )}
             </>
