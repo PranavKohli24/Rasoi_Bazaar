@@ -22,7 +22,7 @@ const EXAMPLES = [
   'Shahi Paneer',
   'Dal Makhani',
   'Chole Bhature',
-  'Mushroom',
+  'Rose Kulfi'
 ];
 
 const SearchIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -251,7 +251,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     ? compactPlaceholder
     : isTypewriterIdle
       ? typedExample
-      : 'What masterpiece will you make?';
+      : 'What do you feel like eating?';
 
   return (
     <div
