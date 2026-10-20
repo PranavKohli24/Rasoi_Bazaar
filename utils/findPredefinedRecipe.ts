@@ -1164,9 +1164,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "baigan bharta recipe": "baingan bharta (smoky roasted eggplant mash)",
   "brinjal bharta": "baingan bharta (smoky roasted eggplant mash)",
 
-  "aloo gobi": "gobi masala",
-  "alu gobi": "gobi masala",
-
   "lauki ki sabji": "lauki sabzi",
   "lauki subzi": "lauki sabzi",
   "dudhi ki sabzi": "lauki sabzi",
