@@ -92,6 +92,29 @@ const DOODLES: React.ReactNode[] = [
     <circle cx="17" cy="20" r="9" />
     <path d="M31 20h9" />
   </>,
+  // coriander sprig
+  <>
+    <path d="M20 37C20 27 18 18 11 9" />
+    <path d="M19 28c-7 1-12-3-12-8 7-1 12 3 12 8z" />
+    <path d="M17 20c-7 0-10-5-9-10 6 1 10 5 9 10z" />
+    <path d="M21 30c7 1 12-3 12-8-7-1-12 3-12 8z" />
+    <path d="M17 15c2-6 7-8 12-6-1 6-6 9-12 6z" />
+  </>,
+  // mushroom
+  <>
+    <path d="M5 19a15 12 0 0 1 30 0z" />
+    <path d="M16 19v10a4 4 0 0 0 8 0V19" />
+    <path d="M12 19h16" />
+    <path d="M13 11l2 2M25 9l-2 3" />
+  </>,
+  // spice bowl
+  <>
+    <path d="M5 20h30l-4 12a6 6 0 0 1-6 4h-10a6 6 0 0 1-6-4z" />
+    <path d="M3 20h34" />
+    <circle cx="14" cy="15" r="2" />
+    <circle cx="21" cy="12" r="2" />
+    <circle cx="27" cy="16" r="2" />
+  </>,
 ];
 
 // Pictures already in /public/kitchen (the same ones used in the kitchen selector).
