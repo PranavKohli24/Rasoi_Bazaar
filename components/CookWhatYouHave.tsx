@@ -729,6 +729,20 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
 
   const sectionRef = useRef<HTMLElement>(null);
   const pantryHeadingRef = useRef<HTMLHeadingElement>(null);
+  const equipmentScrollRef = useRef<HTMLDivElement>(null);
+  const [equipmentCanScrollRight, setEquipmentCanScrollRight] = useState(false);
+
+  const updateEquipmentFade = () => {
+    const el = equipmentScrollRef.current;
+    if (!el) return;
+    setEquipmentCanScrollRight(el.scrollWidth - el.scrollLeft - el.clientWidth > 2);
+  };
+
+  useEffect(() => {
+    updateEquipmentFade();
+    window.addEventListener("resize", updateEquipmentFade);
+    return () => window.removeEventListener("resize", updateEquipmentFade);
+  }, [equipment]);
   const isFirstRender = useRef(true);
   const requestIdRef = useRef(0); // ignores late answers from searches the user already left
 
@@ -1140,16 +1154,22 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
                   <div
+                  ref={equipmentScrollRef}
+                  onScroll={updateEquipmentFade}
                   className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
                   style={{ scrollbarWidth: "none" }}
                 >
                   <p
                     className="whitespace-nowrap text-sm text-stone-200"
-                    style={{
-                      maskImage: "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
-                      WebkitMaskImage:
-                        "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
-                    }}
+                    style={
+                      equipmentCanScrollRight
+                        ? {
+                            maskImage: "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                            WebkitMaskImage:
+                              "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
+                          }
+                        : undefined
+                    }
                   >
                     <span className="text-stone-500">Cooking with </span>
                     {equipment.join(", ")}
