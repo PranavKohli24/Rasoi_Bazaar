@@ -1338,7 +1338,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                         onClick={(event) =>
                           addIngredients(item, sourceBox(event.currentTarget))
                         }
-                        className="rounded-full border border-stone-700 bg-stone-900 px-3.5 py-2 text-sm text-stone-300 transition-colors hover:border-orange-300/70 hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+                        className="select-none rounded-full border border-stone-700 bg-stone-900 px-3.5 py-2 text-sm text-stone-300 transition-colors hover:border-orange-300/70 hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
                       >
                         + {item}
                       </button>
