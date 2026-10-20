@@ -503,6 +503,156 @@ const AddingToCart: React.FC<{ label?: string }> = ({ label = "Adding to cart" }
   </span>
 );
 
+
+/* Checkout confirmation: visual replacement for the existing COD button.
+   The parent continues to own checkout state and calls the same handler. */
+interface SwipeToConfirmCheckoutProps {
+  onConfirm?: () => void;
+  disabled?: boolean;
+}
+
+const CHECKOUT_SWIPE_THUMB = 48;
+const CHECKOUT_SWIPE_PADDING = 5;
+const CHECKOUT_SWIPE_THRESHOLD = 0.65;
+const CHECKOUT_ACTION_LABEL = "Pay with Cash on Delivery";
+
+const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
+  onConfirm,
+  disabled = false,
+}) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [maxDrag, setMaxDrag] = useState(0);
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
+  const dragStartRef = useRef(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () =>
+      setMaxDrag(Math.max(0, track.offsetWidth - CHECKOUT_SWIPE_THUMB - CHECKOUT_SWIPE_PADDING * 2));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    return () => observer.disconnect();
+  }, []);
+
+  const confirm = () => {
+    if (disabled || isConfirmed || maxDrag <= 0) return;
+    setIsConfirmed(true);
+    setDragX(maxDrag);
+    window.setTimeout(() => onConfirm?.(), 380);
+  };
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (disabled || isConfirmed) return;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragStartRef.current = event.clientX - dragX;
+    setIsDragging(true);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging || disabled || isConfirmed) return;
+    setDragX(Math.min(Math.max(event.clientX - dragStartRef.current, 0), maxDrag));
+  };
+
+  const finishDrag = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (maxDrag > 0 && dragX >= maxDrag * CHECKOUT_SWIPE_THRESHOLD) {
+      confirm();
+    } else {
+      setDragX(0);
+    }
+  };
+
+  const progress = maxDrag === 0 ? 0 : dragX / maxDrag;
+  const nearThreshold = isConfirmed || progress >= CHECKOUT_SWIPE_THRESHOLD;
+
+  return (
+    <div
+      ref={trackRef}
+      className="relative h-[58px] w-full select-none overflow-hidden rounded-full border"
+      style={{
+        backgroundColor: COLOR.paperSunken,
+        borderColor: COLOR.line,
+        boxShadow: "inset 0 1px 3px rgba(36,22,8,0.08)",
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 rounded-full"
+        style={{
+          width: `${CHECKOUT_SWIPE_THUMB + CHECKOUT_SWIPE_PADDING + dragX}px`,
+          backgroundColor: COLOR.stamp,
+          transition: isDragging ? "none" : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+        }}
+      />
+
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center px-16 text-center text-sm font-bold tracking-wide"
+        style={{
+          color: isConfirmed ? COLOR.paper : COLOR.stampDark,
+          opacity: isConfirmed ? 1 : Math.max(0, 1 - progress / 0.55),
+          transition: isDragging ? "none" : "opacity 0.2s ease",
+        }}
+      >
+        {CHECKOUT_ACTION_LABEL}
+      </span>
+
+      <div
+        role="slider"
+        tabIndex={disabled ? -1 : 0}
+        aria-label={CHECKOUT_ACTION_LABEL}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress * 100)}
+        aria-valuetext={CHECKOUT_ACTION_LABEL}
+        aria-disabled={disabled}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishDrag}
+        onPointerCancel={finishDrag}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            confirm();
+          }
+        }}
+        className="absolute top-1/2 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        style={{
+          left: CHECKOUT_SWIPE_PADDING,
+          width: CHECKOUT_SWIPE_THUMB,
+          height: CHECKOUT_SWIPE_THUMB,
+          marginTop: -CHECKOUT_SWIPE_THUMB / 2,
+          backgroundColor: COLOR.paper,
+          color: COLOR.stampDark,
+          boxShadow: nearThreshold
+            ? `0 2px 8px rgba(36,22,8,0.18), 0 0 0 4px ${COLOR.stampTint}`
+            : isDragging
+            ? "0 4px 12px rgba(36,22,8,0.22)"
+            : "0 1px 4px rgba(36,22,8,0.14)",
+          transform: `translateX(${dragX}px) scale(${isDragging ? 1.04 : 1})`,
+          transition: isDragging
+            ? "box-shadow 0.15s ease"
+            : "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease",
+          touchAction: "none",
+          cursor: disabled ? "not-allowed" : isConfirmed ? "default" : isDragging ? "grabbing" : "grab",
+        }}
+      >
+        {nearThreshold ? (
+          <CheckIcon className="h-5 w-5" />
+        ) : (
+          <Svg className="h-5 w-5"><path d="m9 18 6-6-6-6" /></Svg>
+        )}
+      </div>
+    </div>
+  );
+};
+
 /* ---------- Success stage ----------
    Two beats, slow enough to actually watch: a scene specific to what's
    being added plays first, then gives way to a checkmark that draws
@@ -1968,15 +2118,16 @@ useEffect(() => {
         )}
         {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && instamartStage === "review" && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
-            <button
-              type="button"
-              onClick={onCheckout}
-              disabled={isCheckingOut || !cartSummary || !!cartSummary?.minOrderNotMet}
-              className={primaryButton}
-              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
-            >
-              {isCheckingOut ? <AddingToCart label="Placing your order" /> : "Pay with Cash on Delivery"}
-            </button>
+            {isCheckingOut ? (
+              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }} role="status" aria-live="polite">
+                <AddingToCart label="Placing your order" />
+              </div>
+            ) : (
+              <SwipeToConfirmCheckout
+                onConfirm={onCheckout}
+                disabled={!cartSummary || !!cartSummary?.minOrderNotMet}
+              />
+            )}
           </div>
         )}
 
@@ -1996,15 +2147,16 @@ useEffect(() => {
 
         {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && foodCartAdded && foodStage === "review" && (
           <div className={footerClass} style={{ borderColor: COLOR.line }}>
-            <button
-              type="button"
-              onClick={onCheckoutFood}
-              disabled={isCheckingOutFood || !foodCartSummary || !!foodCartSummary?.exceedsMaxOrder}
-              className={primaryButton}
-              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
-            >
-              {isCheckingOutFood ? <AddingToCart label="Placing your order" /> : "Pay with Cash on Delivery"}
-            </button>
+            {isCheckingOutFood ? (
+              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }} role="status" aria-live="polite">
+                <AddingToCart label="Placing your order" />
+              </div>
+            ) : (
+              <SwipeToConfirmCheckout
+                onConfirm={onCheckoutFood}
+                disabled={!foodCartSummary || !!foodCartSummary?.exceedsMaxOrder}
+              />
+            )}
           </div>
         )}
       </div>
