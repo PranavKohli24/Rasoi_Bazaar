@@ -1341,14 +1341,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               )}
             </div>
 
-            <div
-              data-sticky-footer
-              className={`${footerBar} transition-transform duration-200 ${
-                inputFocused
-                  ? "pointer-events-none translate-y-full sm:pointer-events-auto sm:translate-y-0"
-                  : ""
-                }`}
-            >
+            <div data-sticky-footer className={footerBar}>
               <button
                 type="button"
                 onClick={() => {
