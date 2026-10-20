@@ -1139,10 +1139,12 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               </h3>
               <div className="mt-5 rounded-2xl border border-stone-700 bg-stone-950 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="min-w-0 flex-1 overflow-hidden">
+                  <div
+                  className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
+                  style={{ scrollbarWidth: "none" }}
+                >
                   <p
                     className="whitespace-nowrap text-sm text-stone-200"
-                    title={equipment.join(", ")}
                     style={{
                       maskImage: "linear-gradient(to right, black 0%, black 85%, transparent 100%)",
                       WebkitMaskImage:
