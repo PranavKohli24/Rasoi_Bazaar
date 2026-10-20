@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface KitchenEquipmentSelectorProps {
   selectedEquipment: string[];
@@ -46,6 +46,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
     );
 
   const allSelected = selectedEquipment.length === equipmentItems.length;
+  const [kitchenLoaded, setKitchenLoaded] = useState(false);
 
   return (
     <div className="w-full overflow-visible">
@@ -65,12 +66,21 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
             <img
               src="/kitchen/kitchen.webp"
               alt="Kitchen"
+              loading="eager"
               decoding="async"
+              {...{ fetchpriority: "high" }}
+              onLoad={() => setKitchenLoaded(true)}
               className="absolute inset-0 h-full w-full object-cover"
               draggable={false}
             />
           </div>
 
+          <div
+            aria-hidden={!kitchenLoaded}
+            className={`contents transition-opacity duration-300 ${
+              kitchenLoaded ? "opacity-100" : "opacity-0"
+            }`}
+          >
           {equipmentItems.map((item) => {
             const selected = selectedEquipment.includes(item.name);
 
@@ -131,6 +141,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
               </button>
             );
           })}
+          </div>
         </div>
       </div>
 
