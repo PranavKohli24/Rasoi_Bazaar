@@ -2105,16 +2105,25 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
           </div>
         )}
 
-        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && !foodCartAdded && hasAddresses && !showAddressScreen && selectedRestaurant && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && !foodCartAdded && hasAddresses && !showAddressScreen && hasRestaurants && (
           <div className={footerClass} style={{ borderColor: COLOR.border }}>
             <button
               type="button"
               onClick={onAddDishToCart}
-              disabled={isSubmitting}
+              disabled={!selectedRestaurant || isSubmitting}
               className={primaryButton}
-              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+              style={{
+                backgroundColor: selectedRestaurant ? COLOR.saffron : COLOR.surfaceSunken,
+                color: selectedRestaurant ? COLOR.surface : COLOR.inkFaint,
+              }}
             >
-              {isSubmitting ? <AddingToCart /> : "Add this dish to cart"}
+              {isSubmitting ? (
+                <AddingToCart />
+              ) : selectedRestaurant ? (
+                "Add this dish to cart"
+              ) : (
+                "Select a restaurant to continue"
+              )}
             </button>
           </div>
         )}
