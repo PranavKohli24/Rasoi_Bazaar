@@ -210,6 +210,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
     }
 
     if (event.key === 'Enter' && !isLoading) {
+      event.preventDefault(); // stop any native "submit"/"next field" behavior
+
       const termToSearch = suggestion || searchTerm;
 
       if (suggestion) {
@@ -217,8 +219,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         setSuggestion('');
       }
 
-      if (compact) setIsExpanded(false);
       onSearch(termToSearch);
+      if (compact) setIsExpanded(false);
     }
   };
 
@@ -328,6 +330,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               placeholder={placeholder}
               disabled={isLoading}
               autoComplete="off"
+              enterKeyHint="search"
               className={`relative w-full border border-transparent bg-transparent text-stone-100 placeholder-stone-500 transition-all duration-200 focus:outline-none disabled:opacity-60 text-ellipsis ${
                 compact
                   ? 'h-11 rounded-full pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
