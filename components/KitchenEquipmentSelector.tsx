@@ -95,10 +95,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 type="button"
                 aria-label={`Select ${item.name}`}
                 aria-pressed={selected}
-                onClick={(event) => {
-                  toggleEquipment(item.name);
-                  event.currentTarget.blur();
-                }}
+                onClick={() => toggleEquipment(item.name)}
                 className="group absolute select-none outline-none"
                 style={{
                   left: `${item.left}%`,
@@ -110,9 +107,9 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 {/* Selection ring — only once this item's own icon has loaded */}
                 <span
                   className={`pointer-events-none absolute inset-[-6%] rounded-2xl border-2 transition-all duration-300 ${
-                    selected && iconLoaded
+                    selected
                       ? 'border-orange-400 bg-orange-400/15 shadow-[0_0_24px_rgba(252,108,38,0.6)]'
-                      : 'border-transparent group-hover:border-orange-300/70 group-hover:bg-orange-300/10'
+                      : 'border-transparent'
                   }`}
                 />
 
@@ -123,11 +120,8 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   height={item.naturalHeight}
                   decoding="async"
                   draggable={false}
-                  onLoad={() => markIconLoaded(item.id)}
                   className={`pointer-events-none relative block h-auto w-full select-none transition-all duration-300 ${
-                    selected && iconLoaded
-                      ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(252,108,38,0.7)]'
-                      : 'group-hover:scale-[1.025]'
+                    selected ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(252,108,38,0.7)]' : ''
                   }`}
                 />
 
@@ -136,7 +130,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   className={`absolute -top-6 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-full px-2 py-0.5 text-[9px] font-medium leading-none transition-all duration-200 sm:block ${
                     selected
                       ? 'scale-100 bg-orange-200 text-white opacity-100 shadow-md'
-                      : 'scale-95 border border-stone-700 bg-stone-900 text-stone-200 opacity-0 group-hover:scale-100 group-hover:opacity-100'
+                      : 'scale-95 border border-stone-700 bg-stone-900 text-stone-200 opacity-0'
                   }`}
                 >
                   {item.label}
