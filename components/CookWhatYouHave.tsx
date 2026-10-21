@@ -1046,6 +1046,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     setEquipment(savedKitchen);
     setError(null);
     setStep(2);
+    window.setTimeout(() => {
+      pantryHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
   };
 
   const forgetSavedKitchen = () => {
