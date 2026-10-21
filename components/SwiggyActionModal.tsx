@@ -337,7 +337,7 @@ const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKe
       <div
         key={bounceKey}
         ref={ref}
-        className={`pointer-events-none relative flex h-14 w-14 items-center justify-center rounded-full border-2 ${
+        className={`pointer-events-none relative flex h-14 w-14 items-center justify-center rounded-full border-2 sm:h-16 sm:w-16 ${
           bounceKey > 0 ? "trolley-bounce" : ""
         }`}
         style={{
@@ -346,10 +346,10 @@ const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKe
           boxShadow: "0 8px 18px rgba(43,26,12,0.3)",
         }}
       >
-        <TrolleyIcon className="h-8 w-8" />
+        <TrolleyIcon className="h-8 w-8 sm:h-9 sm:w-9" />
         {count > 0 && (
           <span
-            className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold"
+            className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold sm:h-6 sm:min-w-[24px] sm:text-xs"
             style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
           >
             {count}
@@ -450,15 +450,15 @@ const FlyingIngredients: React.FC<{ items: FlyItem[]; onDone: (id: number) => vo
 /* ---------- Shared bits ---------- */
 
 const primaryButton =
-  "flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100";
+  "flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 sm:py-4 text-sm sm:text-base font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100";
 
 const secondaryButton =
-  "inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1";
+  "inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 sm:py-3 text-sm sm:text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1";
 
 const iconButton =
-  "flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2";
+  "flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 sm:h-10 sm:w-10";
 
-const footerClass = "border-t px-5 py-4 sm:px-6";
+const footerClass = "border-t px-5 py-4 sm:px-8 sm:py-5";
 
 /* Replaces a plain in-button spinner: the label stays legible, a soft
    diagonal sheen sweeps across the button so it reads as "working" rather
@@ -546,7 +546,7 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
   return (
     <div
       ref={trackRef}
-      className="relative h-[58px] w-full select-none overflow-hidden rounded-full border"
+      className="relative h-[58px] w-full select-none overflow-hidden rounded-full border sm:h-[64px]"
       style={{
         backgroundColor: COLOR.surfaceSunken,
         borderColor: COLOR.border,
@@ -566,7 +566,7 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
 
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center px-16 text-center text-[15px] font-medium tracking-wide"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center px-16 text-center text-[15px] font-medium tracking-wide sm:text-base"
         style={{
           color: isConfirmed ? COLOR.surface : COLOR.saffronDark,
           opacity: isConfirmed ? 1 : Math.max(0, 1 - progress / 0.55),
@@ -637,16 +637,16 @@ const DRAG_MINIMIZE_THRESHOLD = 90;
 const GroceryFillScene: React.FC = () => (
   <>
     <span className="veggie-fall absolute top-1" style={{ left: "38%", animationDelay: "0ms" }}>
-      <CarrotIcon className="h-5 w-5" />
+      <CarrotIcon className="h-5 w-5 sm:h-6 sm:w-6" />
     </span>
     <span className="veggie-fall absolute top-1" style={{ left: "52%", animationDelay: "650ms" }}>
-      <TomatoIcon className="h-5 w-5" />
+      <TomatoIcon className="h-5 w-5 sm:h-6 sm:w-6" />
     </span>
     <span className="veggie-fall absolute top-1" style={{ left: "45%", animationDelay: "1300ms" }}>
-      <LeafIcon className="h-5 w-5" />
+      <LeafIcon className="h-5 w-5 sm:h-6 sm:w-6" />
     </span>
 
-    <svg viewBox="0 0 64 56" className="basket-wobble absolute bottom-0 h-[72px] w-[72px] origin-bottom">
+    <svg viewBox="0 0 64 56" className="basket-wobble absolute bottom-0 h-[72px] w-[72px] origin-bottom sm:h-[92px] sm:w-[92px]">
       <path
         d="M22 20c0-6.5 4.5-11 10-11s10 4.5 10 11"
         fill="none"
@@ -667,7 +667,7 @@ const GroceryFillScene: React.FC = () => (
 );
 
 const DishPlatingScene: React.FC = () => (
-  <svg viewBox="0 0 120 120" className="h-32 w-32">
+  <svg viewBox="0 0 120 120" className="h-32 w-32 sm:h-40 sm:w-40">
     <ellipse cx="60" cy="80" rx="38" ry="14" fill={COLOR.surfaceSunken} stroke={COLOR.border} strokeWidth="2" />
     <ellipse cx="60" cy="78" rx="27" ry="9.5" fill={COLOR.saffronTint} />
 
@@ -703,8 +703,8 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="relative flex h-36 w-32 items-center justify-center" aria-hidden="true">
+    <div className="flex flex-col items-center justify-center py-8 text-center sm:py-12">
+      <div className="relative flex h-36 w-32 items-center justify-center sm:h-44 sm:w-40" aria-hidden="true">
         {phase === "filling" ? (
           variant === "grocery" ? (
             <GroceryFillScene />
@@ -712,7 +712,7 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
             <DishPlatingScene />
           )
         ) : (
-          <svg viewBox="0 0 64 64" className="h-16 w-16">
+          <svg viewBox="0 0 64 64" className="h-16 w-16 sm:h-20 sm:w-20">
             <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.saffron} strokeWidth="4" pathLength={100} className="tick-circle" />
             <path
               d="M20 33l8 8 16-18"
@@ -731,16 +731,16 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
       {phase === "done" && (
         <>
           <p
-            className="stamp-label mt-3 text-xs font-semibold"
+            className="stamp-label mt-3 text-xs font-semibold sm:text-sm"
             style={{ color: COLOR.saffronDark, animationDelay: "0.55s" }}
           >
             {eyebrow}
           </p>
-          <h4 className="stamp-label mt-1 font-serif text-2xl font-black" style={{ color: COLOR.ink, animationDelay: "0.65s" }}>
+          <h4 className="stamp-label mt-1 font-serif text-2xl font-black sm:text-3xl" style={{ color: COLOR.ink, animationDelay: "0.65s" }}>
             Added to cart
           </h4>
           <p
-            className="stamp-label mx-auto mt-2 max-w-xs text-sm leading-relaxed"
+            className="stamp-label mx-auto mt-2 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base"
             style={{ color: COLOR.inkSoft, animationDelay: "0.75s" }}
           >
             {text}
@@ -761,11 +761,11 @@ const CartReviewStep: React.FC<{
   if (isLoading && items.length === 0 && !bill) {
     return (
       <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
-        <div className="relative flex h-16 w-16 items-center justify-center">
+        <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
           <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.saffron }} />
-          <BasketIcon className="relative h-7 w-7" style={{ color: COLOR.saffron } as React.CSSProperties} />
+          <BasketIcon className="relative h-7 w-7 sm:h-9 sm:w-9" style={{ color: COLOR.saffron } as React.CSSProperties} />
         </div>
-        <p className="mt-5 font-serif text-lg font-black" style={{ color: COLOR.ink }}>Loading your cart</p>
+        <p className="mt-5 font-serif text-lg font-black sm:text-xl" style={{ color: COLOR.ink }}>Loading your cart</p>
       </div>
     );
   }
@@ -773,20 +773,20 @@ const CartReviewStep: React.FC<{
   if (error) {
     return (
       <div className="py-10 text-center">
-        <p className="text-sm" style={{ color: COLOR.inkSoft }}>{error}</p>
+        <p className="text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>{error}</p>
       </div>
     );
   }
 
   return (
     <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
-      <p className="text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
+      <p className="text-xs font-semibold sm:text-sm" style={{ color: COLOR.inkSoft }}>
         Review your cart
       </p>
 
       <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.border }}>
         {items.map((item, i) => (
-          <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm">
+          <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm sm:px-5 sm:py-3.5 sm:text-base">
             <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
               {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
             </span>
@@ -800,15 +800,15 @@ const CartReviewStep: React.FC<{
       </ul>
 
       {bill && (
-        <div className="rounded-xl border px-3.5 py-3" style={{ borderColor: COLOR.border }}>
+        <div className="rounded-xl border px-3.5 py-3 sm:px-5 sm:py-4" style={{ borderColor: COLOR.border }}>
           {bill.lineItems.map((line, i) => (
-            <div key={i} className="flex items-center justify-between py-1 text-xs" style={{ color: COLOR.inkSoft }}>
+            <div key={i} className="flex items-center justify-between py-1 text-xs sm:text-sm" style={{ color: COLOR.inkSoft }}>
               <span>{line.label}</span>
               <span className="tabular-nums">{line.value}</span>
             </div>
           ))}
           <div
-            className="mt-1.5 flex items-center justify-between border-t pt-1.5 text-sm font-bold"
+            className="mt-1.5 flex items-center justify-between border-t pt-1.5 text-sm font-bold sm:text-base"
             style={{ borderColor: COLOR.border, color: COLOR.ink }}
           >
             <span>{bill.toPay.label}</span>
@@ -820,11 +820,11 @@ const CartReviewStep: React.FC<{
       {warning && (
         <div
           role="status"
-          className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
+          className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed sm:px-5 sm:py-4 sm:text-base"
           style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
         >
           <span
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full sm:h-8 sm:w-8"
             style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
           >
             <InfoIcon className="h-4 w-4" />
@@ -850,21 +850,21 @@ const AddressStageLoader: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
-      <div className="relative flex h-16 w-16 items-center justify-center">
+      <div className="relative flex h-16 w-16 items-center justify-center sm:h-20 sm:w-20">
         <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.saffron }} />
         <span
           className="punch-pulse absolute inset-0 rounded-full border-2"
           style={{ borderColor: COLOR.saffron, animationDelay: "0.5s" }}
         />
-        <PinIcon className="relative h-7 w-7" style={{ color: COLOR.saffron } as React.CSSProperties} />
+        <PinIcon className="relative h-7 w-7 sm:h-9 sm:w-9" style={{ color: COLOR.saffron } as React.CSSProperties} />
       </div>
 
-      <p className="mt-5 font-serif text-lg font-black" style={{ color: COLOR.ink }}>
+      <p className="mt-5 font-serif text-lg font-black sm:text-xl" style={{ color: COLOR.ink }}>
         Finding your addresses
       </p>
       <p
         key={captionIndex}
-        className="mt-1.5 animate-fade-in-up text-xs"
+        className="mt-1.5 animate-fade-in-up text-xs sm:text-sm"
         style={{ color: COLOR.inkSoft, animationDuration: "0.3s" }}
       >
         {ADDRESS_CAPTIONS[captionIndex]}
@@ -887,8 +887,8 @@ const Shimmer: React.FC<{ className?: string }> = ({ className = "" }) => (
 const RestaurantSkeletonList: React.FC = () => (
   <ul className="space-y-3" aria-hidden="true">
     {[0, 1, 2].map((i) => (
-      <li key={i} className="flex gap-3.5 rounded-xl border p-3" style={{ borderColor: COLOR.border }}>
-        <Shimmer className="h-16 w-16 shrink-0 rounded-lg" />
+      <li key={i} className="flex gap-3.5 rounded-xl border p-3 sm:p-4" style={{ borderColor: COLOR.border }}>
+        <Shimmer className="h-16 w-16 shrink-0 rounded-lg sm:h-20 sm:w-20" />
         <div className="min-w-0 flex-1 space-y-2.5 py-1">
           <Shimmer className="h-3.5 w-3/4" />
           <Shimmer className="h-2.5 w-1/2" />
@@ -906,8 +906,8 @@ const IngredientSkeletonGroup: React.FC = () => (
         <Shimmer className="mb-3 h-3.5 w-24" />
         <div className="flex gap-3 overflow-hidden">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.border }}>
-              <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg" />
+            <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5 sm:w-36 sm:p-3" style={{ borderColor: COLOR.border }}>
+              <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg sm:h-20 sm:w-20" />
               <Shimmer className="mb-1.5 h-2.5 w-full" />
               <Shimmer className="h-2.5 w-2/3" />
             </div>
@@ -943,10 +943,10 @@ const RestaurantRow: React.FC<{
         disabled={!restaurant.isOpen}
         onClick={() => onSelect?.(restaurant)}
         aria-label={`Order ${restaurant.name} on Swiggy`}
-        className="flex w-full gap-3.5 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed"
+        className="flex w-full gap-3.5 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed sm:gap-4 sm:p-4"
       >
         <div
-          className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg"
+          className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg sm:h-20 sm:w-20"
           style={{ backgroundColor: COLOR.saffronTint }}
         >
           {restaurant.imageUrl && !imageFailed ? (
@@ -958,21 +958,21 @@ const RestaurantRow: React.FC<{
               className="h-full w-full object-cover"
             />
           ) : (
-            <UtensilsIcon className="h-6 w-6" style={{ color: COLOR.saffronDark } as React.CSSProperties} />
+            <UtensilsIcon className="h-6 w-6 sm:h-7 sm:w-7" style={{ color: COLOR.saffronDark } as React.CSSProperties} />
           )}
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="line-clamp-2 text-sm font-semibold leading-snug" style={{ color: COLOR.ink }}>
+          <p className="line-clamp-2 text-sm font-semibold leading-snug sm:text-base" style={{ color: COLOR.ink }}>
             {restaurant.name}
           </p>
           {cuisines && (
-            <p className="mt-0.5 truncate text-[11px]" style={{ color: COLOR.inkFaint }}>
+            <p className="mt-0.5 truncate text-[11px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
               {cuisines}
             </p>
           )}
           {meta.length > 0 && (
-            <p className="mt-1.5 text-[11px]" style={{ color: COLOR.inkSoft }}>
+            <p className="mt-1.5 text-[11px] sm:text-xs" style={{ color: COLOR.inkSoft }}>
               {meta.join(" · ")}
             </p>
           )}
@@ -980,7 +980,7 @@ const RestaurantRow: React.FC<{
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
             {!restaurant.isOpen && (
               <span
-                className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                className="rounded-full px-2 py-0.5 text-[10px] font-semibold sm:text-[11px]"
                 style={{ backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
               >
                 Closed
@@ -988,7 +988,7 @@ const RestaurantRow: React.FC<{
             )}
             {restaurant.veg && (
               <span
-                className="rounded-full border px-2 py-0.5 text-[10px] font-semibold"
+                className="rounded-full border px-2 py-0.5 text-[10px] font-semibold sm:text-[11px]"
                 style={{ borderColor: COLOR.border, color: COLOR.inkSoft }}
               >
                 Veg
@@ -996,7 +996,7 @@ const RestaurantRow: React.FC<{
             )}
             {restaurant.offer && (
               <span
-                className="max-w-full truncate rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                className="max-w-full truncate rounded-full px-2 py-0.5 text-[10px] font-semibold sm:text-[11px]"
                 style={{ backgroundColor: COLOR.saffronDark, color: COLOR.surface }}
               >
                 {restaurant.offer}
@@ -1065,7 +1065,7 @@ const TicketTabs: React.FC<{
         const current = order[activeIndex] === t.key;
         const label = (
           <span
-            className="shrink-0 text-[11px] font-semibold tracking-wide transition-colors"
+            className="shrink-0 text-[11px] font-semibold tracking-wide transition-colors sm:text-xs"
             style={{ color: current ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint }}
           >
             {i + 1} · {t.label}
@@ -1116,39 +1116,39 @@ const TicketTabs: React.FC<{
 const EmptyAddresses: React.FC = () => (
   <div className="py-10 text-center">
     <span
-      className="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
+      className="mx-auto flex h-12 w-12 items-center justify-center rounded-full sm:h-14 sm:w-14"
       style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
     >
-      <PinIcon className="h-6 w-6" />
+      <PinIcon className="h-6 w-6 sm:h-7 sm:w-7" />
     </span>
-    <h4 className="mt-4 text-base font-semibold" style={{ color: COLOR.ink }}>
+    <h4 className="mt-4 text-base font-semibold sm:text-lg" style={{ color: COLOR.ink }}>
       No delivery address found
     </h4>
-    <p className="mt-1.5 text-sm" style={{ color: COLOR.inkSoft }}>
+    <p className="mt-1.5 text-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
       Add an address to your Swiggy account first.
     </p>
   </div>
 );
 
 const SingleAddressConfirm: React.FC<{ address: SwiggyAddress }> = ({ address }) => (
-  <div className="rounded-xl border-2 px-4 py-4" style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}>
+  <div className="rounded-xl border-2 px-4 py-4 sm:px-5 sm:py-5" style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}>
     <div className="flex items-start gap-3.5">
       <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10"
         style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
       >
         <PinIcon className="h-4 w-4" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
+        <p className="text-sm font-semibold sm:text-base" style={{ color: COLOR.ink }}>
           {address.addressTag || address.addressCategory || "Address"}
         </p>
-        <p className="mt-0.5 text-xs leading-relaxed" style={{ color: COLOR.inkSoft }}>
+        <p className="mt-0.5 text-xs leading-relaxed sm:text-sm" style={{ color: COLOR.inkSoft }}>
           {address.addressLine}
         </p>
       </div>
     </div>
-    <p className="mt-3 text-xs font-medium" style={{ color: COLOR.saffronDark }}>
+    <p className="mt-3 text-xs font-medium sm:text-sm" style={{ color: COLOR.saffronDark }}>
       Only saved address · delivering here
     </p>
   </div>
@@ -1173,7 +1173,7 @@ const AddressList: React.FC<{
           role="radio"
           aria-checked={selected}
           onClick={() => onSelectAddress?.(address.id)}
-          className="w-full animate-fade-in-up rounded-xl border-2 px-4 py-3.5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+          className="w-full animate-fade-in-up rounded-xl border-2 px-4 py-3.5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 sm:px-5 sm:py-4"
           style={{
             borderColor: selected ? COLOR.saffron : COLOR.border,
             backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
@@ -1184,7 +1184,7 @@ const AddressList: React.FC<{
         >
           <div className="flex items-center gap-3.5">
             <span
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full sm:h-9 sm:w-9"
               style={{
                 backgroundColor: selected ? COLOR.saffron : COLOR.surfaceSunken,
                 color: selected ? COLOR.surface : COLOR.inkFaint,
@@ -1194,10 +1194,10 @@ const AddressList: React.FC<{
             </span>
 
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
+              <p className="text-sm font-semibold sm:text-base" style={{ color: COLOR.ink }}>
                 {address.addressTag || address.addressCategory || "Address"}
               </p>
-              <p className="mt-0.5 text-xs leading-relaxed" style={{ color: COLOR.inkSoft }}>
+              <p className="mt-0.5 text-xs leading-relaxed sm:text-sm" style={{ color: COLOR.inkSoft }}>
                 {address.addressLine}
               </p>
             </div>
@@ -1524,7 +1524,7 @@ useEffect(() => {
         role="dialog"
         aria-modal="true"
         aria-labelledby="swiggy-modal-title"
-        className="flex h-[75vh] w-full max-w-md flex-col rounded-t-3xl border shadow-2xl sm:max-w-xl sm:rounded-3xl lg:max-w-2xl"
+        className="flex h-[75vh] w-full max-w-md flex-col rounded-t-3xl border shadow-2xl sm:max-w-xl sm:rounded-3xl lg:max-w-2xl lg:h-[80vh]"
         style={{
           borderColor: COLOR.border,
           backgroundColor: COLOR.surface,
@@ -1537,7 +1537,7 @@ useEffect(() => {
       >
         {/* Header */}
         <div
-          className="touch-none rounded-t-3xl px-5 pb-4 pt-3 cursor-grab active:cursor-grabbing sm:cursor-auto sm:px-6 sm:pt-5"
+          className="touch-none rounded-t-3xl px-5 pb-4 pt-3 cursor-grab active:cursor-grabbing sm:cursor-auto sm:px-8 sm:pt-6"
           style={{ backgroundColor: COLOR.surfaceSunken }}
           onPointerDown={handleDragStart}
           onPointerMove={handleDragMove}
@@ -1547,17 +1547,17 @@ useEffect(() => {
           <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.border }} aria-hidden="true" />
 
           <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center">
-                {type === "instamart" ? <GroceryHeaderIcon className="h-11 w-11" /> : <DishHeaderIcon className="h-11 w-11" />}
+            <div className="flex items-start gap-3 sm:gap-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center sm:h-14 sm:w-14">
+                {type === "instamart" ? <GroceryHeaderIcon className="h-11 w-11 sm:h-14 sm:w-14" /> : <DishHeaderIcon className="h-11 w-11 sm:h-14 sm:w-14" />}
               </span>
               <div>
-                <p className="text-xs font-semibold" style={{ color: COLOR.saffronDark }}>
+                <p className="text-xs font-semibold sm:text-sm" style={{ color: COLOR.saffronDark }}>
                   {type === "instamart" ? "Instamart Pickup" : "Swiggy Delivery"}
                 </p>
                 <h3
                   id="swiggy-modal-title"
-                  className="font-serif text-xl font-black leading-tight tracking-tight sm:text-2xl"
+                  className="font-serif text-xl font-black leading-tight tracking-tight sm:text-3xl"
                   style={{ color: COLOR.ink }}
                 >
                   {type === "instamart" ? "Get ingredients" : "Order this dish"}
@@ -1565,7 +1565,7 @@ useEffect(() => {
               </div>
             </div>
 
-            <div className="-mr-1 mt-0.5 flex items-center gap-1.5">
+            <div className="-mr-1 mt-0.5 flex items-center gap-1.5 sm:gap-2">
               <button
                 type="button"
                 onClick={triggerMinimize}
@@ -1623,23 +1623,23 @@ useEffect(() => {
         />
 
         {/* Scrollable content */}
-        <div className="modal-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
+        <div className="modal-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-8 sm:py-6">
           {needsSwiggyReconnect ? (
             <div className="py-10 text-center">
-              <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
-                <ReconnectIcon className="h-14 w-14" />
+              <span className="mx-auto flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16" aria-hidden="true">
+                <ReconnectIcon className="h-14 w-14 sm:h-16 sm:w-16" />
               </span>
-              <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+              <h4 className="mt-4 font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
                 Reconnect to Swiggy
               </h4>
-              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                 We tried signing you in a moment ago and it didn&apos;t go through. Let&apos;s try again.
               </p>
               {onRetrySwiggyLogin && (
                 <button
                   type="button"
                   onClick={onRetrySwiggyLogin}
-                  className="mt-5 inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  className="mt-5 inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:px-8 sm:py-3.5 sm:text-base"
                   style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                 >
                   Sign in to Swiggy
@@ -1651,11 +1651,11 @@ useEffect(() => {
               {error && (
                 <div
                   role="alert"
-                  className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
+                  className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed sm:px-5 sm:py-4 sm:text-base"
                   style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
                 >
                   <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full sm:h-8 sm:w-8"
                     style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
                   >
                     <InfoIcon className="h-4 w-4" />
@@ -1697,7 +1697,7 @@ useEffect(() => {
                     <EmptyAddresses />
                   ) : showAddressScreen ? (
                     <div>
-                      <p className="mb-4 text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
+                      <p className="mb-4 text-xs font-semibold sm:text-sm" style={{ color: COLOR.inkSoft }}>
                         {hasProducts ? "Change delivery address" : "Deliver ingredients to"}
                       </p>
                       {addresses && addresses.length === 1 ? (
@@ -1709,15 +1709,15 @@ useEffect(() => {
                   ) : noItemsAtAll ? (
                     <div className="py-10 text-center">
                       <span
-                        className="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
+                        className="mx-auto flex h-12 w-12 items-center justify-center rounded-full sm:h-14 sm:w-14"
                         style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
                       >
-                        <InfoIcon className="h-6 w-6" />
+                        <InfoIcon className="h-6 w-6 sm:h-7 sm:w-7" />
                       </span>
-                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                      <h4 className="mt-4 font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
                         We couldn&apos;t find these on Instamart
                       </h4>
-                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                         None of the missing ingredients are available for this address right now.
                       </p>
                       {onGoToAddress && (
@@ -1732,7 +1732,7 @@ useEffect(() => {
                       )}
                     </div>
                   ) : (
-                    <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
+                    <div className="animate-fade-in-up space-y-6 sm:space-y-7" style={{ animationDuration: "0.25s" }}>
                       {instamartNames.map((ingredientName) => {
                         const isPending = pendingIngredientNames?.includes(ingredientName);
                         const products = ingredientProducts?.[ingredientName] ?? [];
@@ -1741,12 +1741,12 @@ useEffect(() => {
 
                         return (
                           <div key={ingredientName}>
-                            <div className="mb-2 flex items-baseline justify-between gap-3">
-                              <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
+                            <div className="mb-2 flex items-baseline justify-between gap-3 sm:mb-3">
+                              <p className="text-sm font-semibold sm:text-base" style={{ color: COLOR.ink }}>
                                 {ingredientName}
                               </p>
                               {ingredientAmounts?.[ingredientName] && (
-                                <p className="shrink-0 text-[11px]" style={{ color: COLOR.inkFaint }}>
+                                <p className="shrink-0 text-[11px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
                                   {ingredientAmounts[ingredientName]}
                                 </p>
                               )}
@@ -1755,15 +1755,15 @@ useEffect(() => {
                             {isPending ? (
                               <div className="modal-scroll -mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
                                 {[1, 2, 3].map((i) => (
-                                  <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.border }}>
-                                    <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg" />
+                                  <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5 sm:w-36 sm:p-3" style={{ borderColor: COLOR.border }}>
+                                    <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg sm:h-20 sm:w-20" />
                                     <Shimmer className="mb-1.5 h-2.5 w-full" />
                                     <Shimmer className="h-2.5 w-2/3" />
                                   </div>
                                 ))}
                               </div>
                             ) : !products.some((p) => (p.variations ?? []).length > 0) ? (
-                              <p className="text-sm" style={{ color: COLOR.inkFaint }}>
+                              <p className="text-sm sm:text-base" style={{ color: COLOR.inkFaint }}>
                                 Not available at your address.
                               </p>
                             ) : (
@@ -1789,7 +1789,7 @@ useEffect(() => {
                                 />
 
                                 <div
-                                  className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6"
+                                  className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6 sm:gap-4 sm:px-5 sm:pt-7"
                                   style={{ perspective: "900px" }}
                                 >
                                   {products.flatMap((product) =>
@@ -1805,7 +1805,7 @@ useEffect(() => {
                                           disabled={unavailable}
                                           aria-pressed={selected}
                                           onClick={() => handlePickProduct(ingredientName, variation)}
-                                          className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+                                          className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-36 sm:p-3"
                                           style={{
                                             borderColor: selected ? COLOR.saffron : COLOR.border,
                                             backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
@@ -1821,19 +1821,19 @@ useEffect(() => {
                                           {selected && (
                                             <span
                                               aria-hidden="true"
-                                              className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full"
+                                              className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full sm:h-5 sm:w-5"
                                               style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                                             >
-                                              <CheckIcon className="h-2.5 w-2.5" />
+                                              <CheckIcon className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                                             </span>
                                           )}
 
                                           {variation.imageUrl && (
-                                            <span className="relative mx-auto mb-2.5 block h-14 w-14">
+                                            <span className="relative mx-auto mb-2.5 block h-14 w-14 sm:h-20 sm:w-20">
                                               <img
                                                 src={variation.imageUrl}
                                                 alt={product.displayName}
-                                                className="h-14 w-14 rounded-lg border bg-white object-cover"
+                                                className="h-14 w-14 rounded-lg border bg-white object-cover sm:h-20 sm:w-20"
                                                 style={{
                                                   borderColor: COLOR.border,
                                                   filter: "drop-shadow(0 6px 5px rgba(43,26,12,0.35))",
@@ -1849,20 +1849,20 @@ useEffect(() => {
                                               />
                                               <span
                                                 aria-hidden="true"
-                                                className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full"
+                                                className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full sm:w-12"
                                                 style={{ backgroundColor: "rgba(43,26,12,0.3)", filter: "blur(2.5px)" }}
                                               />
                                             </span>
                                           )}
 
-                                          <p className="line-clamp-2 text-xs font-medium leading-tight" style={{ color: COLOR.ink }}>
+                                          <p className="line-clamp-2 text-xs font-medium leading-tight sm:text-sm" style={{ color: COLOR.ink }}>
                                             {variation.quantityDescription}
                                           </p>
-                                          <p className="mt-1.5 text-sm font-bold tabular-nums" style={{ color: COLOR.saffronDark }}>
+                                          <p className="mt-1.5 text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.saffronDark }}>
                                             ₹{variation.price.offerPrice}
                                           </p>
                                           {unavailable && (
-                                            <p className="mt-0.5 text-[10px]" style={{ color: COLOR.inkFaint }}>
+                                            <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: COLOR.inkFaint }}>
                                               Unavailable
                                             </p>
                                           )}
@@ -1873,7 +1873,7 @@ useEffect(() => {
                                 </div>
 
                                 <div
-                                  className="relative h-[13px] border-t"
+                                  className="relative h-[13px] border-t sm:h-4"
                                   style={{
                                     borderColor: COLOR.border,
                                     background:
@@ -1891,26 +1891,26 @@ useEffect(() => {
                             )}
 
                             {!isPending && chosen && (
-                              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg px-3 py-2" style={{ backgroundColor: COLOR.surfaceSunken }}>
-                                <p className="min-w-0 text-xs" style={{ color: COLOR.inkSoft }}>
+                              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5" style={{ backgroundColor: COLOR.surfaceSunken }}>
+                                <p className="min-w-0 text-xs sm:text-sm" style={{ color: COLOR.inkSoft }}>
                                   <span className="font-semibold" style={{ color: COLOR.ink }}>
                                     {chosen.quantityDescription}
                                   </span>
                                 </p>
 
-                                <div className="flex shrink-0 items-center gap-2.5" role="group" aria-label={`Quantity for ${ingredientName}`}>
+                                <div className="flex shrink-0 items-center gap-2.5 sm:gap-3" role="group" aria-label={`Quantity for ${ingredientName}`}>
                                   <button
                                     type="button"
                                     onClick={() => onChangeQuantity?.(ingredientName, -1)}
                                     disabled={qty <= 1}
                                     aria-label={`Decrease quantity for ${ingredientName}`}
-                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
+                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
                                     style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
                                   >
                                     −
                                   </button>
 
-                                  <span className="w-4 text-center text-sm font-bold tabular-nums" style={{ color: COLOR.ink }} aria-live="polite">
+                                  <span className="w-4 text-center text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.ink }} aria-live="polite">
                                     {qty}
                                   </span>
 
@@ -1919,7 +1919,7 @@ useEffect(() => {
                                     onClick={() => onChangeQuantity?.(ingredientName, 1)}
                                     disabled={qty >= MAX_CART_QUANTITY}
                                     aria-label={`Increase quantity for ${ingredientName}`}
-                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
+                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
                                     style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
                                   >
                                     +
@@ -1944,7 +1944,7 @@ useEffect(() => {
                     <EmptyAddresses />
                   ) : showAddressScreen ? (
                     <div>
-                      <p className="mb-4 text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
+                      <p className="mb-4 text-xs font-semibold sm:text-sm" style={{ color: COLOR.inkSoft }}>
                         Deliver this dish to
                       </p>
                       {addresses && addresses.length === 1 ? (
@@ -1973,13 +1973,13 @@ useEffect(() => {
                     />
                   ) : restaurants.length === 0 ? (
                     <div className="py-10 text-center">
-                      <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
-                        <DishSearchIcon className="h-14 w-14" />
+                      <span className="mx-auto flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16" aria-hidden="true">
+                        <DishSearchIcon className="h-14 w-14 sm:h-16 sm:w-16" />
                       </span>
-                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                      <h4 className="mt-4 font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
                         {dishName ? `${dishName} isn't on Swiggy near you` : "Couldn't find this dish nearby"}
                       </h4>
-                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                         No restaurants delivering to this address have it on their menu right now.
                       </p>
                       {onGoToAddress && (
@@ -1995,30 +1995,30 @@ useEffect(() => {
                     </div>
                   ) : restaurants.every((restaurant) => !restaurant.isOpen) ? (
                     <div className="py-10 text-center">
-                      <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
-                        <ClosedStallIcon className="h-14 w-14" />
+                      <span className="mx-auto flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16" aria-hidden="true">
+                        <ClosedStallIcon className="h-14 w-14 sm:h-16 sm:w-16" />
                       </span>
-                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                      <h4 className="mt-4 font-serif text-xl font-black sm:text-2xl" style={{ color: COLOR.ink }}>
                         Found it - but they&apos;re closed right now
                       </h4>
-                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed sm:max-w-sm sm:text-base" style={{ color: COLOR.inkSoft }}>
                         {restaurants.length} {restaurants.length === 1 ? "place serves" : "places serve"}{" "}
                         {dishName ?? "this dish"} near you, just not at this hour.
                       </p>
 
-                      <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left">
+                      <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left sm:max-w-sm">
                         {restaurants.slice(0, 4).map((restaurant) => (
                           <li
                             key={restaurant.id}
-                            className="flex items-center justify-between gap-3 rounded-lg px-3 py-2"
+                            className="flex items-center justify-between gap-3 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5"
                             style={{ backgroundColor: COLOR.surfaceSunken }}
                           >
-                            <span className="min-w-0 truncate text-xs font-semibold" style={{ color: COLOR.ink }}>
+                            <span className="min-w-0 truncate text-xs font-semibold sm:text-sm" style={{ color: COLOR.ink }}>
                               {restaurant.name}
                             </span>
                             {restaurant.nextOpenText && (
                               <span
-                                className="shrink-0 text-[10px]"
+                                className="shrink-0 text-[10px] sm:text-xs"
                                 style={{ color: COLOR.saffronDark }}
                               >
                                 {restaurant.nextOpenText}
@@ -2027,7 +2027,7 @@ useEffect(() => {
                           </li>
                         ))}
                         {restaurants.length > 4 && (
-                          <li className="text-center text-[10px]" style={{ color: COLOR.inkFaint }}>
+                          <li className="text-center text-[10px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
                             +{restaurants.length - 4} more nearby
                           </li>
                         )}
@@ -2071,7 +2071,7 @@ useEffect(() => {
 
         {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && !cartAdded && hasAddresses && !showAddressScreen && !noItemsAtAll && (
           <div className={footerClass} style={{ borderColor: COLOR.border }}>
-            <div className="mb-2.5 flex items-center justify-between text-[11px]" style={{ color: COLOR.inkFaint }}>
+            <div className="mb-2.5 flex items-center justify-between text-[11px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
               <span>{selectedCount} of {instamartNames.length} picked</span>
               {selectedCount > 0 && <span style={{ color: COLOR.saffronDark }}>Ready</span>}
             </div>
