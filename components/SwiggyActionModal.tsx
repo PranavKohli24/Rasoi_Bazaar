@@ -1289,20 +1289,25 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
     }
   }, [type]);
 
-  useEffect(() => {
-    const onPopState = () => {
-      if (suppressNextPopRef.current) {
-        suppressNextPopRef.current = false;
-        pushedHistoryStateRef.current = false;
-        return;
-      }
-      if (!pushedHistoryStateRef.current) return;
+const onMinimizeRef = useRef(onMinimize);
+useEffect(() => {
+  onMinimizeRef.current = onMinimize;
+}, [onMinimize]);
+
+useEffect(() => {
+  const onPopState = () => {
+    if (suppressNextPopRef.current) {
+      suppressNextPopRef.current = false;
       pushedHistoryStateRef.current = false;
-      onMinimize();
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, [onMinimize]);
+      return;
+    }
+    if (!pushedHistoryStateRef.current) return;
+    pushedHistoryStateRef.current = false;
+    onMinimizeRef.current();
+  };
+  window.addEventListener("popstate", onPopState);
+  return () => window.removeEventListener("popstate", onPopState);
+}, []); // mounted once, never torn down by parent re-renders
 
   useEffect(() => {
     if (!type && pushedHistoryStateRef.current) {

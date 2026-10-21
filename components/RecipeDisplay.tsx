@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Recipe, Tip } from "../types";
 import {
@@ -1690,7 +1690,7 @@ const handlePrevStep = () => {
   };
 
   // Minimize keeps all state; Close resets the whole flow.
-  const handleMinimizeModal = () => setModalType(null);
+  const handleMinimizeModal = useCallback(() => setModalType(null), []);
 
   const handleCloseModal = () => {
     setModalType(null);
