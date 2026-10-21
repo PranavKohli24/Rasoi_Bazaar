@@ -1427,10 +1427,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "aluwadi": "patra",
   "patrode": "patra",
 
-  "kolkata egg roll": "egg roll (kolkata style)",
-  "egg kathi roll": "egg roll (kolkata style)",
-  "egg roll recipe": "egg roll (kolkata style)",
-
   "bread omlette": "bread omelette",
   "omelette bread": "bread omelette",
 
@@ -1447,6 +1443,98 @@ const MANUAL_ALIASES: Record<string, string> = {
 
   "cheese parantha": "cheese paratha",
   "cheese paratha recipe": "cheese paratha",
+
+    // dragon chicken, honey chilli potato, fried rice variants
+  "dragon chicken recipe": "dragon chicken",
+  "indo chinese dragon chicken": "dragon chicken",
+
+  "honey chilli potato recipe": "honey chilli potato",
+  "honey chili potato": "honey chilli potato",
+  "honey chilly potato": "honey chilli potato",
+
+  "egg fried rice recipe": "egg fried rice",
+  "anda fried rice": "egg fried rice",
+  "egg rice": "egg fried rice",
+
+  "chicken fried rice recipe": "chicken fried rice",
+  "chicken rice": "chicken fried rice",
+
+  // soups
+  "tomato soup recipe": "tomato soup",
+  "indian tomato soup": "tomato soup",
+  "tamatar soup": "tomato soup",
+  "tamatar ka soup": "tomato soup",
+
+  "sweet corn soup recipe": "sweet corn soup",
+  "corn soup": "sweet corn soup",
+  "makai soup": "sweet corn soup",
+  "bhutta soup": "sweet corn soup",
+
+  // breads
+  "tandoori roti recipe": "tandoori roti",
+  "tandoori chapati": "tandoori roti",
+
+  "pyaz paratha": "onion paratha (pyaz paratha)",
+  "pyaaz paratha": "onion paratha (pyaz paratha)",
+  "onion paratha": "onion paratha (pyaz paratha)",
+  "pyaz ka paratha": "onion paratha (pyaz paratha)",
+  "onion parantha": "onion paratha (pyaz paratha)",
+
+  // rice
+  "coconut rice recipe": "coconut rice",
+  "nariyal chawal": "coconut rice",
+  "thengai sadam": "coconut rice",
+  "khobra chawal": "coconut rice",
+
+  // mutton / kerala stews
+  "mutton korma recipe": "mutton korma",
+  "mutton qorma": "mutton korma",
+  "gosht korma": "mutton korma",
+
+  "kerala chicken stew recipe": "kerala chicken stew",
+  "chicken stew": "kerala chicken stew",
+  "kerala style chicken stew": "kerala chicken stew",
+  "chicken ishtu": "kerala chicken stew",
+
+  "kerala mutton stew recipe": "kerala mutton stew",
+  "mutton stew": "kerala mutton stew",
+  "mutton ishtu": "kerala mutton stew",
+  "kerala style mutton stew": "kerala mutton stew",
+
+  // anda paratha, fish tikka, shawarma
+  "egg paratha": "anda paratha",
+  "anda paratha recipe": "anda paratha",
+  "egg parantha": "anda paratha",
+
+  "fish tikka recipe": "fish tikka",
+  "machli tikka": "fish tikka",
+  "machhli tikka": "fish tikka",
+  "tandoori fish tikka": "fish tikka",
+
+  "shawarma": "chicken shawarma",
+  "chicken shawarma recipe": "chicken shawarma",
+  "shawarma roll": "chicken shawarma",
+  "chicken shawarma roll": "chicken shawarma",
+
+  // sweets and chaat
+  "coconut ladoo recipe": "coconut ladoo",
+  "nariyal ladoo": "coconut ladoo",
+  "nariyal laddu": "coconut ladoo",
+  "coconut laddu": "coconut ladoo",
+
+  "til ladoo recipe": "til ladoo",
+  "til laddu": "til ladoo",
+  "sesame ladoo": "til ladoo",
+  "sesame laddu": "til ladoo",
+  "tilgul ladoo": "til ladoo",
+
+  "besan halwa recipe": "besan halwa",
+  "besan ka halwa": "besan halwa",
+  "gram flour halwa": "besan halwa",
+
+  "fruit chaat recipe": "fruit chaat",
+  "fruit salad chaat": "fruit chaat",
+  "fruit chat": "fruit chaat",
 
 };
 
