@@ -47462,6 +47462,729 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nutrition": { "calories": 110, "protein": 1, "carbs": 27, "fat": 0 }
   },
 
+  // ============================================================
+// MANCHURIAN, 65, DRINKS, SWEETS & ROLLS
+// ============================================================
+
+  "chicken manchurian": {
+    "dishName": "Chicken Manchurian",
+    "image": "/dishes/chicken-manchurian.webp",
+    "description": "Crispy fried chicken pieces tossed in a tangy, garlicky Indo-Chinese sauce.",
+    "prepTime": "Approx. 40 minutes (plus 20 minutes marination)",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "400 g", "commonName": "Chicken", "englishName": "boneless chicken, bite-size pieces" },
+      { "amount": "2 tbsp", "commonName": "Corn Flour", "englishName": "cornflour" },
+      { "amount": "2 tbsp", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "1", "commonName": "Anda", "englishName": "egg" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper" },
+      { "amount": "1 tsp", "commonName": "Soy Sauce", "englishName": "soy sauce, for marinade" },
+      { "amount": "1 tbsp", "commonName": "Lehsun", "englishName": "garlic, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak", "englishName": "ginger, finely chopped" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, chopped" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, chopped" },
+      { "amount": "1 tbsp", "commonName": "Soy Sauce", "englishName": "soy sauce, for sauce" },
+      { "amount": "1 tbsp", "commonName": "Red Chilli Sauce", "englishName": "red chilli sauce" },
+      { "amount": "1 tbsp", "commonName": "Tomato Ketchup", "englishName": "tomato ketchup" },
+      { "amount": "1 tsp", "commonName": "Corn Flour", "englishName": "cornflour, for sauce" },
+      { "amount": "1/2 cup", "commonName": "Paani", "englishName": "water" },
+      { "amount": "2 cups", "commonName": "Tel", "englishName": "oil, for frying" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1 tbsp", "commonName": "Hara Pyaz", "englishName": "spring onion greens, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix chicken with cornflour, maida, egg, pepper, soy sauce and salt. Rest for 20 minutes." },
+      { "step": 2, "instruction": "Heat oil in a kadai on medium heat. Fry the chicken in batches until golden and cooked through, about 5 minutes. Drain and keep aside." },
+      { "step": 3, "instruction": "Pour out extra oil, leaving 1 tablespoon in the kadai. Add garlic, ginger and green chilli. Stir for 20 seconds." },
+      { "step": 4, "instruction": "Add onion and stir-fry for 1 minute on high heat." },
+      { "step": 5, "instruction": "Mix 1 teaspoon cornflour with 1/2 cup water to make a thin slurry." },
+      { "step": 6, "instruction": "Add soy sauce, chilli sauce and ketchup to the kadai, then pour in the cornflour slurry. Stir and cook for 1 to 2 minutes until it thickens into a glossy sauce.", "tip": { "title": "Check doneness", "content": "Cut a piece of fried chicken open to confirm there is no pink or raw centre before tossing it in sauce." } },
+      { "step": 7, "instruction": "Add the fried chicken and toss well to coat." },
+      { "step": 8, "instruction": "Garnish with spring onion and serve hot." }
+    ],
+    "notes": ["For a dry version, use less water in the slurry so the sauce clings tightly to the chicken."],
+    "nutrition": { "calories": 330, "protein": 25, "carbs": 20, "fat": 16 }
+  },
+
+  "paneer manchurian": {
+    "dishName": "Paneer Manchurian",
+    "image": "/dishes/paneer-manchurian.webp",
+    "description": "Crispy fried paneer cubes tossed in a tangy Indo-Chinese sauce with onion, capsicum and garlic.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "250 g", "commonName": "Paneer", "englishName": "paneer, cubed" },
+      { "amount": "3 tbsp", "commonName": "Corn Flour", "englishName": "cornflour" },
+      { "amount": "2 tbsp", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper" },
+      { "amount": "1 tbsp", "commonName": "Lehsun", "englishName": "garlic, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak", "englishName": "ginger, finely chopped" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, cut into chunks" },
+      { "amount": "1/2", "commonName": "Shimla Mirch", "englishName": "capsicum, cut into chunks" },
+      { "amount": "1 tbsp", "commonName": "Soy Sauce", "englishName": "soy sauce" },
+      { "amount": "1 tbsp", "commonName": "Red Chilli Sauce", "englishName": "red chilli sauce" },
+      { "amount": "1 tbsp", "commonName": "Tomato Ketchup", "englishName": "tomato ketchup" },
+      { "amount": "1 tsp", "commonName": "Corn Flour", "englishName": "cornflour, for sauce" },
+      { "amount": "1/2 cup", "commonName": "Paani", "englishName": "water" },
+      { "amount": "2 cups", "commonName": "Tel", "englishName": "oil, for frying" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "1 tbsp", "commonName": "Hara Pyaz", "englishName": "spring onion greens, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Toss paneer cubes with cornflour, maida, pepper and salt, with a little water to lightly coat each piece." },
+      { "step": 2, "instruction": "Heat oil in a kadai and fry the paneer in batches until light golden and crisp. Drain and keep aside." },
+      { "step": 3, "instruction": "Pour out extra oil, leaving 1 tablespoon. Add garlic and ginger, stir for 20 seconds." },
+      { "step": 4, "instruction": "Add onion and capsicum. Stir-fry on high heat for 1 to 2 minutes so they stay crunchy." },
+      { "step": 5, "instruction": "Mix 1 teaspoon cornflour with 1/2 cup water into a thin slurry." },
+      { "step": 6, "instruction": "Add soy sauce, chilli sauce and ketchup to the kadai, then pour in the slurry. Cook for 1 to 2 minutes until glossy and thickened.", "tip": { "title": "Fry paneer gently", "content": "Fry on medium heat so the paneer turns crisp outside but stays soft inside instead of turning rubbery." } },
+      { "step": 7, "instruction": "Add the fried paneer and toss gently to coat without breaking the pieces." },
+      { "step": 8, "instruction": "Garnish with spring onion and serve hot." }
+    ],
+    "notes": ["Serve immediately — paneer softens if left sitting in sauce too long."],
+    "nutrition": { "calories": 350, "protein": 14, "carbs": 24, "fat": 22 }
+  },
+
+  "paneer 65": {
+    "dishName": "Paneer 65",
+    "image": "/dishes/paneer-65.webp",
+    "description": "Crisp, spicy fried paneer cubes tossed with curry leaves, green chilli and a tangy yogurt-spice coating.",
+    "prepTime": "Approx. 35 minutes (plus 20 minutes marination)",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "250 g", "commonName": "Paneer", "englishName": "paneer, cubed" },
+      { "amount": "2 tbsp", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "Kashmiri red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "3 tbsp", "commonName": "Corn Flour", "englishName": "cornflour" },
+      { "amount": "2 tbsp", "commonName": "Chawal Ka Atta", "englishName": "rice flour" },
+      { "amount": "a few", "commonName": "Kadi Patta", "englishName": "curry leaves" },
+      { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies, slit" },
+      { "amount": "1 tsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "2 cups", "commonName": "Tel", "englishName": "oil, for frying" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix yogurt, ginger-garlic paste, chilli powder, turmeric and salt. Coat the paneer cubes well and rest for 20 minutes." },
+      { "step": 2, "instruction": "Just before frying, toss the marinated paneer with cornflour and rice flour so each piece gets a thin coating." },
+      { "step": 3, "instruction": "Heat oil in a kadai on medium heat. Fry the paneer in batches until golden and crisp. Drain and keep aside." },
+      { "step": 4, "instruction": "In 1 tablespoon of the same oil, add curry leaves and green chillies. Let them crackle for a few seconds.", "tip": { "title": "Keep paneer soft inside", "content": "Fry on medium heat, not very high, so the coating turns crisp without the paneer inside becoming tough." } },
+      { "step": 5, "instruction": "Add the fried paneer back in, squeeze lemon juice and toss everything together for 1 minute." },
+      { "step": 6, "instruction": "Serve hot as a starter." }
+    ],
+    "notes": ["A touch of red food colour is sometimes used for the bright red restaurant look, but it's optional."],
+    "nutrition": { "calories": 320, "protein": 14, "carbs": 18, "fat": 21 }
+  },
+
+  "jaljeera": {
+    "dishName": "Jaljeera",
+    "image": "/dishes/jaljeera.webp",
+    "description": "A tangy, spiced cumin-mint cooler, the perfect refreshing drink for hot days.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      { "item": "mixer", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "1/2 cup", "commonName": "Pudina", "englishName": "mint leaves" },
+      { "amount": "1/4 cup", "commonName": "Hara Dhaniya", "englishName": "coriander leaves" },
+      { "amount": "1 inch", "commonName": "Adrak", "englishName": "ginger" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, optional" },
+      { "amount": "1 tsp", "commonName": "Bhuna Jeera Powder", "englishName": "roasted cumin powder" },
+      { "amount": "1 tbsp", "commonName": "Imli", "englishName": "tamarind pulp" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1/2 tsp", "commonName": "Kala Namak", "englishName": "black salt" },
+      { "amount": "1/2 tsp", "commonName": "Amchur", "englishName": "dry mango powder" },
+      { "amount": "1 tbsp", "commonName": "Cheeni", "englishName": "sugar, adjust to taste" },
+      { "amount": "4 cups", "commonName": "Thanda Paani", "englishName": "chilled water" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+      { "amount": "as needed", "commonName": "Baraf", "englishName": "ice cubes" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Soak tamarind in 2 tablespoons warm water for 10 minutes, then mash and strain the pulp." },
+      { "step": 2, "instruction": "Add mint, coriander, ginger and green chilli to a mixer with a little water. Blend into a smooth paste." },
+      { "step": 3, "instruction": "Strain the paste through a sieve into a jug, pressing down to extract all the juice. Discard the fibre left behind.", "tip": { "title": "Smooth texture", "content": "Straining removes the fibrous bits of mint and coriander for a clear, drinkable jaljeera." } },
+      { "step": 4, "instruction": "Add tamarind pulp, roasted cumin powder, lemon juice, black salt, amchur, sugar and salt to the strained liquid." },
+      { "step": 5, "instruction": "Mix in the chilled water and stir well. Taste and adjust sourness, salt or sugar." },
+      { "step": 6, "instruction": "Serve over ice, garnished with a mint sprig." }
+    ],
+    "notes": ["Chill the mixture for at least 30 minutes before serving for the best refreshing taste."],
+    "nutrition": { "calories": 35, "protein": 1, "carbs": 9, "fat": 0 }
+  },
+
+  "thandai": {
+    "dishName": "Thandai",
+    "image": "/dishes/thandai.webp",
+    "description": "A rich, chilled milk drink blended with almonds, fennel, cardamom and other aromatic spices, popular during festivals.",
+    "prepTime": "Approx. 20 minutes (plus 2 hours soaking)",
+    "equipment": [
+      { "item": "mixer", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "15", "commonName": "Badam", "englishName": "almonds" },
+      { "amount": "1 tbsp", "commonName": "Kaju", "englishName": "cashews" },
+      { "amount": "1 tbsp", "commonName": "Kharbooja ke Beej", "englishName": "melon seeds (magaz)" },
+      { "amount": "1 tbsp", "commonName": "Saunf", "englishName": "fennel seeds" },
+      { "amount": "1 tbsp", "commonName": "Khus Khus", "englishName": "poppy seeds" },
+      { "amount": "10", "commonName": "Kali Mirch", "englishName": "whole black peppercorns" },
+      { "amount": "4", "commonName": "Elaichi", "englishName": "green cardamom pods" },
+      { "amount": "1 litre", "commonName": "Doodh", "englishName": "full-fat milk" },
+      { "amount": "4 tbsp", "commonName": "Cheeni", "englishName": "sugar, adjust to taste" },
+      { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron, optional" },
+      { "amount": "as needed", "commonName": "Baraf", "englishName": "ice cubes" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Soak almonds, cashews, melon seeds, fennel, poppy seeds, peppercorns and cardamom in 1/2 cup water for at least 2 hours." },
+      { "step": 2, "instruction": "Drain and blend the soaked mixture with a little milk into a very smooth paste." },
+      { "step": 3, "instruction": "Mix this paste into the remaining milk. Add sugar and saffron if using." },
+      { "step": 4, "instruction": "Strain through a fine sieve to remove any gritty bits, pressing well to extract all the flavour.", "tip": { "title": "Smooth thandai", "content": "A fine strainer or muslin cloth gives a silky texture rather than a gritty one." } },
+      { "step": 5, "instruction": "Refrigerate for at least 1 hour, or until well chilled." },
+      { "step": 6, "instruction": "Serve over ice, garnished with a few saffron strands or chopped nuts." }
+    ],
+    "notes": ["Soaking the nuts and seeds softens them so they blend smoothly instead of staying gritty."],
+    "nutrition": { "calories": 180, "protein": 7, "carbs": 15, "fat": 11 }
+  },
+
+  "badam milk": {
+    "dishName": "Badam Milk",
+    "image": "/dishes/badam-milk.webp",
+    "description": "Warm or chilled almond milk flavoured with cardamom and saffron, a comforting Indian classic.",
+    "prepTime": "Approx. 20 minutes (plus 1 hour soaking)",
+    "equipment": [
+      { "item": "mixer", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "15", "commonName": "Badam", "englishName": "almonds, soaked 1 hour" },
+      { "amount": "1 litre", "commonName": "Doodh", "englishName": "full-fat milk" },
+      { "amount": "3 tbsp", "commonName": "Cheeni", "englishName": "sugar, adjust to taste" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+      { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron" },
+      { "amount": "1 tbsp", "commonName": "Pista", "englishName": "chopped pistachios, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Peel the soaked almonds by gently pressing them between your fingers." },
+      { "step": 2, "instruction": "Blend the peeled almonds with 1/2 cup milk into a very smooth paste." },
+      { "step": 3, "instruction": "Heat the remaining milk in a kadai on medium heat. Bring it to a gentle boil." },
+      { "step": 4, "instruction": "Stir in the almond paste and simmer for 8 to 10 minutes, stirring often so it does not stick to the bottom." },
+      { "step": 5, "instruction": "Add sugar, cardamom powder and saffron. Simmer for 2 more minutes.", "tip": { "title": "Smooth finish", "content": "Blending the almonds very smooth prevents a grainy texture in the final milk." } },
+      { "step": 6, "instruction": "Serve warm, or chill in the fridge and serve cold. Garnish with chopped pistachios." }
+    ],
+    "notes": ["Peeling the almonds gives a smoother, paler milk; skip it for a quicker, slightly nuttier version."],
+    "nutrition": { "calories": 190, "protein": 8, "carbs": 18, "fat": 10 }
+  },
+
+  "kesar doodh": {
+    "dishName": "Kesar Doodh",
+    "image": "/dishes/kesar-doodh.webp",
+    "description": "Warm, fragrant saffron milk flavoured with cardamom, a simple and comforting bedtime drink.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 cups", "commonName": "Doodh", "englishName": "full-fat milk" },
+      { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron" },
+      { "amount": "1 tbsp", "commonName": "Gunguna Doodh", "englishName": "warm milk, for soaking saffron" },
+      { "amount": "2 tbsp", "commonName": "Cheeni", "englishName": "sugar, adjust to taste" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+      { "amount": "1 tbsp", "commonName": "Badam aur Pista", "englishName": "chopped almonds and pistachios, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Soak the saffron strands in 1 tablespoon warm milk for 10 minutes so the colour and aroma release." },
+      { "step": 2, "instruction": "Heat the milk in a kadai on medium heat. Bring it to a gentle boil." },
+      { "step": 3, "instruction": "Lower the heat and simmer for 3 to 4 minutes, stirring occasionally." },
+      { "step": 4, "instruction": "Add sugar, cardamom powder and the soaked saffron milk. Stir well.", "tip": { "title": "Release saffron flavour", "content": "Rubbing the saffron strands gently between your fingers before soaking helps release more colour and aroma." } },
+      { "step": 5, "instruction": "Simmer for 2 more minutes, then turn off the heat." },
+      { "step": 6, "instruction": "Pour into cups, garnish with chopped nuts and serve warm." }
+    ],
+    "notes": ["Kesar doodh is traditionally served warm, especially before bedtime."],
+    "nutrition": { "calories": 150, "protein": 7, "carbs": 16, "fat": 7 }
+  },
+
+  "balushahi": {
+    "dishName": "Balushahi",
+    "image": "/dishes/balushahi.webp",
+    "description": "A traditional North Indian sweet with a flaky, crisp outside and soft centre, deep-fried and dipped in cardamom sugar syrup.",
+    "prepTime": "Approx. 1 hour 30 minutes",
+    "equipment": [
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "2 cups", "commonName": "Maida", "englishName": "all-purpose flour" },
+      { "amount": "1/4 tsp", "commonName": "Baking Soda", "englishName": "baking soda" },
+      { "amount": "1/4 cup", "commonName": "Ghee", "englishName": "ghee, melted and cooled" },
+      { "amount": "3 tbsp", "commonName": "Dahi", "englishName": "thick curd, whisked" },
+      { "amount": "as needed", "commonName": "Paani", "englishName": "cold water, as needed" },
+      { "amount": "1.5 cups", "commonName": "Cheeni", "englishName": "sugar, for syrup" },
+      { "amount": "3/4 cup", "commonName": "Paani", "englishName": "water, for syrup" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+      { "amount": "2 cups", "commonName": "Ghee ya Tel", "englishName": "ghee or oil, for deep frying" },
+      { "amount": "1 tbsp", "commonName": "Pista", "englishName": "slivered pistachios, for garnish" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix maida and baking soda in a bowl. Add the melted ghee and rub it into the flour with your fingertips until it feels like coarse breadcrumbs." },
+      { "step": 2, "instruction": "Add the whisked curd and gently bring the dough together, using a little cold water only if needed. Do not knead hard — just bring it together into a soft, slightly crumbly dough." },
+      { "step": 3, "instruction": "Cover and rest the dough for 20 minutes." },
+      { "step": 4, "instruction": "Boil sugar and water together for 5 to 6 minutes until you get a slightly sticky, one-string syrup. Add cardamom powder and keep the syrup warm." },
+      { "step": 5, "instruction": "Divide the dough into small balls. Flatten each slightly and press a small dent in the centre with your thumb.", "tip": { "title": "The thumb dent", "content": "This dent helps the balushahi cook evenly and puff up properly while frying." } },
+      { "step": 6, "instruction": "Heat ghee or oil in a kadai on low heat — it should be just warm, not hot. Gently slide in the balushahis." },
+      { "step": 7, "instruction": "Fry on low heat for 12 to 15 minutes, turning occasionally, until deep golden and cooked through from inside." },
+      { "step": 8, "instruction": "Drain and, while still warm, dip each balushahi in the warm sugar syrup for 3 to 4 minutes." },
+      { "step": 9, "instruction": "Remove, garnish with pistachios and let them cool and set before serving." }
+    ],
+    "notes": ["Frying on low heat is essential — high heat browns the outside before the inside cooks through."],
+    "nutrition": { "calories": 200, "protein": 2, "carbs": 28, "fat": 10 }
+  },
+
+  "veggie roll": {
+    "dishName": "Veggie Roll",
+    "image": "/dishes/veggie-roll.webp",
+    "description": "A simple homemade roll with stir-fried mixed vegetables, onion and chutney wrapped in a soft paratha.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "1 cup", "commonName": "Mishrit Sabzi", "englishName": "mixed vegetables (capsicum, cabbage, carrot), julienned" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "1 tsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1/2 tsp", "commonName": "Jeera", "englishName": "cumin seeds" },
+      { "amount": "1/2 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Heat oil in a kadai. Add cumin seeds and let them sizzle." },
+      { "step": 2, "instruction": "Add ginger-garlic paste and onion, cook for 1 minute." },
+      { "step": 3, "instruction": "Add the mixed vegetables, chilli powder, garam masala and salt. Stir-fry on high heat for 3 to 4 minutes so they stay slightly crunchy." },
+      { "step": 4, "instruction": "Turn off the heat and squeeze in lemon juice." },
+      { "step": 5, "instruction": "Warm the roti or paratha on a tawa.", "tip": { "title": "Keep it crisp", "content": "Warm the bread just before rolling so it stays soft and doesn't tear when you roll it tight." } },
+      { "step": 6, "instruction": "Spread green chutney on the roti, add the stir-fried vegetables down the centre." },
+      { "step": 7, "instruction": "Roll tightly and serve hot, wrapped in paper if desired." }
+    ],
+    "notes": ["Keep the vegetables crunchy — overcooking makes the roll soggy."],
+    "nutrition": { "calories": 280, "protein": 6, "carbs": 42, "fat": 10 }
+  },
+
+  "achari paneer roll": {
+    "dishName": "Achari Paneer Roll",
+    "image": "/dishes/achari-paneer-roll.webp",
+    "description": "Soft paratha rolled with tangy pickle-spiced paneer and onion, a flavourful twist on the classic paneer roll.",
+    "prepTime": "Approx. 40 minutes (plus 20 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "250 g", "commonName": "Paneer", "englishName": "paneer, cut into strips" },
+      { "amount": "2 tbsp", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tsp", "commonName": "Rai", "englishName": "mustard seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Saunf", "englishName": "fennel seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Methi Dana", "englishName": "fenugreek seeds, crushed" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/4 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "mustard oil or cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix yogurt with crushed mustard, fennel, fenugreek seeds, chilli powder, turmeric, lemon juice and salt." },
+      { "step": 2, "instruction": "Coat the paneer strips in this achari marinade and rest for 20 minutes." },
+      { "step": 3, "instruction": "Heat oil in a kadai. Add the marinated paneer and cook on medium heat for 4 to 5 minutes, turning gently, until lightly browned." },
+      { "step": 4, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 5, "instruction": "Spread green chutney on the warm bread, add the achari paneer and sliced onion.", "tip": { "title": "Don't overcook paneer", "content": "Cook just until lightly browned — overcooking makes paneer chewy." } },
+      { "step": 6, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Mustard oil gives an authentic achari (pickle-style) flavour, but regular oil works too."],
+    "nutrition": { "calories": 320, "protein": 14, "carbs": 36, "fat": 15 }
+  },
+
+  "masala chaap roll": {
+    "dishName": "Masala Chaap Roll",
+    "image": "/dishes/masala-chaap-roll.webp",
+    "description": "Soft paratha rolled with spicy, pan-cooked soy chaap, onion and chutney — a popular vegetarian street-food roll.",
+    "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Soy Chaap", "englishName": "soy chaap, prepared and cut into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/2 tsp", "commonName": "Jeera Powder", "englishName": "roasted cumin powder" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Prepare the soy chaap according to the package instructions, then cut into thick strips." },
+      { "step": 2, "instruction": "Mix yogurt, ginger-garlic paste, chilli powder, garam masala, cumin powder, lemon juice and salt into a marinade." },
+      { "step": 3, "instruction": "Coat the chaap strips well and rest for 30 minutes." },
+      { "step": 4, "instruction": "Heat oil in a kadai and cook the marinated chaap on medium heat, turning often, until heated through and lightly charred at the edges, about 10 to 12 minutes.", "tip": { "title": "No oven needed", "content": "A hot kadai works just as well as an oven for cooking marinated chaap — just keep turning the pieces for even colour." } },
+      { "step": 5, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 6, "instruction": "Spread green chutney, add the cooked chaap and sliced onion." },
+      { "step": 7, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Check the soy chaap package instructions, as preparation can vary slightly by brand."],
+    "nutrition": { "calories": 340, "protein": 16, "carbs": 40, "fat": 13 }
+  },
+
+  "achari chaap roll": {
+    "dishName": "Achari Chaap Roll",
+    "image": "/dishes/achari-chaap-roll.webp",
+    "description": "Tangy, pickle-spiced soy chaap rolled in a soft paratha with onion and chutney.",
+    "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Soy Chaap", "englishName": "soy chaap, prepared and cut into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tsp", "commonName": "Rai", "englishName": "mustard seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Saunf", "englishName": "fennel seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Methi Dana", "englishName": "fenugreek seeds, crushed" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/4 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "mustard oil or cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Prepare the soy chaap according to the package instructions, then cut into thick strips." },
+      { "step": 2, "instruction": "Mix yogurt with crushed mustard, fennel, fenugreek seeds, chilli powder, turmeric, lemon juice and salt." },
+      { "step": 3, "instruction": "Coat the chaap in this achari marinade and rest for 30 minutes." },
+      { "step": 4, "instruction": "Heat oil in a kadai and cook the chaap on medium heat, turning often, until heated through and lightly browned, about 10 minutes.", "tip": { "title": "Mustard oil flavour", "content": "Heat mustard oil until it just smokes before adding the chaap for the authentic sharp achari taste." } },
+      { "step": 5, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 6, "instruction": "Spread green chutney, add the achari chaap and sliced onion." },
+      { "step": 7, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Crushing the whole spices just before use gives a much stronger achari flavour than pre-ground powders."],
+    "nutrition": { "calories": 335, "protein": 16, "carbs": 40, "fat": 12 }
+  },
+
+  "tandoori chaap roll": {
+    "dishName": "Tandoori Chaap Roll",
+    "image": "/dishes/tandoori-chaap-roll.webp",
+    "description": "Smoky, charred tandoori-style soy chaap rolled in a soft paratha, finished with mint chutney and onion.",
+    "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Soy Chaap", "englishName": "soy chaap, prepared and cut into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "Kashmiri red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "mint chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Prepare the soy chaap according to the package instructions, then cut into thick strips." },
+      { "step": 2, "instruction": "Mix yogurt, ginger-garlic paste, chilli powder, garam masala, lemon juice and salt into a smooth marinade." },
+      { "step": 3, "instruction": "Coat the chaap well and rest for 30 minutes." },
+      { "step": 4, "instruction": "Heat oil in a kadai on high heat. Cook the marinated chaap, turning often, until heated through and charred at the edges, about 8 to 10 minutes.", "tip": { "title": "Get the char", "content": "Keep the heat high and don't move the chaap too often — letting it sit briefly gives nice tandoori-style char marks." } },
+      { "step": 5, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 6, "instruction": "Spread mint chutney, add the charred chaap and sliced onion." },
+      { "step": 7, "instruction": "Roll tightly and serve hot with lemon wedges." }
+    ],
+    "notes": ["Use Kashmiri red chilli powder for a bright red colour without too much heat."],
+    "nutrition": { "calories": 330, "protein": 16, "carbs": 40, "fat": 11 }
+  },
+
+  "chicken roll": {
+    "dishName": "Chicken Roll",
+    "image": "/dishes/chicken-roll.webp",
+    "description": "A classic street-style roll with spiced, pan-cooked chicken, onion and chutney wrapped in a soft paratha.",
+    "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Chicken", "englishName": "boneless chicken, sliced into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix yogurt, ginger-garlic paste, chilli powder, garam masala, lemon juice and salt into a marinade." },
+      { "step": 2, "instruction": "Coat the chicken strips and rest for 30 minutes." },
+      { "step": 3, "instruction": "Heat oil in a kadai. Cook the marinated chicken on medium-high heat, stirring often, until fully cooked and lightly browned, about 8 to 10 minutes.", "tip": { "title": "Check doneness", "content": "Cut a thick piece open to make sure it's no longer pink inside before using it in the roll." } },
+      { "step": 4, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 5, "instruction": "Spread green chutney, add the cooked chicken and sliced onion." },
+      { "step": 6, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Slicing the chicken thin helps it cook quickly and evenly."],
+    "nutrition": { "calories": 350, "protein": 24, "carbs": 36, "fat": 13 }
+  },
+
+  "chicken malai tikka roll": {
+    "dishName": "Chicken Malai Tikka Roll",
+    "image": "/dishes/chicken-malai-tikka-roll.webp",
+    "description": "Creamy, mildly spiced malai chicken tikka rolled in a soft paratha with onion and mint chutney.",
+    "prepTime": "Approx. 45 minutes (plus 1 hour marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Chicken", "englishName": "boneless chicken, cut into strips" },
+      { "amount": "1/4 cup", "commonName": "Malai", "englishName": "fresh cream" },
+      { "amount": "2 tbsp", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1/2 tsp", "commonName": "Kali Mirch", "englishName": "black pepper, crushed" },
+      { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "green cardamom powder" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "mint chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix cream, yogurt, ginger-garlic paste, pepper, cardamom powder, lemon juice and salt into a smooth marinade." },
+      { "step": 2, "instruction": "Coat the chicken strips well and refrigerate for at least 1 hour." },
+      { "step": 3, "instruction": "Heat oil on a tawa over medium heat. Cook the chicken, turning often, until fully cooked through and lightly golden, about 10 to 12 minutes.", "tip": { "title": "Keep it creamy, not charred", "content": "Malai tikka should stay pale and soft rather than deeply browned — cook on medium heat and avoid rushing it." } },
+      { "step": 4, "instruction": "Warm the roti or paratha on the tawa." },
+      { "step": 5, "instruction": "Spread mint chutney, add the cooked chicken and sliced onion." },
+      { "step": 6, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Malai tikka is meant to be mild and creamy — go light on the chilli."],
+    "nutrition": { "calories": 380, "protein": 24, "carbs": 36, "fat": 18 }
+  },
+
+  "chicken seekh roll": {
+    "dishName": "Chicken Seekh Roll",
+    "image": "/dishes/chicken-seekh-roll.webp",
+    "description": "Juicy spiced minced chicken kababs, pan-cooked and rolled in a soft paratha with onion and chutney.",
+    "prepTime": "Approx. 45 minutes (plus 20 minutes resting)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "350 g", "commonName": "Chicken Keema", "englishName": "chicken mince" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/2 tsp", "commonName": "Jeera Powder", "englishName": "roasted cumin powder" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves, chopped" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, sliced, for the roll" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix chicken mince with chopped onion, green chilli, ginger-garlic paste, garam masala, cumin powder, coriander, lemon juice and salt." },
+      { "step": 2, "instruction": "Mix firmly with your hand until it becomes slightly sticky, then rest for 20 minutes." },
+      { "step": 3, "instruction": "Wet your hands and shape the mixture into long, flat kabab shapes." },
+      { "step": 4, "instruction": "Heat oil on a tawa over medium heat. Cook the kababs, turning gently, until browned outside and fully cooked through, about 10 to 12 minutes.", "tip": { "title": "Shape them thin", "content": "Keep the seekh shapes thin and flat — they cook through more evenly on a flat tawa than thick ones." } },
+      { "step": 5, "instruction": "Warm the roti or paratha on the tawa." },
+      { "step": 6, "instruction": "Spread green chutney, add the seekh kabab (broken into pieces) and sliced onion." },
+      { "step": 7, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Cook chicken mince thoroughly — the thickest part should be opaque with no raw centre."],
+    "nutrition": { "calories": 370, "protein": 23, "carbs": 35, "fat": 16 }
+  },
+
+  "chicken keema roll": {
+    "dishName": "Chicken Keema Roll",
+    "image": "/dishes/chicken-keema-roll.webp",
+    "description": "Spicy, juicy minced chicken curry rolled into a soft paratha, a filling and flavourful everyday roll.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Chicken Keema", "englishName": "chicken mince" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1", "commonName": "Tamatar", "englishName": "tomato, chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, sliced, for the roll" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Heat oil in a kadai and cook onion until golden." },
+      { "step": 2, "instruction": "Add ginger-garlic paste and cook for a minute." },
+      { "step": 3, "instruction": "Add tomato, turmeric, chilli powder and salt. Cook until the tomato softens." },
+      { "step": 4, "instruction": "Add chicken keema and cook on medium-high heat, breaking up lumps with a spoon, until fully cooked and dry, about 12 to 15 minutes.", "tip": { "title": "Keep it dry for rolling", "content": "Cook off most of the moisture so the keema doesn't make the roll soggy." } },
+      { "step": 5, "instruction": "Sprinkle garam masala and coriander, mix well." },
+      { "step": 6, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 7, "instruction": "Spread green chutney, add the keema and sliced onion. Roll tightly and serve hot." }
+    ],
+    "notes": ["Cook the keema until fully done with no pink remaining before rolling."],
+    "nutrition": { "calories": 360, "protein": 22, "carbs": 37, "fat": 14 }
+  },
+
+  "achari chicken roll": {
+    "dishName": "Achari Chicken Roll",
+    "image": "/dishes/achari-chicken-roll.webp",
+    "description": "Tangy pickle-spiced chicken, pan-cooked and rolled in a soft paratha with onion and chutney.",
+    "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "kadai", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Chicken", "englishName": "boneless chicken, sliced into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tsp", "commonName": "Rai", "englishName": "mustard seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Saunf", "englishName": "fennel seeds, crushed" },
+      { "amount": "1/2 tsp", "commonName": "Methi Dana", "englishName": "fenugreek seeds, crushed" },
+      { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "1/4 tsp", "commonName": "Haldi", "englishName": "turmeric" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "mustard oil or cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "green chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix yogurt with crushed mustard, fennel, fenugreek seeds, chilli powder, turmeric, lemon juice and salt." },
+      { "step": 2, "instruction": "Coat the chicken strips in this achari marinade and rest for 30 minutes." },
+      { "step": 3, "instruction": "Heat oil in a kadai. Cook the chicken on medium-high heat, stirring often, until fully cooked through, about 8 to 10 minutes.", "tip": { "title": "Check doneness", "content": "Cut a thick piece open to confirm there's no raw or pink centre before serving." } },
+      { "step": 4, "instruction": "Warm the roti or paratha on a tawa." },
+      { "step": 5, "instruction": "Spread green chutney, add the achari chicken and sliced onion." },
+      { "step": 6, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Crush the whole spices fresh for the sharpest achari flavour."],
+    "nutrition": { "calories": 355, "protein": 24, "carbs": 36, "fat": 13 }
+  },
+
+  "tandoori chicken roll": {
+    "dishName": "Tandoori Chicken Roll",
+    "image": "/dishes/tandoori-chicken-roll.webp",
+    "description": "Smoky, char-grilled tandoori chicken rolled in a soft paratha with mint chutney and onion — a popular street-food favourite.",
+    "prepTime": "Approx. 45 minutes (plus 1 hour marination)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "300 g", "commonName": "Chicken", "englishName": "boneless chicken, sliced into strips" },
+      { "amount": "1/4 cup", "commonName": "Dahi", "englishName": "thick yogurt" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1.5 tsp", "commonName": "Lal Mirch Powder", "englishName": "Kashmiri red chilli powder" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/2 tsp", "commonName": "Jeera Powder", "englishName": "cumin powder" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1", "commonName": "Pyaaz", "englishName": "onion, sliced" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "mint chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix yogurt, ginger-garlic paste, chilli powder, garam masala, cumin powder, lemon juice and salt into a marinade." },
+      { "step": 2, "instruction": "Coat the chicken strips well and refrigerate for at least 1 hour." },
+      { "step": 3, "instruction": "Heat oil on a tawa over high heat. Cook the chicken, turning often, until fully cooked through with lightly charred edges, about 8 to 10 minutes.", "tip": { "title": "Get a smoky touch", "content": "For extra tandoori-style aroma, place a small piece of hot charcoal in a bowl, drizzle a little ghee on it and cover the cooked chicken with the bowl for 1 minute before using it (dhungar method) — optional." } },
+      { "step": 4, "instruction": "Warm the roti or paratha on the tawa." },
+      { "step": 5, "instruction": "Spread mint chutney, add the chicken and sliced onion." },
+      { "step": 6, "instruction": "Roll tightly and serve hot with lemon wedges." }
+    ],
+    "notes": ["The smoking step is optional and purely for extra flavour — the roll tastes great without it too."],
+    "nutrition": { "calories": 350, "protein": 24, "carbs": 36, "fat": 12 }
+  },
+
+  "mutton seekh roll": {
+    "dishName": "Mutton Seekh Roll",
+    "image": "/dishes/mutton-seekh-roll.webp",
+    "description": "Spiced minced mutton kababs, pan-cooked and rolled in a soft paratha with onion and mint chutney.",
+    "prepTime": "Approx. 50 minutes (plus 20 minutes resting)",
+    "equipment": [
+      { "item": "tawa", "isSpecialized": false, "alternative": null },
+      { "item": "stove", "isSpecialized": false, "alternative": null }
+    ],
+    "ingredients": [
+      { "amount": "4", "commonName": "Roti ya Paratha", "englishName": "plain roti or paratha" },
+      { "amount": "350 g", "commonName": "Mutton Keema", "englishName": "mutton mince" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, finely chopped" },
+      { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+      { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, finely chopped" },
+      { "amount": "1/2 tsp", "commonName": "Garam Masala", "englishName": "garam masala" },
+      { "amount": "1/2 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+      { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "coriander leaves, chopped" },
+      { "amount": "1 tbsp", "commonName": "Nimbu Ras", "englishName": "lemon juice" },
+      { "amount": "1 small", "commonName": "Pyaaz", "englishName": "onion, sliced, for the roll" },
+      { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+      { "amount": "2 tbsp", "commonName": "Hara Chutney", "englishName": "mint chutney" },
+      { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    ],
+    "method": [
+      { "step": 1, "instruction": "Mix mutton mince with chopped onion, ginger-garlic paste, green chilli, spices, coriander, lemon juice and salt." },
+      { "step": 2, "instruction": "Mix firmly until it becomes sticky and binds well. Rest for 20 minutes." },
+      { "step": 3, "instruction": "Shape the mixture into long, flat kabab shapes with wet hands." },
+      { "step": 4, "instruction": "Heat oil on a tawa over medium heat. Cook the kababs slowly, turning carefully, until browned and cooked through, about 12 to 15 minutes.", "tip": { "title": "Cook through fully", "content": "Mutton mince needs a bit more time than chicken — keep the heat moderate so the centre cooks without burning the outside." } },
+      { "step": 5, "instruction": "Warm the roti or paratha on the tawa." },
+      { "step": 6, "instruction": "Spread mint chutney, add the seekh kabab (broken into pieces) and sliced onion." },
+      { "step": 7, "instruction": "Roll tightly and serve hot." }
+    ],
+    "notes": ["Mutton mince should be cooked completely before serving — check a piece from the thickest kabab."],
+    "nutrition": { "calories": 400, "protein": 22, "carbs": 35, "fat": 20 }
+  },
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -47797,4 +48520,25 @@ export const predefinedRecipeServings: Record<string, number> = {
   "semiya kheer (vermicelli kheer)": 4,
   "kerala vegetable stew (ishtu)": 4,
   "cheese paratha": 6,
+
+  "chicken manchurian": 4,
+  "paneer manchurian": 4,
+  "paneer 65": 4,
+  "jaljeera": 4,
+  "thandai": 4,
+  "badam milk": 4,
+  "kesar doodh": 2,
+  "balushahi": 12,
+  "veggie roll": 4,
+  "achari paneer roll": 4,
+  "masala chaap roll": 4,
+  "achari chaap roll": 4,
+  "tandoori chaap roll": 4,
+  "chicken roll": 4,
+  "chicken malai tikka roll": 4,
+  "chicken seekh roll": 4,
+  "chicken keema roll": 4,
+  "achari chicken roll": 4,
+  "tandoori chicken roll": 4,
+  "mutton seekh roll": 4,
 };

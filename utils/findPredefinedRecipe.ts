@@ -1536,6 +1536,78 @@ const MANUAL_ALIASES: Record<string, string> = {
   "fruit salad chaat": "fruit chaat",
   "fruit chat": "fruit chaat",
 
+  // manchurian, 65, drinks, sweets
+  "chicken manchurian recipe": "chicken manchurian",
+  "dry chicken manchurian": "chicken manchurian",
+  "gravy chicken manchurian": "chicken manchurian",
+
+  "paneer manchurian recipe": "paneer manchurian",
+  "dry paneer manchurian": "paneer manchurian",
+
+  "paneer 65 recipe": "paneer 65",
+  "paneer chilli 65": "paneer 65",
+
+  "jal jeera": "jaljeera",
+  "jaljira": "jaljeera",
+  "jal jeera recipe": "jaljeera",
+  "jaljeera recipe": "jaljeera",
+  "jeera water": "jaljeera",
+
+  "thandai recipe": "thandai",
+  "holi thandai": "thandai",
+  "kesar thandai": "thandai",
+
+  "badam doodh": "badam milk",
+  "almond milk": "badam milk",
+  "badam milk recipe": "badam milk",
+
+  "kesar milk": "kesar doodh",
+  "saffron milk": "kesar doodh",
+  "kesar doodh recipe": "kesar doodh",
+
+  "badusha": "balushahi",
+  "balushahi recipe": "balushahi",
+  "badusha recipe": "balushahi",
+
+  // rolls
+  "vegetable roll": "veggie roll",
+  "veg roll": "veggie roll",
+  "veggie roll recipe": "veggie roll",
+
+  "achari paneer kathi roll": "achari paneer roll",
+  "paneer achari roll": "achari paneer roll",
+
+  "chaap roll": "masala chaap roll",
+  "masala soya chaap roll": "masala chaap roll",
+  "soy chaap roll": "masala chaap roll",
+
+  "achari soya chaap roll": "achari chaap roll",
+  "chaap achari roll": "achari chaap roll",
+
+  "tandoori soya chaap roll": "tandoori chaap roll",
+  "chaap tandoori roll": "tandoori chaap roll",
+
+  "chicken kathi roll": "chicken roll",
+  "chicken roll recipe": "chicken roll",
+
+  "malai tikka roll": "chicken malai tikka roll",
+  "chicken malai roll": "chicken malai tikka roll",
+
+  "seekh roll": "chicken seekh roll",
+  "chicken seekh kathi roll": "chicken seekh roll",
+
+  "keema roll": "chicken keema roll",
+  "chicken keema kathi roll": "chicken keema roll",
+
+  "achari chicken kathi roll": "achari chicken roll",
+  "chicken achari roll": "achari chicken roll",
+
+  "tandoori chicken kathi roll": "tandoori chicken roll",
+  "chicken tandoori roll": "tandoori chicken roll",
+
+  "mutton seekh kathi roll": "mutton seekh roll",
+  "mutton roll": "mutton seekh roll",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
