@@ -440,7 +440,7 @@ return createPortal(
         role="dialog"
         aria-modal="true"
         aria-labelledby="order-tracker-title"
-        className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-3xl border shadow-2xl sm:max-h-[82vh] sm:rounded-3xl"
+        className="flex h-[75vh] w-full max-w-md shrink-0 flex-col rounded-t-3xl border shadow-2xl sm:max-w-xl sm:rounded-3xl lg:max-w-2xl"
         style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, boxShadow: "0 24px 48px rgba(43,26,12,0.25)" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -506,7 +506,7 @@ return createPortal(
         <div className="h-[3px]" style={{ background: `linear-gradient(180deg, ${COLOR.border}, transparent)` }} aria-hidden="true" />
 
         {/* Content */}
-        <div className="modal-scroll flex-1 overflow-y-auto px-5 py-5 sm:px-6">
+        <div className="modal-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
           {error && stage === "tracking" && (
             <div
               role="alert"
