@@ -57,37 +57,31 @@ interface SwiggyActionModalProps {
   onClose: () => void;
   dishName?: string;
   needsSwiggyReconnect?: boolean;
-  onRetrySwiggyLogin?: () => void;   
+  onRetrySwiggyLogin?: () => void;
 }
 
 type Step = "address" | "products" | "done";
 
 /* ------------------------------------------------------------------------
-   DESIGN CONCEPT — "order slip"
-
-   Both flows end the same way a kitchen or a grocery run always has: a
-   paper slip. So instead of a generic rounded-card wizard, the modal reads
-   like a ticket — clean solid rules, monospace numerals for anything
-   counted or priced, corner-notched buttons, and a rubber-stamp "ADDED"
-   as the one moment of real motion, instead of a generic
-   checkmark-in-a-circle. Everything else stays quiet so that stamp has
-   somewhere to land.
+   DESIGN — shares the exact token set used across RecipeDisplay, the
+   CompactHeader and CookWhatYouHave: warm cream surfaces, a single orange
+   accent, Fraunces for headings, DM Sans for everything else. Nothing here
+   introduces a second palette or a second typeface family; the shelf/
+   trolley/flying-item flourishes stay, just recolored onto these tokens.
    ------------------------------------------------------------------------ */
 
 const COLOR = {
-  paper: "#FFFBF0",
-  paperSunken: "#F6EDD6",
-  ink: "#241608",
-  inkSoft: "#6B5A42",
-  inkFaint: "#A8977A",
-  line: "#DCCCA2",
-  stamp: "#FC8019",
-  stampDark: "#D96A0C",
-  stampTint: "#FFE7CC",
-  gold: "#C98A2B",
-  goldTint: "#FBECC9",
-  error: "#A23E2B",
-  errorTint: "#F2DCD2",
+  surface: "#FFFEFA",       // card surface — matches RecipeDisplay's COLOR.surface
+  surfaceSunken: "#FFF8F1", // sunken panel / header bg — matches CompactHeader's HEADER_SURFACE & site's stone-950
+  ink: "#2B1A0C",           // headings / primary text
+  inkSoft: "#6B5238",       // secondary text
+  inkFaint: "#9C7C4E",      // tertiary / faint text
+  border: "#EAD9AE",        // borders
+  saffron: "#FC6C26",       // primary orange
+  saffronDark: "#D1560F",   // orange hover / dark
+  saffronTint: "#FFE3C2",   // soft orange background tint
+  clay: "#C65D42",          // secondary accent (closed / needs-attention states)
+  clayTint: "#F5E1DA",
 } as const;
 
 /* ---------- Icons ---------- */
@@ -144,40 +138,37 @@ const BasketIcon: IconC = ({ className }) => (
 );
 
 /* ---------- Header glyphs ----------
-   The two things a person can start here are different enough that one
-   generic line icon in a colored tile doesn't say much about either. These
-   sit directly on the paper with no tile, are drawn in full color instead
-   of a single stroke, and echo the same basket-of-produce / plated-dish
-   vocabulary used in the success animations, so the icon you see at the
-   top is a preview of what's coming, not an unrelated glyph. */
+   Full-color illustrations instead of a single-stroke icon-in-a-tile,
+   echoing the basket/plated-dish vocabulary used in the success
+   animations. Colors now trace back to COLOR.saffron / saffronDark /
+   saffronTint rather than a separate "stamp" palette. */
 
 const GroceryHeaderIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 44 42" className={className} aria-hidden="true">
     <path
       d="M15 16c0-4.6 3.1-7.8 7-7.8s7 3.2 7 7.8"
       fill="none"
-      stroke={COLOR.stamp}
+      stroke={COLOR.saffron}
       strokeWidth="2.2"
       strokeLinecap="round"
     />
     <path
       d="M7 16h30l-3.2 18.2a3 3 0 0 1-3 2.5H13.2a3 3 0 0 1-3-2.5L7 16Z"
-      fill={COLOR.stampTint}
-      stroke={COLOR.stamp}
+      fill={COLOR.saffronTint}
+      stroke={COLOR.saffron}
       strokeWidth="2.2"
       strokeLinejoin="round"
     />
-    <path d="M13.5 21.5 14.8 33M22 21.5V33M30.5 21.5 29.2 33" stroke={COLOR.stampDark} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M13.5 21.5 14.8 33M22 21.5V33M30.5 21.5 29.2 33" stroke={COLOR.saffronDark} strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );
 
 const DishHeaderIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 54 42" className={className} aria-hidden="true">
-    <circle cx="27" cy="21" r="12.5" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
-    <circle cx="27" cy="21" r="7" fill="none" stroke={COLOR.stamp} strokeWidth="1.6" opacity="0.55" />
+    <circle cx="27" cy="21" r="12.5" fill={COLOR.saffronTint} stroke={COLOR.saffron} strokeWidth="2.2" />
+    <circle cx="27" cy="21" r="7" fill="none" stroke={COLOR.saffron} strokeWidth="1.6" opacity="0.55" />
 
-    {/* fork: three tines, a neck where they meet, then the handle */}
-    <g fill={COLOR.stamp}>
+    <g fill={COLOR.saffron}>
       <rect x="3.3" y="7" width="1.5" height="9" rx="0.75" />
       <rect x="5.7" y="7" width="1.5" height="9" rx="0.75" />
       <rect x="8.1" y="7" width="1.5" height="9" rx="0.75" />
@@ -185,55 +176,54 @@ const DishHeaderIcon: IconC = ({ className }) => (
     <path
       d="M3.3 14.6c0 2.6 1.9 4.3 3.9 4.3s3.9-1.7 3.9-4.3"
       fill="none"
-      stroke={COLOR.stamp}
+      stroke={COLOR.saffron}
       strokeWidth="1.5"
       strokeLinecap="round"
     />
-    <rect x="6.1" y="18.7" width="1.9" height="15.3" rx="0.95" fill={COLOR.stamp} />
+    <rect x="6.1" y="18.7" width="1.9" height="15.3" rx="0.95" fill={COLOR.saffron} />
 
-    {/* spoon: an oval bowl and a slim handle */}
-    <ellipse cx="47.3" cy="12.4" rx="4.3" ry="5.9" fill={COLOR.stamp} />
-    <rect x="46.3" y="17.7" width="2" height="16.3" rx="1" fill={COLOR.stamp} />
+    <ellipse cx="47.3" cy="12.4" rx="4.3" ry="5.9" fill={COLOR.saffron} />
+    <rect x="46.3" y="17.7" width="2" height="16.3" rx="1" fill={COLOR.saffron} />
   </svg>
 );
 
 /* "Not found" — a plate being searched, nothing on it. */
 const DishSearchIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 56 48" className={className} aria-hidden="true">
-    <circle cx="23" cy="28" r="17" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
-    <circle cx="23" cy="28" r="9.5" fill="none" stroke={COLOR.stamp} strokeWidth="1.3" opacity="0.5" />
-    <circle cx="37" cy="15" r="9" fill={COLOR.paper} stroke={COLOR.stampDark} strokeWidth="2.6" />
-    <line x1="43.3" y1="21.3" x2="50" y2="28" stroke={COLOR.stampDark} strokeWidth="3" strokeLinecap="round" />
+    <circle cx="23" cy="28" r="17" fill={COLOR.saffronTint} stroke={COLOR.saffron} strokeWidth="2.2" />
+    <circle cx="23" cy="28" r="9.5" fill="none" stroke={COLOR.saffron} strokeWidth="1.3" opacity="0.5" />
+    <circle cx="37" cy="15" r="9" fill={COLOR.surface} stroke={COLOR.saffronDark} strokeWidth="2.6" />
+    <line x1="43.3" y1="21.3" x2="50" y2="28" stroke={COLOR.saffronDark} strokeWidth="3" strokeLinecap="round" />
   </svg>
 );
 
 /* "Found, but closed" — a stall with its shutter down. */
 const ClosedStallIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 56 46" className={className} aria-hidden="true">
-    <path d="M5 15 10 4h36l5 11Z" fill={COLOR.stampDark} />
+    <path d="M5 15 10 4h36l5 11Z" fill={COLOR.saffronDark} />
     <path
       d="M5 15q3.1 4.2 6.2 0t6.2 0 6.2 0 6.2 0 6.2 0 6.2 0 6.2 0"
       fill="none"
-      stroke={COLOR.paper}
+      stroke={COLOR.surface}
       strokeWidth="2"
       strokeLinecap="round"
     />
-    <rect x="9" y="19" width="38" height="21" rx="1.5" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
-    <path d="M9 25.5h38M9 32h38" stroke={COLOR.stamp} strokeWidth="1.6" opacity="0.55" />
-    <circle cx="44" cy="35" r="7" fill={COLOR.paper} stroke={COLOR.stampDark} strokeWidth="2" />
-    <path d="M44 31.5v3.5l2.3 2.3" stroke={COLOR.stampDark} strokeWidth="1.6" strokeLinecap="round" fill="none" />
+    <rect x="9" y="19" width="38" height="21" rx="1.5" fill={COLOR.saffronTint} stroke={COLOR.saffron} strokeWidth="2.2" />
+    <path d="M9 25.5h38M9 32h38" stroke={COLOR.saffron} strokeWidth="1.6" opacity="0.55" />
+    <circle cx="44" cy="35" r="7" fill={COLOR.surface} stroke={COLOR.saffronDark} strokeWidth="2" />
+    <path d="M44 31.5v3.5l2.3 2.3" stroke={COLOR.saffronDark} strokeWidth="1.6" strokeLinecap="round" fill="none" />
   </svg>
 );
 
-/* "Reconnect" — a door with an arrow stepping back through it. Calm, not an error. */
+/* "Reconnect" — a door with an arrow stepping back through it. */
 const ReconnectIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 52 48" className={className} aria-hidden="true">
-    <rect x="8" y="5" width="22" height="38" rx="2" fill={COLOR.stampTint} stroke={COLOR.stamp} strokeWidth="2.2" />
-    <circle cx="25" cy="24" r="1.6" fill={COLOR.stampDark} />
+    <rect x="8" y="5" width="22" height="38" rx="2" fill={COLOR.saffronTint} stroke={COLOR.saffron} strokeWidth="2.2" />
+    <circle cx="25" cy="24" r="1.6" fill={COLOR.saffronDark} />
     <path
       d="M33 24h14m0 0-5-5m5 5-5 5"
       fill="none"
-      stroke={COLOR.stampDark}
+      stroke={COLOR.saffronDark}
       strokeWidth="2.6"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -241,9 +231,8 @@ const ReconnectIcon: IconC = ({ className }) => (
   </svg>
 );
 
-/* Small, simple produce glyphs for the "items landing in the basket"
-   animation — flat shapes, not realistic illustrations, so they read
-   instantly at 20px while falling. */
+/* Simple produce glyphs for the "items landing in the basket" animation —
+   kept as naturalistic carrot/tomato/leaf colors, not part of the UI chrome. */
 const CarrotIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 20 24" className={className} aria-hidden="true">
     <path
@@ -268,10 +257,10 @@ const LeafIcon: IconC = ({ className }) => (
 
 /* ---------- Shop shelf (Instamart "aisle") ----------
    Pure presentation, grafted onto the existing product grid: a canvas-drawn
-   wooden plank under each ingredient's row, a pegboard back wall behind it,
-   and a cartoon trolley that products visibly fly into (and back out of).
-   None of this reads selection state on its own — it's driven entirely by
-   the same selectedProducts/onSelectProduct data the grid already used. */
+   wooden plank under each ingredient's row and a trolley products visibly
+   fly into. None of this reads selection state on its own — it's driven
+   entirely by the same selectedProducts/onSelectProduct data the grid
+   already used. */
 const drawShelfBackWall = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
   ctx.clearRect(0, 0, w, h);
   const grad = ctx.createLinearGradient(0, 0, 0, h);
@@ -280,7 +269,6 @@ const drawShelfBackWall = (ctx: CanvasRenderingContext2D, w: number, h: number) 
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, w, h);
 
-  // vertical board seams — gives the wall its own plank structure
   ctx.strokeStyle = "rgba(138,87,38,0.16)";
   ctx.lineWidth = 1;
   const boardWidth = 44;
@@ -291,10 +279,9 @@ const drawShelfBackWall = (ctx: CanvasRenderingContext2D, w: number, h: number) 
     ctx.stroke();
   }
 
-  // dark seam where the back wall meets the ceiling of the cubby
   const topShadow = ctx.createLinearGradient(0, 0, 0, 16);
-  topShadow.addColorStop(0, "rgba(36,22,8,0.3)");
-  topShadow.addColorStop(1, "rgba(36,22,8,0)");
+  topShadow.addColorStop(0, "rgba(43,26,12,0.3)");
+  topShadow.addColorStop(1, "rgba(43,26,12,0)");
   ctx.fillStyle = topShadow;
   ctx.fillRect(0, 0, w, 16);
 };
@@ -326,29 +313,24 @@ const ShelfBackWall: React.FC<{ className?: string }> = ({ className }) => {
   return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
 };
 
-
 const TrolleyIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 48 44" className={className} aria-hidden="true">
-    <path d="M3 4h4l2.4 5" stroke={COLOR.stampDark} strokeWidth="2.4" strokeLinecap="round" fill="none" />
+    <path d="M3 4h4l2.4 5" stroke={COLOR.saffronDark} strokeWidth="2.4" strokeLinecap="round" fill="none" />
     <path
       d="M10 9h31l-4 16a3 3 0 0 1-2.9 2.3H16a3 3 0 0 1-2.9-2.3L10 9Z"
-      fill={COLOR.stampTint}
-      stroke={COLOR.stamp}
+      fill={COLOR.saffronTint}
+      stroke={COLOR.saffron}
       strokeWidth="2.4"
       strokeLinejoin="round"
     />
-    <path d="M15 9l2.2 18.3M24.5 9v18.3M34 9l-2.2 18.3" stroke={COLOR.stampDark} strokeWidth="1.4" opacity="0.55" />
-    <circle cx="18" cy="38" r="3.4" fill={COLOR.stampDark} />
-    <circle cx="33" cy="38" r="3.4" fill={COLOR.stampDark} />
-    <circle cx="18" cy="38" r="1.2" fill={COLOR.stampTint} />
-    <circle cx="33" cy="38" r="1.2" fill={COLOR.stampTint} />
+    <path d="M15 9l2.2 18.3M24.5 9v18.3M34 9l-2.2 18.3" stroke={COLOR.saffronDark} strokeWidth="1.4" opacity="0.55" />
+    <circle cx="18" cy="38" r="3.4" fill={COLOR.saffronDark} />
+    <circle cx="33" cy="38" r="3.4" fill={COLOR.saffronDark} />
+    <circle cx="18" cy="38" r="1.2" fill={COLOR.saffronTint} />
+    <circle cx="33" cy="38" r="1.2" fill={COLOR.saffronTint} />
   </svg>
 );
 
-// Pinned bottom-right of the ingredient list via `sticky` (its nearest
-// scrolling ancestor is the modal's own content area), so it stays in view
-// as the shelves scroll past it. `ref` is the landing target every flying
-// product animates toward.
 const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKey: number }>(
   ({ count, bounceKey }, ref) => (
     <div className="pointer-events-none sticky bottom-1 z-20 flex justify-end pr-0.5">
@@ -359,16 +341,16 @@ const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKe
           bounceKey > 0 ? "trolley-bounce" : ""
         }`}
         style={{
-          borderColor: COLOR.stamp,
-          backgroundColor: COLOR.paper,
-          boxShadow: "0 8px 18px rgba(36,22,8,0.3)",
+          borderColor: COLOR.saffron,
+          backgroundColor: COLOR.surface,
+          boxShadow: "0 8px 18px rgba(43,26,12,0.3)",
         }}
       >
         <TrolleyIcon className="h-8 w-8" />
         {count > 0 && (
           <span
-            className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 font-mono text-[11px] font-bold"
-            style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
+            className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold"
+            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
           >
             {count}
           </span>
@@ -380,10 +362,9 @@ const TrolleyWidget = React.forwardRef<HTMLDivElement, { count: number; bounceKe
 TrolleyWidget.displayName = "TrolleyWidget";
 
 /* Arcs a cloned product thumbnail between a shelf slot and the trolley —
-   a real parabola (computed frame-by-frame), not a CSS transition between
-   two points, so a "select" visibly lands in the basket and an "unselect"
-   visibly leaves it, same as a hand tossing something in or lifting it
-   back out. Purely visual: it never touches selection state itself. */
+   a real parabola, so a "select" visibly lands in the basket and an
+   "unselect" visibly leaves it. Purely visual: never touches selection
+   state itself. */
 
 type FlyDirection = "in" | "out";
 
@@ -416,11 +397,9 @@ const FlyingItemSprite: React.FC<{ item: FlyItem; onDone: () => void }> = ({ ite
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // "in" (selecting) throws shelf -> trolley; "out" (deselecting) throws
-  // trolley -> shelf — the same two rects, read in reverse.
   const from = item.direction === "in" ? item.fromRect : item.toRect;
   const to = item.direction === "in" ? item.toRect : item.fromRect;
-  const ease = 1 - Math.pow(1 - t, 3); // easeOutCubic
+  const ease = 1 - Math.pow(1 - t, 3);
 
   const fromCx = from.left + from.width / 2;
   const fromCy = from.top + from.height / 2;
@@ -428,8 +407,6 @@ const FlyingItemSprite: React.FC<{ item: FlyItem; onDone: () => void }> = ({ ite
   const toCy = to.top + to.height / 2;
 
   const cx = fromCx + (toCx - fromCx) * ease;
-  // a sine lift on top of the straight interpolation gives a thrown arc
-  // instead of a flat slide
   const cy = fromCy + (toCy - fromCy) * ease - Math.sin(Math.PI * t) * FLY_ARC_HEIGHT;
 
   const startSize = item.direction === "in" ? 46 : 20;
@@ -456,7 +433,7 @@ const FlyingItemSprite: React.FC<{ item: FlyItem; onDone: () => void }> = ({ ite
         zIndex: 70,
         opacity,
         transform: `rotate(${spin}deg)`,
-        boxShadow: "0 10px 18px rgba(36,22,8,0.35)",
+        boxShadow: "0 10px 18px rgba(43,26,12,0.35)",
       }}
     />
   );
@@ -472,19 +449,14 @@ const FlyingIngredients: React.FC<{ items: FlyItem[]; onDone: (id: number) => vo
 
 /* ---------- Shared bits ---------- */
 
-const notchLg: React.CSSProperties = {
-  clipPath:
-    "polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px)",
-};
-const notchSm: React.CSSProperties = {
-  clipPath: "polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px)",
-};
-
 const primaryButton =
-  "flex w-full items-center justify-center gap-2 py-3.5 text-sm font-bold uppercase tracking-wide shadow-sm transition-all duration-150 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100";
+  "flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:shadow-none disabled:active:scale-100";
+
+const secondaryButton =
+  "inline-flex items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1";
 
 const iconButton =
-  "flex h-8 w-8 items-center justify-center border transition-colors focus:outline-none focus-visible:ring-2";
+  "flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2";
 
 const footerClass = "border-t px-5 py-4 sm:px-6";
 
@@ -496,16 +468,17 @@ const AddingToCart: React.FC<{ label?: string }> = ({ label = "Adding to cart" }
     <span className="sweep pointer-events-none absolute inset-0" aria-hidden="true" />
     <span
       className="relative z-10 h-4 w-4 shrink-0 animate-spin rounded-full border-2"
-      style={{ borderColor: `${COLOR.paper}45`, borderTopColor: COLOR.paper }}
+      style={{ borderColor: `${COLOR.surface}45`, borderTopColor: COLOR.surface }}
       aria-hidden="true"
     />
     <span className="relative z-10">{label}</span>
   </span>
 );
 
-
 /* Checkout confirmation: visual replacement for the existing COD button.
-   The parent continues to own checkout state and calls the same handler. */
+   The parent continues to own checkout state and calls the same handler.
+   Typography mirrors RecipeDisplay's SwipeToConfirm exactly (same
+   text-[15px] font-medium tracking-wide treatment). */
 interface SwipeToConfirmCheckoutProps {
   onConfirm?: () => void;
   disabled?: boolean;
@@ -575,9 +548,9 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
       ref={trackRef}
       className="relative h-[58px] w-full select-none overflow-hidden rounded-full border"
       style={{
-        backgroundColor: COLOR.paperSunken,
-        borderColor: COLOR.line,
-        boxShadow: "inset 0 1px 3px rgba(36,22,8,0.08)",
+        backgroundColor: COLOR.surfaceSunken,
+        borderColor: COLOR.border,
+        boxShadow: "inset 0 1px 3px rgba(43,26,12,0.08)",
         opacity: disabled ? 0.5 : 1,
       }}
     >
@@ -586,16 +559,16 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
         className="absolute inset-y-0 left-0 rounded-full"
         style={{
           width: `${CHECKOUT_SWIPE_THUMB + CHECKOUT_SWIPE_PADDING + dragX}px`,
-          backgroundColor: COLOR.stamp,
+          backgroundColor: COLOR.saffron,
           transition: isDragging ? "none" : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
 
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center justify-center px-16 text-center text-sm font-bold tracking-wide"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center px-16 text-center text-[15px] font-medium tracking-wide"
         style={{
-          color: isConfirmed ? COLOR.paper : COLOR.stampDark,
+          color: isConfirmed ? COLOR.surface : COLOR.saffronDark,
           opacity: isConfirmed ? 1 : Math.max(0, 1 - progress / 0.55),
           transition: isDragging ? "none" : "opacity 0.2s ease",
         }}
@@ -628,13 +601,13 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
           width: CHECKOUT_SWIPE_THUMB,
           height: CHECKOUT_SWIPE_THUMB,
           marginTop: -CHECKOUT_SWIPE_THUMB / 2,
-          backgroundColor: COLOR.paper,
-          color: COLOR.stampDark,
+          backgroundColor: COLOR.surface,
+          color: COLOR.saffronDark,
           boxShadow: nearThreshold
-            ? `0 2px 8px rgba(36,22,8,0.18), 0 0 0 4px ${COLOR.stampTint}`
+            ? `0 2px 8px rgba(43,26,12,0.18), 0 0 0 4px ${COLOR.saffronTint}`
             : isDragging
-            ? "0 4px 12px rgba(36,22,8,0.22)"
-            : "0 1px 4px rgba(36,22,8,0.14)",
+            ? "0 4px 12px rgba(43,26,12,0.22)"
+            : "0 1px 4px rgba(43,26,12,0.14)",
           transform: `translateX(${dragX}px) scale(${isDragging ? 1.04 : 1})`,
           transition: isDragging
             ? "box-shadow 0.15s ease"
@@ -654,12 +627,8 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
 };
 
 /* ---------- Success stage ----------
-   Two beats, slow enough to actually watch: a scene specific to what's
-   being added plays first, then gives way to a checkmark that draws
-   itself, with the copy settling in right after. The grocery run gets
-   items dropping into a basket; a dish order gets a cloche lifting off a
-   plated dish with steam rising — different actions deserve different
-   motion, not the same clip relabelled. */
+   Two beats: a scene specific to what's being added plays first, then a
+   checkmark that draws itself, with the copy settling in right after. */
 
 type SuccessPhase = "filling" | "done";
 const FILL_DURATION_MS = 2150;
@@ -681,52 +650,46 @@ const GroceryFillScene: React.FC = () => (
       <path
         d="M22 20c0-6.5 4.5-11 10-11s10 4.5 10 11"
         fill="none"
-        stroke={COLOR.stamp}
+        stroke={COLOR.saffron}
         strokeWidth="3"
         strokeLinecap="round"
       />
       <path
         d="M13 20h38l-4.3 27.3a4 4 0 0 1-4 3.4H21.3a4 4 0 0 1-4-3.4L13 20Z"
-        fill={COLOR.stampTint}
-        stroke={COLOR.stamp}
+        fill={COLOR.saffronTint}
+        stroke={COLOR.saffron}
         strokeWidth="3"
         strokeLinejoin="round"
       />
-      <path d="M20 28l1.8 16M32 28v16M44 28l-1.8 16" stroke={COLOR.stampDark} strokeWidth="2" strokeLinecap="round" />
+      <path d="M20 28l1.8 16M32 28v16M44 28l-1.8 16" stroke={COLOR.saffronDark} strokeWidth="2" strokeLinecap="round" />
     </svg>
   </>
 );
 
 const DishPlatingScene: React.FC = () => (
   <svg viewBox="0 0 120 120" className="h-32 w-32">
-    {/* plate */}
-    <ellipse cx="60" cy="80" rx="38" ry="14" fill={COLOR.paperSunken} stroke={COLOR.line} strokeWidth="2" />
-    <ellipse cx="60" cy="78" rx="27" ry="9.5" fill={COLOR.stampTint} />
+    <ellipse cx="60" cy="80" rx="38" ry="14" fill={COLOR.surfaceSunken} stroke={COLOR.border} strokeWidth="2" />
+    <ellipse cx="60" cy="78" rx="27" ry="9.5" fill={COLOR.saffronTint} />
 
-    {/* plated dish */}
-    <ellipse cx="60" cy="76" rx="16" ry="8" fill={COLOR.stampDark} />
-    <ellipse cx="53" cy="72" rx="5" ry="3" fill={COLOR.gold} />
-    <ellipse cx="67" cy="73" rx="4.5" ry="2.6" fill={COLOR.gold} />
+    <ellipse cx="60" cy="76" rx="16" ry="8" fill={COLOR.saffronDark} />
+    <ellipse cx="53" cy="72" rx="5" ry="3" fill={COLOR.saffron} />
+    <ellipse cx="67" cy="73" rx="4.5" ry="2.6" fill={COLOR.saffron} />
 
-    {/* steam */}
     <path className="steam-rise" d="M50 64c-2-4 2-6 0-10" stroke={COLOR.inkFaint} strokeWidth="2" strokeLinecap="round" fill="none" style={{ animationDelay: "0.95s" }} />
     <path className="steam-rise" d="M60 62c-2-4 2-6 0-10" stroke={COLOR.inkFaint} strokeWidth="2" strokeLinecap="round" fill="none" style={{ animationDelay: "1.1s" }} />
     <path className="steam-rise" d="M70 64c-2-4 2-6 0-10" stroke={COLOR.inkFaint} strokeWidth="2" strokeLinecap="round" fill="none" style={{ animationDelay: "1.25s" }} />
 
-    {/* fork */}
     <g className="utensil-slide-left">
       <path d="M24 56v26M20 56v9M28 56v9M24 65v0" stroke={COLOR.ink} strokeWidth="2" strokeLinecap="round" fill="none" />
     </g>
-    {/* knife */}
     <g className="utensil-slide-right">
       <path d="M96 56c4 2 4 9 0 11v15" stroke={COLOR.ink} strokeWidth="2" strokeLinecap="round" fill="none" />
     </g>
 
-    {/* cloche lid, lifting away to reveal the dish */}
     <g className="cloche-lift">
-      <path d="M31 72a29 23 0 0 1 58 0Z" fill={COLOR.paper} stroke={COLOR.stamp} strokeWidth="3" strokeLinejoin="round" />
-      <rect x="57" y="40" width="6" height="7" rx="2" fill={COLOR.stamp} />
-      <circle cx="60" cy="38" r="3.6" fill={COLOR.stamp} />
+      <path d="M31 72a29 23 0 0 1 58 0Z" fill={COLOR.surface} stroke={COLOR.saffron} strokeWidth="3" strokeLinejoin="round" />
+      <rect x="57" y="40" width="6" height="7" rx="2" fill={COLOR.saffron} />
+      <circle cx="60" cy="38" r="3.6" fill={COLOR.saffron} />
     </g>
   </svg>
 );
@@ -750,11 +713,11 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
           )
         ) : (
           <svg viewBox="0 0 64 64" className="h-16 w-16">
-            <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.stamp} strokeWidth="4" pathLength={100} className="tick-circle" />
+            <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.saffron} strokeWidth="4" pathLength={100} className="tick-circle" />
             <path
               d="M20 33l8 8 16-18"
               fill="none"
-              stroke={COLOR.stamp}
+              stroke={COLOR.saffron}
               strokeWidth="4.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -768,8 +731,8 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
       {phase === "done" && (
         <>
           <p
-            className="stamp-label mt-3 font-mono text-[11px] font-bold uppercase tracking-[0.2em]"
-            style={{ color: COLOR.stamp, animationDelay: "0.55s" }}
+            className="stamp-label mt-3 text-xs font-semibold"
+            style={{ color: COLOR.saffronDark, animationDelay: "0.55s" }}
           >
             {eyebrow}
           </p>
@@ -787,20 +750,20 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
     </div>
   );
 };
+
 const CartReviewStep: React.FC<{
   items: import("../services/swiggyService").InstamartCartLineItem[];
   bill: import("../services/swiggyService").InstamartBill | null;
   isLoading: boolean;
   error?: string | null;
-  /** Shown as a warning banner below the bill — e.g. a minimum not met, or a cap exceeded. */
   warning?: string | null;
 }> = ({ items, bill, isLoading, error, warning }) => {
   if (isLoading && items.length === 0 && !bill) {
     return (
       <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
         <div className="relative flex h-16 w-16 items-center justify-center">
-          <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.stamp }} />
-          <BasketIcon className="relative h-7 w-7" style={{ color: COLOR.stamp } as React.CSSProperties} />
+          <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.saffron }} />
+          <BasketIcon className="relative h-7 w-7" style={{ color: COLOR.saffron } as React.CSSProperties} />
         </div>
         <p className="mt-5 font-serif text-lg font-black" style={{ color: COLOR.ink }}>Loading your cart</p>
       </div>
@@ -817,18 +780,18 @@ const CartReviewStep: React.FC<{
 
   return (
     <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
-      <p className="font-mono text-xs font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
+      <p className="text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
         Review your cart
       </p>
 
-      <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.line }}>
+      <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.border }}>
         {items.map((item, i) => (
           <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm">
             <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
               {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
             </span>
             {item.price && (
-              <span className="shrink-0 pt-px font-mono tabular-nums" style={{ color: COLOR.inkSoft }}>
+              <span className="shrink-0 pt-px tabular-nums" style={{ color: COLOR.inkSoft }}>
                 {item.price}
               </span>
             )}
@@ -837,19 +800,19 @@ const CartReviewStep: React.FC<{
       </ul>
 
       {bill && (
-        <div className="rounded-xl border px-3.5 py-3" style={{ borderColor: COLOR.line }}>
+        <div className="rounded-xl border px-3.5 py-3" style={{ borderColor: COLOR.border }}>
           {bill.lineItems.map((line, i) => (
             <div key={i} className="flex items-center justify-between py-1 text-xs" style={{ color: COLOR.inkSoft }}>
               <span>{line.label}</span>
-              <span className="font-mono tabular-nums">{line.value}</span>
+              <span className="tabular-nums">{line.value}</span>
             </div>
           ))}
           <div
             className="mt-1.5 flex items-center justify-between border-t pt-1.5 text-sm font-bold"
-            style={{ borderColor: COLOR.line, color: COLOR.ink }}
+            style={{ borderColor: COLOR.border, color: COLOR.ink }}
           >
             <span>{bill.toPay.label}</span>
-            <span className="font-mono tabular-nums">{bill.toPay.value}</span>
+            <span className="tabular-nums">{bill.toPay.value}</span>
           </div>
         </div>
       )}
@@ -858,11 +821,11 @@ const CartReviewStep: React.FC<{
         <div
           role="status"
           className="flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
-          style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
+          style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
         >
           <span
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-            style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+            style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
           >
             <InfoIcon className="h-4 w-4" />
           </span>
@@ -873,10 +836,7 @@ const CartReviewStep: React.FC<{
   );
 };
 
-/* ---------- Address-stage loader ----------
-   Usually just one or two rows come back, so a list-shaped skeleton would
-   read as fake. This leans into what's actually happening instead: a punch
-   mark pulsing like a hole being cut, captioned with what's being fetched. */
+/* ---------- Address-stage loader ---------- */
 
 const ADDRESS_CAPTIONS = ["Connecting to your Swiggy account", "Checking your saved addresses"];
 
@@ -891,12 +851,12 @@ const AddressStageLoader: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
       <div className="relative flex h-16 w-16 items-center justify-center">
-        <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.stamp }} />
+        <span className="punch-pulse absolute inset-0 rounded-full border-2" style={{ borderColor: COLOR.saffron }} />
         <span
           className="punch-pulse absolute inset-0 rounded-full border-2"
-          style={{ borderColor: COLOR.stamp, animationDelay: "0.5s" }}
+          style={{ borderColor: COLOR.saffron, animationDelay: "0.5s" }}
         />
-        <PinIcon className="relative h-7 w-7" style={{ color: COLOR.stamp } as React.CSSProperties} />
+        <PinIcon className="relative h-7 w-7" style={{ color: COLOR.saffron } as React.CSSProperties} />
       </div>
 
       <p className="mt-5 font-serif text-lg font-black" style={{ color: COLOR.ink }}>
@@ -904,7 +864,7 @@ const AddressStageLoader: React.FC = () => {
       </p>
       <p
         key={captionIndex}
-        className="mt-1.5 animate-fade-in-up font-mono text-xs uppercase tracking-wide"
+        className="mt-1.5 animate-fade-in-up text-xs"
         style={{ color: COLOR.inkSoft, animationDuration: "0.3s" }}
       >
         {ADDRESS_CAPTIONS[captionIndex]}
@@ -916,7 +876,7 @@ const AddressStageLoader: React.FC = () => {
 /* ---------- Skeletons ---------- */
 
 const shimmerStyle: React.CSSProperties = {
-  background: `linear-gradient(100deg, ${COLOR.line} 30%, ${COLOR.stampTint} 50%, ${COLOR.line} 70%)`,
+  background: `linear-gradient(100deg, ${COLOR.border} 30%, ${COLOR.saffronTint} 50%, ${COLOR.border} 70%)`,
   backgroundSize: "200% 100%",
 };
 
@@ -927,7 +887,7 @@ const Shimmer: React.FC<{ className?: string }> = ({ className = "" }) => (
 const RestaurantSkeletonList: React.FC = () => (
   <ul className="space-y-3" aria-hidden="true">
     {[0, 1, 2].map((i) => (
-      <li key={i} className="flex gap-3.5 rounded-xl border p-3" style={{ borderColor: COLOR.line }}>
+      <li key={i} className="flex gap-3.5 rounded-xl border p-3" style={{ borderColor: COLOR.border }}>
         <Shimmer className="h-16 w-16 shrink-0 rounded-lg" />
         <div className="min-w-0 flex-1 space-y-2.5 py-1">
           <Shimmer className="h-3.5 w-3/4" />
@@ -946,7 +906,7 @@ const IngredientSkeletonGroup: React.FC = () => (
         <Shimmer className="mb-3 h-3.5 w-24" />
         <div className="flex gap-3 overflow-hidden">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.line }}>
+            <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.border }}>
               <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg" />
               <Shimmer className="mb-1.5 h-2.5 w-full" />
               <Shimmer className="h-2.5 w-2/3" />
@@ -973,8 +933,8 @@ const RestaurantRow: React.FC<{
     <li
       className="relative overflow-hidden rounded-xl border-2 transition-colors duration-150"
       style={{
-        borderColor: selected ? COLOR.stamp : COLOR.line,
-        backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
+        borderColor: selected ? COLOR.saffron : COLOR.border,
+        backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
         opacity: restaurant.isOpen ? 1 : 0.55,
       }}
     >
@@ -987,7 +947,7 @@ const RestaurantRow: React.FC<{
       >
         <div
           className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg"
-          style={{ backgroundColor: COLOR.goldTint }}
+          style={{ backgroundColor: COLOR.saffronTint }}
         >
           {restaurant.imageUrl && !imageFailed ? (
             <img
@@ -998,7 +958,7 @@ const RestaurantRow: React.FC<{
               className="h-full w-full object-cover"
             />
           ) : (
-            <UtensilsIcon className="h-6 w-6" style={{ color: COLOR.gold } as React.CSSProperties} />
+            <UtensilsIcon className="h-6 w-6" style={{ color: COLOR.saffronDark } as React.CSSProperties} />
           )}
         </div>
 
@@ -1007,12 +967,12 @@ const RestaurantRow: React.FC<{
             {restaurant.name}
           </p>
           {cuisines && (
-            <p className="mt-0.5 truncate font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.inkFaint }}>
+            <p className="mt-0.5 truncate text-[11px]" style={{ color: COLOR.inkFaint }}>
               {cuisines}
             </p>
           )}
           {meta.length > 0 && (
-            <p className="mt-1.5 font-mono text-[11px]" style={{ color: COLOR.inkSoft }}>
+            <p className="mt-1.5 text-[11px]" style={{ color: COLOR.inkSoft }}>
               {meta.join(" · ")}
             </p>
           )}
@@ -1020,24 +980,24 @@ const RestaurantRow: React.FC<{
           <div className="mt-2 flex flex-wrap items-center gap-1.5">
             {!restaurant.isOpen && (
               <span
-                className="px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide"
-                style={{ backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
+                className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                style={{ backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
               >
                 Closed
               </span>
             )}
             {restaurant.veg && (
               <span
-                className="border px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide"
-                style={{ borderColor: COLOR.line, color: COLOR.inkSoft }}
+                className="rounded-full border px-2 py-0.5 text-[10px] font-semibold"
+                style={{ borderColor: COLOR.border, color: COLOR.inkSoft }}
               >
                 Veg
               </span>
             )}
             {restaurant.offer && (
               <span
-                className="max-w-full truncate px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wide"
-                style={{ backgroundColor: COLOR.gold, color: COLOR.paper }}
+                className="max-w-full truncate rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                style={{ backgroundColor: COLOR.saffronDark, color: COLOR.surface }}
               >
                 {restaurant.offer}
               </span>
@@ -1048,6 +1008,7 @@ const RestaurantRow: React.FC<{
     </li>
   );
 };
+
 const TicketTabs: React.FC<{
   step: Step;
   hasProducts: boolean;
@@ -1070,8 +1031,6 @@ const TicketTabs: React.FC<{
   const order: Step[] = ["address", "products", "done"];
   const activeIndex = order.indexOf(step);
 
-  // Forward (address -> products) and backward (done -> products) land on
-  // the same tab, so pick whichever handler applies to the current step.
   const productsHandler =
     step === "address" ? onIngredientsClick : step === "done" ? onBackToProductsClick : undefined;
 
@@ -1094,41 +1053,62 @@ const TicketTabs: React.FC<{
     tabs.push({
       key: "done",
       label: "Checkout",
-      // Pure navigation — jumps back to whatever was last added, without
-      // calling any add-to-cart API. Only enabled once there's cart data
-      // to show, and only from an earlier step (not already on "done").
       onClick: onCheckoutClick,
       clickable: step !== "done" && !!onCheckoutClick,
     });
   }
+
   return (
-    <div className="mt-4 flex items-center gap-4">
+    <div className="mt-4 flex items-center">
       {tabs.map((t, i) => {
         const reached = order.indexOf(t.key) <= activeIndex;
         const current = order[activeIndex] === t.key;
         const label = (
           <span
-            className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] transition-colors"
-            style={{ color: current ? COLOR.stamp : reached ? COLOR.ink : COLOR.inkFaint }}
+            className="shrink-0 text-[11px] font-semibold tracking-wide transition-colors"
+            style={{ color: current ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint }}
           >
-            {String(i + 1).padStart(2, "0")}·{t.label}
+            {i + 1} · {t.label}
           </span>
         );
 
-        return t.clickable ? (
-          <button
-            key={t.key}
-            type="button"
-            onClick={t.onClick}
-            className="underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
-          >
-            {label}
-          </button>
-        ) : (
-          <span key={t.key}>{label}</span>
+        // The segment right after a tab fills once that tab's own step has
+        // been passed (not just reached) — so it fills as you move *from*
+        // it, not as soon as you land on it.
+        const passed = order.indexOf(t.key) < activeIndex;
+
+        return (
+          <React.Fragment key={t.key}>
+            {t.clickable ? (
+              <button
+                type="button"
+                onClick={t.onClick}
+                className="shrink-0 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+              >
+                {label}
+              </button>
+            ) : (
+              label
+            )}
+
+            {i < tabs.length - 1 && (
+              <span
+                className="mx-3 h-px flex-1 overflow-hidden rounded-full"
+                style={{ backgroundColor: COLOR.border }}
+                aria-hidden="true"
+              >
+                <span
+                  className="block h-full rounded-full transition-all duration-500 ease-out"
+                  style={{
+                    width: passed ? "100%" : "0%",
+                    backgroundColor: COLOR.saffronDark,
+                  }}
+                />
+              </span>
+            )}
+          </React.Fragment>
         );
       })}
-      <span className="h-px flex-1" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
     </div>
   );
 };
@@ -1136,8 +1116,8 @@ const TicketTabs: React.FC<{
 const EmptyAddresses: React.FC = () => (
   <div className="py-10 text-center">
     <span
-      className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg"
-      style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+      className="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
+      style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
     >
       <PinIcon className="h-6 w-6" />
     </span>
@@ -1151,11 +1131,11 @@ const EmptyAddresses: React.FC = () => (
 );
 
 const SingleAddressConfirm: React.FC<{ address: SwiggyAddress }> = ({ address }) => (
-  <div className="rounded-xl border-2 px-4 py-4" style={{ borderColor: COLOR.stamp, backgroundColor: COLOR.stampTint }}>
+  <div className="rounded-xl border-2 px-4 py-4" style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}>
     <div className="flex items-start gap-3.5">
       <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-        style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+        style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
       >
         <PinIcon className="h-4 w-4" />
       </span>
@@ -1168,12 +1148,15 @@ const SingleAddressConfirm: React.FC<{ address: SwiggyAddress }> = ({ address })
         </p>
       </div>
     </div>
-    <p className="mt-3 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
+    <p className="mt-3 text-xs font-medium" style={{ color: COLOR.saffronDark }}>
       Only saved address · delivering here
     </p>
   </div>
 );
 
+/* Address selection reads as a single choice, so it's a radio: a hollow
+   ring that fills with a dot when selected, next to a pin badge — not a
+   checkbox. */
 const AddressList: React.FC<{
   addresses?: SwiggyAddress[];
   selectedAddressId?: string | null;
@@ -1192,8 +1175,8 @@ const AddressList: React.FC<{
           onClick={() => onSelectAddress?.(address.id)}
           className="w-full animate-fade-in-up rounded-xl border-2 px-4 py-3.5 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
           style={{
-            borderColor: selected ? COLOR.stamp : COLOR.line,
-            backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
+            borderColor: selected ? COLOR.saffron : COLOR.border,
+            backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
             animationDuration: "0.25s",
             animationDelay: `${i * 60}ms`,
             animationFillMode: "backwards",
@@ -1201,14 +1184,13 @@ const AddressList: React.FC<{
         >
           <div className="flex items-center gap-3.5">
             <span
-              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
               style={{
-                borderColor: selected ? COLOR.stamp : COLOR.line,
-                backgroundColor: selected ? COLOR.stamp : "transparent",
-                color: COLOR.paper,
+                backgroundColor: selected ? COLOR.saffron : COLOR.surfaceSunken,
+                color: selected ? COLOR.surface : COLOR.inkFaint,
               }}
             >
-              {selected && <CheckIcon className="h-3 w-3" />}
+              <PinIcon className="h-3.5 w-3.5" />
             </span>
 
             <div className="min-w-0 flex-1">
@@ -1219,6 +1201,19 @@ const AddressList: React.FC<{
                 {address.addressLine}
               </p>
             </div>
+
+            {/* Radio indicator — ring + dot, not a checkbox square. */}
+            <span
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors"
+              style={{
+                borderColor: selected ? COLOR.saffron : COLOR.border,
+                backgroundColor: COLOR.surface,
+              }}
+            >
+              {selected && (
+                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLOR.saffron }} />
+              )}
+            </span>
           </div>
         </button>
       );
@@ -1267,8 +1262,8 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   onCheckoutFood,
   isCheckingOutFood,
   dishName,
-  needsSwiggyReconnect, 
-  onRetrySwiggyLogin,     
+  needsSwiggyReconnect,
+  onRetrySwiggyLogin,
   error,
   onMinimize,
   onClose,
@@ -1283,74 +1278,63 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   }, [type]);
 
   // Back-button trap: an open modal should swallow one back press to
-  // minimize itself, not navigate the page away. Mirrors the pattern used
-  // by the Cooking Companion sheet, but this modal has two close actions
-  // (minimize vs. full close), so a ref tracks which one a pending
-  // history.back() should resolve to.
+  // minimize itself, not navigate the page away.
   const pushedHistoryStateRef = useRef(false);
-const suppressNextPopRef = useRef(false);
+  const suppressNextPopRef = useRef(false);
 
-useEffect(() => {
-  if (type && !pushedHistoryStateRef.current) {
-    window.history.pushState({ __swiggyModal: true }, "");
-    pushedHistoryStateRef.current = true;
-  }
-}, [type]);
-
-useEffect(() => {
-  const onPopState = () => {
-    if (suppressNextPopRef.current) {
-      // We already minimized/closed synchronously from a button tap —
-      // this popstate is just that tap's own history.back() resolving.
-      suppressNextPopRef.current = false;
-      pushedHistoryStateRef.current = false;
-      return;
+  useEffect(() => {
+    if (type && !pushedHistoryStateRef.current) {
+      window.history.pushState({ __swiggyModal: true }, "");
+      pushedHistoryStateRef.current = true;
     }
-    if (!pushedHistoryStateRef.current) return;
-    pushedHistoryStateRef.current = false;
-    // A real hardware/browser back press — same as before, just minimizes.
+  }, [type]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (suppressNextPopRef.current) {
+        suppressNextPopRef.current = false;
+        pushedHistoryStateRef.current = false;
+        return;
+      }
+      if (!pushedHistoryStateRef.current) return;
+      pushedHistoryStateRef.current = false;
+      onMinimize();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [onMinimize]);
+
+  useEffect(() => {
+    if (!type && pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+  }, [type]);
+
+  const triggerMinimize = () => {
+    if (pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
     onMinimize();
   };
-  window.addEventListener("popstate", onPopState);
-  return () => window.removeEventListener("popstate", onPopState);
-}, [onMinimize]);
 
-useEffect(() => {
-  if (!type && pushedHistoryStateRef.current) {
-    suppressNextPopRef.current = true;
-    pushedHistoryStateRef.current = false;
-    window.history.back();
-  }
-}, [type]);
- 
-const triggerMinimize = () => {
-  if (pushedHistoryStateRef.current) {
-    suppressNextPopRef.current = true;
-    pushedHistoryStateRef.current = false;
-    window.history.back();
-  }
-  onMinimize();
-};
+  const triggerClose = () => {
+    if (pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+    onClose();
+  };
 
-const triggerClose = () => {
-  if (pushedHistoryStateRef.current) {
-    suppressNextPopRef.current = true;
-    pushedHistoryStateRef.current = false;
-    window.history.back();
-  }
-  onClose();
-};
-  // Drag-to-minimize on the mobile grab handle. Only downward pulls move
-  // the sheet; crossing the threshold minimizes (through the same
-  // triggerMinimize path as the button/backdrop/Escape, so the back-button
-  // history entry gets cleaned up consistently either way).
   const dragStartYRef = useRef<number | null>(null);
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
-    // A tap on a button (Minimize, Close, or a TicketTabs tab) is a tap,
-    // not a drag — let its own onClick handle it instead of starting a drag.
     if (event.target instanceof Element && event.target.closest("button")) {
       return;
     }
@@ -1373,9 +1357,10 @@ const triggerClose = () => {
       setDragY(0);
       triggerMinimize();
     } else {
-      setDragY(0); // wasn't pulled far enough — snap back open
+      setDragY(0);
     }
   };
+
   useEffect(() => {
     if (!type) return;
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -1384,29 +1369,25 @@ const triggerClose = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [type]);
-  // Tracks whether a restaurant search has actually completed, so an empty
-  // result can show a "nothing found" message instead of silently bouncing
-  // back to the address screen (which looks like nothing happened at all).
+
   const [hasSearchedRestaurants, setHasSearchedRestaurants] = useState(false);
   const wasLoadingRestaurants = loadingStage === "restaurants" && isLoading;
 
-  // Instamart: a brief success animation plays before the cart review step.
-const [instamartStage, setInstamartStage] = useState<"success" | "review">("success");
-const wasCartAdded = useRef(false);
+  const [instamartStage, setInstamartStage] = useState<"success" | "review">("success");
+  const wasCartAdded = useRef(false);
 
-useEffect(() => {
-  if (cartAdded && !wasCartAdded.current) {
-    setInstamartStage("success");
-    const timer = window.setTimeout(() => setInstamartStage("review"), FILL_DURATION_MS + 1100);
-    wasCartAdded.current = true;
-    return () => window.clearTimeout(timer);
-  }
-  if (!cartAdded) {
-    wasCartAdded.current = false;
-  }
-}, [cartAdded]);
+  useEffect(() => {
+    if (cartAdded && !wasCartAdded.current) {
+      setInstamartStage("success");
+      const timer = window.setTimeout(() => setInstamartStage("review"), FILL_DURATION_MS + 1100);
+      wasCartAdded.current = true;
+      return () => window.clearTimeout(timer);
+    }
+    if (!cartAdded) {
+      wasCartAdded.current = false;
+    }
+  }, [cartAdded]);
 
-  // Swiggy food: the same two-beat success-then-review pattern as Instamart.
   const [foodStage, setFoodStage] = useState<"success" | "review">("success");
   const wasFoodCartAdded = useRef(false);
 
@@ -1422,11 +1403,6 @@ useEffect(() => {
     }
   }, [foodCartAdded]);
 
-  /* ---- Shop-shelf trolley animation (Instamart ingredient picking) ----
-     Purely visual: it reads the same selectedProducts prop the grid
-     already renders from, and the actual click still calls the real
-     onSelectProduct handler unchanged — this only decides whether to also
-     throw a flying thumbnail before/after that call. */
   const trolleyRef = useRef<HTMLDivElement>(null);
   const productButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [flyingItems, setFlyingItems] = useState<FlyItem[]>([]);
@@ -1459,7 +1435,6 @@ useEffect(() => {
       }
     }
 
-    // Unchanged: the real handler, same signature, same call.
     onSelectProduct?.(ingredientName, variation);
   };
 
@@ -1469,17 +1444,12 @@ useEffect(() => {
     }
   }, [wasLoadingRestaurants]);
 
-  // A fresh address choice invalidates the previous search result.
   useEffect(() => {
     if (isChoosingAddress) {
       setHasSearchedRestaurants(false);
     }
   }, [isChoosingAddress]);
 
-  // Ticket-bar "Checkout" tab: pure navigation back to the last-added
-  // cart, never a new add-to-cart call. Marks the success animation as
-  // already seen so the effects above don't replay it — jumps straight
-  // to the review screen instead.
   const handleCheckoutTabClick = () => {
     if (type === "instamart") {
       wasCartAdded.current = true;
@@ -1542,38 +1512,34 @@ useEffect(() => {
   return createPortal(
     <div
       className="fixed inset-0 z-50 flex animate-fade-in-up items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
-      style={{ animationDuration: "0.2s", backgroundColor: "rgba(36,22,8,0.4)" }}
+      style={{ animationDuration: "0.2s", backgroundColor: "rgba(43,26,12,0.4)" }}
       onClick={triggerMinimize}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="swiggy-modal-title"
-        className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-2xl border-2 shadow-2xl sm:max-h-[82vh] sm:rounded-2xl"
+        className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-3xl border shadow-2xl sm:max-h-[82vh] sm:rounded-3xl"
         style={{
-          borderColor: COLOR.line,
-          backgroundColor: COLOR.paper,
-          boxShadow: "0 24px 48px rgba(36,22,8,0.25)",
+          borderColor: COLOR.border,
+          backgroundColor: COLOR.surface,
+          boxShadow: "0 24px 48px rgba(43,26,12,0.25)",
           transform: `translateY(${dragY}px)`,
           transition: isDragging ? "none" : "transform 0.2s ease",
           opacity: 1 - Math.min(dragY / 400, 0.4),
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header — the drag handlers sit on this whole block (handle, title
-            row, and ticket tabs), not just the visible grab bar, so there's
-            a generous target for dragging to minimize. The guard inside
-            handleDragStart keeps every button in here (Minimize, Close, and
-            the TicketTabs tabs) tappable as normal. */}
+        {/* Header */}
         <div
-          className="touch-none px-5 pb-4 pt-3 cursor-grab active:cursor-grabbing sm:cursor-auto sm:px-6 sm:pt-5"
-          style={{ backgroundColor: COLOR.paperSunken }}
+          className="touch-none rounded-t-3xl px-5 pb-4 pt-3 cursor-grab active:cursor-grabbing sm:cursor-auto sm:px-6 sm:pt-5"
+          style={{ backgroundColor: COLOR.surfaceSunken }}
           onPointerDown={handleDragStart}
           onPointerMove={handleDragMove}
           onPointerUp={handleDragEnd}
           onPointerCancel={handleDragEnd}
         >
-          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.border }} aria-hidden="true" />
 
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3">
@@ -1581,7 +1547,7 @@ useEffect(() => {
                 {type === "instamart" ? <GroceryHeaderIcon className="h-11 w-11" /> : <DishHeaderIcon className="h-11 w-11" />}
               </span>
               <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: COLOR.gold }}>
+                <p className="text-xs font-semibold" style={{ color: COLOR.saffronDark }}>
                   {type === "instamart" ? "Instamart Pickup" : "Swiggy Delivery"}
                 </p>
                 <h3
@@ -1600,7 +1566,15 @@ useEffect(() => {
                 onClick={triggerMinimize}
                 aria-label="Minimize"
                 className={iconButton}
-                style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}
+                style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.saffron;
+                  e.currentTarget.style.color = COLOR.saffronDark;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.border;
+                  e.currentTarget.style.color = COLOR.inkSoft;
+                }}
               >
                 <MinusIcon className="h-4 w-4" />
               </button>
@@ -1609,14 +1583,21 @@ useEffect(() => {
                 onClick={triggerClose}
                 aria-label="Close"
                 className={iconButton}
-                style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}
+                style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.saffron;
+                  e.currentTarget.style.color = COLOR.saffronDark;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.border;
+                  e.currentTarget.style.color = COLOR.inkSoft;
+                }}
               >
                 <CloseIcon className="h-4 w-4" />
               </button>
             </div>
           </div>
 
-      
           <TicketTabs
             step={currentStep}
             hasProducts={!!hasResults}
@@ -1628,10 +1609,11 @@ useEffect(() => {
             onCheckoutClick={hasCartDataToReturnTo ? handleCheckoutTabClick : undefined}
           />
         </div>
+
         {/* seam between header and body */}
         <div
           className="h-[3px]"
-          style={{ background: `linear-gradient(180deg, ${COLOR.line}, transparent)` }}
+          style={{ background: `linear-gradient(180deg, ${COLOR.border}, transparent)` }}
           aria-hidden="true"
         />
 
@@ -1652,8 +1634,8 @@ useEffect(() => {
                 <button
                   type="button"
                   onClick={onRetrySwiggyLogin}
-                  className="mt-5 inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold uppercase tracking-wide shadow-sm transition-all duration-150 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                  style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+                  className="mt-5 inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                 >
                   Sign in to Swiggy
                 </button>
@@ -1665,11 +1647,11 @@ useEffect(() => {
                 <div
                   role="alert"
                   className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
-                  style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
+                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
                 >
                   <span
                     className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                    style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
                   >
                     <InfoIcon className="h-4 w-4" />
                   </span>
@@ -1678,410 +1660,403 @@ useEffect(() => {
               )}
 
               {isInitialLoading ? (
-            loadingStage === "addresses" ? (
-              <AddressStageLoader />
-            ) : loadingStage === "restaurants" ? (
-              <RestaurantSkeletonList />
-            ) : (
-              <IngredientSkeletonGroup />
-            )
-          ) : type === "instamart" ? (
-            <>
-              {cartAdded && instamartStage === "success" ? (
-                <SuccessStage
-                  variant="grocery"
-                  eyebrow="Instamart cart"
-                  text="Your selected ingredients are in your Instamart cart, alongside anything already there."
-                />
-              ) : cartAdded ? (
-                <CartReviewStep
-                  items={cartSummary?.items ?? []}
-                  bill={cartSummary?.bill ?? null}
-                  isLoading={!!isLoadingCartSummary}
-                  error={cartSummaryError}
-                  warning={
-                    shortageWarning ??
-                    (cartSummary?.minOrderNotMet
-                      ? `Add a little more — Instamart has a ₹${(cartSummary.minOrderPaise / 100).toFixed(0)} minimum order.`
-                      : null)
-                  }
-                />
-              ) : !hasAddresses ? (
-                <EmptyAddresses />
-              ) : showAddressScreen ? (
-                <div>
-                  <p className="mb-4 font-mono text-xs font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
-                    {hasProducts ? "Change delivery address" : "Deliver ingredients to"}
-                  </p>
-                  {addresses && addresses.length === 1 ? (
-                    <SingleAddressConfirm address={addresses[0]} />
+                loadingStage === "addresses" ? (
+                  <AddressStageLoader />
+                ) : loadingStage === "restaurants" ? (
+                  <RestaurantSkeletonList />
+                ) : (
+                  <IngredientSkeletonGroup />
+                )
+              ) : type === "instamart" ? (
+                <>
+                  {cartAdded && instamartStage === "success" ? (
+                    <SuccessStage
+                      variant="grocery"
+                      eyebrow="Instamart cart"
+                      text="Your selected ingredients are in your Instamart cart, alongside anything already there."
+                    />
+                  ) : cartAdded ? (
+                    <CartReviewStep
+                      items={cartSummary?.items ?? []}
+                      bill={cartSummary?.bill ?? null}
+                      isLoading={!!isLoadingCartSummary}
+                      error={cartSummaryError}
+                      warning={
+                        shortageWarning ??
+                        (cartSummary?.minOrderNotMet
+                          ? `Add a little more — Instamart has a ₹${(cartSummary.minOrderPaise / 100).toFixed(0)} minimum order.`
+                          : null)
+                      }
+                    />
+                  ) : !hasAddresses ? (
+                    <EmptyAddresses />
+                  ) : showAddressScreen ? (
+                    <div>
+                      <p className="mb-4 text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
+                        {hasProducts ? "Change delivery address" : "Deliver ingredients to"}
+                      </p>
+                      {addresses && addresses.length === 1 ? (
+                        <SingleAddressConfirm address={addresses[0]} />
+                      ) : (
+                        <AddressList addresses={addresses} selectedAddressId={selectedAddressId} onSelectAddress={onSelectAddress} />
+                      )}
+                    </div>
+                  ) : noItemsAtAll ? (
+                    <div className="py-10 text-center">
+                      <span
+                        className="mx-auto flex h-12 w-12 items-center justify-center rounded-full"
+                        style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
+                      >
+                        <InfoIcon className="h-6 w-6" />
+                      </span>
+                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                        We couldn&apos;t find these on Instamart
+                      </h4>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                        None of the missing ingredients are available for this address right now.
+                      </p>
+                      {onGoToAddress && (
+                        <button
+                          type="button"
+                          onClick={onGoToAddress}
+                          className={secondaryButton}
+                          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+                        >
+                          Try another address
+                        </button>
+                      )}
+                    </div>
                   ) : (
-                    <AddressList addresses={addresses} selectedAddressId={selectedAddressId} onSelectAddress={onSelectAddress} />
-                  )}
-                </div>
-              ) : noItemsAtAll ? (
-                <div className="py-10 text-center">
-                  <span
-                    className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg"
-                    style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
-                  >
-                    <InfoIcon className="h-6 w-6" />
-                  </span>
-                  <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
-                    We couldn&apos;t find these on Instamart
-                  </h4>
-                  <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
-                    None of the missing ingredients are available for this address right now.
-                  </p>
-                  {onGoToAddress && (
-                    <button
-                      type="button"
-                      onClick={onGoToAddress}
-                      className="mt-5 border px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
-                      style={{ borderColor: COLOR.line, color: COLOR.ink, backgroundColor: COLOR.paper }}
-                    >
-                      Try another address
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
-                  {instamartNames.map((ingredientName) => {
-                    const isPending = pendingIngredientNames?.includes(ingredientName);
-                    const products = ingredientProducts?.[ingredientName] ?? [];
-                    const chosen = selectedProducts?.[ingredientName];
-                    const qty = quantities?.[ingredientName] ?? 1;
+                    <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
+                      {instamartNames.map((ingredientName) => {
+                        const isPending = pendingIngredientNames?.includes(ingredientName);
+                        const products = ingredientProducts?.[ingredientName] ?? [];
+                        const chosen = selectedProducts?.[ingredientName];
+                        const qty = quantities?.[ingredientName] ?? 1;
 
-                    return (
-                      <div key={ingredientName}>
-                        <div className="mb-2 flex items-baseline justify-between gap-3">
-                          <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
-                            {ingredientName}
-                          </p>
-                          {ingredientAmounts?.[ingredientName] && (
-                            <p className="shrink-0 font-mono text-[11px]" style={{ color: COLOR.inkFaint }}>
-                              {ingredientAmounts[ingredientName]}
-                            </p>
-                          )}
-                        </div>
-
-                        {isPending ? (
-                          <div className="modal-scroll -mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
-                            {[1, 2, 3].map((i) => (
-                              <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.line }}>
-                                <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg" />
-                                <Shimmer className="mb-1.5 h-2.5 w-full" />
-                                <Shimmer className="h-2.5 w-2/3" />
-                              </div>
-                            ))}
-                          </div>
-                        ) : !products.some((p) => (p.variations ?? []).length > 0) ? (
-                          <p className="text-sm" style={{ color: COLOR.inkFaint }}>
-                            Not available at your address.
-                          </p>
-                        ) : (
-                          // The "shelf": a pegboard back wall holding the row of
-                          // products, sitting on a canvas-drawn wood plank. Same
-                          // scroll container as before, just dressed as a fixture.
-                          <div
-                            className="relative overflow-hidden rounded-2xl border-2"
-                            style={{
-                              borderColor: COLOR.line,
-                              boxShadow:
-                                "inset 0 12px 20px -14px rgba(36,22,8,0.5), inset 0 -4px 10px -6px rgba(36,22,8,0.3)",
-                            }}
-                          >
-                            <ShelfBackWall className="absolute inset-0 h-full w-full" />
-
-                            {/* side walls, receding slightly — sells the cubby */}
-                            <div
-                              className="pointer-events-none absolute inset-y-0 left-0 w-4"
-                              style={{ background: "linear-gradient(90deg, rgba(36,22,8,0.28), rgba(36,22,8,0))" }}
-                              aria-hidden="true"
-                            />
-                            <div
-                              className="pointer-events-none absolute inset-y-0 right-0 w-4"
-                              style={{ background: "linear-gradient(270deg, rgba(36,22,8,0.28), rgba(36,22,8,0))" }}
-                              aria-hidden="true"
-                            />
-
-                            <div
-                              className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6"
-                              style={{ perspective: "900px" }}
-                            >
-                              {products.flatMap((product) =>
-                                (product.variations ?? []).map((variation) => {
-                                  const selected = chosen?.spinId === variation.spinId;
-                                  const unavailable = !variation.isInStockAndAvailable || !product.inStock;
-
-                                  return (
-                                    <button
-                                      key={variation.spinId}
-                                      ref={registerProductRef(variation.spinId)}
-                                      type="button"
-                                      disabled={unavailable}
-                                      aria-pressed={selected}
-                                      onClick={() => handlePickProduct(ingredientName, variation)}
-                                      className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
-                                      style={{
-                                        borderColor: selected ? COLOR.stamp : COLOR.line,
-                                        backgroundColor: selected ? COLOR.stampTint : COLOR.paper,
-                                        boxShadow: selected
-                                          ? `inset 0 0 0 1px ${COLOR.stamp}, 0 14px 18px -10px rgba(36,22,8,0.45)`
-                                          : "0 8px 12px -8px rgba(36,22,8,0.35)",
-                                        transform: selected
-                                          ? "perspective(900px) rotateX(0deg) translateY(-5px) translateZ(14px)"
-                                          : "perspective(900px) rotateX(9deg)",
-                                        transformOrigin: "bottom center",
-                                      }}
-                                    >
-                                      {selected && (
-                                        <span
-                                          aria-hidden="true"
-                                          className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full"
-                                          style={{ backgroundColor: COLOR.stamp, color: COLOR.paper }}
-                                        >
-                                          <CheckIcon className="h-2.5 w-2.5" />
-                                        </span>
-                                      )}
-
-                                      {variation.imageUrl && (
-                                        <span className="relative mx-auto mb-2.5 block h-14 w-14">
-                                          <img
-                                            src={variation.imageUrl}
-                                            alt={product.displayName}
-                                            className="h-14 w-14 rounded-lg border bg-white object-cover"
-                                            style={{
-                                              borderColor: COLOR.line,
-                                              filter: "drop-shadow(0 6px 5px rgba(36,22,8,0.35))",
-                                            }}
-                                          />
-                                          <span
-                                            aria-hidden="true"
-                                            className="pointer-events-none absolute inset-0 rounded-lg"
-                                            style={{
-                                              background:
-                                                "linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 55%)",
-                                            }}
-                                          />
-                                          <span
-                                            aria-hidden="true"
-                                            className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full"
-                                            style={{ backgroundColor: "rgba(36,22,8,0.3)", filter: "blur(2.5px)" }}
-                                          />
-                                        </span>
-                                      )}
-
-                                      <p className="line-clamp-2 text-xs font-medium leading-tight" style={{ color: COLOR.ink }}>
-                                        {variation.quantityDescription}
-                                      </p>
-                                      <p className="mt-1.5 font-mono text-sm font-bold tabular-nums" style={{ color: COLOR.stampDark }}>
-                                        ₹{variation.price.offerPrice}
-                                      </p>
-                                      {unavailable && (
-                                        <p className="mt-0.5 font-mono text-[10px] uppercase" style={{ color: COLOR.inkFaint }}>
-                                          Unavailable
-                                        </p>
-                                      )}
-                                    </button>
-                                  );
-                                })
+                        return (
+                          <div key={ingredientName}>
+                            <div className="mb-2 flex items-baseline justify-between gap-3">
+                              <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
+                                {ingredientName}
+                              </p>
+                              {ingredientAmounts?.[ingredientName] && (
+                                <p className="shrink-0 text-[11px]" style={{ color: COLOR.inkFaint }}>
+                                  {ingredientAmounts[ingredientName]}
+                                </p>
                               )}
                             </div>
 
-                            <div
-                              className="relative h-[13px] border-t"
-                              style={{
-                                borderColor: COLOR.line,
-                                background:
-                                  "linear-gradient(180deg, #C99552 0%, #A96F35 35%, #805027 100%)",
-                                boxShadow: "0 4px 8px rgba(36,22,8,0.25)",
-                              }}
-                            >
+                            {isPending ? (
+                              <div className="modal-scroll -mx-1 flex gap-3 overflow-x-auto px-1 pb-2">
+                                {[1, 2, 3].map((i) => (
+                                  <div key={i} className="w-28 shrink-0 rounded-xl border p-2.5" style={{ borderColor: COLOR.border }}>
+                                    <Shimmer className="mx-auto mb-2.5 h-14 w-14 rounded-lg" />
+                                    <Shimmer className="mb-1.5 h-2.5 w-full" />
+                                    <Shimmer className="h-2.5 w-2/3" />
+                                  </div>
+                                ))}
+                              </div>
+                            ) : !products.some((p) => (p.variations ?? []).length > 0) ? (
+                              <p className="text-sm" style={{ color: COLOR.inkFaint }}>
+                                Not available at your address.
+                              </p>
+                            ) : (
                               <div
-                                className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-                                style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-                                aria-hidden="true"
-                              />
-                            </div>
-                          </div>
-                        )}
-
-                        {!isPending && chosen && (
-                          <div className="mt-3 flex items-center justify-between gap-3 rounded-lg px-3 py-2" style={{ backgroundColor: COLOR.paperSunken }}>
-                            <p className="min-w-0 text-xs" style={{ color: COLOR.inkSoft }}>
-                              <span className="font-semibold" style={{ color: COLOR.ink }}>
-                                {chosen.quantityDescription}
-                              </span>
-                            </p>
-
-                            <div className="flex shrink-0 items-center gap-2.5" role="group" aria-label={`Quantity for ${ingredientName}`}>
-                              <button
-                                type="button"
-                                onClick={() => onChangeQuantity?.(ingredientName, -1)}
-                                disabled={qty <= 1}
-                                aria-label={`Decrease quantity for ${ingredientName}`}
-                                className="flex h-7 w-7 items-center justify-center rounded-md border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
-                                style={{ borderColor: COLOR.line, backgroundColor: COLOR.paper, color: COLOR.ink }}
+                                className="relative overflow-hidden rounded-2xl border-2"
+                                style={{
+                                  borderColor: COLOR.border,
+                                  boxShadow:
+                                    "inset 0 12px 20px -14px rgba(43,26,12,0.5), inset 0 -4px 10px -6px rgba(43,26,12,0.3)",
+                                }}
                               >
-                                −
-                              </button>
+                                <ShelfBackWall className="absolute inset-0 h-full w-full" />
 
-                              <span className="w-4 text-center font-mono text-sm font-bold tabular-nums" style={{ color: COLOR.ink }} aria-live="polite">
-                                {qty}
-                              </span>
+                                <div
+                                  className="pointer-events-none absolute inset-y-0 left-0 w-4"
+                                  style={{ background: "linear-gradient(90deg, rgba(43,26,12,0.28), rgba(43,26,12,0))" }}
+                                  aria-hidden="true"
+                                />
+                                <div
+                                  className="pointer-events-none absolute inset-y-0 right-0 w-4"
+                                  style={{ background: "linear-gradient(270deg, rgba(43,26,12,0.28), rgba(43,26,12,0))" }}
+                                  aria-hidden="true"
+                                />
 
-                              <button
-                                type="button"
-                                onClick={() => onChangeQuantity?.(ingredientName, 1)}
-                                disabled={qty >= MAX_CART_QUANTITY}
-                                aria-label={`Increase quantity for ${ingredientName}`}
-                                className="flex h-7 w-7 items-center justify-center rounded-md border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
-                                style={{ borderColor: COLOR.line, backgroundColor: COLOR.paper, color: COLOR.ink }}
-                              >
-                                +
-                              </button>
-                            </div>
+                                <div
+                                  className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6"
+                                  style={{ perspective: "900px" }}
+                                >
+                                  {products.flatMap((product) =>
+                                    (product.variations ?? []).map((variation) => {
+                                      const selected = chosen?.spinId === variation.spinId;
+                                      const unavailable = !variation.isInStockAndAvailable || !product.inStock;
+
+                                      return (
+                                        <button
+                                          key={variation.spinId}
+                                          ref={registerProductRef(variation.spinId)}
+                                          type="button"
+                                          disabled={unavailable}
+                                          aria-pressed={selected}
+                                          onClick={() => handlePickProduct(ingredientName, variation)}
+                                          className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40"
+                                          style={{
+                                            borderColor: selected ? COLOR.saffron : COLOR.border,
+                                            backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
+                                            boxShadow: selected
+                                              ? `inset 0 0 0 1px ${COLOR.saffron}, 0 14px 18px -10px rgba(43,26,12,0.45)`
+                                              : "0 8px 12px -8px rgba(43,26,12,0.35)",
+                                            transform: selected
+                                              ? "perspective(900px) rotateX(0deg) translateY(-5px) translateZ(14px)"
+                                              : "perspective(900px) rotateX(9deg)",
+                                            transformOrigin: "bottom center",
+                                          }}
+                                        >
+                                          {selected && (
+                                            <span
+                                              aria-hidden="true"
+                                              className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full"
+                                              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                                            >
+                                              <CheckIcon className="h-2.5 w-2.5" />
+                                            </span>
+                                          )}
+
+                                          {variation.imageUrl && (
+                                            <span className="relative mx-auto mb-2.5 block h-14 w-14">
+                                              <img
+                                                src={variation.imageUrl}
+                                                alt={product.displayName}
+                                                className="h-14 w-14 rounded-lg border bg-white object-cover"
+                                                style={{
+                                                  borderColor: COLOR.border,
+                                                  filter: "drop-shadow(0 6px 5px rgba(43,26,12,0.35))",
+                                                }}
+                                              />
+                                              <span
+                                                aria-hidden="true"
+                                                className="pointer-events-none absolute inset-0 rounded-lg"
+                                                style={{
+                                                  background:
+                                                    "linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 55%)",
+                                                }}
+                                              />
+                                              <span
+                                                aria-hidden="true"
+                                                className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full"
+                                                style={{ backgroundColor: "rgba(43,26,12,0.3)", filter: "blur(2.5px)" }}
+                                              />
+                                            </span>
+                                          )}
+
+                                          <p className="line-clamp-2 text-xs font-medium leading-tight" style={{ color: COLOR.ink }}>
+                                            {variation.quantityDescription}
+                                          </p>
+                                          <p className="mt-1.5 text-sm font-bold tabular-nums" style={{ color: COLOR.saffronDark }}>
+                                            ₹{variation.price.offerPrice}
+                                          </p>
+                                          {unavailable && (
+                                            <p className="mt-0.5 text-[10px]" style={{ color: COLOR.inkFaint }}>
+                                              Unavailable
+                                            </p>
+                                          )}
+                                        </button>
+                                      );
+                                    })
+                                  )}
+                                </div>
+
+                                <div
+                                  className="relative h-[13px] border-t"
+                                  style={{
+                                    borderColor: COLOR.border,
+                                    background:
+                                      "linear-gradient(180deg, #C99552 0%, #A96F35 35%, #805027 100%)",
+                                    boxShadow: "0 4px 8px rgba(43,26,12,0.25)",
+                                  }}
+                                >
+                                  <div
+                                    className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
+                                    style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
+                                    aria-hidden="true"
+                                  />
+                                </div>
+                              </div>
+                            )}
+
+                            {!isPending && chosen && (
+                              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg px-3 py-2" style={{ backgroundColor: COLOR.surfaceSunken }}>
+                                <p className="min-w-0 text-xs" style={{ color: COLOR.inkSoft }}>
+                                  <span className="font-semibold" style={{ color: COLOR.ink }}>
+                                    {chosen.quantityDescription}
+                                  </span>
+                                </p>
+
+                                <div className="flex shrink-0 items-center gap-2.5" role="group" aria-label={`Quantity for ${ingredientName}`}>
+                                  <button
+                                    type="button"
+                                    onClick={() => onChangeQuantity?.(ingredientName, -1)}
+                                    disabled={qty <= 1}
+                                    aria-label={`Decrease quantity for ${ingredientName}`}
+                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
+                                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
+                                  >
+                                    −
+                                  </button>
+
+                                  <span className="w-4 text-center text-sm font-bold tabular-nums" style={{ color: COLOR.ink }} aria-live="polite">
+                                    {qty}
+                                  </span>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => onChangeQuantity?.(ingredientName, 1)}
+                                    disabled={qty >= MAX_CART_QUANTITY}
+                                    aria-label={`Increase quantity for ${ingredientName}`}
+                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35"
+                                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                        );
+                      })}
 
-                  {instamartSearchDone && (
-                    <TrolleyWidget ref={trolleyRef} count={selectedCount} bounceKey={trolleyBounceKey} />
+                      {instamartSearchDone && (
+                        <TrolleyWidget ref={trolleyRef} count={selectedCount} bounceKey={trolleyBounceKey} />
+                      )}
+                    </div>
                   )}
-                </div>
-              )}
-            </>
-          ) : (
-            /* Swiggy restaurant flow */
-            <>
-              {!hasAddresses ? (
-                <EmptyAddresses />
-              ) : showAddressScreen ? (
-                <div>
-                  <p className="mb-4 font-mono text-xs font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
-                    Deliver this dish to
-                  </p>
-                  {addresses && addresses.length === 1 ? (
-                    <SingleAddressConfirm address={addresses[0]} />
-                  ) : (
-                    <AddressList addresses={addresses} selectedAddressId={selectedAddressId} onSelectAddress={onSelectAddress} />
-                  )}
-                </div>
-              ) : foodCartAdded && foodStage === "success" ? (
-                <SuccessStage
-                  variant="dish"
-                  eyebrow="Swiggy cart"
-                  text={`Your dish from ${selectedRestaurant?.name} is in your Swiggy cart.`}
-                />
-              ) : foodCartAdded ? (
-                <CartReviewStep
-                  items={foodCartSummary?.items ?? []}
-                  bill={foodCartSummary?.bill ?? null}
-                  isLoading={!!isLoadingFoodCartSummary}
-                  error={foodCartSummaryError}
-                  warning={
-                    foodCartSummary?.exceedsMaxOrder
-                      ? `Your cart is over the ₹${(foodCartSummary.maxOrderPaise / 100).toFixed(0)} order limit — please remove an item.`
-                      : null
-                  }
-                />
-
-              // AFTER
-              ) : restaurants.length === 0 ? (
-                <div className="py-10 text-center">
-                  <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
-                    <DishSearchIcon className="h-14 w-14" />
-                  </span>
-                  <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
-                    {dishName ? `${dishName} isn't on Swiggy near you` : "Couldn't find this dish nearby"}
-                  </h4>
-                  <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
-                    No restaurants delivering to this address have it on their menu right now.
-                  </p>
-                  {onGoToAddress && (
-                    <button
-                      type="button"
-                      onClick={onGoToAddress}
-                      className="mt-5 border px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
-                      style={{ borderColor: COLOR.line, color: COLOR.ink, backgroundColor: COLOR.paper }}
-                    >
-                      Try another address
-                    </button>
-                  )}
-                </div>
-              ) : restaurants.every((restaurant) => !restaurant.isOpen) ? (
-                <div className="py-10 text-center">
-                  <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
-                    <ClosedStallIcon className="h-14 w-14" />
-                  </span>
-                  <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
-                    Found it - but they&apos;re closed right now
-                  </h4>
-                  <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
-                    {restaurants.length} {restaurants.length === 1 ? "place serves" : "places serve"}{" "}
-                    {dishName ?? "this dish"} near you, just not at this hour.
-                  </p>
-
-                  <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left">
-                    {restaurants.slice(0, 4).map((restaurant) => (
-                      <li
-                        key={restaurant.id}
-                        className="flex items-center justify-between gap-3 rounded-lg px-3 py-2"
-                        style={{ backgroundColor: COLOR.paperSunken }}
-                      >
-                        <span className="min-w-0 truncate text-xs font-semibold" style={{ color: COLOR.ink }}>
-                          {restaurant.name}
-                        </span>
-                        {restaurant.nextOpenText && (
-                          <span
-                            className="shrink-0 font-mono text-[10px] uppercase tracking-wide"
-                            style={{ color: COLOR.stampDark }}
-                          >
-                            {restaurant.nextOpenText}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                    {restaurants.length > 4 && (
-                      <li className="text-center font-mono text-[10px] uppercase tracking-wide" style={{ color: COLOR.inkFaint }}>
-                        +{restaurants.length - 4} more nearby
-                      </li>
-                    )}
-                  </ul>
-                </div>
+                </>
               ) : (
-                <ul className="animate-fade-in-up space-y-3" style={{ animationDuration: "0.25s" }}>
-                  {restaurants.map((restaurant) => (
-                    <RestaurantRow
-                      key={restaurant.id}
-                      restaurant={restaurant}
-                      selected={selectedRestaurant?.id === restaurant.id}
-                      onSelect={onSelectRestaurant}
+                /* Swiggy restaurant flow */
+                <>
+                  {!hasAddresses ? (
+                    <EmptyAddresses />
+                  ) : showAddressScreen ? (
+                    <div>
+                      <p className="mb-4 text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
+                        Deliver this dish to
+                      </p>
+                      {addresses && addresses.length === 1 ? (
+                        <SingleAddressConfirm address={addresses[0]} />
+                      ) : (
+                        <AddressList addresses={addresses} selectedAddressId={selectedAddressId} onSelectAddress={onSelectAddress} />
+                      )}
+                    </div>
+                  ) : foodCartAdded && foodStage === "success" ? (
+                    <SuccessStage
+                      variant="dish"
+                      eyebrow="Swiggy cart"
+                      text={`Your dish from ${selectedRestaurant?.name} is in your Swiggy cart.`}
                     />
-                  ))}
-                </ul>
+                  ) : foodCartAdded ? (
+                    <CartReviewStep
+                      items={foodCartSummary?.items ?? []}
+                      bill={foodCartSummary?.bill ?? null}
+                      isLoading={!!isLoadingFoodCartSummary}
+                      error={foodCartSummaryError}
+                      warning={
+                        foodCartSummary?.exceedsMaxOrder
+                          ? `Your cart is over the ₹${(foodCartSummary.maxOrderPaise / 100).toFixed(0)} order limit — please remove an item.`
+                          : null
+                      }
+                    />
+                  ) : restaurants.length === 0 ? (
+                    <div className="py-10 text-center">
+                      <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
+                        <DishSearchIcon className="h-14 w-14" />
+                      </span>
+                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                        {dishName ? `${dishName} isn't on Swiggy near you` : "Couldn't find this dish nearby"}
+                      </h4>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                        No restaurants delivering to this address have it on their menu right now.
+                      </p>
+                      {onGoToAddress && (
+                        <button
+                          type="button"
+                          onClick={onGoToAddress}
+                          className={secondaryButton}
+                          style={{ borderColor: COLOR.border, color: COLOR.ink, backgroundColor: COLOR.surface }}
+                        >
+                          Try another address
+                        </button>
+                      )}
+                    </div>
+                  ) : restaurants.every((restaurant) => !restaurant.isOpen) ? (
+                    <div className="py-10 text-center">
+                      <span className="mx-auto flex h-14 w-14 items-center justify-center" aria-hidden="true">
+                        <ClosedStallIcon className="h-14 w-14" />
+                      </span>
+                      <h4 className="mt-4 font-serif text-xl font-black" style={{ color: COLOR.ink }}>
+                        Found it - but they&apos;re closed right now
+                      </h4>
+                      <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed" style={{ color: COLOR.inkSoft }}>
+                        {restaurants.length} {restaurants.length === 1 ? "place serves" : "places serve"}{" "}
+                        {dishName ?? "this dish"} near you, just not at this hour.
+                      </p>
+
+                      <ul className="mx-auto mt-5 max-w-xs space-y-2 text-left">
+                        {restaurants.slice(0, 4).map((restaurant) => (
+                          <li
+                            key={restaurant.id}
+                            className="flex items-center justify-between gap-3 rounded-lg px-3 py-2"
+                            style={{ backgroundColor: COLOR.surfaceSunken }}
+                          >
+                            <span className="min-w-0 truncate text-xs font-semibold" style={{ color: COLOR.ink }}>
+                              {restaurant.name}
+                            </span>
+                            {restaurant.nextOpenText && (
+                              <span
+                                className="shrink-0 text-[10px]"
+                                style={{ color: COLOR.saffronDark }}
+                              >
+                                {restaurant.nextOpenText}
+                              </span>
+                            )}
+                          </li>
+                        ))}
+                        {restaurants.length > 4 && (
+                          <li className="text-center text-[10px]" style={{ color: COLOR.inkFaint }}>
+                            +{restaurants.length - 4} more nearby
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  ) : (
+                    <ul className="animate-fade-in-up space-y-3" style={{ animationDuration: "0.25s" }}>
+                      {restaurants.map((restaurant) => (
+                        <RestaurantRow
+                          key={restaurant.id}
+                          restaurant={restaurant}
+                          selected={selectedRestaurant?.id === restaurant.id}
+                          onSelect={onSelectRestaurant}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </>
               )}
-            </>
-           )}
             </>
           )}
         </div>
 
         {/* Footers */}
         {!isInitialLoading && !needsSwiggyReconnect && hasAddresses && showAddressScreen && (
-          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+          <div className={footerClass} style={{ borderColor: COLOR.border }}>
             <button
               type="button"
               onClick={onContinueAddress}
               disabled={!selectedAddressId}
               className={primaryButton}
               style={{
-                backgroundColor: selectedAddressId ? COLOR.stamp : COLOR.paperSunken,
-                color: selectedAddressId ? COLOR.paper : COLOR.inkFaint,
-                ...notchLg,
+                backgroundColor: selectedAddressId ? COLOR.saffron : COLOR.surfaceSunken,
+                color: selectedAddressId ? COLOR.surface : COLOR.inkFaint,
               }}
             >
               {hasResults ? "Continue" : type === "swiggy" ? "Find restaurants" : "Find ingredients"}
@@ -2090,10 +2065,10 @@ useEffect(() => {
         )}
 
         {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && !cartAdded && hasAddresses && !showAddressScreen && !noItemsAtAll && (
-          <div className={footerClass} style={{ borderColor: COLOR.line }}>
-            <div className="mb-2.5 flex items-center justify-between font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.inkFaint }}>
+          <div className={footerClass} style={{ borderColor: COLOR.border }}>
+            <div className="mb-2.5 flex items-center justify-between text-[11px]" style={{ color: COLOR.inkFaint }}>
               <span>{selectedCount} of {instamartNames.length} picked</span>
-              {selectedCount > 0 && <span style={{ color: COLOR.stampDark }}>Ready</span>}
+              {selectedCount > 0 && <span style={{ color: COLOR.saffronDark }}>Ready</span>}
             </div>
             <button
               type="button"
@@ -2101,9 +2076,8 @@ useEffect(() => {
               disabled={selectedCount === 0 || isSubmitting}
               className={primaryButton}
               style={{
-                backgroundColor: selectedCount > 0 ? COLOR.stamp : COLOR.paperSunken,
-                color: selectedCount > 0 ? COLOR.paper : COLOR.inkFaint,
-                ...notchLg,
+                backgroundColor: selectedCount > 0 ? COLOR.saffron : COLOR.surfaceSunken,
+                color: selectedCount > 0 ? COLOR.surface : COLOR.inkFaint,
               }}
             >
               {isSubmitting ? (
@@ -2117,9 +2091,9 @@ useEffect(() => {
           </div>
         )}
         {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && instamartStage === "review" && (
-          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+          <div className={footerClass} style={{ borderColor: COLOR.border }}>
             {isCheckingOut ? (
-              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }} role="status" aria-live="polite">
+              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }} role="status" aria-live="polite">
                 <AddingToCart label="Placing your order" />
               </div>
             ) : (
@@ -2132,13 +2106,13 @@ useEffect(() => {
         )}
 
         {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && !foodCartAdded && hasAddresses && !showAddressScreen && selectedRestaurant && (
-          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+          <div className={footerClass} style={{ borderColor: COLOR.border }}>
             <button
               type="button"
               onClick={onAddDishToCart}
               disabled={isSubmitting}
               className={primaryButton}
-              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
             >
               {isSubmitting ? <AddingToCart /> : "Add this dish to cart"}
             </button>
@@ -2146,9 +2120,9 @@ useEffect(() => {
         )}
 
         {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && foodCartAdded && foodStage === "review" && (
-          <div className={footerClass} style={{ borderColor: COLOR.line }}>
+          <div className={footerClass} style={{ borderColor: COLOR.border }}>
             {isCheckingOutFood ? (
-              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }} role="status" aria-live="polite">
+              <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }} role="status" aria-live="polite">
                 <AddingToCart label="Placing your order" />
               </div>
             ) : (
@@ -2161,10 +2135,6 @@ useEffect(() => {
         )}
       </div>
 
-      {/* Flying product thumbnails live at the overlay level, not inside the
-          dialog, so their `position: fixed` coordinates (read straight off
-          the clicked button and the trolley) aren't affected by the
-          dialog's own drag-to-minimize transform. */}
       <FlyingIngredients items={flyingItems} onDone={removeFlyingItem} />
 
       <style>{`

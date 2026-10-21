@@ -3,33 +3,23 @@ import { createPortal } from "react-dom";
 import { trackInstamartOrder, InstamartTrackedOrder } from "../services/swiggyService";
 
 /* ------------------------------------------------------------------------
-   Same "order slip" design language as SwiggyActionModal: paper, ink,
-   stamp-orange, corner-notched surfaces. Kept as its own small palette
-   here (rather than importing SwiggyActionModal's) so this component has
-   no dependency on that file and can't be destabilized by changes there.
+   Same token set as RecipeDisplay / SwiggyActionModal — warm cream
+   surfaces, single orange accent, Fraunces for headings, DM Sans for the
+   rest. No separate "stamp/paper" palette, no monospace, no clip-path
+   notches.
    ------------------------------------------------------------------------ */
 
 const COLOR = {
-  paper: "#FFFBF0",
-  paperSunken: "#F6EDD6",
-  ink: "#241608",
-  inkSoft: "#6B5A42",
-  inkFaint: "#A8977A",
-  line: "#DCCCA2",
-  stamp: "#FC8019",
-  stampDark: "#D96A0C",
-  stampTint: "#FFE7CC",
-  error: "#A23E2B",
-  errorTint: "#F2DCD2",
+  surface: "#FFFEFA",
+  surfaceSunken: "#FFF8F1",
+  ink: "#2B1A0C",
+  inkSoft: "#6B5238",
+  inkFaint: "#9C7C4E",
+  border: "#EAD9AE",
+  saffron: "#FC6C26",
+  saffronDark: "#D1560F",
+  saffronTint: "#FFE3C2",
 } as const;
-
-const notchLg: React.CSSProperties = {
-  clipPath:
-    "polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px)",
-};
-const notchSm: React.CSSProperties = {
-  clipPath: "polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px)",
-};
 
 const Svg: React.FC<{ className?: string; strokeWidth?: number; children: React.ReactNode }> = ({
   className,
@@ -175,13 +165,8 @@ const POLL_FLOOR_SECONDS = 10; // never poll faster than this, per Swiggy's guid
 /* ---------- "Order placed" beat ----------
    Plays once, right after checkout, before the tracker starts polling
    for live status. A stamp drops in with a little overshoot, then a
-   checkmark draws itself the same way SwiggyActionModal's add-to-cart
-   stamp does — same family of motion, kept local to this file since it
-   has its own small palette rather than importing that one. */
-// The stamp/check draws in over ~1.3s (see the animation-delays below),
-// then sits fully settled for a ~3s beat before handing off to the
-// scooter — long enough to actually read "Order placed!" rather than
-// having it brushed past on the way to the next animation.
+   checkmark draws itself — same family of motion as SwiggyActionModal's
+   add-to-cart confirmation, recolored onto the shared saffron tokens. */
 const ORDER_PLACED_SETTLE_MS = 1300;
 const ORDER_PLACED_GAP_MS = 3000;
 const ORDER_PLACED_DURATION_MS = ORDER_PLACED_SETTLE_MS + ORDER_PLACED_GAP_MS;
@@ -193,13 +178,13 @@ const FINDING_MIN_DURATION_MS = 1600;
 const OrderPlacedScene: React.FC<{ subtitle?: string }> = ({ subtitle }) => (
   <div className="flex flex-col items-center justify-center py-12 text-center" role="status" aria-live="polite">
     <div className="relative flex h-20 w-20 items-center justify-center">
-      <span className="stamp-drop-ring absolute inset-0 rounded-full" style={{ backgroundColor: COLOR.stampTint }} aria-hidden="true" />
+      <span className="stamp-drop-ring absolute inset-0 rounded-full" style={{ backgroundColor: COLOR.saffronTint }} aria-hidden="true" />
       <svg viewBox="0 0 64 64" className="stamp-drop relative h-16 w-16">
-        <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.stamp} strokeWidth="4" pathLength={100} className="order-tick-circle" />
+        <circle cx="32" cy="32" r="27" fill="none" stroke={COLOR.saffron} strokeWidth="4" pathLength={100} className="order-tick-circle" />
         <path
           d="M20 33l8 8 16-18"
           fill="none"
-          stroke={COLOR.stamp}
+          stroke={COLOR.saffron}
           strokeWidth="4.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -209,7 +194,7 @@ const OrderPlacedScene: React.FC<{ subtitle?: string }> = ({ subtitle }) => (
       </svg>
     </div>
 
-    <p className="order-placed-label mt-4 font-mono text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: COLOR.stamp }}>
+    <p className="order-placed-label mt-4 text-xs font-semibold" style={{ color: COLOR.saffronDark }}>
       Order confirmed
     </p>
     <h4 className="order-placed-label mt-1 font-serif text-2xl font-black" style={{ color: COLOR.ink }}>
@@ -382,24 +367,24 @@ const canFullyClose = isDelivered || (!!error && !order);
 return createPortal(
     <div
       className="fixed inset-0 z-50 flex animate-fade-in-up items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
-      style={{ animationDuration: "0.2s", backgroundColor: "rgba(36,22,8,0.4)" }}
+      style={{ animationDuration: "0.2s", backgroundColor: "rgba(43,26,12,0.4)" }}
       onClick={onMinimize}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="order-tracker-title"
-        className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-2xl border-2 shadow-2xl sm:max-h-[82vh] sm:rounded-2xl"
-        style={{ borderColor: COLOR.line, backgroundColor: COLOR.paper, boxShadow: "0 24px 48px rgba(36,22,8,0.25)" }}
+        className="flex max-h-[88vh] w-full max-w-md flex-col rounded-t-3xl border shadow-2xl sm:max-h-[82vh] sm:rounded-3xl"
+        style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, boxShadow: "0 24px 48px rgba(43,26,12,0.25)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-5 pb-4 pt-3 sm:px-6 sm:pt-5" style={{ backgroundColor: COLOR.paperSunken }}>
-          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.line }} aria-hidden="true" />
+        <div className="rounded-t-3xl px-5 pb-4 pt-3 sm:px-6 sm:pt-5" style={{ backgroundColor: COLOR.surfaceSunken }}>
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full sm:hidden" style={{ backgroundColor: COLOR.border }} aria-hidden="true" />
 
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: COLOR.stampDark }}>
+              <p className="text-xs font-semibold" style={{ color: COLOR.saffronDark }}>
                 Instamart Order
               </p>
               <h3 id="order-tracker-title" className="font-serif text-xl font-black leading-tight tracking-tight sm:text-2xl" style={{ color: COLOR.ink }}>
@@ -412,11 +397,39 @@ return createPortal(
             </div>
 
             <div className="-mr-1 mt-0.5 flex items-center gap-1.5">
-              <button type="button" onClick={onMinimize} aria-label="Minimize" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
+              <button
+                type="button"
+                onClick={onMinimize}
+                aria-label="Minimize"
+                className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2"
+                style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.saffron;
+                  e.currentTarget.style.color = COLOR.saffronDark;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = COLOR.border;
+                  e.currentTarget.style.color = COLOR.inkSoft;
+                }}
+              >
                 <MinusIcon className="h-4 w-4" />
               </button>
               {canFullyClose && stage === "tracking" && (
-                <button type="button" onClick={onClose} aria-label="Close" className="flex h-8 w-8 items-center justify-center border focus:outline-none focus-visible:ring-2" style={{ borderColor: COLOR.line, color: COLOR.inkSoft, ...notchSm }}>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2"
+                  style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = COLOR.saffron;
+                    e.currentTarget.style.color = COLOR.saffronDark;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = COLOR.border;
+                    e.currentTarget.style.color = COLOR.inkSoft;
+                  }}
+                >
                   <CloseIcon className="h-4 w-4" />
                 </button>
               )}
@@ -424,7 +437,7 @@ return createPortal(
           </div>
         </div>
 
-        <div className="h-[3px]" style={{ background: `linear-gradient(180deg, ${COLOR.line}, transparent)` }} aria-hidden="true" />
+        <div className="h-[3px]" style={{ background: `linear-gradient(180deg, ${COLOR.border}, transparent)` }} aria-hidden="true" />
 
         {/* Content */}
         <div className="modal-scroll flex-1 overflow-y-auto px-5 py-5 sm:px-6">
@@ -432,11 +445,11 @@ return createPortal(
             <div
               role="alert"
               className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed"
-              style={{ borderColor: COLOR.line, backgroundColor: COLOR.paperSunken, color: COLOR.inkSoft }}
+              style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
             >
               <span
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-                style={{ backgroundColor: COLOR.stampTint, color: COLOR.stampDark }}
+                style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
               >
                 <InfoIcon className="h-4 w-4" />
               </span>
@@ -449,10 +462,10 @@ return createPortal(
           ) : stage === "finding" || (isLoading && !order) ? (
             <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
               <div className="relative flex h-14 w-32 items-center justify-center overflow-hidden">
-                <span className="scooter-dash" style={{ backgroundColor: COLOR.line, animationDelay: "0ms" }} />
-                <span className="scooter-dash" style={{ backgroundColor: COLOR.line, animationDelay: "180ms" }} />
-                <span className="scooter-dash" style={{ backgroundColor: COLOR.line, animationDelay: "360ms" }} />
-                <ScooterIcon className="scooter-drive relative h-9 w-12" style={{ color: COLOR.stamp }} />
+                <span className="scooter-dash" style={{ backgroundColor: COLOR.border, animationDelay: "0ms" }} />
+                <span className="scooter-dash" style={{ backgroundColor: COLOR.border, animationDelay: "180ms" }} />
+                <span className="scooter-dash" style={{ backgroundColor: COLOR.border, animationDelay: "360ms" }} />
+                <ScooterIcon className="scooter-drive relative h-9 w-12" style={{ color: COLOR.saffron }} />
               </div>
               <p className="mt-4 font-serif text-lg font-black" style={{ color: COLOR.ink }}>Finding your order</p>
             </div>
@@ -460,13 +473,13 @@ return createPortal(
             <div className="animate-fade-in-up space-y-6" style={{ animationDuration: "0.25s" }}>
               {/* ETA — placeholder until a real in-progress response confirms the field */}
               {!isDelivered && (
-                <div className="rounded-xl border-2 px-4 py-4 text-center" style={{ borderColor: COLOR.stamp, backgroundColor: COLOR.stampTint }}>
+                <div className="rounded-xl border-2 px-4 py-4 text-center" style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}>
                   {(order.status?.statusMessage ?? "").toLowerCase().includes("arrived") ? (
                     <>
                       <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
                         {order.status?.statusMessage}
                       </p>
-                      <p className="mt-1 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
+                      <p className="mt-1 text-xs font-medium" style={{ color: COLOR.saffronDark }}>
                         Your order is here
                       </p>
                     </>
@@ -475,7 +488,7 @@ return createPortal(
                       <p className="font-serif text-3xl font-black" style={{ color: COLOR.ink }}>
                         {displayedEta} min
                       </p>
-                      <p className="mt-1 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
+                      <p className="mt-1 text-xs font-medium" style={{ color: COLOR.saffronDark }}>
                         Estimated arrival
                       </p>
                     </>
@@ -484,7 +497,7 @@ return createPortal(
                       <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
                         {order.status?.statusMessage ?? "On its way"}
                       </p>
-                      <p className="mt-1 font-mono text-[11px] uppercase tracking-wide" style={{ color: COLOR.stampDark }}>
+                      <p className="mt-1 text-xs font-medium" style={{ color: COLOR.saffronDark }}>
                         Usually 10–20 min
                       </p>
                     </>
@@ -502,21 +515,21 @@ return createPortal(
                         <span
                           className="flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors"
                           style={{
-                            borderColor: reached ? COLOR.stamp : COLOR.line,
-                            backgroundColor: reached ? COLOR.stamp : COLOR.paper,
-                            color: COLOR.paper,
+                            borderColor: reached ? COLOR.saffron : COLOR.border,
+                            backgroundColor: reached ? COLOR.saffron : COLOR.surface,
+                            color: COLOR.surface,
                           }}
                         >
                           {reached && <CheckIcon className="h-3.5 w-3.5" />}
                         </span>
-                        <span className="text-center font-mono text-[9px] font-bold uppercase tracking-wide" style={{ color: reached ? COLOR.ink : COLOR.inkFaint }}>
+                        <span className="text-center text-[11px] font-semibold" style={{ color: reached ? COLOR.ink : COLOR.inkFaint }}>
                           {s.label}
                         </span>
                       </div>
                       {!isLast && (
                         <span
-                          className="mx-1 h-0.5 flex-1"
-                          style={{ backgroundColor: i < stageIndex ? COLOR.stamp : COLOR.line, marginBottom: "16px" }}
+                          className="mx-1 h-0.5 flex-1 rounded-full"
+                          style={{ backgroundColor: i < stageIndex ? COLOR.saffron : COLOR.border, marginBottom: "16px" }}
                         />
                       )}
                     </React.Fragment>
@@ -525,9 +538,14 @@ return createPortal(
               </div>
 
               {/* Delivery / store info */}
-              <div className="rounded-xl border px-4 py-3.5" style={{ borderColor: COLOR.line }}>
+              <div className="rounded-xl border px-4 py-3.5" style={{ borderColor: COLOR.border }}>
                 <div className="flex items-start gap-3">
-                  <PinIcon className="mt-0.5 h-4 w-4 shrink-0 text-[#D96A0C]" />
+                  <span
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
+                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
+                  >
+                    <PinIcon className="h-3.5 w-3.5" />
+                  </span>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold" style={{ color: COLOR.ink }}>
                       {order.deliveryInfo?.addressLabel ?? "Delivery address"}
@@ -540,7 +558,7 @@ return createPortal(
                   </div>
                 </div>
                 {order.storeInfo?.name && (
-                  <p className="mt-2.5 font-mono text-[11px]" style={{ color: COLOR.inkFaint }}>
+                  <p className="mt-2.5 text-[11px]" style={{ color: COLOR.inkFaint }}>
                     From {order.storeInfo.name}
                   </p>
                 )}
@@ -549,14 +567,14 @@ return createPortal(
               {/* Items */}
               {order.items && order.items.length > 0 && (
                 <div>
-                  <p className="mb-2.5 font-mono text-[11px] font-bold uppercase tracking-wide" style={{ color: COLOR.inkSoft }}>
+                  <p className="mb-2.5 text-xs font-semibold" style={{ color: COLOR.inkSoft }}>
                     {order.itemCount ?? order.items.length} items
                   </p>
-                  <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.line }}>
+                  <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.border }}>
                     {order.items.map((item, i) => (
-                      <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm" style={{ borderColor: COLOR.line }}>
+                      <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm" style={{ borderColor: COLOR.border }}>
                         <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>{item.name}</span>
-                        <span className="shrink-0 pt-px font-mono tabular-nums" style={{ color: COLOR.inkSoft }}>{item.price}</span>
+                        <span className="shrink-0 pt-px tabular-nums" style={{ color: COLOR.inkSoft }}>{item.price}</span>
                       </li>
                     ))}
                   </ul>
@@ -567,12 +585,12 @@ return createPortal(
         </div>
 
         {isDelivered && stage === "tracking" && (
-          <div className="border-t px-5 py-4 sm:px-6" style={{ borderColor: COLOR.line }}>
+          <div className="border-t px-5 py-4 sm:px-6" style={{ borderColor: COLOR.border }}>
             <button
               type="button"
               onClick={onClose}
-              className="flex w-full items-center justify-center gap-2 py-3.5 text-sm font-bold uppercase tracking-wide shadow-sm transition-all duration-150 active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{ backgroundColor: COLOR.stamp, color: COLOR.paper, ...notchLg }}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
             >
               Done
             </button>
