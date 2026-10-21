@@ -3,28 +3,69 @@ import { Recipe } from "../types";
 export interface CompanionMessage {
   role: "user" | "assistant";
   content: string;
+  kind?: "text" | "address_picker" | "product_results" | "confirm_action";
+  addresses?: AddressOption[];
+  products?: CommerceProduct[];
+  pendingItems?: CommercePendingItem[];
 }
 
-// Written in the companion's own voice rather than as system-failure notices,
-// since this is exactly the text people see when something goes wrong.
-const GENERIC_ERROR =
-  "Hmm, I got a little distracted at the stove. Mind asking me that again?";
+export interface AddressOption {
+  id: string;
+  addressLine: string;
+  addressTag?: string;
+  addressCategory?: string;
+}
+
+export interface CommerceProduct {
+  spinId: string;
+  skuId: string;
+  displayName: string;
+  brandName: string;
+  imageUrl?: string;
+  quantityDescription: string;
+  price: { mrp: number; offerPrice: number };
+  isInStockAndAvailable: boolean;
+  ingredientName: string;
+}
+
+export interface CommercePendingItem {
+  spinId: string;
+  skuId: string;
+  displayName: string;
+  quantityDescription: string;
+  offerPrice: number;
+  quantity: number;
+}
+
+export type CompanionReply =
+  | { type: "text"; content: string; products?: CommerceProduct[] }
+  | { type: "confirm_add"; content: string; items: CommercePendingItem[] }
+  | { type: "needs_address"; addresses: AddressOption[] }
+  | { type: "needs_auth" };
+
+export interface CommerceAddResult {
+  type: "added" | "needs_auth";
+  shortageNote?: string | null;
+}
+
+const GENERIC_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
 const OFFLINE_ERROR =
   "I can't hear you over the sizzling — looks like your connection dropped. Try again once you're back online?";
 
 /**
- * Asks the cooking companion a question about the given recipe, passing the
- * prior turns of this conversation for context. The AI key, system prompt,
- * and model all live server-side in /api/cooking-companion.
+ * The single agent turn — handles plain recipe Q&A AND Instamart commerce.
+ * Always non-streaming (tools need structured responses). Used for every
+ * typed message and every tapped suggestion/address/product.
  */
 export const askCookingCompanion = async (
   recipe: Recipe,
-  history: CompanionMessage[],
+  history: { role: "user" | "assistant"; content: string }[],
   question: string,
   currentStepNumber: number | null,
   currentStepInstruction: string | null,
-  totalSteps: number
-): Promise<string> => {
+  totalSteps: number,
+  addressId: string | null
+): Promise<CompanionReply> => {
   let response: Response;
 
   try {
@@ -32,12 +73,14 @@ export const askCookingCompanion = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        action: "chat",
         recipe,
         history,
         question,
         currentStepNumber,
         currentStepInstruction,
         totalSteps,
+        addressId,
       }),
     });
   } catch (error) {
@@ -46,7 +89,6 @@ export const askCookingCompanion = async (
   }
 
   let data: any = null;
-
   try {
     data = await response.json();
   } catch {
@@ -54,36 +96,71 @@ export const askCookingCompanion = async (
   }
 
   if (!response.ok) {
-    console.error(
-      "Cooking companion request failed:",
-      response.status,
-      JSON.stringify(data?.error)
-    );
-
-    const message =
-      typeof data?.error?.message === "string" && data.error.message
-        ? data.error.message
-        : GENERIC_ERROR;
-
+    console.error("Cooking companion request failed:", response.status, JSON.stringify(data?.error));
+    const message = typeof data?.error?.message === "string" && data.error.message ? data.error.message : GENERIC_ERROR;
     throw new Error(message);
   }
 
-  if (typeof data?.reply !== "string" || !data.reply.trim()) {
-    console.error("The cooking companion API returned an unusable reply:", data);
-    throw new Error(GENERIC_ERROR);
+  if (data?.type === "needs_auth") return { type: "needs_auth" };
+  if (data?.type === "needs_address") {
+    return { type: "needs_address", addresses: Array.isArray(data.addresses) ? data.addresses : [] };
+  }
+  if (data?.type === "confirm_add") {
+    return { type: "confirm_add", content: data.content ?? "", items: Array.isArray(data.items) ? data.items : [] };
+  }
+  if (data?.type === "text") {
+    return { type: "text", content: data.content ?? "", products: Array.isArray(data.products) ? data.products : undefined };
   }
 
-  return data.reply;
+  console.error("The cooking companion API returned an unusable reply:", data);
+  throw new Error(GENERIC_ERROR);
 };
 
+/**
+ * Confirms a proposed cart addition. Not a model turn — a direct action.
+ */
+export const confirmCartAdd = async (
+  addressId: string,
+  items: CommercePendingItem[]
+): Promise<CommerceAddResult> => {
+  let response: Response;
+
+  try {
+    response = await fetch("/api/cooking-companion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "confirm_add", addressId, items }),
+    });
+  } catch (error) {
+    console.error("Confirm-add request failed:", error);
+    throw new Error(OFFLINE_ERROR);
+  }
+
+  let data: any = null;
+  try {
+    data = await response.json();
+  } catch {
+    console.error("The confirm-add API didn't return JSON.");
+  }
+
+  if (!response.ok) {
+    const message = typeof data?.error?.message === "string" && data.error.message ? data.error.message : GENERIC_ERROR;
+    throw new Error(message);
+  }
+
+  if (data?.type === "needs_auth") return { type: "needs_auth" };
+  if (data?.type === "added") return { type: "added", shortageNote: data.shortageNote ?? null };
+
+  throw new Error(GENERIC_ERROR);
+};
 
 /**
- * Same as askCookingCompanion, but calls onChunk with the text as it
- * arrives. Resolves with the full reply when the stream ends.
+ * Same agent, streamed, tools disabled — used for spoken "Hey chef" replies
+ * only. Calls onChunk with text as it arrives. Resolves with the full reply.
  */
 export const streamCookingCompanion = async (
   recipe: Recipe,
-  history: CompanionMessage[],
+  history: { role: "user" | "assistant"; content: string }[],
   question: string,
   currentStepNumber: number | null,
   currentStepInstruction: string | null,
@@ -97,6 +174,7 @@ export const streamCookingCompanion = async (
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        action: "chat",
         recipe,
         history,
         question,
@@ -115,9 +193,7 @@ export const streamCookingCompanion = async (
     let message = GENERIC_ERROR;
     try {
       const data = await response.json();
-      if (typeof data?.error?.message === "string" && data.error.message) {
-        message = data.error.message;
-      }
+      if (typeof data?.error?.message === "string" && data.error.message) message = data.error.message;
     } catch {
       /* not JSON */
     }
@@ -145,21 +221,14 @@ export const streamCookingCompanion = async (
   return full;
 };
 
-/**
- * Collects streamed text and hands back each finished sentence.
- * Call push() with every chunk, then flush() when the stream ends.
- */
+/** Collects streamed text and hands back each finished sentence. */
 export const createSentenceSplitter = (onSentence: (sentence: string) => void) => {
   let buffer = "";
   return {
     push(chunk: string) {
       buffer += chunk;
-      // A sentence ends at . ! or ? followed by a space or newline.
       let match: RegExpExecArray | null;
-      while (
-        (match = /[.!?]+(?:\s|$)/.exec(buffer)) &&
-        match.index + match[0].length < buffer.length
-      ) {
+      while ((match = /[.!?]+(?:\s|$)/.exec(buffer)) && match.index + match[0].length < buffer.length) {
         const end = match.index + match[0].length;
         const sentence = buffer.slice(0, end).trim();
         buffer = buffer.slice(end);

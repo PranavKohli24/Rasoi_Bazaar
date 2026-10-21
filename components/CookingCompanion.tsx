@@ -1,12 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Recipe } from "../types";
+
 import {
   askCookingCompanion,
+  confirmCartAdd,
   streamCookingCompanion,
   createSentenceSplitter,
   CompanionMessage,
+  CommerceProduct,
+  CommercePendingItem,
+  AddressOption,
 } from "../services/cookingCompanionService";
+import { getSwiggyAddresses, startSwiggyLogin, SwiggyAddress } from "../services/swiggyService";
 
 import { useHeyChef, HeyChefCommands, HeyChefPhase, CommandName } from "../src/hooks/useHeyChef";
 
@@ -493,6 +499,179 @@ const SpeechText: React.FC<{
   );
 };
 
+const COMMERCE = {
+  ink: "#2B1A0C",
+  inkSoft: "#6B5238",
+  border: "#EAD9AE",
+  saffron: "#FC6C26",
+  saffronDark: "#D1560F",
+  saffronTint: "#FFE3C2",
+  surface: "#FFFFFF",
+} as const;
+
+const AddressPickerBubble: React.FC<{
+  addresses: AddressOption[];
+  onPick: (address: AddressOption) => void;
+}> = ({ addresses, onPick }) => (
+  <div className="mt-2 flex flex-col gap-2">
+    {addresses.map((addr) => (
+      <button
+        key={addr.id}
+        type="button"
+        onClick={() => onPick(addr)}
+        className="flex items-start gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm transition-colors hover:border-[#FC6C26] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+        style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}
+      >
+        <span
+          className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+          style={{ backgroundColor: COMMERCE.saffronTint, color: COMMERCE.saffronDark }}
+        >
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+        </span>
+        <span className="min-w-0">
+          <span className="block font-semibold" style={{ color: COMMERCE.ink }}>
+            {addr.addressTag || addr.addressCategory || "Address"}
+          </span>
+          <span className="block text-xs leading-snug" style={{ color: COMMERCE.inkSoft }}>
+            {addr.addressLine}
+          </span>
+        </span>
+      </button>
+    ))}
+  </div>
+);
+
+const ProductResultCard: React.FC<{ product: CommerceProduct; onTap: (product: CommerceProduct) => void }> = ({
+  product,
+  onTap,
+}) => {
+  const [imgFailed, setImgFailed] = useState(false);
+  return (
+    <button
+      type="button"
+      disabled={!product.isInStockAndAvailable}
+      onClick={() => onTap(product)}
+      className="w-[108px] shrink-0 snap-start rounded-xl border p-2 text-left transition-colors hover:border-[#FC6C26] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] disabled:cursor-not-allowed disabled:opacity-40"
+      style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}
+    >
+      <div
+        className="flex h-16 w-full items-center justify-center overflow-hidden rounded-lg"
+        style={{ backgroundColor: COMMERCE.saffronTint }}
+      >
+        {product.imageUrl && !imgFailed ? (
+          <img
+            src={product.imageUrl}
+            alt=""
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span className="text-xs" style={{ color: COMMERCE.saffronDark }}>
+            {product.brandName?.[0] ?? "?"}
+          </span>
+        )}
+      </div>
+      <p className="mt-1.5 line-clamp-2 text-[11px] font-medium leading-tight" style={{ color: COMMERCE.ink }}>
+        {product.displayName}
+      </p>
+      <p className="mt-0.5 text-[10px]" style={{ color: COMMERCE.inkSoft }}>
+        {product.quantityDescription}
+      </p>
+      <p className="mt-1 text-xs font-bold tabular-nums" style={{ color: COMMERCE.saffronDark }}>
+        ₹{product.price.offerPrice}
+      </p>
+      {!product.isInStockAndAvailable && (
+        <p className="mt-0.5 text-[10px]" style={{ color: COMMERCE.inkSoft }}>
+          Unavailable
+        </p>
+      )}
+    </button>
+  );
+};
+
+const ProductResultsBubble: React.FC<{ products: CommerceProduct[]; onTap: (product: CommerceProduct) => void }> = ({
+  products,
+  onTap,
+}) => {
+  const grouped = products.reduce<Record<string, CommerceProduct[]>>((acc, p) => {
+    const key = p.ingredientName ?? "";
+    (acc[key] ??= []).push(p);
+    return acc;
+  }, {});
+
+  return (
+    <div className="mt-2 space-y-3">
+      {Object.entries(grouped).map(([ingredient, items]) => (
+        <div key={ingredient || "default"}>
+          {ingredient && (
+            <p className="mb-1.5 text-[11px] font-semibold" style={{ color: COMMERCE.inkSoft }}>
+              {ingredient}
+            </p>
+          )}
+          <div className="companion-hscroll flex gap-2 overflow-x-auto pb-1">
+            {items.map((p) => (
+              <ProductResultCard key={p.spinId} product={p} onTap={onTap} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ConfirmActionBubble: React.FC<{
+  items: CommercePendingItem[];
+  onConfirm: () => void;
+  onCancel: () => void;
+  isBusy?: boolean;
+}> = ({ items, onConfirm, onCancel, isBusy }) => {
+  const total = items.reduce((sum, it) => sum + it.offerPrice * it.quantity, 0);
+  return (
+    <div className="mt-2 rounded-xl border p-3" style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}>
+      <ul className="space-y-1 text-xs" style={{ color: COMMERCE.ink }}>
+        {items.map((it) => (
+          <li key={it.spinId} className="flex items-center justify-between gap-2">
+            <span className="min-w-0 truncate">
+              {it.quantity > 1 ? `${it.quantity}× ` : ""}
+              {it.displayName} <span style={{ color: COMMERCE.inkSoft }}>({it.quantityDescription})</span>
+            </span>
+            <span className="shrink-0 tabular-nums">₹{it.offerPrice * it.quantity}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-2 flex items-center justify-between border-t pt-2" style={{ borderColor: COMMERCE.border }}>
+        <span className="text-xs font-bold" style={{ color: COMMERCE.ink }}>
+          Total: ₹{total}
+        </span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isBusy}
+            className="rounded-full px-3 py-1.5 text-xs font-semibold"
+            style={{ color: COMMERCE.inkSoft, backgroundColor: "#F8F3E7" }}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={isBusy}
+            className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-white"
+            style={{ backgroundColor: COMMERCE.saffron }}
+          >
+            {isBusy ? "Adding…" : "Add to cart"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* --------------------------------------------------------- suggestions */
 
 // A few tappable starter questions, so someone with wet or masala-covered
@@ -639,6 +818,9 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const isOpenRef = useRef(false);
   isOpenRef.current = isOpen;
 
+  const [commerceAddressId, setCommerceAddressId] = useState<string | null>(null);
+const [isAddingToCart, setIsAddingToCart] = useState(false);
+const pendingAddressQuestionRef = useRef<string | null>(null);
   // ---- companion presence ----
   // Index of the reply currently being "said" (word-by-word reveal).
   const [talkingIndex, setTalkingIndex] = useState<number | null>(null);
@@ -1030,35 +1212,108 @@ const speak = (index: number, text: string) => {
     }
   };
 
-  const sendQuestion = async (question: string) => {
+  const sendQuestion = async (question: string, addressOverride?: string) => {
     if (!question || isSending) return;
 
-    // Don't talk over the person's next question.
     stopSpeaking();
 
     const historyForRequest = messages;
-    setMessages((current) => [...current, { role: "user", content: question }]);
-    setInput("");
+    if (!addressOverride) {
+      setMessages((current) => [...current, { role: "user", content: question }]);
+      setInput("");
+    }
     setError(null);
     setLastQuestion(question);
     setIsSending(true);
 
+    const addressId = addressOverride ?? commerceAddressId ?? undefined;
+
     try {
       const reply = await askCookingCompanion(
-            recipe,
-            historyForRequest,
-            question,
-            currentStepNumber,
-            currentStepInstruction,
-            totalSteps
-            );
-      // history + the question just added + this reply
+        recipe,
+        historyForRequest,
+        question,
+        currentStepNumber,
+        currentStepInstruction,
+        totalSteps,
+        addressId ?? null
+      );
+
+      if (reply.type === "needs_auth") {
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
+        ]);
+        setIsSending(false);
+        startSwiggyLogin();
+        return;
+      }
+
+      if (reply.type === "needs_address") {
+        let addresses: SwiggyAddress[];
+        try {
+          addresses = await getSwiggyAddresses();
+        } catch (err) {
+          if (err instanceof Error && err.message === "SWIGGY_NOT_CONNECTED") {
+            setMessages((current) => [
+              ...current,
+              { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
+            ]);
+            setIsSending(false);
+            startSwiggyLogin();
+            return;
+          }
+          throw err;
+        }
+
+        if (addresses.length === 0) {
+          setMessages((current) => [
+            ...current,
+            { role: "assistant", content: "I couldn't find a saved delivery address on your Swiggy account — add one there first." },
+          ]);
+          setIsSending(false);
+          return;
+        }
+
+        if (addresses.length === 1) {
+          setCommerceAddressId(addresses[0].id);
+          await sendQuestion(question, addresses[0].id);
+          return;
+        }
+
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: "Where should I get this delivered?", kind: "address_picker", addresses },
+        ]);
+        setIsSending(false);
+        return;
+      }
+
+      if (reply.type === "confirm_add") {
+        const replyIndex = historyForRequest.length + 1;
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: reply.content, kind: "confirm_action", pendingItems: reply.items },
+        ]);
+        setLastQuestion(null);
+        if (isOpenRef.current) setTalkingIndex(replyIndex);
+        return;
+      }
+
       const replyIndex = historyForRequest.length + 1;
-      setMessages((current) => [...current, { role: "assistant", content: reply }]);
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content: reply.content,
+          kind: reply.products?.length ? "product_results" : undefined,
+          products: reply.products,
+        },
+      ]);
       setLastQuestion(null);
       if (isOpenRef.current) {
         setTalkingIndex(replyIndex);
-        if (speakRepliesRef.current) speak(replyIndex, reply);
+        if (speakRepliesRef.current) speak(replyIndex, reply.content);
       }
     } catch (err) {
       console.error("Cooking companion error:", err);
@@ -1066,6 +1321,92 @@ const speak = (index: number, text: string) => {
     } finally {
       setIsSending(false);
     }
+  };
+
+  const handleAddressPicked = async (address: AddressOption) => {
+    setCommerceAddressId(address.id);
+
+    setMessages((current) => {
+      const idx = [...current].reverse().findIndex((m) => m.kind === "address_picker");
+      if (idx === -1) return current;
+      const realIdx = current.length - 1 - idx;
+      const next = [...current];
+      next[realIdx] = {
+        role: "assistant",
+        content: `Delivering to ${address.addressTag || address.addressCategory || "this address"}.`,
+      };
+      return next;
+    });
+
+    const question = lastQuestion;
+    if (question) {
+      setIsSending(true);
+      await sendQuestion(question, address.id);
+    }
+  };
+
+  const handleProductTapped = (product: CommerceProduct) => {
+    if (!product.isInStockAndAvailable) return;
+    setMessages((current) => [
+      ...current,
+      {
+        role: "assistant",
+        content: `Add ${product.displayName} (${product.quantityDescription}) to your cart?`,
+        kind: "confirm_action",
+        pendingItems: [
+          {
+            spinId: product.spinId,
+            skuId: product.skuId,
+            displayName: product.displayName,
+            quantityDescription: product.quantityDescription,
+            offerPrice: product.price.offerPrice,
+            quantity: 1,
+          },
+        ],
+      },
+    ]);
+  };
+
+  const handleConfirmAdd = async (items: CommercePendingItem[]) => {
+    if (!commerceAddressId) return;
+    setIsAddingToCart(true);
+    try {
+      const result = await confirmCartAdd(commerceAddressId, items);
+      if (result.type === "needs_auth") {
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: "I lost the connection to your Swiggy account — taking you there now." },
+        ]);
+        startSwiggyLogin();
+        return;
+      }
+      const names = items.map((i) => i.displayName).join(", ");
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content: result.shortageNote
+            ? `Added what I could — ${result.shortageNote}`
+            : `Added ${names} to your Instamart cart. Review and check out anytime from the cart button.`,
+        },
+      ]);
+    } catch (err) {
+      console.error("Add to cart failed:", err);
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", content: "Couldn't add that to your cart just now — mind trying again?" },
+      ]);
+    } finally {
+      setIsAddingToCart(false);
+    }
+  };
+
+  const handleCancelAdd = (messageIndex: number) => {
+    setMessages((current) => {
+      const next = [...current];
+      next[messageIndex] = { role: "assistant", content: "No problem, not adding that." };
+      return next;
+    });
   };
 
   const handleSend = () => sendQuestion(input.trim());
@@ -1437,10 +1778,12 @@ const speak = (index: number, text: string) => {
         `${question}\n\n${VOICE_STYLE_HINT}`,
         currentStepNumber,
         currentStepInstruction,
-        totalSteps
+        totalSteps,
+        null
       );
-      setMessages((current) => [...current, { role: "assistant", content: reply }]);
-      const spoken = clipForSpeech(plainTextForSpeech(reply).replace(/\s+/g, " ").trim());
+      const content = reply.type === "text" ? reply.content : "Let's talk about that in the chat instead.";
+      setMessages((current) => [...current, { role: "assistant", content }]);
+      const spoken = clipForSpeech(plainTextForSpeech(content).replace(/\s+/g, " ").trim());
       setVoiceReplyText(spoken);
       return spoken;
     } catch (err) {
@@ -1796,6 +2139,29 @@ const speak = (index: number, text: string) => {
                           setTalkingIndex((current) => (current === index ? null : current))
                         }
                       />
+
+                      {message.kind === "address_picker" && message.addresses && (
+                        <AddressPickerBubble
+                          addresses={message.addresses}
+                          onPick={(addr) => handleAddressPicked(addr)}
+                        />
+                      )}
+
+                      {message.kind === "product_results" && message.products && (
+                        <ProductResultsBubble
+                          products={message.products}
+                          onTap={(p) => handleProductTapped(p)}
+                        />
+                      )}
+
+                      {message.kind === "confirm_action" && message.pendingItems && (
+                        <ConfirmActionBubble
+                          items={message.pendingItems}
+                          isBusy={isAddingToCart}
+                          onConfirm={() => handleConfirmAdd(message.pendingItems!)}
+                          onCancel={() => handleCancelAdd(index)}
+                        />
+                      )}
                     </div>
                     {canSpeak && (
                       <button
