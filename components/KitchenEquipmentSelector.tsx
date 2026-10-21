@@ -95,7 +95,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 type="button"
                 aria-label={`Select ${item.name}`}
                 aria-pressed={selected}
-                onClick={() => toggleEquipment(item.name)}
+                onClick={(event) => {
+                  toggleEquipment(item.name);
+                  event.currentTarget.blur();
+                }}
                 className="group absolute select-none outline-none"
                 style={{
                   left: `${item.left}%`,
@@ -181,7 +184,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                 <button
                   type="button"
                   aria-pressed={selected}
-                  onClick={() => toggleEquipment(item.name)}
+                  onClick={(event) => {
+                    toggleEquipment(item.name);
+                    event.currentTarget.blur();
+                  }}
                   className={`relative flex h-full w-full select-none items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left text-[13px] font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:gap-2.5 sm:px-3 sm:text-sm ${
                     selected
                       ? 'border-orange-400 bg-orange-400/10 text-stone-100'
