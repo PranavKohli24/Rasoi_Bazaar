@@ -343,6 +343,72 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, 
     };
   }, [isOpen]);
 
+    useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  // ADD THIS BLOCK ↓↓↓
+  // Back-button trap: pressing back while this sheet is open should just
+  // minimize it (it only ever has a minimize affordance, no in-sheet back).
+  const pushedHistoryStateRef = useRef(false);
+  const suppressNextPopRef = useRef(false);
+  const onMinimizeRef = useRef(onMinimize);
+  useEffect(() => {
+    onMinimizeRef.current = onMinimize;
+  }, [onMinimize]);
+
+  useEffect(() => {
+    if (isOpen && !pushedHistoryStateRef.current) {
+      window.history.pushState({ __orderTrackerModal: true }, "");
+      pushedHistoryStateRef.current = true;
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (suppressNextPopRef.current) {
+        suppressNextPopRef.current = false;
+        pushedHistoryStateRef.current = false;
+        return;
+      }
+      if (!pushedHistoryStateRef.current) return;
+      pushedHistoryStateRef.current = false;
+      onMinimizeRef.current();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen && pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+  }, [isOpen]);
+
+  const triggerMinimize = () => {
+    if (pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+    onMinimize();
+  };
+
+  const triggerClose = () => {
+    if (pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+    onClose();
+  };
+
   useEffect(() => {
   if (!onStatusChange || !orderId) return;
   const stage = stageFromStatusMessage(order?.status?.statusMessage);
@@ -368,7 +434,7 @@ return createPortal(
     <div
       className="fixed inset-0 z-50 flex animate-fade-in-up items-end justify-center p-0 backdrop-blur-sm sm:items-center sm:p-4"
       style={{ animationDuration: "0.2s", backgroundColor: "rgba(43,26,12,0.4)" }}
-      onClick={onMinimize}
+      onClick={triggerMinimize}
     >
       <div
         role="dialog"
@@ -399,7 +465,7 @@ return createPortal(
             <div className="-mr-1 mt-0.5 flex items-center gap-1.5">
               <button
                 type="button"
-                onClick={onMinimize}
+                onClick={triggerMinimize}
                 aria-label="Minimize"
                 className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2"
                 style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
@@ -417,7 +483,7 @@ return createPortal(
               {canFullyClose && stage === "tracking" && (
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={triggerClose}
                   aria-label="Close"
                   className="flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2"
                   style={{ borderColor: COLOR.border, color: COLOR.inkSoft, backgroundColor: COLOR.surface }}
@@ -588,7 +654,7 @@ return createPortal(
           <div className="border-t px-5 py-4 sm:px-6" style={{ borderColor: COLOR.border }}>
             <button
               type="button"
-              onClick={onClose}
+              onClick={triggerClose}
               className="flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3.5 text-sm font-semibold shadow-sm transition-all duration-150 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
             >
