@@ -261,57 +261,7 @@ const LeafIcon: IconC = ({ className }) => (
    fly into. None of this reads selection state on its own — it's driven
    entirely by the same selectedProducts/onSelectProduct data the grid
    already used. */
-const drawShelfBackWall = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
-  ctx.clearRect(0, 0, w, h);
-  const grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, "#F3E3BE");
-  grad.addColorStop(1, "#E9D2A4");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, w, h);
 
-  ctx.strokeStyle = "rgba(138,87,38,0.16)";
-  ctx.lineWidth = 1;
-  const boardWidth = 44;
-  for (let x = boardWidth; x < w; x += boardWidth) {
-    ctx.beginPath();
-    ctx.moveTo(x + 0.5, 0);
-    ctx.lineTo(x + 0.5, h);
-    ctx.stroke();
-  }
-
-  const topShadow = ctx.createLinearGradient(0, 0, 0, 16);
-  topShadow.addColorStop(0, "rgba(43,26,12,0.3)");
-  topShadow.addColorStop(1, "rgba(43,26,12,0)");
-  ctx.fillStyle = topShadow;
-  ctx.fillRect(0, 0, w, 16);
-};
-
-const ShelfBackWall: React.FC<{ className?: string }> = ({ className }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const parent = canvas?.parentElement;
-    if (!canvas || !parent) return;
-    const render = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const { width, height } = parent.getBoundingClientRect();
-      if (width === 0 || height === 0) return;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      drawShelfBackWall(ctx, width, height);
-    };
-    render();
-    const observer = new ResizeObserver(render);
-    observer.observe(parent);
-    return () => observer.disconnect();
-  }, []);
-  return <canvas ref={canvasRef} className={className} aria-hidden="true" />;
-};
 
 const TrolleyIcon: IconC = ({ className }) => (
   <svg viewBox="0 0 48 44" className={className} aria-hidden="true">
@@ -458,7 +408,7 @@ const secondaryButton =
 const iconButton =
   "flex h-9 w-9 items-center justify-center rounded-full border transition-colors focus:outline-none focus-visible:ring-2 sm:h-10 sm:w-10";
 
-const footerClass = "border-t px-5 py-4 sm:px-8 sm:py-5";
+const footerClass = "px-5 py-4 sm:px-8 sm:py-5";
 
 /* Replaces a plain in-button spinner: the label stays legible, a soft
    diagonal sheen sweeps across the button so it reads as "working" rather
@@ -1443,6 +1393,21 @@ useEffect(() => {
     onSelectProduct?.(ingredientName, variation);
   };
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+const [showBottomFade, setShowBottomFade] = useState(true);
+
+const handleContentScroll = () => {
+  const el = scrollContainerRef.current;
+  if (!el) return;
+  const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+  setShowBottomFade(distanceFromBottom > 12);
+};
+
+useEffect(() => {
+    const id = requestAnimationFrame(handleContentScroll);
+    return () => cancelAnimationFrame(id);
+  });
+  
   useEffect(() => {
     if (wasLoadingRestaurants) {
       setHasSearchedRestaurants(true);
@@ -1623,8 +1588,13 @@ useEffect(() => {
         />
 
         {/* Scrollable content */}
-        <div className="modal-scroll min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-8 sm:py-6">
-          {needsSwiggyReconnect ? (
+        <div className="relative min-h-0 flex-1">
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleContentScroll}
+            className="modal-scroll h-full overflow-y-auto px-5 py-5 sm:px-8 sm:py-6"
+          >
+            {needsSwiggyReconnect ? (
             <div className="py-10 text-center">
               <span className="mx-auto flex h-14 w-14 items-center justify-center sm:h-16 sm:w-16" aria-hidden="true">
                 <ReconnectIcon className="h-14 w-14 sm:h-16 sm:w-16" />
@@ -1741,14 +1711,17 @@ useEffect(() => {
 
                         return (
                           <div key={ingredientName}>
-                            <div className="mb-2 flex items-baseline justify-between gap-3 sm:mb-3">
-                              <p className="text-sm font-semibold sm:text-base" style={{ color: COLOR.ink }}>
+                            <div className="mb-2.5 flex items-center justify-between gap-3 sm:mb-3">
+                              <p className="text-sm font-bold sm:text-base" style={{ color: COLOR.ink }}>
                                 {ingredientName}
                               </p>
                               {ingredientAmounts?.[ingredientName] && (
-                                <p className="shrink-0 text-[11px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
+                                <span
+                                  className="shrink-0 rounded-full px-2.5 py-1 text-[11px] font-medium sm:text-xs"
+                                  style={{ backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
+                                >
                                   {ingredientAmounts[ingredientName]}
-                                </p>
+                                </span>
                               )}
                             </div>
 
@@ -1767,150 +1740,116 @@ useEffect(() => {
                                 Not available at your address.
                               </p>
                             ) : (
-                              <div
-                                className="relative overflow-hidden rounded-2xl border-2"
-                                style={{
-                                  borderColor: COLOR.border,
-                                  boxShadow:
-                                    "inset 0 12px 20px -14px rgba(43,26,12,0.5), inset 0 -4px 10px -6px rgba(43,26,12,0.3)",
-                                }}
-                              >
-                                <ShelfBackWall className="absolute inset-0 h-full w-full" />
+                              <div className="modal-scroll -mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-1 sm:gap-3.5">
+                                {products.flatMap((product) =>
+                                  (product.variations ?? []).map((variation) => {
+                                    const selected = chosen?.spinId === variation.spinId;
+                                    const unavailable = !variation.isInStockAndAvailable || !product.inStock;
 
-                                <div
-                                  className="pointer-events-none absolute inset-y-0 left-0 w-4"
-                                  style={{ background: "linear-gradient(90deg, rgba(43,26,12,0.28), rgba(43,26,12,0))" }}
-                                  aria-hidden="true"
-                                />
-                                <div
-                                  className="pointer-events-none absolute inset-y-0 right-0 w-4"
-                                  style={{ background: "linear-gradient(270deg, rgba(43,26,12,0.28), rgba(43,26,12,0))" }}
-                                  aria-hidden="true"
-                                />
+                                    return (
+                                      <button
+                                        key={variation.spinId}
+                                        ref={registerProductRef(variation.spinId)}
+                                        type="button"
+                                        disabled={unavailable}
+                                        aria-pressed={selected}
+                                        onClick={() => handlePickProduct(ingredientName, variation)}
+                                        className="relative w-32 shrink-0 snap-start rounded-2xl border-2 p-3 text-left transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-[168px] sm:p-3.5"
+                                        style={{
+                                          borderColor: selected ? COLOR.saffron : COLOR.border,
+                                          backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
+                                          boxShadow: selected
+                                            ? `0 0 0 1px ${COLOR.saffron}, 0 8px 16px -10px rgba(43,26,12,0.3)`
+                                            : "0 1px 2px rgba(43,26,12,0.06)",
+                                        }}
+                                      >
+                                        {selected && (
+                                          <span
+                                            aria-hidden="true"
+                                            className="absolute right-2 top-2 z-10 flex h-5 w-5 items-center justify-center rounded-full"
+                                            style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
+                                          >
+                                            <CheckIcon className="h-3 w-3" />
+                                          </span>
+                                        )}
 
-                                <div
-                                  className="modal-scroll relative flex snap-x items-end gap-3.5 overflow-x-auto px-4 pb-3 pt-6 sm:gap-4 sm:px-5 sm:pt-7"
-                                  style={{ perspective: "900px" }}
-                                >
-                                  {products.flatMap((product) =>
-                                    (product.variations ?? []).map((variation) => {
-                                      const selected = chosen?.spinId === variation.spinId;
-                                      const unavailable = !variation.isInStockAndAvailable || !product.inStock;
-
-                                      return (
-                                        <button
-                                          key={variation.spinId}
-                                          ref={registerProductRef(variation.spinId)}
-                                          type="button"
-                                          disabled={unavailable}
-                                          aria-pressed={selected}
-                                          onClick={() => handlePickProduct(ingredientName, variation)}
-                                          className="relative w-28 shrink-0 snap-start rounded-xl border-2 p-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-36 sm:p-3"
-                                          style={{
-                                            borderColor: selected ? COLOR.saffron : COLOR.border,
-                                            backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
-                                            boxShadow: selected
-                                              ? `inset 0 0 0 1px ${COLOR.saffron}, 0 14px 18px -10px rgba(43,26,12,0.45)`
-                                              : "0 8px 12px -8px rgba(43,26,12,0.35)",
-                                            transform: selected
-                                              ? "perspective(900px) rotateX(0deg) translateY(-5px) translateZ(14px)"
-                                              : "perspective(900px) rotateX(9deg)",
-                                            transformOrigin: "bottom center",
-                                          }}
+                                        <div
+                                          className="mb-2.5 flex h-24 w-full items-center justify-center overflow-hidden rounded-xl border sm:h-28"
+                                          style={{ borderColor: COLOR.border, backgroundColor: "#FFFFFF" }}
                                         >
-                                          {selected && (
-                                            <span
-                                              aria-hidden="true"
-                                              className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full sm:h-5 sm:w-5"
-                                              style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
-                                            >
-                                              <CheckIcon className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
-                                            </span>
+                                          {variation.imageUrl ? (
+                                            <img
+                                              src={variation.imageUrl}
+                                              alt={product.displayName}
+                                              className="h-full w-full object-cover p-1.5"
+                                            />
+                                          ) : (
+                                            <BasketIcon className="h-7 w-7" style={{ color: COLOR.inkFaint } as React.CSSProperties} />
                                           )}
+                                        </div>
 
-                                          {variation.imageUrl && (
-                                            <span className="relative mx-auto mb-2.5 block h-14 w-14 sm:h-20 sm:w-20">
-                                              <img
-                                                src={variation.imageUrl}
-                                                alt={product.displayName}
-                                                className="h-14 w-14 rounded-lg border bg-white object-cover sm:h-20 sm:w-20"
-                                                style={{
-                                                  borderColor: COLOR.border,
-                                                  filter: "drop-shadow(0 6px 5px rgba(43,26,12,0.35))",
-                                                }}
-                                              />
-                                              <span
-                                                aria-hidden="true"
-                                                className="pointer-events-none absolute inset-0 rounded-lg"
-                                                style={{
-                                                  background:
-                                                    "linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 55%)",
-                                                }}
-                                              />
-                                              <span
-                                                aria-hidden="true"
-                                                className="absolute -bottom-1.5 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full sm:w-12"
-                                                style={{ backgroundColor: "rgba(43,26,12,0.3)", filter: "blur(2.5px)" }}
-                                              />
-                                            </span>
-                                          )}
+                                        <p className="line-clamp-2 text-xs font-semibold leading-snug sm:text-sm" style={{ color: COLOR.ink }}>
+                                          {product.displayName}
+                                        </p>
+                                        <p className="mt-0.5 truncate text-[11px] sm:text-xs" style={{ color: COLOR.inkFaint }}>
+                                          {variation.quantityDescription}
+                                        </p>
 
-                                          <p className="line-clamp-2 text-xs font-medium leading-tight sm:text-sm" style={{ color: COLOR.ink }}>
-                                            {variation.quantityDescription}
-                                          </p>
-                                          <p className="mt-1.5 text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.saffronDark }}>
+                                        <div className="mt-1.5 flex items-baseline justify-between">
+                                          <p className="text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.saffronDark }}>
                                             ₹{variation.price.offerPrice}
                                           </p>
-                                          {unavailable && (
-                                            <p className="mt-0.5 text-[10px] sm:text-[11px]" style={{ color: COLOR.inkFaint }}>
-                                              Unavailable
+                                          {variation.price.mrp > variation.price.offerPrice && (
+                                            <p className="text-[11px] tabular-nums line-through sm:text-xs" style={{ color: COLOR.inkFaint }}>
+                                              ₹{variation.price.mrp}
                                             </p>
                                           )}
-                                        </button>
-                                      );
-                                    })
-                                  )}
-                                </div>
+                                        </div>
 
-                                <div
-                                  className="relative h-[13px] border-t sm:h-4"
-                                  style={{
-                                    borderColor: COLOR.border,
-                                    background:
-                                      "linear-gradient(180deg, #C99552 0%, #A96F35 35%, #805027 100%)",
-                                    boxShadow: "0 4px 8px rgba(43,26,12,0.25)",
-                                  }}
-                                >
-                                  <div
-                                    className="pointer-events-none absolute inset-x-0 top-0 h-[2px]"
-                                    style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-                                    aria-hidden="true"
-                                  />
-                                </div>
+                                        {unavailable && (
+                                          <p className="mt-1 text-[10px] font-medium sm:text-[11px]" style={{ color: COLOR.clay }}>
+                                            Unavailable
+                                          </p>
+                                        )}
+                                      </button>
+                                    );
+                                  })
+                                )}
                               </div>
                             )}
 
                             {!isPending && chosen && (
-                              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg px-3 py-2 sm:px-4 sm:py-2.5" style={{ backgroundColor: COLOR.surfaceSunken }}>
-                                <p className="min-w-0 text-xs sm:text-sm" style={{ color: COLOR.inkSoft }}>
-                                  <span className="font-semibold" style={{ color: COLOR.ink }}>
+                              <div
+                                className="mt-3 flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 sm:px-4 sm:py-3"
+                                style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken }}
+                              >
+                                <div className="min-w-0 flex-1">
+                                  <p className="truncate text-xs font-semibold sm:text-sm" style={{ color: COLOR.ink }}>
                                     {chosen.quantityDescription}
-                                  </span>
-                                </p>
+                                  </p>
+                                  <p className="mt-0.5 text-xs font-bold tabular-nums sm:text-sm" style={{ color: COLOR.saffronDark }}>
+                                    ₹{chosen.price.offerPrice * qty}
+                                  </p>
+                                </div>
 
-                                <div className="flex shrink-0 items-center gap-2.5 sm:gap-3" role="group" aria-label={`Quantity for ${ingredientName}`}>
+                                <div
+                                  className="flex shrink-0 items-center gap-0.5 rounded-full border p-0.5 sm:gap-1"
+                                  style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface }}
+                                  role="group"
+                                  aria-label={`Quantity for ${ingredientName}`}
+                                >
                                   <button
                                     type="button"
                                     onClick={() => onChangeQuantity?.(ingredientName, -1)}
                                     disabled={qty <= 1}
                                     aria-label={`Decrease quantity for ${ingredientName}`}
-                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
-                                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
+                                    className="flex h-7 w-7 items-center justify-center rounded-full text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
+                                    style={{ color: COLOR.ink }}
                                   >
                                     −
                                   </button>
 
-                                  <span className="w-4 text-center text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.ink }} aria-live="polite">
+                                  <span className="w-5 text-center text-sm font-bold tabular-nums sm:text-base" style={{ color: COLOR.ink }} aria-live="polite">
                                     {qty}
                                   </span>
 
@@ -1919,8 +1858,8 @@ useEffect(() => {
                                     onClick={() => onChangeQuantity?.(ingredientName, 1)}
                                     disabled={qty >= MAX_CART_QUANTITY}
                                     aria-label={`Increase quantity for ${ingredientName}`}
-                                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
-                                    style={{ borderColor: COLOR.border, backgroundColor: COLOR.surface, color: COLOR.ink }}
+                                    className="flex h-7 w-7 items-center justify-center rounded-full text-base leading-none transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-35 sm:h-8 sm:w-8"
+                                    style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }}
                                   >
                                     +
                                   </button>
@@ -2049,6 +1988,20 @@ useEffect(() => {
               )}
             </>
           )}
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-12 transition-opacity duration-200 sm:h-16"
+            style={{
+              opacity: showBottomFade ? 1 : 0,
+              backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
+              maskImage: "linear-gradient(to top, black, transparent)",
+              WebkitMaskImage: "linear-gradient(to top, black, transparent)",
+              background: `linear-gradient(to top, ${COLOR.surface}, transparent)`,
+            }}
+          />
         </div>
 
         {/* Footers */}
