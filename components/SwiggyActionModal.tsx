@@ -617,7 +617,7 @@ const GroceryFillScene: React.FC = () => (
 );
 
 const DishPlatingScene: React.FC = () => (
-  <svg viewBox="0 0 120 120" className="h-32 w-32 sm:h-40 sm:w-40">
+  <svg viewBox="0 0 120 120" className="h-32 w-32 sm:h-40 sm:w-40" style={{ overflow: "visible" }}>
     <ellipse cx="60" cy="80" rx="38" ry="14" fill={COLOR.surfaceSunken} stroke={COLOR.border} strokeWidth="2" />
     <ellipse cx="60" cy="78" rx="27" ry="9.5" fill={COLOR.saffronTint} />
 
@@ -1630,16 +1630,10 @@ useEffect(() => {
               {error && (
                 <div
                   role="alert"
-                  className="mb-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed sm:px-5 sm:py-4 sm:text-base"
+                  className="mb-5 rounded-2xl border px-4 py-3.5 text-sm leading-relaxed sm:px-5 sm:py-4 sm:text-base"
                   style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken, color: COLOR.inkSoft }}
                 >
-                  <span
-                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full sm:h-8 sm:w-8"
-                    style={{ backgroundColor: COLOR.saffronTint, color: COLOR.saffronDark }}
-                  >
-                    <InfoIcon className="h-4 w-4" />
-                  </span>
-                  <p className="pt-0.5">{error}</p>
+                  {error}
                 </div>
               )}
 
