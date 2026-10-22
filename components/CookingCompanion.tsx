@@ -77,6 +77,45 @@ const clipForSpeech = (text: string, max = 420): string => {
   return last > 80 ? cut.slice(0, last + 1) : cut;
 };
 
+// message.content alone is only the short lead-in line for the special
+// kinds below — the actual addresses/products/items live in separate
+// fields and never reach the synthesizer unless folded in here.
+const buildSpokenText = (message: CompanionMessage): string => {
+  let text = message.content;
+
+  if (message.kind === "address_picker" && message.addresses?.length) {
+    const names = message.addresses.map((a) => a.addressTag || a.addressCategory || "a saved address");
+    // A period after each option is a natural pause point for the speech
+    // synthesizer — a comma barely pauses at all. "or" before the last
+    // option makes it read like a spoken list, not a flat run-on.
+    const list = names.map((name, i) => (i === names.length - 1 ? `or ${name}` : `${name}.`)).join(" ");
+    text += ` Your options are: ${list}.`;
+  }
+
+  if (message.kind === "product_results" && message.products?.length) {
+    const list = message.products
+      .map((p) =>
+        p.isInStockAndAvailable
+          ? `${p.displayName}, ${p.quantityDescription}, ₹${p.price.offerPrice}`
+          : `${p.displayName}, currently unavailable`
+      )
+      .join(". ");
+    text += ` Here's what I found: ${list}.`;
+  }
+
+  if (message.kind === "confirm_action" && message.pendingItems?.length) {
+    const list = message.pendingItems
+      .map(
+        (it) =>
+          `${it.quantity > 1 ? `${it.quantity} times ` : ""}${it.displayName}, ${it.quantityDescription}, ₹${it.offerPrice} each`
+      )
+      .join(". ");
+    text += ` ${list}.`;
+  }
+
+  return text;
+};
+
 type Mood = "idle" | "thinking" | "listening" | "talking";
 
 // Chef's hat colours — a light orange with a slightly deeper edge, so the hat
@@ -1357,39 +1396,51 @@ const speak = (index: number, text: string) => {
           return;
         }
 
-        setMessages((current) => [
-          ...current,
-          { role: "assistant", content: "Where should I get this delivered?", kind: "address_picker", addresses },
-        ]);
+        const replyIndex = historyForRequest.length + 1;
+        const addressMessage: CompanionMessage = {
+          role: "assistant",
+          content: "Where should I get this delivered?",
+          kind: "address_picker",
+          addresses,
+        };
+        setMessages((current) => [...current, addressMessage]);
         setIsSending(false);
+        if (isOpenRef.current) {
+          setTalkingIndex(replyIndex);
+          if (speakRepliesRef.current) speak(replyIndex, buildSpokenText(addressMessage));
+        }
         return;
       }
 
       if (reply.type === "confirm_add") {
         const replyIndex = historyForRequest.length + 1;
-        setMessages((current) => [
-          ...current,
-          { role: "assistant", content: reply.content, kind: "confirm_action", pendingItems: reply.items },
-        ]);
+        const confirmMessage: CompanionMessage = {
+          role: "assistant",
+          content: reply.content,
+          kind: "confirm_action",
+          pendingItems: reply.items,
+        };
+        setMessages((current) => [...current, confirmMessage]);
         setLastQuestion(null);
-        if (isOpenRef.current) setTalkingIndex(replyIndex);
+        if (isOpenRef.current) {
+          setTalkingIndex(replyIndex);
+          if (speakRepliesRef.current) speak(replyIndex, buildSpokenText(confirmMessage));
+        }
         return;
       }
 
       const replyIndex = historyForRequest.length + 1;
-      setMessages((current) => [
-        ...current,
-        {
-          role: "assistant",
-          content: reply.content,
-          kind: reply.products?.length ? "product_results" : undefined,
-          products: reply.products,
-        },
-      ]);
+      const textMessage: CompanionMessage = {
+        role: "assistant",
+        content: reply.content,
+        kind: reply.products?.length ? "product_results" : undefined,
+        products: reply.products,
+      };
+      setMessages((current) => [...current, textMessage]);
       setLastQuestion(null);
       if (isOpenRef.current) {
         setTalkingIndex(replyIndex);
-        if (speakRepliesRef.current) speak(replyIndex, reply.content);
+        if (speakRepliesRef.current) speak(replyIndex, buildSpokenText(textMessage));
       }
     } catch (err) {
       console.error("Cooking companion error:", err);
@@ -2245,7 +2296,7 @@ const speak = (index: number, text: string) => {
                         onClick={() =>
                           speakingIndex === index
                             ? stopSpeaking()
-                            : speak(index, message.content)
+                            : speak(index, buildSpokenText(message))
                         }
                         className="mt-1.5 ml-1 inline-flex items-center gap-1.5 rounded-full py-1 pr-2 text-xs font-semibold text-[#B24A12] transition-colors hover:text-[#8F3A0D] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
                       >
