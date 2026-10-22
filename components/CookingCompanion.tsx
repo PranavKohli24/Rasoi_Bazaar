@@ -132,13 +132,10 @@ const buildSpokenText = (message: CompanionMessage): string => {
 
 type Mood = "idle" | "thinking" | "listening" | "talking";
 
-// Chef's hat colours — a light orange with a slightly deeper edge, so the hat
-// stays visible on off-white backgrounds instead of disappearing like a
-// white one.
-const HAT = "#FFDAB3";
-const HAT_BAND = "#FFC08A";
-const HAT_EDGE = "#F2AA68";
 
+const HAT = "hsl(32, 55%, 80%)";
+const HAT_BAND = "hsl(32, 40%, 72%)";
+const HAT_EDGE = "hsl(32, 35%, 62%)";
 /* ---------------------------------------------------------------- icons */
 
 const ChatIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -262,17 +259,27 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
     {/* Chef's hat */}
     {/* Outline pass first, then the fills on top, so only the hat's outer
         edge shows (no lines between the overlapping puffs). */}
-    <g fill={HAT_EDGE} stroke={HAT_EDGE} strokeWidth="2" strokeLinejoin="round">
-      <circle cx="21" cy="12" r="6.5" />
-      <circle cx="32" cy="8" r="7.5" />
-      <circle cx="43" cy="12" r="6.5" />
-      <rect x="18" y="13" width="28" height="9" rx="4.5" />
+<g fill={HAT_EDGE} stroke={HAT_EDGE} strokeWidth="2" strokeLinejoin="round">
+      <circle cx="18.5" cy="13" r="5.8" />
+      <circle cx="27" cy="7.5" r="7" />
+      <circle cx="37" cy="7.5" r="7" />
+      <circle cx="45.5" cy="13" r="5.8" />
+      <rect x="17" y="12" width="30" height="12" rx="3" />
     </g>
-    <circle cx="21" cy="12" r="6.5" fill={HAT} />
-    <circle cx="32" cy="8" r="7.5" fill={HAT} />
-    <circle cx="43" cy="12" r="6.5" fill={HAT} />
-    <rect x="18" y="13" width="28" height="9" rx="4.5" fill={HAT} />
-    <rect x="18" y="19" width="28" height="4" rx="2" fill={HAT_BAND} />
+    <circle cx="18.5" cy="13" r="5.8" fill={HAT} />
+    <circle cx="27" cy="7.5" r="7" fill={HAT} />
+    <circle cx="37" cy="7.5" r="7" fill={HAT} />
+    <circle cx="45.5" cy="13" r="5.8" fill={HAT} />
+    <rect x="17" y="12" width="30" height="12" rx="3" fill={HAT} />
+
+    {/* Faint pleat lines on the puff, the gathered-fabric detail of a toque */}
+    <g stroke={HAT_BAND} strokeWidth="1.2" strokeLinecap="round" opacity="0.8">
+      <path d="M22 6q0 5 -1 10" fill="none" />
+      <path d="M32 3.5v11" fill="none" />
+      <path d="M42 6q0 5 1 10" fill="none" />
+    </g>
+
+    <rect x="17" y="20" width="30" height="5.5" rx="1.5" fill={HAT_BAND} />
 
     {/* Sound arcs, only while listening */}
     {mood === "listening" && (
@@ -2538,7 +2545,7 @@ const speak = (index: number, text: string) => {
         }
 
         .companion-blink {
-          animation: companion-blink 6s ease-in-out infinite;
+          animation: companion-blink 4s ease-in-out infinite;
         }
         @keyframes companion-blink {
           0%, 94%, 100% { transform: scaleY(1); }
