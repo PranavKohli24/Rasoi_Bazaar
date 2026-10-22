@@ -47786,7 +47786,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "achari paneer roll": {
     "dishName": "Achari Paneer Roll",
-    "image": "/dishes/achari-paneer-roll.webp",
+    "image": "/dishes/paneer-roll.webp",
     "description": "Soft paratha rolled with tangy pickle-spiced paneer and onion, a flavourful twist on the classic paneer roll.",
     "prepTime": "Approx. 40 minutes (plus 20 minutes marination)",
     "equipment": [
@@ -47860,7 +47860,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "achari chaap roll": {
     "dishName": "Achari Chaap Roll",
-    "image": "/dishes/achari-chaap-roll.webp",
+    "image": "/dishes/masala-chaap-roll.webp",
     "description": "Tangy, pickle-spiced soy chaap rolled in a soft paratha with onion and chutney.",
     "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
     "equipment": [
@@ -47934,7 +47934,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken roll": {
     "dishName": "Chicken Roll",
-    "image": "/dishes/chicken-roll.webp",
+    "image": "/dishes/chicken-kathi-roll.webp",
     "description": "A classic street-style roll with spiced, pan-cooked chicken, onion and chutney wrapped in a soft paratha.",
     "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
     "equipment": [
@@ -48079,7 +48079,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "achari chicken roll": {
     "dishName": "Achari Chicken Roll",
-    "image": "/dishes/achari-chicken-roll.webp",
+    "image": "/dishes/chicken-kathi-roll.webp",
     "description": "Tangy pickle-spiced chicken, pan-cooked and rolled in a soft paratha with onion and chutney.",
     "prepTime": "Approx. 40 minutes (plus 30 minutes marination)",
     "equipment": [
