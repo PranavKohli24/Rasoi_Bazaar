@@ -544,21 +544,26 @@ const AddressPickerBubble: React.FC<{
   </div>
 );
 
-const ProductResultCard: React.FC<{ product: CommerceProduct; onTap: (product: CommerceProduct) => void }> = ({
+const ProductRow: React.FC<{ product: CommerceProduct; onTap: (product: CommerceProduct) => void }> = ({
   product,
   onTap,
 }) => {
   const [imgFailed, setImgFailed] = useState(false);
+  const hasDiscount = product.price.mrp > product.price.offerPrice;
+  const discountPct = hasDiscount
+    ? Math.round(((product.price.mrp - product.price.offerPrice) / product.price.mrp) * 100)
+    : 0;
+
   return (
     <button
       type="button"
       disabled={!product.isInStockAndAvailable}
       onClick={() => onTap(product)}
-      className="w-[108px] shrink-0 snap-start rounded-xl border p-2 text-left transition-colors hover:border-[#FC6C26] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] disabled:cursor-not-allowed disabled:opacity-40"
+      className="flex w-full items-start gap-3 rounded-xl border p-2.5 text-left transition-colors hover:border-[#FC6C26] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26] disabled:cursor-not-allowed disabled:opacity-50"
       style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}
     >
       <div
-        className="flex h-16 w-full items-center justify-center overflow-hidden rounded-lg"
+        className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg"
         style={{ backgroundColor: COMMERCE.saffronTint }}
       >
         {product.imageUrl && !imgFailed ? (
@@ -570,25 +575,50 @@ const ProductResultCard: React.FC<{ product: CommerceProduct; onTap: (product: C
             className="h-full w-full object-cover"
           />
         ) : (
-          <span className="text-xs" style={{ color: COMMERCE.saffronDark }}>
+          <span className="text-base font-bold" style={{ color: COMMERCE.saffronDark }}>
             {product.brandName?.[0] ?? "?"}
           </span>
         )}
       </div>
-      <p className="mt-1.5 line-clamp-2 text-[11px] font-medium leading-tight" style={{ color: COMMERCE.ink }}>
-        {product.displayName}
-      </p>
-      <p className="mt-0.5 text-[10px]" style={{ color: COMMERCE.inkSoft }}>
-        {product.quantityDescription}
-      </p>
-      <p className="mt-1 text-xs font-bold tabular-nums" style={{ color: COMMERCE.saffronDark }}>
-        ₹{product.price.offerPrice}
-      </p>
-      {!product.isInStockAndAvailable && (
-        <p className="mt-0.5 text-[10px]" style={{ color: COMMERCE.inkSoft }}>
-          Unavailable
+
+      <div className="min-w-0 flex-1">
+        <p className="text-[13px] font-semibold leading-snug" style={{ color: COMMERCE.ink }}>
+          {product.displayName}
         </p>
-      )}
+        {product.brandName && (
+          <p className="mt-0.5 text-[11px]" style={{ color: COMMERCE.inkSoft }}>
+            {product.brandName}
+          </p>
+        )}
+        <p className="mt-0.5 text-[11px]" style={{ color: COMMERCE.inkSoft }}>
+          {product.quantityDescription}
+        </p>
+
+        {product.isInStockAndAvailable ? (
+          <div className="mt-1.5 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-bold tabular-nums" style={{ color: COMMERCE.saffronDark }}>
+              ₹{product.price.offerPrice}
+            </span>
+            {hasDiscount && (
+              <>
+                <span className="text-xs tabular-nums line-through" style={{ color: COMMERCE.inkSoft }}>
+                  ₹{product.price.mrp}
+                </span>
+                <span
+                  className="rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                  style={{ backgroundColor: COMMERCE.saffronTint, color: COMMERCE.saffronDark }}
+                >
+                  {discountPct}% off
+                </span>
+              </>
+            )}
+          </div>
+        ) : (
+          <p className="mt-1.5 text-xs font-medium" style={{ color: COMMERCE.inkSoft }}>
+            Currently unavailable
+          </p>
+        )}
+      </div>
     </button>
   );
 };
@@ -604,17 +634,17 @@ const ProductResultsBubble: React.FC<{ products: CommerceProduct[]; onTap: (prod
   }, {});
 
   return (
-    <div className="mt-2 space-y-3">
+    <div className="mt-2.5 space-y-4">
       {Object.entries(grouped).map(([ingredient, items]) => (
         <div key={ingredient || "default"}>
           {ingredient && (
-            <p className="mb-1.5 text-[11px] font-semibold" style={{ color: COMMERCE.inkSoft }}>
+            <p className="mb-2 text-[11px] font-bold uppercase tracking-wide" style={{ color: COMMERCE.inkSoft }}>
               {ingredient}
             </p>
           )}
-          <div className="companion-hscroll flex gap-2 overflow-x-auto pb-1">
+          <div className="space-y-2">
             {items.map((p) => (
-              <ProductResultCard key={p.spinId} product={p} onTap={onTap} />
+              <ProductRow key={p.spinId} product={p} onTap={onTap} />
             ))}
           </div>
         </div>
@@ -625,25 +655,64 @@ const ProductResultsBubble: React.FC<{ products: CommerceProduct[]; onTap: (prod
 
 const ConfirmActionBubble: React.FC<{
   items: CommercePendingItem[];
-  onConfirm: () => void;
+  onConfirm: (items: CommercePendingItem[]) => void;
   onCancel: () => void;
   isBusy?: boolean;
-}> = ({ items, onConfirm, onCancel, isBusy }) => {
+}> = ({ items: initialItems, onConfirm, onCancel, isBusy }) => {
+  const [items, setItems] = useState(initialItems);
   const total = items.reduce((sum, it) => sum + it.offerPrice * it.quantity, 0);
+
+  const changeQty = (spinId: string, delta: number) => {
+    setItems((current) =>
+      current.map((it) =>
+        it.spinId === spinId ? { ...it, quantity: Math.max(1, Math.min(9, it.quantity + delta)) } : it
+      )
+    );
+  };
+
   return (
-    <div className="mt-2 rounded-xl border p-3" style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}>
-      <ul className="space-y-1 text-xs" style={{ color: COMMERCE.ink }}>
+    <div className="mt-2.5 rounded-xl border p-3" style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}>
+      <ul className="space-y-2.5">
         {items.map((it) => (
-          <li key={it.spinId} className="flex items-center justify-between gap-2">
-            <span className="min-w-0 truncate">
-              {it.quantity > 1 ? `${it.quantity}× ` : ""}
-              {it.displayName} <span style={{ color: COMMERCE.inkSoft }}>({it.quantityDescription})</span>
-            </span>
-            <span className="shrink-0 tabular-nums">₹{it.offerPrice * it.quantity}</span>
+          <li key={it.spinId} className="flex items-start justify-between gap-3 text-xs">
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold leading-snug" style={{ color: COMMERCE.ink }}>
+                {it.displayName}
+              </p>
+              <p className="mt-0.5" style={{ color: COMMERCE.inkSoft }}>
+                {it.quantityDescription} · ₹{it.offerPrice} each
+              </p>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-2">
+              <button
+                type="button"
+                onClick={() => changeQty(it.spinId, -1)}
+                disabled={isBusy || it.quantity <= 1}
+                aria-label="Decrease quantity"
+                className="flex h-6 w-6 items-center justify-center rounded-full border text-sm leading-none disabled:opacity-30"
+                style={{ borderColor: COMMERCE.border, color: COMMERCE.ink }}
+              >
+                −
+              </button>
+              <span className="w-4 text-center font-bold tabular-nums" style={{ color: COMMERCE.ink }}>
+                {it.quantity}
+              </span>
+              <button
+                type="button"
+                onClick={() => changeQty(it.spinId, 1)}
+                disabled={isBusy || it.quantity >= 9}
+                aria-label="Increase quantity"
+                className="flex h-6 w-6 items-center justify-center rounded-full border text-sm leading-none disabled:opacity-30"
+                style={{ borderColor: COMMERCE.border, color: COMMERCE.ink }}
+              >
+                +
+              </button>
+            </div>
           </li>
         ))}
       </ul>
-      <div className="mt-2 flex items-center justify-between border-t pt-2" style={{ borderColor: COMMERCE.border }}>
+      <div className="mt-3 flex items-center justify-between border-t pt-2.5" style={{ borderColor: COMMERCE.border }}>
         <span className="text-xs font-bold" style={{ color: COMMERCE.ink }}>
           Total: ₹{total}
         </span>
@@ -659,7 +728,7 @@ const ConfirmActionBubble: React.FC<{
           </button>
           <button
             type="button"
-            onClick={onConfirm}
+            onClick={() => onConfirm(items)}
             disabled={isBusy}
             className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-white"
             style={{ backgroundColor: COMMERCE.saffron }}
@@ -2158,7 +2227,7 @@ const speak = (index: number, text: string) => {
                         <ConfirmActionBubble
                           items={message.pendingItems}
                           isBusy={isAddingToCart}
-                          onConfirm={() => handleConfirmAdd(message.pendingItems!)}
+                          onConfirm={(items) => handleConfirmAdd(items)}
                           onCancel={() => handleCancelAdd(index)}
                         />
                       )}
