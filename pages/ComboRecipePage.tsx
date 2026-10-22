@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDishSearch } from "../utils/dishRoutes";
 import CompactHeader from "../components/CompactHeader";
 import RecipeDisplay from "../components/RecipeDisplay";
 import CelebrationPopup from "../components/CelebrationPopup";
@@ -11,6 +10,9 @@ import {
 } from "../utils/findPredefinedRecipe";
 import { mergeRecipes } from "../utils/mergeRecipes";
 import { useState } from "react";
+
+import { COMBO_RECIPE_PATH, useDishSearch } from "../utils/dishRoutes";
+import { addRecentlyCooked } from "../utils/recentlyCooked";
 
 const ComboRecipePage: React.FC = () => {
   const navigate = useNavigate();
@@ -43,6 +45,20 @@ const suggestions = [
   useEffect(() => {
     setShowCelebration(false);
   }, [comboSlug]);
+
+    useEffect(() => {
+    if (allResolved && merged) {
+      addRecentlyCooked({
+        dishName: merged.dishName,
+        path: `${COMBO_RECIPE_PATH}/${comboSlug}`,
+        image: merged.image,
+        images: recipes.map((r) => r.image).filter(Boolean) as string[],
+      });
+    }
+    // merged is recomputed every render from `recipes`, so key off the
+    // primitive inputs rather than the object identity.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allResolved, comboSlug]);
 
   return (
     <div className="relative z-10 w-full">

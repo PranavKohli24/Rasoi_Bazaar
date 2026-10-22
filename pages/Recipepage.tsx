@@ -61,7 +61,11 @@ const RecipePage: React.FC = () => {
       setRecipe(predefined);
       setError(null);
       setIsLoading(false);
-      addRecentlyCooked(predefined);
+      addRecentlyCooked({
+        dishName: predefined.dishName,
+        path: `${RECIPE_PATH}/${canonicalSlug}`,
+        image: predefined.image,
+      });
       return;
     }
 
@@ -111,7 +115,11 @@ const RecipePage: React.FC = () => {
         }
 
         setRecipe(fetched);
-        addRecentlyCooked(fetched);
+        addRecentlyCooked({
+          dishName: fetched.dishName,
+          path: `${RECIPE_PATH}/${canonicalSlug}`,
+          image: fetched.image,
+        });
       })
       .catch((err) => {
         if (cancelled) return;
