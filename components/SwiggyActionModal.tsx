@@ -1012,27 +1012,29 @@ const TicketTabs: React.FC<{
   }
 
   return (
-    <div className="mt-5 flex items-center">
+    <div className="mt-5 flex items-start">
       {tabs.map((t, i) => {
         const reached = order.indexOf(t.key) <= activeIndex;
         const current = order[activeIndex] === t.key;
-        // A step already passed (not just the current one) is "done" —
-        // it should read as completed, so it stays orange too, just a
-        // touch softer than the active step.
         const passed = order.indexOf(t.key) < activeIndex;
-        const labelColor = current || passed ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint;
+        const done = current || passed;
 
         const label = (
-          <span className="flex shrink-0 items-baseline gap-1">
+          <span className="flex flex-col items-center gap-1.5">
             <span
-              className="text-xs font-bold leading-none transition-colors sm:text-sm"
-              style={{ color: labelColor }}
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold leading-none transition-all duration-300 sm:h-8 sm:w-8 sm:text-sm"
+              style={{
+                backgroundColor: done ? COLOR.saffron : COLOR.surfaceSunken,
+                color: done ? COLOR.surface : COLOR.inkFaint,
+                border: done ? "none" : `1px solid ${COLOR.border}`,
+                boxShadow: current ? `0 0 0 4px ${COLOR.saffronTint}` : "none",
+              }}
             >
-              {i + 1}.
+              {passed ? <CheckIcon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> : i + 1}
             </span>
             <span
-              className="text-xs font-semibold leading-none tracking-wide transition-colors sm:text-sm"
-              style={{ color: labelColor }}
+              className="text-[11px] font-medium leading-none transition-colors sm:text-xs"
+              style={{ color: current ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint }}
             >
               {t.label}
             </span>
@@ -1050,20 +1052,20 @@ const TicketTabs: React.FC<{
                 {label}
               </button>
             ) : (
-              label
+              <span className="shrink-0">{label}</span>
             )}
 
             {i < tabs.length - 1 && (
               <span
-                className="mx-4 h-[2.5px] min-w-[20px] flex-1 overflow-hidden rounded-full"
-                style={{ backgroundColor: COLOR.border }}
+                className="ticket-tab-connector mx-2 h-[2.5px] min-w-[16px] flex-1 overflow-hidden rounded-full"
+                style={{ backgroundColor: COLOR.border, marginTop: "12.75px" }}
                 aria-hidden="true"
               >
                 <span
                   className="block h-full rounded-full transition-all duration-500 ease-out"
                   style={{
                     width: passed ? "100%" : "0%",
-                    backgroundColor: COLOR.saffronDark,
+                    backgroundColor: COLOR.saffron,
                   }}
                 />
               </span>
@@ -2127,6 +2129,12 @@ useEffect(() => {
           }
           .hover-float:active {
             transform: perspective(800px) rotateX(1deg) translateY(-2px) scale(1.005);
+          }
+        }
+        
+        @media (min-width: 640px) {
+          .ticket-tab-connector {
+            margin-top: 14.75px !important;
           }
         }
         @keyframes skeleton-sweep {
