@@ -704,13 +704,160 @@ const SuccessStage: React.FC<{ eyebrow: string; text: string; variant: "grocery"
   );
 };
 
+interface CartContext {
+  icon: "grocery" | "dish";
+  title: string;
+  subtitle?: string;
+  imageUrl?: string;
+}
+
+const CartContextHeader: React.FC<{ context: CartContext }> = ({ context }) => {
+  const [imageFailed, setImageFailed] = useState(false);
+  const showImage = context.imageUrl && !imageFailed;
+
+  return (
+    <div
+      className="flex items-center gap-3.5 rounded-2xl border p-3 sm:p-3.5"
+      style={{ borderColor: COLOR.border, backgroundColor: COLOR.surfaceSunken }}
+    >
+      <div
+        className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl sm:h-16 sm:w-16"
+        style={{ backgroundColor: COLOR.saffronTint }}
+      >
+        {showImage ? (
+          <img
+            src={context.imageUrl}
+            alt=""
+            loading="lazy"
+            onError={() => setImageFailed(true)}
+            className="h-full w-full object-cover"
+          />
+        ) : context.icon === "dish" ? (
+          <UtensilsIcon className="h-6 w-6 sm:h-7 sm:w-7" style={{ color: COLOR.saffronDark } as React.CSSProperties} />
+        ) : (
+          <BasketIcon className="h-6 w-6 sm:h-7 sm:w-7" style={{ color: COLOR.saffronDark } as React.CSSProperties} />
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-1 text-sm font-bold sm:text-base" style={{ color: COLOR.ink }}>
+          {context.title}
+        </p>
+        {context.subtitle && (
+          <p className="mt-0.5 line-clamp-1 text-xs sm:text-sm" style={{ color: COLOR.inkSoft }}>
+            {context.subtitle}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+interface CartItemImage {
+  names: string[];
+  imageUrl: string;
+}
+
+const normalizeCartItemName = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+const findCartItemImage = (
+  item: { name: string; imageUrl?: string | null },
+  itemImages?: CartItemImage[],
+): string | undefined => {
+  const directImage = item.imageUrl?.trim();
+  if (directImage) return directImage;
+
+  const normalizedItemName = normalizeCartItemName(item.name);
+  if (!normalizedItemName || !itemImages?.length) return undefined;
+
+  // Prefer exact matches, then the most specific product-name partial match.
+  for (const candidate of itemImages) {
+    if (candidate.names.some((name) => normalizeCartItemName(name) === normalizedItemName)) {
+      return candidate.imageUrl;
+    }
+  }
+
+  const partialMatches = itemImages
+    .flatMap((candidate) =>
+      candidate.names.map((name) => ({
+        imageUrl: candidate.imageUrl,
+        normalizedName: normalizeCartItemName(name),
+      })),
+    )
+    .filter(
+      ({ normalizedName }) =>
+        normalizedName.length >= 5 &&
+        (normalizedItemName.includes(normalizedName) || normalizedName.includes(normalizedItemName)),
+    )
+    .sort((a, b) => b.normalizedName.length - a.normalizedName.length);
+
+  if (partialMatches[0]?.imageUrl) return partialMatches[0].imageUrl;
+
+  // Cart names sometimes omit or rearrange words from the catalog name
+  // (for example, "Amul Taaza Milk 1 L" vs. "Amul Taaza Toned Fresh Milk").
+  // A two-word overlap helps find the selected product without assigning an
+  // image to unrelated items based on a generic word such as "milk" alone.
+  const ignoredTokens = new Set(["the", "and", "for", "with", "pack", "piece", "pcs", "gms", "gm", "ml", "kgs"]);
+  const itemTokens = new Set(
+    normalizedItemName.split(" ").filter((token) => token.length >= 3 && !ignoredTokens.has(token)),
+  );
+  if (itemTokens.size < 2) return undefined;
+
+  const tokenMatches = itemImages
+    .flatMap((candidate) =>
+      candidate.names.map((name) => {
+        const candidateTokens = new Set(
+          normalizeCartItemName(name)
+            .split(" ")
+            .filter((token) => token.length >= 3 && !ignoredTokens.has(token)),
+        );
+        const overlap = [...itemTokens].filter((token) => candidateTokens.has(token)).length;
+        return { imageUrl: candidate.imageUrl, overlap, candidateTokenCount: candidateTokens.size };
+      }),
+    )
+    .filter((candidate) => candidate.overlap >= 2)
+    .sort(
+      (a, b) =>
+        b.overlap - a.overlap ||
+        Math.abs(a.candidateTokenCount - itemTokens.size) - Math.abs(b.candidateTokenCount - itemTokens.size),
+    );
+
+  return tokenMatches[0]?.imageUrl;
+};
+
+const CartItemThumbnail: React.FC<{ imageUrl?: string; itemName: string }> = ({ imageUrl, itemName }) => {
+  const [imageFailed, setImageFailed] = useState(false);
+
+  return (
+    <div
+      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border sm:h-24 sm:w-24"
+      style={{ borderColor: COLOR.border, backgroundColor: "#FFFFFF" }}
+    >
+      {imageUrl && !imageFailed ? (
+        <img
+          src={imageUrl}
+          alt={itemName}
+          decoding="async"
+          onError={() => setImageFailed(true)}
+          className="h-full w-full object-contain p-0.5"
+        />
+      ) : (
+        <BasketIcon className="h-8 w-8" style={{ color: COLOR.inkFaint } as React.CSSProperties} />
+      )}
+    </div>
+  );
+};
+
 const CartReviewStep: React.FC<{
   items: import("../services/swiggyService").InstamartCartLineItem[];
   bill: import("../services/swiggyService").InstamartBill | null;
   isLoading: boolean;
   error?: string | null;
   warning?: string | null;
-}> = ({ items, bill, isLoading, error, warning }) => {
+  context?: CartContext;
+  itemImages?: CartItemImage[];
+  showItemThumbnails?: boolean;
+}> = ({ items, bill, isLoading, error, warning, context, itemImages, showItemThumbnails = false }) => {
   if (isLoading && items.length === 0 && !bill) {
     return (
       <div className="flex flex-col items-center justify-center py-14 text-center" role="status" aria-live="polite">
@@ -733,23 +880,34 @@ const CartReviewStep: React.FC<{
 
   return (
     <div className="animate-fade-in-up space-y-5" style={{ animationDuration: "0.25s" }}>
+      {context && <CartContextHeader context={context} />}
+
       <p className="text-xs font-semibold sm:text-sm" style={{ color: COLOR.inkSoft }}>
         Review your cart
       </p>
 
       <ul className="divide-y rounded-xl border" style={{ borderColor: COLOR.border }}>
-        {items.map((item, i) => (
-          <li key={i} className="flex items-start justify-between gap-3 px-3.5 py-2.5 text-sm sm:px-5 sm:py-3.5 sm:text-base">
-            <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
-              {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
-            </span>
-            {item.price && (
-              <span className="shrink-0 pt-px tabular-nums" style={{ color: COLOR.inkSoft }}>
-                {item.price}
-              </span>
-            )}
-          </li>
-        ))}
+        {items.map((item, i) => {
+          const imageUrl = findCartItemImage(item, itemImages);
+
+          return (
+            <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-2.5 text-sm sm:px-5 sm:py-3.5 sm:text-base">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                {(showItemThumbnails || imageUrl) && (
+                  <CartItemThumbnail imageUrl={imageUrl} itemName={item.name} />
+                )}
+                <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
+                  {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
+                </span>
+              </div>
+              {item.price && (
+                <span className="shrink-0 pt-px tabular-nums" style={{ color: COLOR.inkSoft }}>
+                  {item.price}
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ul>
 
       {bill && (
@@ -1471,6 +1629,24 @@ useEffect(() => {
       ? searchIngredientNames
       : Object.keys(ingredientProducts ?? {});
 
+  // Keep the selected variation images available during cart review, even
+  // when the cart-summary API only returns each line item's name/price.
+  const instamartItemImages: CartItemImage[] = Object.entries(selectedProducts ?? {}).flatMap(
+    ([ingredientName, variation]) => {
+      if (!variation.imageUrl) return [];
+
+      const matchingProduct = (ingredientProducts?.[ingredientName] ?? []).find((product) =>
+        (product.variations ?? []).some((candidate) => candidate.spinId === variation.spinId),
+      );
+
+      const names = [matchingProduct?.displayName, ingredientName].filter(
+        (name): name is string => typeof name === "string" && name.trim().length > 0,
+      );
+
+      return [{ names, imageUrl: variation.imageUrl }];
+    },
+  );
+
   const instamartSearchDone = (pendingIngredientNames?.length ?? 0) === 0;
 
   const noItemsAtAll =
@@ -1664,6 +1840,8 @@ useEffect(() => {
                       bill={cartSummary?.bill ?? null}
                       isLoading={!!isLoadingCartSummary}
                       error={cartSummaryError}
+                      itemImages={instamartItemImages}
+                      showItemThumbnails
                       warning={
                         shortageWarning ??
                         (cartSummary?.minOrderNotMet
@@ -1916,6 +2094,18 @@ useEffect(() => {
                         foodCartSummary?.exceedsMaxOrder
                           ? `Your cart is over the ₹${(foodCartSummary.maxOrderPaise / 100).toFixed(0)} order limit — please remove an item.`
                           : null
+                      }
+                      context={
+                        selectedRestaurant
+                          ? {
+                              icon: "dish",
+                              title: selectedRestaurant.name,
+                              subtitle: [selectedRestaurant.deliveryText, selectedRestaurant.areaName]
+                                .filter(Boolean)
+                                .join(" · "),
+                              imageUrl: selectedRestaurant.imageUrl,
+                            }
+                          : undefined
                       }
                     />
                   ) : restaurants.length === 0 ? (
