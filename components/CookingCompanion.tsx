@@ -1353,19 +1353,19 @@ const speak = (index: number, text: string) => {
   };
 
   // startSwiggyLogin() can refuse to redirect (throttled, to avoid a
-  // bounce loop) — if that happens, say so instead of leaving the cook
-  // staring at "taking you there now" with nothing happening.
+  // bounce loop). Shows exactly ONE message, matching what actually
+  // happened — never "taking you there now" followed by nothing.
   const attemptSwiggyLogin = () => {
     const started = startSwiggyLogin();
-    if (!started) {
-      setMessages((current) => [
-        ...current,
-        {
-          role: "assistant",
-          content: "I tried connecting to Swiggy a moment ago already — give it a little bit, or open the Swiggy app directly to check your connection.",
-        },
-      ]);
-    }
+    setMessages((current) => [
+      ...current,
+      {
+        role: "assistant",
+        content: started
+          ? "I need access to your Swiggy account first — taking you there now."
+          : "I tried connecting to Swiggy a moment ago already — give it a little bit, or open the Swiggy app directly to check your connection.",
+      },
+    ]);
   };
 
   const sendQuestion = async (question: string, addressOverride?: string) => {
@@ -1397,10 +1397,6 @@ const speak = (index: number, text: string) => {
       );
 
       if (reply.type === "needs_auth") {
-        setMessages((current) => [
-          ...current,
-          { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
-        ]);
         setIsSending(false);
         attemptSwiggyLogin();
         return;
@@ -1413,10 +1409,6 @@ const speak = (index: number, text: string) => {
           addresses = await getSwiggyAddresses();
         } catch (err) {
           if (err instanceof Error && err.message === "SWIGGY_NOT_CONNECTED") {
-            setMessages((current) => [
-              ...current,
-              { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
-            ]);
             setIsSending(false);
             attemptSwiggyLogin();
             return;
@@ -1544,10 +1536,6 @@ const speak = (index: number, text: string) => {
     try {
       const result = await confirmCartAdd(commerceAddressId, items);
       if (result.type === "needs_auth") {
-        setMessages((current) => [
-          ...current,
-          { role: "assistant", content: "I lost the connection to your Swiggy account — taking you there now." },
-        ]);
         attemptSwiggyLogin();
         return;
       }
