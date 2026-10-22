@@ -52,6 +52,20 @@ const THINKING_PHRASES = [
   "One sec, almost there…",
 ];
 
+// Same idea, shown instead when the question looks like it's about
+// buying ingredients.
+const COMMERCE_THINKING_PHRASES = [
+  "Checking Instamart…",
+  "Looking up prices…",
+  "Almost there…",
+];
+
+// Loose heuristic, only used to pick which phrase set to show while
+// waiting — a false positive just shows the wrong (harmless) words for
+// a beat, never changes actual behavior.
+const COMMERCE_QUERY_RE =
+  /\b(buy|order|purchase|instamart|swiggy|cart|get me|need to (buy|get)|ingredient|grocery|groceries)\b/i;
+
 // Added to the question we send, NOT to what's shown in the chat.
 const VOICE_STYLE_HINT =
   "(This question was spoken aloud while cooking. Reply in one or two short sentences of plain text, with no lists, markdown or emojis.)";
@@ -926,6 +940,10 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastQuestion, setLastQuestion] = useState<string | null>(null);
+  // A specific one-off label ("Checking your saved addresses…") shown
+  // instead of the rotating phrases while a known commerce step is in
+  // flight. Cleared automatically once the request finishes.
+  const [loadingStage, setLoadingStage] = useState<string | null>(null);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -1340,6 +1358,7 @@ const speak = (index: number, text: string) => {
     setError(null);
     setLastQuestion(question);
     setIsSending(true);
+    setLoadingStage(null);
 
     const addressId = addressOverride ?? commerceAddressId ?? undefined;
 
@@ -1365,6 +1384,7 @@ const speak = (index: number, text: string) => {
       }
 
       if (reply.type === "needs_address") {
+        setLoadingStage("Checking your saved addresses…");
         let addresses: SwiggyAddress[];
         try {
           addresses = await getSwiggyAddresses();
@@ -1447,6 +1467,7 @@ const speak = (index: number, text: string) => {
       setError(err instanceof Error && err.message ? err.message : FRIENDLY_ERROR);
     } finally {
       setIsSending(false);
+      setLoadingStage(null);
     }
   };
 
@@ -2321,7 +2342,10 @@ const speak = (index: number, text: string) => {
                   role="status"
                 >
                   <span className="companion-pulse">
-                    {THINKING_PHRASES[phraseIndex % THINKING_PHRASES.length]}
+                    {loadingStage ??
+                      (lastQuestion && COMMERCE_QUERY_RE.test(lastQuestion)
+                        ? COMMERCE_THINKING_PHRASES[phraseIndex % COMMERCE_THINKING_PHRASES.length]
+                        : THINKING_PHRASES[phraseIndex % THINKING_PHRASES.length])}
                   </span>
                 </div>
               )}
