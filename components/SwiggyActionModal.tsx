@@ -130,6 +130,9 @@ const UtensilsIcon: IconC = ({ className }) => (
     <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
   </Svg>
 );
+
+const ChevronIcon: IconC = ({ className }) => <Svg className={className}><path d="m9 18 6-6-6-6" /></Svg>;
+
 const BasketIcon: IconC = ({ className }) => (
   <Svg className={className}>
     <path d="M5 10h14l-1.6 9.4a2 2 0 0 1-2 1.6H8.6a2 2 0 0 1-2-1.6L5 10Z" />
@@ -881,7 +884,7 @@ const RestaurantRow: React.FC<{
 
   return (
     <li
-      className="relative overflow-hidden rounded-xl border-2 transition-colors duration-150"
+      className="hover-float relative overflow-hidden rounded-xl border-2 transition-colors duration-150"
       style={{
         borderColor: selected ? COLOR.saffron : COLOR.border,
         backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
@@ -893,7 +896,7 @@ const RestaurantRow: React.FC<{
         disabled={!restaurant.isOpen}
         onClick={() => onSelect?.(restaurant)}
         aria-label={`Order ${restaurant.name} on Swiggy`}
-        className="flex w-full gap-3.5 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed sm:gap-4 sm:p-4"
+        className="flex w-full items-center gap-3.5 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed sm:gap-4 sm:p-4"
       >
         <div
           className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg sm:h-20 sm:w-20"
@@ -1743,8 +1746,8 @@ useEffect(() => {
                                 Not available at your address.
                               </p>
                             ) : (
-                              <div className="modal-scroll -mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-1 sm:gap-3.5">
-                                {products.flatMap((product) =>
+                              <div className="modal-scroll -mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-1 pt-3 sm:gap-3.5 sm:pt-4">
+                              {products.flatMap((product) =>
                                   (product.variations ?? []).map((variation) => {
                                     const selected = chosen?.spinId === variation.spinId;
                                     const unavailable = !variation.isInStockAndAvailable || !product.inStock;
@@ -1757,7 +1760,7 @@ useEffect(() => {
                                         disabled={unavailable}
                                         aria-pressed={selected}
                                         onClick={() => handlePickProduct(ingredientName, variation)}
-                                        className="relative w-32 shrink-0 snap-start rounded-2xl border-2 p-3 text-left transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-[168px] sm:p-3.5"
+                                        className="hover-float relative w-32 shrink-0 snap-start rounded-2xl border-2 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-[168px] sm:p-3.5"
                                         style={{
                                           borderColor: selected ? COLOR.saffron : COLOR.border,
                                           backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
@@ -2112,6 +2115,20 @@ useEffect(() => {
         .modal-scroll::-webkit-scrollbar-thumb { background: ${COLOR.inkFaint}55; border-radius: 4px; }
         .modal-scroll::-webkit-scrollbar-track { background: transparent; }
 
+        @media (hover: hover) and (pointer: fine) {
+          .hover-float {
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+          }
+          .hover-float:hover {
+            transform: perspective(800px) rotateX(2deg) translateY(-3px) scale(1.01);
+            box-shadow: 0 14px 24px -12px rgba(43,26,12,0.32);
+            z-index: 5;
+          }
+          .hover-float:active {
+            transform: perspective(800px) rotateX(1deg) translateY(-2px) scale(1.005);
+          }
+        }
         @keyframes skeleton-sweep {
           0% { background-position: 200% 0; }
           100% { background-position: -200% 0; }
