@@ -507,7 +507,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
         </h2>
 
         <p className="mb-8 text-base leading-relaxed text-stone-400">
-          Time for the best part - eating it!
+          Time for the best part - eating it 😋
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row">

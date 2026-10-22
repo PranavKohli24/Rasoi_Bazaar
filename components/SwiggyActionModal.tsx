@@ -830,8 +830,8 @@ const CartItemThumbnail: React.FC<{ imageUrl?: string; itemName: string }> = ({ 
 
   return (
     <div
-      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border sm:h-24 sm:w-24"
-      style={{ borderColor: COLOR.border, backgroundColor: "#FFFFFF" }}
+      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl sm:h-24 sm:w-24"
+      style={{ backgroundColor: "#FFFFFF" }}
     >
       {imageUrl && !imageFailed ? (
         <img
