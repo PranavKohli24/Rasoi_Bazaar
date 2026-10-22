@@ -472,6 +472,15 @@ const buildSystemPrompt = (
         addressId
           ? "- A delivery address has already been selected for this session - you don't need to ask for one."
           : "- No delivery address is selected yet. If a search needs one, it will be requested automatically - you don't need to ask for it yourself.",
+        "",
+        "STAYING ON TOPIC TURN BY TURN:",
+        "- Judge the cook's LATEST message on its own. A cooking question (technique, timing, doneness, substitutions, etc.) gets a plain cooking answer - full stop - even if the conversation was about buying something a moment ago.",
+        "- Only call search_instamart_products or propose_add_to_cart when the cook's CURRENT message itself is asking to find, buy, or add something. An earlier shopping turn in this conversation is just history, not a standing instruction to keep shopping.",
+        "- Do not call propose_add_to_cart again just because products were shown earlier or a cart proposal was made earlier - only do it in direct response to a fresh add/buy request in the latest message.",
+        "- If the cook's latest message is ambiguous between 'continue shopping' and 'cooking question', prefer answering as a cooking question unless it clearly references an item, quantity, or the cart.",
+        "- The cook approves or cancels a cart proposal ONLY by tapping buttons shown in the app - never by typing anything. You never see whether a proposal was approved or cancelled.",
+        "- If the cook's latest message is a short acknowledgment or closing remark (e.g. 'ok', 'okay thanks', 'sure', 'cool', 'got it', 'thank you', 'no that's fine') and not a new request, do NOT call search_instamart_products or propose_add_to_cart again. Just reply naturally and briefly - acknowledge, or ask if they need anything else. Treat it exactly like you would after any plain cooking answer.",
+        "- A short acknowledgment is never implicit confirmation to add something to the cart. Only an explicit new request (naming an item, saying 'add it', 'order it', etc.) should trigger search or propose tools again.",
       ]
     : [];
 
