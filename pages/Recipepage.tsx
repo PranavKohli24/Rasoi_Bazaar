@@ -13,6 +13,7 @@ import {
 } from "../utils/findPredefinedRecipe";
 import { RECIPE_PATH, toSlug, fromSlug, useDishSearch } from "../utils/dishRoutes";
 import { useDishTint } from "../src/hooks/useDishTint";
+import { addRecentlyCooked } from "../utils/recentlyCooked";
 
 // Shown instead of any technical error text.
 const FRIENDLY_ERROR =
@@ -60,6 +61,7 @@ const RecipePage: React.FC = () => {
       setRecipe(predefined);
       setError(null);
       setIsLoading(false);
+      addRecentlyCooked(predefined);
       return;
     }
 
@@ -109,6 +111,7 @@ const RecipePage: React.FC = () => {
         }
 
         setRecipe(fetched);
+        addRecentlyCooked(fetched);
       })
       .catch((err) => {
         if (cancelled) return;

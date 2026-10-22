@@ -10,6 +10,8 @@ import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 
 import { useIdentifyDish } from "../utils/useIdentifyDish";
 
+import RecentlyCooked from "../components/RecentlyCooked";
+
 const AUTO_SEARCH_CONFIDENCE = 0.7;
 
 const COOK_STEPS = [
@@ -241,6 +243,8 @@ const HomePage: React.FC = () => {
               </div>
             </aside>
           </div>
+
+          <RecentlyCooked />
         </section>
       </main>
     </div>
