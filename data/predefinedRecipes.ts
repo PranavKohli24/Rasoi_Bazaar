@@ -47685,7 +47685,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kesar doodh": {
     "dishName": "Kesar Doodh",
-    "image": "/dishes/kesar-doodh.webp",
+    "image": "/dishes/badam-milk.webp",
     "description": "Warm, fragrant saffron milk flavoured with cardamom, a simple and comforting bedtime drink.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
