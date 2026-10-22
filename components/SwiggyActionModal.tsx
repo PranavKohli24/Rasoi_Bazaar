@@ -72,7 +72,7 @@ type Step = "address" | "products" | "done";
 
 const COLOR = {
   surface: "#FFFEFA",       // card surface — matches RecipeDisplay's COLOR.surface
-  surfaceSunken: "#FFF8F1", // sunken panel / header bg — matches CompactHeader's HEADER_SURFACE & site's stone-950
+  surfaceSunken: "#F7EEDD", // sunken panel / header bg — vanilla tone, distinguishable from white but calm
   ink: "#2B1A0C",           // headings / primary text
   inkSoft: "#6B5238",       // secondary text
   inkFaint: "#9C7C4E",      // tertiary / faint text
@@ -1009,23 +1009,32 @@ const TicketTabs: React.FC<{
   }
 
   return (
-    <div className="mt-4 flex items-center">
+    <div className="mt-5 flex items-center">
       {tabs.map((t, i) => {
         const reached = order.indexOf(t.key) <= activeIndex;
         const current = order[activeIndex] === t.key;
+        // A step already passed (not just the current one) is "done" —
+        // it should read as completed, so it stays orange too, just a
+        // touch softer than the active step.
+        const passed = order.indexOf(t.key) < activeIndex;
+        const labelColor = current || passed ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint;
+
         const label = (
-          <span
-            className="shrink-0 text-[11px] font-semibold tracking-wide transition-colors sm:text-xs"
-            style={{ color: current ? COLOR.saffronDark : reached ? COLOR.ink : COLOR.inkFaint }}
-          >
-            {i + 1} · {t.label}
+          <span className="flex shrink-0 items-baseline gap-1">
+            <span
+              className="text-xs font-bold leading-none transition-colors sm:text-sm"
+              style={{ color: labelColor }}
+            >
+              {i + 1}.
+            </span>
+            <span
+              className="text-xs font-semibold leading-none tracking-wide transition-colors sm:text-sm"
+              style={{ color: labelColor }}
+            >
+              {t.label}
+            </span>
           </span>
         );
-
-        // The segment right after a tab fills once that tab's own step has
-        // been passed (not just reached) — so it fills as you move *from*
-        // it, not as soon as you land on it.
-        const passed = order.indexOf(t.key) < activeIndex;
 
         return (
           <React.Fragment key={t.key}>
@@ -1033,7 +1042,7 @@ const TicketTabs: React.FC<{
               <button
                 type="button"
                 onClick={t.onClick}
-                className="shrink-0 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
+                className="shrink-0 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
               >
                 {label}
               </button>
@@ -1043,7 +1052,7 @@ const TicketTabs: React.FC<{
 
             {i < tabs.length - 1 && (
               <span
-                className="mx-3 h-px flex-1 overflow-hidden rounded-full"
+                className="mx-4 h-[2.5px] min-w-[20px] flex-1 overflow-hidden rounded-full"
                 style={{ backgroundColor: COLOR.border }}
                 aria-hidden="true"
               >
@@ -1472,7 +1481,7 @@ useEffect(() => {
   const currentStep: Step =
     (type === "instamart" && cartAdded) || (type === "swiggy" && foodCartAdded)
       ? "done"
-      : showAddressScreen
+      : showAddressScreen && !(type === "swiggy" && wasLoadingRestaurants)
       ? "address"
       : "products";
 
