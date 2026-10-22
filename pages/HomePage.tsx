@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CompactHeader from "../components/CompactHeader";
 import SearchBar from "../components/SearchBar";
@@ -46,6 +46,81 @@ type HeroMode = "search" | "cook";
 const HomePage: React.FC = () => {
   const { term, setTerm, go } = useDishSearch();
   const [mode, setMode] = useState<HeroMode>("search");
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
+  const searchPanelRef = useRef<HTMLDivElement>(null);
+  const cookPanelRef = useRef<HTMLDivElement>(null);
+  const [modePanelHeight, setModePanelHeight] = useState<number>();
+
+  const handleModeTouchStart = (
+    event: React.TouchEvent<HTMLDivElement>
+  ) => {
+    const target = event.target;
+
+    // Let interactive controls handle their own touch gestures.
+    if (
+      target instanceof Element &&
+      target.closest(
+        "button, a, input, textarea, select, [role='button'], [role='tab'], [contenteditable='true']"
+      )
+    ) {
+      swipeStartRef.current = null;
+      return;
+    }
+
+    const touch = event.touches[0];
+    if (!touch) return;
+
+    swipeStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+    };
+  };
+
+  const handleModeTouchEnd = (
+    event: React.TouchEvent<HTMLDivElement>
+  ) => {
+    const start = swipeStartRef.current;
+    swipeStartRef.current = null;
+
+    const touch = event.changedTouches[0];
+    if (!start || !touch) return;
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+
+    // Ignore short gestures and normal vertical scrolling.
+    if (
+      Math.abs(deltaX) < 60 ||
+      Math.abs(deltaX) < Math.abs(deltaY) * 1.25
+    ) {
+      return;
+    }
+
+    if (deltaX < 0 && mode === "search") {
+      setMode("cook");
+    } else if (deltaX > 0 && mode === "cook") {
+      setMode("search");
+    }
+  };
+
+  // Keep the carousel viewport matched to the active panel while it slides.
+  // ResizeObserver also catches changes caused by responsive wrapping or async content.
+  useLayoutEffect(() => {
+    const activePanel = mode === "search" ? searchPanelRef.current : cookPanelRef.current;
+    if (!activePanel) return;
+
+    const updateHeight = () => {
+      setModePanelHeight(activePanel.getBoundingClientRect().height);
+    };
+
+    updateHeight();
+
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(activePanel);
+    return () => observer.disconnect();
+  }, [mode]);
 
   const goWithPreload = (dish: string) => {
     const predefined = findPredefinedRecipe(dish);
@@ -68,7 +143,7 @@ const HomePage: React.FC = () => {
   const brandRef = useRef<HTMLHeadingElement>(null);
   const [brandInView, setBrandInView] = useState(true);
 
-    const [valuePropsExpanded, setValuePropsExpanded] = useState(true);
+  const [valuePropsExpanded, setValuePropsExpanded] = useState(true);
 
   useEffect(() => {
     document.title = "Rasoi Bazaar | Home-style Indian cooking";
@@ -109,156 +184,187 @@ const HomePage: React.FC = () => {
             Recipes you can follow, ingredients you can order, and get help when you're stuck.
           </p>
 
-          {/* Mode toggle — replaces two sections competing for attention */}
           <div
-            role="tablist"
-            aria-label="How do you want to start?"
-            className="mt-7 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
+            className="w-full touch-pan-y"
+            onTouchStart={handleModeTouchStart}
+            onTouchEnd={handleModeTouchEnd}
           >
-            <button
-              role="tab"
-              aria-selected={mode === "search"}
-              onClick={() => setMode("search")}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                mode === "search"
-                  ? "bg-orange-200 text-stone-900"
-                  : "text-stone-300 hover:text-stone-100"
-              }`}
+            {/* Mode toggle — replaces two sections competing for attention */}
+            <div
+              role="tablist"
+              aria-label="How do you want to start?"
+              className="mt-7 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
             >
-              I know what I want
-            </button>
-            <button
-              role="tab"
-              aria-selected={mode === "cook"}
-              onClick={() => setMode("cook")}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                mode === "cook"
-                  ? "bg-orange-200 text-stone-900"
-                  : "text-stone-300 hover:text-stone-100"
-              }`}
-            >
-              Help me decide
-            </button>
-          </div>
+              <button
+                role="tab"
+                aria-selected={mode === "search"}
+                onClick={() => setMode("search")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  mode === "search"
+                    ? "bg-orange-200 text-stone-900"
+                    : "text-stone-300 hover:text-stone-100"
+                }`}
+              >
+                I know what I want
+              </button>
+              <button
+                role="tab"
+                aria-selected={mode === "cook"}
+                onClick={() => setMode("cook")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  mode === "cook"
+                    ? "bg-orange-200 text-stone-900"
+                    : "text-stone-300 hover:text-stone-100"
+                }`}
+              >
+                Help me decide
+              </button>
+            </div>
 
-          <div className="mt-8 w-full max-w-2xl">
-            {mode === "search" ? (
-              <>
-                <SearchBar
-                  searchTerm={term}
-                  setSearchTerm={setTerm}
-                  onSearch={(search) => goWithPreload(search)}
-                  isLoading={false}
-                  compact={false}
-                  onImageSelected={handleImage}
-                  imagePreview={preview}
-                  isIdentifying={status === "identifying"}
-                  onClearImage={reset}
-                />
+            <div className="mx-auto mt-8 w-full max-w-2xl">
+              <div
+                className="relative w-full overflow-hidden transition-[height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                style={modePanelHeight === undefined ? undefined : { height: `${modePanelHeight}px` }}
+              >
+                <div
+                  className="flex items-start will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                  style={{
+                    width: "200%",
+                    transform: mode === "search" ? "translateX(0)" : "translateX(-50%)",
+                  }}
+                >
+                  <div
+                    ref={searchPanelRef}
+                    aria-hidden={mode !== "search"}
+                    className={`min-w-0 shrink-0 transition-opacity duration-300 ${
+                      mode === "search" ? "opacity-100" : "pointer-events-none opacity-95"
+                    }`}
+                    style={{ width: "50%" }}
+                  >
+                  <SearchBar
+                    searchTerm={term}
+                    setSearchTerm={setTerm}
+                    onSearch={(search) => goWithPreload(search)}
+                    isLoading={false}
+                    compact={false}
+                    onImageSelected={handleImage}
+                    imagePreview={preview}
+                    isIdentifying={status === "identifying"}
+                    onClearImage={reset}
+                  />
 
-                {status === "error" && (
-                  <p className="mt-3 text-sm text-red-300" role="alert">
-                    {error}
-                  </p>
-                )}
-
-                {status === "done" && result && !result.dishName && (
-                  <p className="mt-3 text-sm text-stone-400" role="status">
-                    Couldn&apos;t spot a dish in this photo. Try a closer shot, or type the name above.
-                  </p>
-                )}
-
-                {status === "done" &&
-                  result?.dishName &&
-                  result.confidence < AUTO_SEARCH_CONFIDENCE && (
-                    <div className="mt-3 text-left text-sm text-stone-300" role="status">
-                      Not fully sure, but this looks like one of these:
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {[
-                          { dishName: result.dishName, confidence: result.confidence },
-                          ...result.alternatives,
-                        ].map((c) => (
-                          <button
-                            key={c.dishName}
-                            type="button"
-                            onClick={() => goWithPreload(c.dishName)}
-                            className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1 text-stone-100 hover:border-orange-400 hover:text-orange-200"
-                          >
-                            {c.dishName}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+                  {status === "error" && (
+                    <p className="mt-3 text-sm text-red-300" role="alert">
+                      {error}
+                    </p>
                   )}
 
-                <div className="mt-6">
-                  <RecipeSuggestionChips onSelect={goWithPreload} />
+                  {status === "done" && result && !result.dishName && (
+                    <p className="mt-3 text-sm text-stone-400" role="status">
+                      Couldn&apos;t spot a dish in this photo. Try a closer shot, or type the name above.
+                    </p>
+                  )}
+
+                  {status === "done" &&
+                    result?.dishName &&
+                    result.confidence < AUTO_SEARCH_CONFIDENCE && (
+                      <div className="mt-3 text-left text-sm text-stone-300" role="status">
+                        Not fully sure, but this looks like one of these:
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {[
+                            { dishName: result.dishName, confidence: result.confidence },
+                            ...result.alternatives,
+                          ].map((c) => (
+                            <button
+                              key={c.dishName}
+                              type="button"
+                              onClick={() => goWithPreload(c.dishName)}
+                              className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1 text-stone-100 hover:border-orange-400 hover:text-orange-200"
+                            >
+                              {c.dishName}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  <div className="mt-6">
+                    <RecipeSuggestionChips onSelect={goWithPreload} />
+                  </div>
+                  </div>
+                  <div
+                    ref={cookPanelRef}
+                    aria-hidden={mode !== "cook"}
+                    className={`min-w-0 shrink-0 transition-opacity duration-300 ${
+                      mode === "cook" ? "opacity-100" : "pointer-events-none opacity-95"
+                    }`}
+                    style={{ width: "50%" }}
+                  >
+                    <div className="rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 text-left sm:p-7">
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-6 w-6 text-orange-200"
+                        aria-hidden="true"
+                      >
+                        <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z" />
+                        <path d="M6 17h12" />
+                      </svg>
+                    </span>
+
+                    <img
+                      src="/cookwhatyouhave_cover.png"
+                      alt=""
+                      className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-lg sm:h-28"
+                      draggable={false}
+                    />
+                  </div>
+
+                  <h2 className="mt-4 font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+                    Cook what you have
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
+                    Not sure what to make? Show us your kitchen and pantry, and
+                    we&apos;ll suggest dishes you can cook right now.
+                  </p>
+
+                  <ol className="mt-5 space-y-3">
+                    {COOK_STEPS.map((step, index) => (
+                      <li
+                        key={step}
+                        className="flex items-center gap-3 text-sm text-stone-200"
+                      >
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-200 text-xs font-bold text-stone-900">
+                          {index + 1}
+                        </span>
+                        {step}
+                      </li>
+                    ))}
+                  </ol>
+
+                  <Link
+                    to="/cook-what-you-have"
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
+                  >
+                    Get started
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                    </div>
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className="rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 text-left sm:p-7">
-                <div className="flex items-start justify-between gap-4">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-6 w-6 text-orange-200"
-                      aria-hidden="true"
-                    >
-                      <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z" />
-                      <path d="M6 17h12" />
-                    </svg>
-                  </span>
-
-                  <img
-                    src="/cookwhatyouhave_cover.png"
-                    alt=""
-                    className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-lg sm:h-28"
-                    draggable={false}
-                  />
-                </div>
-
-                <h2 className="mt-4 font-serif text-2xl font-black text-orange-50 sm:text-3xl">
-                  Cook what you have
-                </h2>
-
-                <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
-                  Not sure what to make? Show us your kitchen and pantry, and
-                  we&apos;ll suggest dishes you can cook right now.
-                </p>
-
-                <ol className="mt-5 space-y-3">
-                  {COOK_STEPS.map((step, index) => (
-                    <li
-                      key={step}
-                      className="flex items-center gap-3 text-sm text-stone-200"
-                    >
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-200 text-xs font-bold text-stone-900">
-                        {index + 1}
-                      </span>
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-
-                <Link
-                  to="/cook-what-you-have"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
-                >
-                  Get started
-                  <span aria-hidden="true">→</span>
-                </Link>
               </div>
-            )}
+            </div>
           </div>
         </section>
 
-        {/* Value-prop strip — collapsible for returning users who already know this */}
         {/* Value-prop strip — collapsible for returning users who already know this */}
         <section className="relative border-y border-stone-800/70 bg-stone-900/30">
           <button
