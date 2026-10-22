@@ -93,7 +93,7 @@ export const mergeRecipes = (recipes: Recipe[]): Recipe => {
 
   return {
     dishName: recipes.map((r) => r.dishName).join(" & "),
-    description: recipes.map((r) => r.description).join(" "),
+    description: recipes.map((r) => r.description.trim().replace(/[.!?]+$/, "")).join(" and "),
     prepTime: mergePrepTime(recipes),
     equipment: mergeEquipment(recipes),
     ingredients: mergeIngredients(recipes),
