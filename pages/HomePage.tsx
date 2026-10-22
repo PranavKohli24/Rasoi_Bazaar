@@ -46,17 +46,25 @@ type HeroMode = "search" | "cook";
 const HomePage: React.FC = () => {
   const { term, setTerm, go } = useDishSearch();
   const [mode, setMode] = useState<HeroMode>("search");
-  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
+  const swipeStartRef = useRef<{
+    x: number;
+    y: number;
+    startedAt: number;
+    isHorizontal: boolean;
+  } | null>(null);
+  const modeViewportRef = useRef<HTMLDivElement>(null);
   const searchPanelRef = useRef<HTMLDivElement>(null);
   const cookPanelRef = useRef<HTMLDivElement>(null);
   const [modePanelHeight, setModePanelHeight] = useState<number>();
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDraggingMode, setIsDraggingMode] = useState(false);
 
   const handleModeTouchStart = (
     event: React.TouchEvent<HTMLDivElement>
   ) => {
     const target = event.target;
 
-    // Let interactive controls handle their own touch gestures.
+    // Preserve taps, typing, links, and controls. Swipe from the surrounding panel instead.
     if (
       target instanceof Element &&
       target.closest(
@@ -73,35 +81,89 @@ const HomePage: React.FC = () => {
     swipeStartRef.current = {
       x: touch.clientX,
       y: touch.clientY,
+      startedAt: Date.now(),
+      isHorizontal: false,
     };
+  };
+
+  const handleModeTouchMove = (
+    event: React.TouchEvent<HTMLDivElement>
+  ) => {
+    const start = swipeStartRef.current;
+    const touch = event.touches[0];
+    if (!start || !touch) return;
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+
+    // Wait until the intent is clearly horizontal, so vertical page scrolling stays natural.
+    if (!start.isHorizontal) {
+      if (Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8) return;
+      if (Math.abs(deltaX) <= Math.abs(deltaY) * 1.1) {
+        swipeStartRef.current = null;
+        return;
+      }
+      start.isHorizontal = true;
+    }
+
+    setIsDraggingMode(true);
+    setDragOffset(deltaX);
+  };
+
+  const finishModeGesture = (deltaX?: number) => {
+    const viewportWidth = modeViewportRef.current?.getBoundingClientRect().width ?? 360;
+    const distanceThreshold = Math.max(64, Math.min(120, viewportWidth * 0.2));
+    const start = swipeStartRef.current;
+    const elapsed = start ? Math.max(1, Date.now() - start.startedAt) : 1;
+    const velocity = deltaX === undefined ? 0 : deltaX / elapsed;
+    const isFastFlick = deltaX !== undefined && Math.abs(deltaX) > 24 && Math.abs(velocity) > 0.45;
+    const shouldSwitch = deltaX !== undefined && (Math.abs(deltaX) >= distanceThreshold || isFastFlick);
+
+    if (start?.isHorizontal && shouldSwitch) {
+      if (deltaX! < 0 && mode === "search") {
+        setMode("cook");
+      } else if (deltaX! > 0 && mode === "cook") {
+        setMode("search");
+      }
+    }
+
+    // Re-enable transitions before resetting the offset. The track then glides to its snap point.
+    swipeStartRef.current = null;
+    setIsDraggingMode(false);
+    setDragOffset(0);
   };
 
   const handleModeTouchEnd = (
     event: React.TouchEvent<HTMLDivElement>
   ) => {
     const start = swipeStartRef.current;
-    swipeStartRef.current = null;
-
     const touch = event.changedTouches[0];
-    if (!start || !touch) return;
-
-    const deltaX = touch.clientX - start.x;
-    const deltaY = touch.clientY - start.y;
-
-    // Ignore short gestures and normal vertical scrolling.
-    if (
-      Math.abs(deltaX) < 60 ||
-      Math.abs(deltaX) < Math.abs(deltaY) * 1.25
-    ) {
+    if (!start || !touch) {
+      setIsDraggingMode(false);
+      setDragOffset(0);
       return;
     }
 
-    if (deltaX < 0 && mode === "search") {
-      setMode("cook");
-    } else if (deltaX > 0 && mode === "cook") {
-      setMode("search");
-    }
+    finishModeGesture(touch.clientX - start.x);
   };
+
+  const handleModeTouchCancel = () => {
+    swipeStartRef.current = null;
+    setIsDraggingMode(false);
+    setDragOffset(0);
+  };
+
+  // Let the active panel resist a drag beyond either end, rather than revealing empty space.
+  const resistedDragOffset =
+    mode === "search"
+      ? dragOffset > 0
+        ? dragOffset * 0.18
+        : dragOffset
+      : dragOffset < 0
+        ? dragOffset * 0.18
+        : dragOffset;
+
+  const trackTransform = `translate3d(calc(${mode === "search" ? "0%" : "-50%"} + ${resistedDragOffset}px), 0, 0)`;
 
   // Keep the carousel viewport matched to the active panel while it slides.
   // ResizeObserver also catches changes caused by responsive wrapping or async content.
@@ -187,7 +249,9 @@ const HomePage: React.FC = () => {
           <div
             className="w-full touch-pan-y"
             onTouchStart={handleModeTouchStart}
+            onTouchMove={handleModeTouchMove}
             onTouchEnd={handleModeTouchEnd}
+            onTouchCancel={handleModeTouchCancel}
           >
             {/* Mode toggle — replaces two sections competing for attention */}
             <div
@@ -223,14 +287,19 @@ const HomePage: React.FC = () => {
 
             <div className="mx-auto mt-8 w-full max-w-2xl">
               <div
-                className="relative w-full overflow-hidden transition-[height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                ref={modeViewportRef}
+                className="relative w-full overflow-hidden touch-pan-y transition-[height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
                 style={modePanelHeight === undefined ? undefined : { height: `${modePanelHeight}px` }}
               >
                 <div
-                  className="flex items-start will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                  className={`flex items-start will-change-transform ${
+                    isDraggingMode
+                      ? "transition-none"
+                      : "transition-transform duration-[560ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+                  }`}
                   style={{
                     width: "200%",
-                    transform: mode === "search" ? "translateX(0)" : "translateX(-50%)",
+                    transform: trackTransform,
                   }}
                 >
                   <div
