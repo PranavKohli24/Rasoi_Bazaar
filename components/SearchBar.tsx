@@ -456,7 +456,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             type="button"
             onClick={handleSearchClick}
             disabled={isLoading}
-            aria-label="Generate recipe"
+            aria-label="Let’s Cook"
             className={`flex items-center justify-center bg-orange-200 font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:active:scale-100 ${
               compact
                 ? 'h-11 w-11 shrink-0 rounded-full text-sm sm:w-auto sm:px-4'
@@ -483,7 +483,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               </span>
             ) : compact ? (
               <>
-                <span className="hidden sm:inline">Generate Recipe</span>
+                <span className="hidden sm:inline">Let’s Cook</span>
                 <svg
                   className="h-5 w-5 sm:hidden"
                   xmlns="http://www.w3.org/2000/svg"
@@ -499,7 +499,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 </svg>
               </>
             ) : (
-              'Generate Recipe'
+              "Let’s Cook"
             )}
           </button>
         </div>
