@@ -1352,6 +1352,22 @@ const speak = (index: number, text: string) => {
     }
   };
 
+  // startSwiggyLogin() can refuse to redirect (throttled, to avoid a
+  // bounce loop) — if that happens, say so instead of leaving the cook
+  // staring at "taking you there now" with nothing happening.
+  const attemptSwiggyLogin = () => {
+    const started = startSwiggyLogin();
+    if (!started) {
+      setMessages((current) => [
+        ...current,
+        {
+          role: "assistant",
+          content: "I tried connecting to Swiggy a moment ago already — give it a little bit, or open the Swiggy app directly to check your connection.",
+        },
+      ]);
+    }
+  };
+
   const sendQuestion = async (question: string, addressOverride?: string) => {
     if (!question || isSending) return;
 
@@ -1386,7 +1402,7 @@ const speak = (index: number, text: string) => {
           { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
         ]);
         setIsSending(false);
-        startSwiggyLogin();
+        attemptSwiggyLogin();
         return;
       }
 
@@ -1402,7 +1418,7 @@ const speak = (index: number, text: string) => {
               { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
             ]);
             setIsSending(false);
-            startSwiggyLogin();
+            attemptSwiggyLogin();
             return;
           }
           throw err;
@@ -1532,7 +1548,7 @@ const speak = (index: number, text: string) => {
           ...current,
           { role: "assistant", content: "I lost the connection to your Swiggy account — taking you there now." },
         ]);
-        startSwiggyLogin();
+        attemptSwiggyLogin();
         return;
       }
       const names = items.map((i) => i.displayName).join(", ");

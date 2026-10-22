@@ -469,6 +469,7 @@ const buildSystemPrompt = (
         "- Only propose items you've actually seen in a search_instamart_products result earlier in this conversation. Search first if you haven't.",
         "- For several ingredients at once, you may call search_instamart_products multiple times before proposing the full set together in one propose_add_to_cart call.",
         "- Use get_cart_summary if asked what's already in the cart.",
+        "- Never assume what's in the cart from earlier in this conversation. If the cook asks whether something was added, or anything about current cart contents, call get_cart_summary to check the real cart rather than repeating an earlier claim.",
         addressId
           ? "- A delivery address has already been selected for this session - you don't need to ask for one."
           : "- No delivery address is selected yet. If a search needs one, it will be requested automatically - you don't need to ask for it yourself.",
