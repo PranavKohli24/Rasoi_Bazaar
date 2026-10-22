@@ -66,16 +66,27 @@ const RecentlyCooked: React.FC = () => {
                 <div className="flex h-28 sm:h-32">
                   {dish.images!.map((image, index) => (
                     <div
-                      key={`${dish.path}-${index}`}
-                      className="h-28 w-28 shrink-0 overflow-hidden bg-stone-800 sm:h-32 sm:w-32"
-                    >
-                      <img
-                        src={image}
-                        alt=""
-                        className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
-                        draggable={false}
-                      />
-                    </div>
+                        key={`${dish.path}-${index}`}
+                        className={`h-28 w-28 shrink-0 overflow-hidden sm:h-32 sm:w-32 ${
+                            index > 0 ? "-ml-5" : ""
+                        }`}
+                        style={
+                            index > 0
+                            ? {
+                                maskImage: "linear-gradient(to right, transparent, black 20px)",
+                                WebkitMaskImage:
+                                    "linear-gradient(to right, transparent, black 20px)",
+                                }
+                            : undefined
+                        }
+                        >
+                        <img
+                            src={image}
+                            alt=""
+                            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
+                            draggable={false}
+                        />
+                        </div>
                   ))}
                 </div>
               ) : (
