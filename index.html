@@ -165,6 +165,28 @@
         stroke-linecap: round;
         stroke-linejoin: round;
       }
+
+      @keyframes value-props-jump {
+        0% {
+          transform: scaleY(0.8) translateY(-8px);
+          opacity: 0;
+        }
+        50% {
+          transform: scaleY(1.06) translateY(3px);
+          opacity: 1;
+        }
+        72% {
+          transform: scaleY(0.97) translateY(-1px);
+        }
+        100% {
+          transform: scaleY(1) translateY(0);
+        }
+      }
+
+      .value-props-jump-in {
+        animation: value-props-jump 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        transform-origin: top;
+      }
     </style>
 
     <script type="importmap">
