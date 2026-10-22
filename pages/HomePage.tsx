@@ -4,12 +4,9 @@ import CompactHeader from "../components/CompactHeader";
 import SearchBar from "../components/SearchBar";
 import CategoryBrowser from "../components/CategoryBrowser";
 import RecipeSuggestionChips from "../components/RecipeSuggestionChips";
-import SectionDivider from "../components/SectionDivider";
 import { useDishSearch } from "../utils/dishRoutes";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
-
 import { useIdentifyDish } from "../utils/useIdentifyDish";
-
 import RecentlyCooked from "../components/RecentlyCooked";
 
 const AUTO_SEARCH_CONFIDENCE = 0.7;
@@ -20,12 +17,40 @@ const COOK_STEPS = [
   "Pick a dish and get the recipe",
 ];
 
+const VALUE_PROPS = [
+  {
+    icon: (
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v15H6.5A2.5 2.5 0 0 0 4 19.5V4.5Z" />
+    ),
+    title: "Step-by-step recipes",
+    body: "Clear instructions for dishes you actually grew up eating.",
+  },
+  {
+    icon: (
+      <path d="M3 3h2l.4 2M7 13h10l3-8H5.4M7 13 5.4 5M7 13l-2.3 4.6A1 1 0 0 0 5.6 19H17M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm9 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
+    ),
+    title: "Missing something?",
+    body: "Order it on Instamart right here - never leave the recipe.",
+  },
+  {
+    icon: (
+      <path d="M12 2a7 7 0 0 0-7 7c0 3 2 4.5 2 7h10c0-2.5 2-4 2-7a7 7 0 0 0-7-7ZM9 21h6M10 18h4" />
+    ),
+    title: "Stuck mid-recipe?",
+    body: "Hands full of masala? Just say \u201cHey Chef\u201d to ask your doubts.",
+  },
+];
+
+type HeroMode = "search" | "cook";
+
 const HomePage: React.FC = () => {
   const { term, setTerm, go } = useDishSearch();
+  const [mode, setMode] = useState<HeroMode>("search");
+
   const goWithPreload = (dish: string) => {
     const predefined = findPredefinedRecipe(dish);
     if (predefined?.image) new Image().src = predefined.image;
-        go(dish);
+    go(dish);
   };
 
   const { identify, reset, status, preview, result, error } = useIdentifyDish();
@@ -34,7 +59,6 @@ const HomePage: React.FC = () => {
     const res = await identify(file);
     if (!res?.dishName) return;
 
-    // Resolve to your canonical recipe name when we have one
     const name = findPredefinedRecipe(res.dishName)?.dishName ?? res.dishName;
     setTerm(name);
     if (res.confidence >= AUTO_SEARCH_CONFIDENCE) goWithPreload(name);
@@ -66,8 +90,8 @@ const HomePage: React.FC = () => {
       <CompactHeader showSearch={false} overlay revealed={!brandInView} />
 
       <main>
-        {/* Hero: the brand, then one job, find a dish */}
-        <section className="mx-auto flex min-h-[80svh] max-w-3xl flex-col items-center justify-center px-4 py-14 text-center sm:py-20 lg:min-h-0 lg:justify-start lg:pb-12 lg:pt-28">
+        {/* Hero: one brand moment, one decision */}
+        <section className="mx-auto flex min-h-[72svh] max-w-3xl flex-col items-center justify-center px-4 py-12 text-center sm:py-16 lg:min-h-0 lg:pt-24 lg:pb-10">
           <span className="rounded-full bg-orange-400/15 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-100">
             Aaj khane mai kya banaye?
           </span>
@@ -80,88 +104,97 @@ const HomePage: React.FC = () => {
           </h1>
 
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-stone-400 sm:text-lg md:text-xl">
-            Recipes you can follow, ingredients you can order, and help when you’re stuck.
-            <br className="hidden sm:block" />
-            <span className="font-medium text-stone-100">
-              What delicious dish will you make today?
-            </span>
+            Recipes you can follow, ingredients you can order, and get help when you're stuck.
           </p>
 
-          <div className="mt-8 w-full max-w-2xl">
-            <SearchBar
-              searchTerm={term}
-              setSearchTerm={setTerm}
-              onSearch={(search) => goWithPreload(search)}
-              isLoading={false}
-              compact={false}
-              onImageSelected={handleImage}
-              imagePreview={preview}
-              isIdentifying={status === "identifying"}
-              onClearImage={reset}
-            />
-
-            {status === "error" && (
-              <p className="mt-3 text-sm text-red-300" role="alert">
-                {error}
-              </p>
-            )}
-
-            {status === "done" && result && !result.dishName && (
-              <p className="mt-3 text-sm text-stone-400" role="status">
-                Couldn&apos;t spot a dish in this photo. Try a closer shot, or type the name above.
-              </p>
-            )}
-
-            {status === "done" &&
-              result?.dishName &&
-              result.confidence < AUTO_SEARCH_CONFIDENCE && (
-                <div className="mt-3 text-left text-sm text-stone-300" role="status">
-                  Not fully sure, but this looks like one of these:
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {[
-                      { dishName: result.dishName, confidence: result.confidence },
-                      ...result.alternatives,
-                    ].map((c) => (
-                      <button
-                        key={c.dishName}
-                        type="button"
-                        onClick={() => goWithPreload(c.dishName)}
-                        className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1 text-stone-100 hover:border-orange-400 hover:text-orange-200"
-                      >
-                        {c.dishName}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-          </div>
-
-          <div className="mt-6 w-full max-w-2xl">
-            <RecipeSuggestionChips onSelect={goWithPreload} />
-          </div>
-
-          <Link
-            to="/cook-what-you-have"
-            className="mt-5 rounded-lg px-2 py-1 text-sm text-stone-400 transition-colors hover:text-stone-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70"
+          {/* Mode toggle — replaces two sections competing for attention */}
+          <div
+            role="tablist"
+            aria-label="How do you want to start?"
+            className="mt-7 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
           >
-            No dish in mind?{" "}
-            <span className="font-semibold text-orange-200 underline underline-offset-4">
-              Cook with what you have
-            </span>
-          </Link>
-        </section>
+            <button
+              role="tab"
+              aria-selected={mode === "search"}
+              onClick={() => setMode("search")}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                mode === "search"
+                  ? "bg-orange-200 text-stone-900"
+                  : "text-stone-300 hover:text-stone-100"
+              }`}
+            >
+              I know what I want
+            </button>
+            <button
+              role="tab"
+              aria-selected={mode === "cook"}
+              onClick={() => setMode("cook")}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                mode === "cook"
+                  ? "bg-orange-200 text-stone-900"
+                  : "text-stone-300 hover:text-stone-100"
+              }`}
+            >
+              Help me decide
+            </button>
+          </div>
 
-        {/* Two ways to get ideas: browse, or start from your kitchen */}
-        <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24">
-          <div className="grid gap-10 lg:grid-cols-5 lg:gap-8">
-            <div className="lg:col-span-3">
-              <CategoryBrowser onSelect={goWithPreload} />
-            </div>
+          <div className="mt-8 w-full max-w-2xl">
+            {mode === "search" ? (
+              <>
+                <SearchBar
+                  searchTerm={term}
+                  setSearchTerm={setTerm}
+                  onSearch={(search) => goWithPreload(search)}
+                  isLoading={false}
+                  compact={false}
+                  onImageSelected={handleImage}
+                  imagePreview={preview}
+                  isIdentifying={status === "identifying"}
+                  onClearImage={reset}
+                />
 
-            <aside className="flex flex-col lg:col-span-2">
-              <SectionDivider label="or start from your kitchen" />
+                {status === "error" && (
+                  <p className="mt-3 text-sm text-red-300" role="alert">
+                    {error}
+                  </p>
+                )}
 
-              <div className="relative mt-5 flex flex-1 flex-col overflow-hidden rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 shadow-sm sm:p-7">
+                {status === "done" && result && !result.dishName && (
+                  <p className="mt-3 text-sm text-stone-400" role="status">
+                    Couldn&apos;t spot a dish in this photo. Try a closer shot, or type the name above.
+                  </p>
+                )}
+
+                {status === "done" &&
+                  result?.dishName &&
+                  result.confidence < AUTO_SEARCH_CONFIDENCE && (
+                    <div className="mt-3 text-left text-sm text-stone-300" role="status">
+                      Not fully sure, but this looks like one of these:
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {[
+                          { dishName: result.dishName, confidence: result.confidence },
+                          ...result.alternatives,
+                        ].map((c) => (
+                          <button
+                            key={c.dishName}
+                            type="button"
+                            onClick={() => goWithPreload(c.dishName)}
+                            className="rounded-full border border-stone-700 bg-stone-900 px-3 py-1 text-stone-100 hover:border-orange-400 hover:text-orange-200"
+                          >
+                            {c.dishName}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                <div className="mt-6">
+                  <RecipeSuggestionChips onSelect={goWithPreload} />
+                </div>
+              </>
+            ) : (
+              <div className="rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 text-left sm:p-7">
                 <div className="flex items-start justify-between gap-4">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
                     <svg
@@ -211,39 +244,51 @@ const HomePage: React.FC = () => {
                   ))}
                 </ol>
 
-                {/* Button, with the handwritten note and arrow pointing at it */}
-                <div className="mt-auto flex flex-col gap-4 pt-7 sm:flex-row sm:items-center">
-                  <Link
-                    to="/cook-what-you-have"
-                    className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
-                  >
-                    Get started
-                    <span aria-hidden="true">→</span>
-                  </Link>
+                <Link
+                  to="/cook-what-you-have"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
+                >
+                  Get started
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
 
-                  <div
-                    className="hidden w-[150px] shrink-0 flex-col items-center justify-center sm:flex"
-                    aria-hidden="true"
-                  >
-                    <div className="cook-note">
-                      Good food
-                      <br />
-                      starts with
-                      <br />
-                      what you have
-                    </div>
-
-                    <svg className="cook-note-arrow" viewBox="0 0 68 48">
-                      <path d="M61 2 C60 13, 56 22, 47 29 C38 36, 27 38, 10 38" />
-                      <path d="M10 38 L21 31" />
-                      <path d="M10 38 L21 44" />
-                    </svg>
-                  </div>
+        {/* Value-prop strip — the differentiators, surfaced up front */}
+        <section className="border-y border-stone-800/70 bg-stone-900/30">
+          <div className="mx-auto grid max-w-5xl gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6">
+            {VALUE_PROPS.map((item) => (
+              <div key={item.title} className="flex items-start gap-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mt-0.5 h-6 w-6 shrink-0 text-orange-300"
+                  aria-hidden="true"
+                >
+                  {item.icon}
+                </svg>
+                <div>
+                  <p className="text-sm font-semibold text-stone-100">{item.title}</p>
+                  <p className="mt-0.5 text-sm text-stone-400">{item.body}</p>
                 </div>
               </div>
-            </aside>
+            ))}
           </div>
+        </section>
 
+        {/* Browse, full width — supporting content, not a competing hero */}
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
+          <CategoryBrowser onSelect={goWithPreload} />
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6 sm:pb-24">
           <RecentlyCooked />
         </section>
       </main>
