@@ -850,6 +850,13 @@ const findStepAnswer = (recipe: Recipe, question: string): string | null => {
 const findLocalAnswer = (recipe: Recipe, question: string): string | null =>
   findIngredientAnswer(recipe, question) ?? findStepAnswer(recipe, question);
 
+// CompanionMessage carries extra fields (kind, addresses, products,
+// pendingItems) that the backend/Groq must never see in `history` — a
+// message object with unexpected properties gets rejected by Groq's chat
+// API. Always strip to {role, content} before sending.
+const toApiHistory = (history: CompanionMessage[]) =>
+  history.map((m) => ({ role: m.role, content: m.content }));
+
 /* ------------------------------------------------------------ component */
 const CookingCompanion: React.FC<CookingCompanionProps> = ({
   recipe,
@@ -1300,7 +1307,7 @@ const speak = (index: number, text: string) => {
     try {
       const reply = await askCookingCompanion(
         recipe,
-        historyForRequest,
+        toApiHistory(historyForRequest),
         question,
         currentStepNumber,
         currentStepInstruction,
@@ -1843,7 +1850,7 @@ const speak = (index: number, text: string) => {
     try {
       const reply = await askCookingCompanion(
         recipe,
-        history,
+        toApiHistory(history),
         `${question}\n\n${VOICE_STYLE_HINT}`,
         currentStepNumber,
         currentStepInstruction,
@@ -1895,7 +1902,7 @@ const speak = (index: number, text: string) => {
     try {
       const reply = await streamCookingCompanion(
         recipe,
-        history,
+        toApiHistory(history),
         `${question}\n\n${VOICE_STYLE_HINT}`,
         currentStepNumber,
         currentStepInstruction,
