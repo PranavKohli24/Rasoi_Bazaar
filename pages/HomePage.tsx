@@ -68,6 +68,8 @@ const HomePage: React.FC = () => {
   const brandRef = useRef<HTMLHeadingElement>(null);
   const [brandInView, setBrandInView] = useState(true);
 
+    const [valuePropsExpanded, setValuePropsExpanded] = useState(true);
+
   useEffect(() => {
     document.title = "Rasoi Bazaar | Home-style Indian cooking";
   }, []);
@@ -256,30 +258,89 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Value-prop strip — the differentiators, surfaced up front */}
-        <section className="border-y border-stone-800/70 bg-stone-900/30">
-          <div className="mx-auto grid max-w-5xl gap-6 px-4 py-8 sm:grid-cols-3 sm:px-6">
-            {VALUE_PROPS.map((item) => (
-              <div key={item.title} className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mt-0.5 h-6 w-6 shrink-0 text-orange-300"
-                  aria-hidden="true"
-                >
-                  {item.icon}
-                </svg>
-                <div>
-                  <p className="text-sm font-semibold text-stone-100">{item.title}</p>
-                  <p className="mt-0.5 text-sm text-stone-400">{item.body}</p>
-                </div>
+        {/* Value-prop strip — collapsible for returning users who already know this */}
+        <section className="relative border-y border-stone-800/70 bg-stone-900/30">
+          <button
+            type="button"
+            onClick={() => setValuePropsExpanded((v) => !v)}
+            aria-expanded={valuePropsExpanded}
+            aria-label={valuePropsExpanded ? "Minimise" : "Expand"}
+            className="absolute right-4 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-full text-stone-500 transition-colors hover:bg-stone-800 hover:text-stone-200 sm:right-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`h-4 w-4 transition-transform duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                valuePropsExpanded ? "" : "rotate-180"
+              }`}
+              aria-hidden="true"
+            >
+              <path d="m18 15-6-6-6 6" />
+            </svg>
+          </button>
+
+          {/* Expanded content: grid-rows trick animates height smoothly without JS measuring */}
+          <div
+            className={`grid transition-[grid-template-rows] duration-450 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+              valuePropsExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <div
+                className={`mx-auto grid max-w-5xl gap-6 px-4 py-8 transition-opacity duration-300 sm:grid-cols-3 sm:px-6 ${
+                  valuePropsExpanded ? "opacity-100 delay-150" : "opacity-0"
+                }`}
+              >
+                {VALUE_PROPS.map((item) => (
+                  <div key={item.title} className="flex items-start gap-3">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="mt-0.5 h-6 w-6 shrink-0 text-orange-300"
+                      aria-hidden="true"
+                    >
+                      {item.icon}
+                    </svg>
+                    <div>
+                      <p className="text-sm font-semibold text-stone-100">{item.title}</p>
+                      <p className="mt-0.5 text-sm text-stone-400">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+          </div>
+
+          {/* Collapsed summary: same trick, inverse state, crossfades in */}
+          <div
+            className={`grid transition-[grid-template-rows] duration-450 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+              valuePropsExpanded ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setValuePropsExpanded(true)}
+                className={`mx-auto block w-full max-w-5xl px-4 py-3 text-left text-sm text-stone-400 transition-opacity duration-300 hover:text-stone-200 sm:px-6 ${
+                  valuePropsExpanded ? "opacity-0" : "opacity-100 delay-150"
+                }`}
+              >
+                <span className="font-semibold text-stone-200">About Rasoi Bazaar</span>
+                <span className="ml-2">
+                  Recipes, Instamart ordering, and &ldquo;Hey Chef&rdquo; help — tap to see more
+                </span>
+              </button>
+            </div>
           </div>
         </section>
 
