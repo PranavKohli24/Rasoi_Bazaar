@@ -79,8 +79,8 @@ const HomePage: React.FC = () => {
             Rasoi Bazaar
           </h1>
 
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-stone-400 sm:text-lg md:text-xl">
-            Recipes you can follow, with ingredients you have.
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-stone-400 sm:text-lg md:text-xl">
+            Recipes you can follow, ingredients you can order, and help when you’re stuck.
             <br className="hidden sm:block" />
             <span className="font-medium text-stone-100">
               What delicious dish will you make today?
