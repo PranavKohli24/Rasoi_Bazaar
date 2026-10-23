@@ -1412,7 +1412,7 @@ const speak = (index: number, text: string) => {
 
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: "That didn't go through — want to try connecting again?" },
+        { role: "assistant", content: "We tried signing you in a moment ago and it didn't go through. Try again by clicking the Connect Swiggy Account button" },
       ]);
     } finally {
       setIsConnectingSwiggy(false);

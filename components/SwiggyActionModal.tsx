@@ -440,7 +440,7 @@ interface SwipeToConfirmCheckoutProps {
 const CHECKOUT_SWIPE_THUMB = 48;
 const CHECKOUT_SWIPE_PADDING = 5;
 const CHECKOUT_SWIPE_THRESHOLD = 0.65;
-const CHECKOUT_ACTION_LABEL = "Pay with Cash on Delivery";
+const CHECKOUT_ACTION_LABEL = "Slide to Pay with Cash on Delivery";
 
 const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
   onConfirm,
