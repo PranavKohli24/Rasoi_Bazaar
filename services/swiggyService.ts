@@ -846,3 +846,51 @@ export const trackFoodOrder = async (
     raw: tracking,
   };
 };
+
+const POPUP_FEATURES = "width=480,height=640,menubar=no,toolbar=no,location=no,status=no";
+
+/**
+ * Opens Swiggy login in a popup — the main app page never navigates away,
+ * so it stays alive and can react the instant we know the outcome, with
+ * no reload required. Resolves true if connected, false otherwise
+ * (login failed, was denied, or the popup was closed before finishing).
+ */
+export const loginWithSwiggyPopup = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const popup = window.open("/api/swiggy/start?popup=1", "swiggy-login", POPUP_FEATURES);
+
+    if (!popup) {
+      resolve(false);
+      return;
+    }
+
+    let settled = false;
+
+    const finish = (success: boolean) => {
+      if (settled) return;
+      settled = true;
+      window.removeEventListener("message", onMessage);
+      window.clearInterval(pollId);
+      try {
+        popup.close();
+      } catch {
+        /* ignore */
+      }
+      resolve(success);
+    };
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "swiggy-auth-success") finish(true);
+      if (event.data?.type === "swiggy-auth-failure") finish(false);
+    };
+    window.addEventListener("message", onMessage);
+
+    // If the person closes the popup themselves — including when it's
+    // stuck on an error page that never gets to post a message back —
+    // this catches that as a failure instead of hanging forever.
+    const pollId = window.setInterval(() => {
+      if (popup.closed) finish(false);
+    }, 500);
+  });
+};

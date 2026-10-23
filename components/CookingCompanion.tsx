@@ -12,7 +12,7 @@ import {
   CommercePendingItem,
   AddressOption,
 } from "../services/cookingCompanionService";
-import { getSwiggyAddresses, startSwiggyLogin, SwiggyAddress } from "../services/swiggyService";
+import { getSwiggyAddresses, loginWithSwiggyPopup, SwiggyAddress } from "../services/swiggyService";
 
 import { useHeyChef, HeyChefCommands, HeyChefPhase, CommandName } from "../src/hooks/useHeyChef";
 
@@ -802,6 +802,18 @@ const ConfirmActionBubble: React.FC<{
   );
 };
 
+const ConnectSwiggyBubble: React.FC<{ onConnect: () => void; isBusy?: boolean }> = ({ onConnect, isBusy }) => (
+  <button
+    type="button"
+    onClick={onConnect}
+    disabled={isBusy}
+    className="mt-2.5 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white transition-opacity disabled:opacity-60"
+    style={{ backgroundColor: COMMERCE.saffron }}
+  >
+    {isBusy ? "Connecting…" : "Connect Swiggy account"}
+  </button>
+);
+
 /* --------------------------------------------------------- suggestions */
 
 // A few tappable starter questions, so someone with wet or masala-covered
@@ -961,6 +973,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
   const [commerceAddressId, setCommerceAddressId] = useState<string | null>(null);
 const [isAddingToCart, setIsAddingToCart] = useState(false);
+const [isConnectingSwiggy, setIsConnectingSwiggy] = useState(false);
 const pendingAddressQuestionRef = useRef<string | null>(null);
   // ---- companion presence ----
   // Index of the reply currently being "said" (word-by-word reveal).
@@ -1360,27 +1373,49 @@ const speak = (index: number, text: string) => {
   // the browser lands back on this page (whether login worked or not) —
   // on success it quietly re-asks that question, which naturally fetches
   // the address and shows the picker; on failure it reports that instead.
-  const attemptSwiggyLogin = (pendingQuestion?: string) => {
-    const started = startSwiggyLogin();
+  // Shows a "Connect Swiggy account" button instead of auto-opening a
+  // popup: browsers block window.open() unless it happens synchronously
+  // inside a real click, and by the time we know Swiggy access is needed
+  // (after awaiting the AI's response) that direct click chain is gone.
+  // The button's own onClick is a fresh, synchronous click, so the popup
+  // always opens reliably from there.
+  const showConnectPrompt = (pendingQuestion?: string) => {
+    setMessages((current) => [
+      ...current,
+      {
+        role: "assistant",
+        content: "I need access to your Swiggy account to do that.",
+        kind: "connect_swiggy",
+        pendingQuestion,
+      },
+    ]);
+  };
 
-    if (started) {
-      try {
-        sessionStorage.setItem(SWIGGY_LOGIN_PENDING_KEY, JSON.stringify({ question: pendingQuestion ?? null }));
-      } catch {
-        /* ignore storage problems */
+  // Opens the popup, waits for it to resolve, then resumes right away —
+  // no reload, no waiting on a redirect to land back on this page.
+  const handleConnectSwiggy = async (pendingQuestion?: string) => {
+    setIsConnectingSwiggy(true);
+    try {
+      const connected = await loginWithSwiggyPopup();
+
+      if (connected) {
+        if (pendingQuestion) {
+          await sendQuestion(pendingQuestion);
+        } else {
+          setMessages((current) => [
+            ...current,
+            { role: "assistant", content: "Connected! What would you like me to do?" },
+          ]);
+        }
+        return;
       }
+
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: "I need access to your Swiggy account first — taking you there now." },
+        { role: "assistant", content: "That didn't go through — want to try connecting again?" },
       ]);
-    } else {
-      setMessages((current) => [
-        ...current,
-        {
-          role: "assistant",
-          content: "I tried connecting to Swiggy a moment ago already — give it a little bit, or open the Swiggy app directly to check your connection.",
-        },
-      ]);
+    } finally {
+      setIsConnectingSwiggy(false);
     }
   };
 
@@ -1414,7 +1449,7 @@ const speak = (index: number, text: string) => {
 
       if (reply.type === "needs_auth") {
         setIsSending(false);
-        attemptSwiggyLogin(question);
+        showConnectPrompt(question);
         return;
       }
 
@@ -1426,7 +1461,7 @@ const speak = (index: number, text: string) => {
         } catch (err) {
           if (err instanceof Error && err.message === "SWIGGY_NOT_CONNECTED") {
             setIsSending(false);
-            attemptSwiggyLogin(question);
+            showConnectPrompt(question);
             return;
           }
           throw err;
@@ -1592,7 +1627,7 @@ const speak = (index: number, text: string) => {
     try {
       const result = await confirmCartAdd(commerceAddressId, items);
       if (result.type === "needs_auth") {
-        attemptSwiggyLogin();
+        showConnectPrompt();
         return;
       }
       const names = items.map((i) => i.displayName).join(", ");
@@ -2375,6 +2410,13 @@ const speak = (index: number, text: string) => {
                           isBusy={isAddingToCart}
                           onConfirm={(items) => handleConfirmAdd(items)}
                           onCancel={() => handleCancelAdd(index)}
+                        />
+                      )}
+
+                      {message.kind === "connect_swiggy" && (
+                        <ConnectSwiggyBubble
+                          onConnect={() => handleConnectSwiggy(message.pendingQuestion)}
+                          isBusy={isConnectingSwiggy}
                         />
                       )}
                     </div>

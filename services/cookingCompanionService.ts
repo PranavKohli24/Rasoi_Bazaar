@@ -3,10 +3,12 @@ import { Recipe } from "../types";
 export interface CompanionMessage {
   role: "user" | "assistant";
   content: string;
-  kind?: "text" | "address_picker" | "product_results" | "confirm_action";
+  kind?: "text" | "address_picker" | "product_results" | "confirm_action" | "connect_swiggy";
   addresses?: AddressOption[];
   products?: CommerceProduct[];
   pendingItems?: CommercePendingItem[];
+  /** For kind "connect_swiggy": the question to resume once connected. */
+  pendingQuestion?: string;
 }
 
 export interface AddressOption {

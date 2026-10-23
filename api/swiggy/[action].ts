@@ -72,11 +72,11 @@ async function handleRegister(): Promise<Response> {
 }
 
 // ---------- /start ----------
-
-async function handleStart(): Promise<Response> {
+async function handleStart(request: Request): Promise<Response> {
   const REDIRECT_URI = getRedirectUri();
   const { verifier, challenge } = createPkce();
   const state = crypto.randomBytes(24).toString("hex");
+  const isPopup = new URL(request.url, "http://localhost:3000").searchParams.get("popup") === "1";
 
   const registerResponse = await fetch(`${SWIGGY_BASE_URL}/auth/register`, {
     method: "POST",
@@ -110,7 +110,7 @@ async function handleStart(): Promise<Response> {
   authUrl.searchParams.set("state", state);
 
   const oauthData = Buffer.from(
-    JSON.stringify({ state, verifier, clientId, redirectUri: REDIRECT_URI })
+    JSON.stringify({ state, verifier, clientId, redirectUri: REDIRECT_URI, popup: isPopup })
   ).toString("base64url");
 
   const headers = new Headers();
@@ -135,42 +135,58 @@ async function handleStart(): Promise<Response> {
 
 // ---------- /callback ----------
 
+function popupResultHtml(success: boolean, message?: string): string {
+  return `<!doctype html><html><head><title>Swiggy</title></head>
+  <body>
+    <script>
+      if (window.opener) {
+        window.opener.postMessage(
+          { type: ${success ? '"swiggy-auth-success"' : '"swiggy-auth-failure"'} },
+          window.location.origin
+        );
+      }
+      window.close();
+    </script>
+    <p>${success ? "Connected! You can close this window." : (message ?? "Connection failed.") + " You can close this window."}</p>
+  </body></html>`;
+}
+
 async function handleCallback(request: Request): Promise<Response> {
-  try {
-    const requestUrl = new URL(request.url, "http://localhost:3000");
+  const requestUrl = new URL(request.url, "http://localhost:3000");
+  const code = requestUrl.searchParams.get("code");
+  const returnedState = requestUrl.searchParams.get("state");
+  const oauthError = requestUrl.searchParams.get("error");
+  const oauthErrorDescription = requestUrl.searchParams.get("error_description");
 
-    const code = requestUrl.searchParams.get("code");
-    const returnedState = requestUrl.searchParams.get("state");
-    const oauthError = requestUrl.searchParams.get("error");
-    const oauthErrorDescription = requestUrl.searchParams.get("error_description");
-
-    if (oauthError) {
-      return new Response(
-        `<!doctype html><html><head><title>Swiggy Authorization Failed</title></head>
-        <body><h2>Swiggy authorization failed</h2><p>${oauthErrorDescription ?? oauthError}</p>
-        <script>window.location.href = "/";</script></body></html>`,
-        { status: 400, headers: { "Content-Type": "text/html" } }
-      );
-    }
-
-    if (!code) return new Response("Missing authorization code.", { status: 400 });
-    if (!returnedState) return new Response("Missing OAuth state.", { status: 400 });
-
-    const oauthCookie = getCookie(request, "swiggy_oauth");
-    if (!oauthCookie) {
-      return new Response("OAuth session expired. Please start the Swiggy login again.", { status: 400 });
-    }
-
-    let stored: { state: string; verifier: string; clientId: string; redirectUri: string };
+  const oauthCookie = getCookie(request, "swiggy_oauth");
+  let stored: { state: string; verifier: string; clientId: string; redirectUri: string; popup?: boolean } | null = null;
+  if (oauthCookie) {
     try {
       stored = JSON.parse(Buffer.from(oauthCookie, "base64url").toString("utf8"));
     } catch {
-      return new Response("Invalid OAuth session data.", { status: 400 });
+      stored = null;
     }
+  }
+  const isPopup = !!stored?.popup;
 
-    if (stored.state !== returnedState) {
-      return new Response("Invalid OAuth state.", { status: 400 });
+  const fail = (message: string, status = 400): Response => {
+    if (isPopup) {
+      return new Response(popupResultHtml(false, message), { status, headers: { "Content-Type": "text/html" } });
     }
+    return new Response(
+      `<!doctype html><html><head><title>Swiggy Authorization Failed</title></head>
+      <body><h2>Swiggy authorization failed</h2><p>${message}</p>
+      <script>window.location.href = "/";</script></body></html>`,
+      { status, headers: { "Content-Type": "text/html" } }
+    );
+  };
+
+  try {
+    if (oauthError) return fail(oauthErrorDescription ?? oauthError);
+    if (!code) return fail("Missing authorization code.");
+    if (!returnedState) return fail("Missing OAuth state.");
+    if (!stored) return fail("OAuth session expired. Please start the Swiggy login again.");
+    if (stored.state !== returnedState) return fail("Invalid OAuth state.");
 
     const tokenResponse = await fetch(`${SWIGGY_BASE_URL}/auth/token`, {
       method: "POST",
@@ -185,21 +201,16 @@ async function handleCallback(request: Request): Promise<Response> {
     });
 
     if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      console.error("Swiggy token exchange failed:", tokenResponse.status, errorText);
-
-      return new Response(
-        `<!doctype html><html><head><title>Swiggy Connection Failed</title></head>
-        <body><h2>Could not connect Swiggy</h2><p>Token exchange failed.</p><pre>${errorText}</pre></body></html>`,
-        { status: 500, headers: { "Content-Type": "text/html" } }
-      );
+      const errText = await tokenResponse.text();
+      console.error("Swiggy token exchange failed:", tokenResponse.status, errText);
+      return fail("Token exchange failed.", 500);
     }
 
     const tokenData = await tokenResponse.json();
 
     if (!tokenData.access_token) {
       console.error("Swiggy token response:", tokenData);
-      return new Response("Swiggy did not return an access token.", { status: 500 });
+      return fail("Swiggy did not return an access token.", 500);
     }
 
     const expiresIn = Number(tokenData.expires_in ?? 432000);
@@ -209,6 +220,8 @@ async function handleCallback(request: Request): Promise<Response> {
     const headers = new Headers();
     headers.append("Content-Type", "text/html; charset=utf-8");
 
+    const isProd = process.env.NODE_ENV === "production";
+
     headers.append(
       "Set-Cookie",
       [
@@ -216,25 +229,26 @@ async function handleCallback(request: Request): Promise<Response> {
         "HttpOnly",
         "Path=/",
         "SameSite=Lax",
-        "Secure",
+        ...(isProd ? ["Secure"] : []),
         `Max-Age=${expiresIn}`,
       ].join("; ")
     );
 
     headers.append(
       "Set-Cookie",
-      ["swiggy_oauth=", "HttpOnly", "Path=/", "SameSite=Lax", "Secure", "Max-Age=0"].join("; ")
+      ["swiggy_oauth=", "HttpOnly", "Path=/", "SameSite=Lax", ...(isProd ? ["Secure"] : []), "Max-Age=0"].join("; ")
     );
 
-    return new Response(
-      `<!doctype html><html><head><title>Swiggy Connected</title></head>
-      <body><p>Swiggy connected successfully.</p><p>Redirecting to Rasoi Bazaar...</p>
-      <script>window.location.replace("/");</script></body></html>`,
-      { status: 200, headers }
-    );
+    const body = isPopup
+      ? popupResultHtml(true)
+      : `<!doctype html><html><head><title>Swiggy Connected</title></head>
+        <body><p>Swiggy connected successfully.</p><p>Redirecting to Rasoi Bazaar...</p>
+        <script>window.location.replace("/");</script></body></html>`;
+
+    return new Response(body, { status: 200, headers });
   } catch (error) {
     console.error("Swiggy callback error:", error);
-    return new Response(error instanceof Error ? error.message : "Swiggy authentication failed.", { status: 500 });
+    return fail(error instanceof Error ? error.message : "Swiggy authentication failed.", 500);
   }
 }
 
@@ -245,7 +259,7 @@ export async function GET(request: Request): Promise<Response> {
 
   switch (action) {
     case "start":
-      return handleStart();
+      return handleStart(request);
     case "callback":
       return handleCallback(request);
     default:
