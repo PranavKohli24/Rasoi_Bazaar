@@ -34,7 +34,6 @@ interface CookingCompanionProps {
 
 const STORAGE_PREFIX = "rasoi:companion:";
 const VOICE_REPLY_KEY = "rasoi:companion-voice-replies";
-const SWIGGY_LOGIN_PENDING_KEY = "rasoi:swiggy-login-pending";
 const PANEL_TRANSITION_MS = 200;
 
 // How far down the sheet must be pulled before it counts as a deliberate
@@ -1536,46 +1535,6 @@ const speak = (index: number, text: string) => {
       setLoadingStage(null);
     }
   };
-
-    // Fires once when this component mounts. If a login redirect was sent
-  // (see attemptSwiggyLogin above) and the browser is now back on this
-  // page, this checks whether the connection actually worked:
-  //  - success → quietly resume the original question, which fetches the
-  //    address and shows the picker (or proceeds straight to products).
-  //  - failure → report that the connection didn't go through.
-  // Either way this happens on its own, with no further input needed.
-  useEffect(() => {
-    let pending: { question: string | null } | null = null;
-    try {
-      const raw = sessionStorage.getItem(SWIGGY_LOGIN_PENDING_KEY);
-      if (raw) pending = JSON.parse(raw);
-      sessionStorage.removeItem(SWIGGY_LOGIN_PENDING_KEY);
-    } catch {
-      /* ignore storage problems */
-    }
-    if (!pending) return;
-
-    (async () => {
-      try {
-        await getSwiggyAddresses();
-        // Connected — resume where the cook left off.
-        if (pending!.question) {
-          sendQuestion(pending!.question);
-        }
-      } catch (err) {
-        if (err instanceof Error && err.message === "SWIGGY_NOT_CONNECTED") {
-          setMessages((current) => [
-            ...current,
-            {
-              role: "assistant",
-              content: "I tried connecting to Swiggy, but it didn't go through — mind trying again?",
-            },
-          ]);
-        }
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleAddressPicked = async (address: AddressOption) => {
     setCommerceAddressId(address.id);

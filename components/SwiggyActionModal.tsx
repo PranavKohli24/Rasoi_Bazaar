@@ -55,6 +55,9 @@ interface SwiggyActionModalProps {
   error?: string | null;
   onMinimize: () => void;
   onClose: () => void;
+  /** True when a selection (address / product / restaurant) has changed
+   *  since the cart was last built — disables jumping straight to Checkout. */
+  checkoutStale?: boolean;
   dishName?: string;
   needsSwiggyReconnect?: boolean;
   onRetrySwiggyLogin?: () => void;
@@ -1389,6 +1392,7 @@ const SwiggyActionModal: React.FC<SwiggyActionModalProps> = ({
   error,
   onMinimize,
   onClose,
+  checkoutStale = false,
 }) => {
   useEffect(() => {
     if (!type) return;
@@ -1604,8 +1608,8 @@ useEffect(() => {
   };
 
   const hasCartDataToReturnTo =
-    type === "instamart" ? !!cartSummary : type === "swiggy" ? !!foodCartSummary : false;
-
+    (type === "instamart" ? !!cartSummary : type === "swiggy" ? !!foodCartSummary : false) &&
+    !checkoutStale;
   if (!type) return null;
 
   const hasAddresses = !!addresses && addresses.length > 0;
@@ -1622,7 +1626,7 @@ useEffect(() => {
   const showAddressScreen =
     type === "swiggy"
       ? isChoosingAddress || (!hasRestaurants && !hasSearchedRestaurants)
-      : !cartAdded && (isChoosingAddress || !hasInstamartProducts);
+      : isChoosingAddress || !hasInstamartProducts;
 
   const instamartNames =
     searchIngredientNames && searchIngredientNames.length > 0
@@ -1660,10 +1664,10 @@ useEffect(() => {
     );
 
   const currentStep: Step =
-    (type === "instamart" && cartAdded) || (type === "swiggy" && foodCartAdded)
-      ? "done"
-      : showAddressScreen && !(type === "swiggy" && wasLoadingRestaurants)
+    showAddressScreen && !(type === "swiggy" && wasLoadingRestaurants)
       ? "address"
+      : (type === "instamart" && cartAdded) || (type === "swiggy" && foodCartAdded)
+      ? "done"
       : "products";
 
   const isInitialLoading = isLoading && loadingStage !== "cart";
@@ -2246,7 +2250,7 @@ useEffect(() => {
             </button>
           </div>
         )}
-        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && instamartStage === "review" && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "instamart" && cartAdded && instamartStage === "review" && !showAddressScreen && (
           <div className={footerClass} style={{ borderColor: COLOR.border }}>
             {isCheckingOut ? (
               <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }} role="status" aria-live="polite">
@@ -2284,7 +2288,7 @@ useEffect(() => {
           </div>
         )}
 
-        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && foodCartAdded && foodStage === "review" && (
+        {!isInitialLoading && !needsSwiggyReconnect && type === "swiggy" && foodCartAdded && foodStage === "review" && !showAddressScreen && (
           <div className={footerClass} style={{ borderColor: COLOR.border }}>
             {isCheckingOutFood ? (
               <div className={`${primaryButton} cursor-wait`} style={{ backgroundColor: COLOR.saffron, color: COLOR.surface }} role="status" aria-live="polite">

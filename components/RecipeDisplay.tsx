@@ -1357,6 +1357,10 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [cartSummaryError, setCartSummaryError] = useState<string | null>(null);
   const [cartShortageWarning, setCartShortageWarning] = useState<string | null>(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  // Snapshot of what was actually added to cart — used to detect when the
+  // person has changed a selection since, so the checkout tab can be
+  // disabled until they re-add.
+  const [instamartCartSnapshot, setInstamartCartSnapshot] = useState<string | null>(null);
   
   const trackedOrderKey = `recipe-tracked-instamart-order:${recipe.dishName}`;
 const [isTrackerOpen, setIsTrackerOpen] = useState(false);
@@ -1398,6 +1402,8 @@ useEffect(() => {
   const [foodCartSummaryError, setFoodCartSummaryError] = useState<string | null>(null);
   const [isCheckingOutFood, setIsCheckingOutFood] = useState(false);
   const [needsSwiggyReconnect, setNeedsSwiggyReconnect] = useState(false);
+  // Which restaurant the current Swiggy cart was actually built for.
+  const [foodCartRestaurantId, setFoodCartRestaurantId] = useState<string | null>(null);
 
   // Sends the person to sign in with Swiggy; if it can't, say so.
 const redirectToLogin = () => {
@@ -1670,6 +1676,7 @@ const handlePrevStep = () => {
   // flag for whichever flow is active. Selections (products/restaurant)
   // are left untouched, so the person lands back exactly where they were.
   const handleBackToProducts = () => {
+    setIsChoosingAddress(false);
     if (modalType === "instamart") {
       setInstamartCartAdded(false);
     } else if (modalType === "swiggy") {
@@ -1682,6 +1689,7 @@ const handlePrevStep = () => {
   // Never calls addToInstamartCart / addDishToFoodCart — only the actual
   // "Add items to cart" / "Add this dish to cart" buttons do that.
   const handleGoToCheckout = () => {
+    setIsChoosingAddress(false);
     if (modalType === "instamart" && cartSummary) {
       setInstamartCartAdded(true);
     } else if (modalType === "swiggy" && foodCartSummary) {
@@ -1718,6 +1726,8 @@ const handlePrevStep = () => {
     setFoodCartSummary(null);
     setFoodCartSummaryError(null);
     setIsLoadingFoodCartSummary(false);
+    setInstamartCartSnapshot(null);
+    setFoodCartRestaurantId(null);
   };
 
   const handleSelectAddress = (addressId: string) => setSelectedAddressId(addressId);
@@ -1732,6 +1742,11 @@ const handlePrevStep = () => {
     // Same address as last search: just go back to the results.
     if (selectedAddressId === lastSearchedAddressId && hasExistingResults) {
       setIsChoosingAddress(false);
+      if (modalType === "swiggy") {
+        setFoodCartAdded(false);
+      } else {
+        setInstamartCartAdded(false);
+      }
       return;
     }
 
@@ -1883,8 +1898,14 @@ const handlePrevStep = () => {
         );
         setCartShortageWarning(`Instamart was short on stock for ${lines.join(", ")}.`);
       }
-
       setInstamartCartAdded(true);
+      setInstamartCartSnapshot(
+        JSON.stringify(
+          selectedEntries
+            .map(([name, variation]) => [name, variation.spinId, productQuantities[name] ?? 1])
+            .sort()
+        )
+      );
       fetchInstamartCartSummary();
     } catch (error) {
       const message =
@@ -2015,6 +2036,7 @@ const handlePrevStep = () => {
         recipe.dishName
       );
       setFoodCartAdded(true);
+      setFoodCartRestaurantId(selectedRestaurant.id);
       fetchFoodCartSummary(selectedAddressId);
     } catch (error) {
       const message =
@@ -2911,8 +2933,23 @@ const handlePrevStep = () => {
       {isCooking && <TimerChips items={backgroundTimers} onJump={handleJumpToStep} />}
 
       {/* Swiggy / Instamart Modal */}
+      {(() => {
+        const instamartSelectionsKey = JSON.stringify(
+          Object.entries(selectedProducts)
+            .map(([name, v]) => [name, v.spinId, productQuantities[name] ?? 1])
+            .sort()
+        );
+        const isAddressStale = selectedAddressId !== lastSearchedAddressId;
+        const isCartStale =
+          modalType === "instamart"
+            ? instamartCartSnapshot !== null && instamartSelectionsKey !== instamartCartSnapshot
+            : modalType === "swiggy"
+            ? foodCartRestaurantId !== null && selectedRestaurant?.id !== foodCartRestaurantId
+            : false;
+        return (
       <SwiggyActionModal
         type={modalType}
+        checkoutStale={isAddressStale || isCartStale}
         isLoading={isModalLoading}
         loadingStage={loadingStage}
         onBackToProducts={handleBackToProducts}
@@ -2957,6 +2994,8 @@ const handlePrevStep = () => {
         onMinimize={handleMinimizeModal}
         onClose={handleCloseModal}
       />
+        );
+      })()}
 
       {/* TEMP — for testing OrderTrackerModal against a real existing order.
           Delete this button once tracking is confirmed working. */}
