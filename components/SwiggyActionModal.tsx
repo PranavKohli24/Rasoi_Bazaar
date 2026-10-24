@@ -828,25 +828,102 @@ const findCartItemImage = (
   return tokenMatches[0]?.imageUrl;
 };
 
-const CartItemThumbnail: React.FC<{ imageUrl?: string; itemName: string }> = ({ imageUrl, itemName }) => {
+// Fan of photos, back-most -> front. Peek is mostly vertical (upward)
+// so each card is visible poking out above the one in front of it,
+// with a light consistent rotation for a tossed-photos feel.
+const STACK_LAYERS = [
+  { rotate: 18, x: -14, y: -27 },
+  { rotate: -9, x: 11, y: -21 },
+  { rotate: 13, x: -4, y: -14 },
+  { rotate: -18, x: 6, y: -7 },
+  { rotate: 0, x: 0, y: 0 }, // front
+] as const;
+
+const CartItemThumbnail: React.FC<{ imageUrl?: string; itemName: string; quantity?: number }> = ({
+  imageUrl,
+  itemName,
+  quantity = 1,
+}) => {
   const [imageFailed, setImageFailed] = useState(false);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const [isActive, setIsActive] = useState(false);
+  const [waveKey, setWaveKey] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rx: py * -14, ry: px * 14 });
+  };
+
+  const triggerWave = () => {
+    setIsActive(true);
+    setWaveKey((k) => k + 1);
+  };
+
+  const resetTilt = () => {
+    setIsActive(false);
+    setTilt({ rx: 0, ry: 0 });
+  };
+
+  if (!imageUrl || imageFailed) {
+    return (
+      <div
+        className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28"
+        style={{ backgroundColor: "#FFFFFF" }}
+      >
+        <BasketIcon className="h-8 w-8" style={{ color: COLOR.inkFaint } as React.CSSProperties} />
+      </div>
+    );
+  }
+
+  const stackCount = Math.min(Math.max(quantity, 1), 5);
+  const layers = STACK_LAYERS.slice(STACK_LAYERS.length - stackCount);
 
   return (
     <div
-      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl sm:h-24 sm:w-24"
-      style={{ backgroundColor: "#FFFFFF" }}
+      ref={containerRef}
+      className="thumb-stack relative h-24 w-24 shrink-0 sm:h-28 sm:w-28"
+      style={{ overflow: "visible" }}
+      onPointerDown={triggerWave}
+      onPointerMove={isActive ? handlePointerMove : undefined}
+      onPointerUp={resetTilt}
+      onPointerLeave={resetTilt}
+      onPointerCancel={resetTilt}
     >
-      {imageUrl && !imageFailed ? (
-        <img
-          src={imageUrl}
-          alt={itemName}
-          decoding="async"
-          onError={() => setImageFailed(true)}
-          className="h-full w-full object-contain p-0.5"
-        />
-      ) : (
-        <BasketIcon className="h-8 w-8" style={{ color: COLOR.inkFaint } as React.CSSProperties} />
-      )}
+      {layers.map((layer, i) => {
+        const isFront = i === layers.length - 1;
+        const distFromFront = layers.length - 1 - i;
+        return (
+          <img
+            key={`${i}-${waveKey}`}
+            src={imageUrl}
+            alt={isFront ? itemName : ""}
+            aria-hidden={!isFront}
+            decoding="async"
+            onError={isFront ? () => setImageFailed(true) : undefined}
+            draggable={false}
+            className={`absolute inset-0 h-full w-full object-contain stack-wave ${isFront ? "drop-shadow-front" : "thumb-stack-layer"}`}
+            style={{
+              zIndex: i,
+              filter: isFront ? undefined : "drop-shadow(0 3px 6px rgba(43,26,12,0.16))",
+              "--base-x": `${layer.x}px`,
+              "--base-y": `${layer.y}px`,
+              "--base-rotate": `${layer.rotate}deg`,
+              "--front-tilt": `${isFront ? tilt.ry * 0.3 : 0}deg`,
+              "--scale": isFront ? 1 : 0.92 - distFromFront * 0.025,
+              animationDelay: `${distFromFront * 35}ms`,
+              transform: isFront
+                ? `rotate(${tilt.ry * 0.3}deg)`
+                : `translate(calc(var(--base-x) * var(--spread, 1)), calc(var(--base-y) * var(--spread, 1))) rotate(${layer.rotate}deg) scale(${0.92 - distFromFront * 0.025})`,
+              transition: isActive && isFront ? "none" : "transform 0.35s cubic-bezier(0.22,1,0.36,1)",
+            } as React.CSSProperties}
+          />
+        );
+      })}
     </div>
   );
 };
@@ -894,10 +971,10 @@ const CartReviewStep: React.FC<{
           const imageUrl = findCartItemImage(item, itemImages);
 
           return (
-            <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-2.5 text-sm sm:px-5 sm:py-3.5 sm:text-base">
+            <li key={i} className="flex items-center justify-between gap-3 px-3.5 py-3.5 text-sm sm:px-5 sm:py-4.5 sm:text-base">
               <div className="flex min-w-0 flex-1 items-center gap-3">
                 {(showItemThumbnails || imageUrl) && (
-                  <CartItemThumbnail imageUrl={imageUrl} itemName={item.name} />
+                  <CartItemThumbnail imageUrl={imageUrl} itemName={item.name} quantity={item.quantity} />
                 )}
                 <span className="min-w-0 break-words" style={{ color: COLOR.ink }}>
                   {item.quantity > 1 ? `${item.quantity} × ` : ""}{item.name}
@@ -2353,6 +2430,24 @@ useEffect(() => {
           animation: sweep-move 1.2s linear infinite;
         }
 
+ @keyframes stack-wave {
+  0% { transform: translate(calc(var(--base-x) * var(--spread, 1)), calc(var(--base-y) * var(--spread, 1))) rotate(calc(var(--base-rotate) + var(--front-tilt))) scale(var(--scale)); }
+  30% { transform: translate(calc(var(--base-x) * var(--spread, 1)), calc(var(--base-y) * var(--spread, 1) - 5px)) rotate(calc(var(--base-rotate) + var(--front-tilt) + 4deg)) scale(calc(var(--scale) * 1.03)); }
+  60% { transform: translate(calc(var(--base-x) * var(--spread, 1)), calc(var(--base-y) * var(--spread, 1) + 2px)) rotate(calc(var(--base-rotate) + var(--front-tilt) - 2deg)) scale(var(--scale)); }
+  100% { transform: translate(calc(var(--base-x) * var(--spread, 1)), calc(var(--base-y) * var(--spread, 1))) rotate(calc(var(--base-rotate) + var(--front-tilt))) scale(var(--scale)); }
+}
+.stack-wave {
+  animation: stack-wave 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack-wave { animation: none; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .thumb-stack:hover .thumb-stack-layer {
+    --spread: 1.55;
+  }
+}
         @keyframes veggie-fall {
           0% { transform: translateY(-6px) rotate(-10deg) scale(1); opacity: 0; }
           12% { opacity: 1; }
