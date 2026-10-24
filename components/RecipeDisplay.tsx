@@ -3055,7 +3055,15 @@ const handlePrevStep = () => {
         currentStepInstruction={isCooking ? currentStep.instruction : null}
         totalSteps={totalSteps}
         checkInMessage={companionCheckIn}
-                heyChef={{
+        orderStatus={
+          trackedOrderId
+            ? {
+                type: trackedOrderType,
+                label: orderStatusLabel ?? "Order placed, tracking status…",
+              }
+            : null
+        }
+          heyChef={{
           enabled: heyChefActive,
           commands: heyChefCommands,
           onPhaseChange: setHeyChefPhase,

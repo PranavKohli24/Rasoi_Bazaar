@@ -22,6 +22,11 @@ interface CookingCompanionProps {
   currentStepInstruction: string | null;
   totalSteps: number;
   checkInMessage?: { id: string; text: string } | null;
+  /** Current Instamart/Swiggy order, if one is being tracked — lets the
+   *  companion answer "where's my order" without any tool call, from the
+   *  same status text the tracker UI already shows. Read-only: the
+   *  companion never places, modifies or tracks orders itself. */
+  orderStatus?: { type: "instamart" | "food"; label: string } | null;
   heyChef?: {
     enabled: boolean;
     awaitingConfirm?: boolean;
@@ -936,6 +941,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   currentStepInstruction,
   totalSteps,
   checkInMessage,
+  orderStatus,
   heyChef,
 }) => {
   const hasRecipe = !!recipe && typeof recipe.dishName === "string";
@@ -1443,7 +1449,8 @@ const speak = (index: number, text: string) => {
         currentStepNumber,
         currentStepInstruction,
         totalSteps,
-        addressId ?? null
+        addressId ?? null,
+        orderStatus ?? null
       );
 
       if (reply.type === "needs_auth") {
@@ -1988,7 +1995,8 @@ const speak = (index: number, text: string) => {
         currentStepNumber,
         currentStepInstruction,
         totalSteps,
-        null
+        null,
+        orderStatus ?? null
       );
       const content = reply.type === "text" ? reply.content : "Let's talk about that in the chat instead.";
       setMessages((current) => [...current, { role: "assistant", content }]);
@@ -2040,7 +2048,8 @@ const speak = (index: number, text: string) => {
         currentStepNumber,
         currentStepInstruction,
         totalSteps,
-        (chunk) => splitter.push(chunk)
+        (chunk) => splitter.push(chunk),
+        orderStatus ?? null
       );
       splitter.flush();
       setMessages((current) => [...current, { role: "assistant", content: reply }]);

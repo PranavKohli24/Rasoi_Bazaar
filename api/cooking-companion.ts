@@ -52,6 +52,11 @@ interface UIProduct {
   ingredientName: string;
 }
 
+interface OrderStatusContext {
+  type: "instamart" | "food";
+  label: string;
+}
+
 interface RequestBody {
   action?: "chat" | "confirm_add";
   recipe: Recipe;
@@ -62,6 +67,10 @@ interface RequestBody {
   totalSteps: number;
   stream?: boolean;
   addressId?: string | null;
+  /** Current order status, if the person placed one through the app — read
+   *  only, lets the model answer "where's my order" from the same text the
+   *  tracker UI shows, without any tool call or live lookup of its own. */
+  orderStatus?: OrderStatusContext | null;
   // only for action: "confirm_add"
   items?: ConfirmItem[];
 }
@@ -397,7 +406,8 @@ const buildSystemPrompt = (
   currentStepInstruction: string | null,
   totalSteps: number,
   commerceEnabled: boolean,
-  addressId: string | null | undefined
+  addressId: string | null | undefined,
+  orderStatus?: OrderStatusContext | null
 ): string => {
   const ingredients = recipe.ingredients.map((i) => `${i.amount} ${i.commonName} (${i.englishName})`).join("; ");
   const equipment = recipe.equipment.map((e) => e.item + (e.alternative ? ` (or: ${e.alternative})` : "")).join("; ");
@@ -457,6 +467,16 @@ const buildSystemPrompt = (
     "- For food-safety questions, prioritize safety and be appropriately cautious.",
   ];
 
+  const orderStatusSection = orderStatus
+    ? [
+        "",
+        "CURRENT ORDER STATUS:",
+        `The cook has a ${orderStatus.type === "food" ? "Swiggy food" : "Instamart"} order in progress. Its latest known status: "${orderStatus.label}"`,
+        "- If asked where the order is, how long it'll take, or anything about its status, answer plainly using only the line above — never guess beyond it, and never invent a location, rider name, or more precise time than what's given.",
+        "- You cannot place, cancel, modify, or track a new order, and you cannot refresh or re-check this status yourself — it's just what's currently on screen. If asked to do any of those, say so plainly and suggest they use the order tracker in the app.",
+      ]
+    : [];
+
   const commerce = commerceEnabled
     ? [
         "",
@@ -504,7 +524,7 @@ const buildSystemPrompt = (
     "- No asterisks.",
   ];
 
-  return [...base, ...commerce, ...tail].filter(Boolean).join("\n");
+    return [...base, ...orderStatusSection, ...commerce, ...tail].filter(Boolean).join("\n");
 };
 
 /* ------------------------------------------------------------------ */
@@ -669,7 +689,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   /* ---- chat: the unified agent turn ---- */
-  const { recipe, history, question, currentStepNumber, currentStepInstruction, totalSteps, stream, addressId } = body;
+const { recipe, history, question, currentStepNumber, currentStepInstruction, totalSteps, stream, addressId, orderStatus } = body;
 
   if (!recipe || typeof recipe.dishName !== "string") {
     send(res, 400, { error: { message: "Missing recipe context.", code: "BAD_REQUEST" } });
@@ -705,7 +725,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       safeCurrentStepInstruction,
       safeTotalSteps,
       false,
-      null
+      null,
+      orderStatus
     );
 
     try {
@@ -781,7 +802,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     safeCurrentStepInstruction,
     safeTotalSteps,
     true,
-    addressId
+    addressId,
+    orderStatus
   );
 
   try {

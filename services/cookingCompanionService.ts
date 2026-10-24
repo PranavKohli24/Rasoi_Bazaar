@@ -66,7 +66,8 @@ export const askCookingCompanion = async (
   currentStepNumber: number | null,
   currentStepInstruction: string | null,
   totalSteps: number,
-  addressId: string | null
+  addressId: string | null,
+  orderStatus?: { type: "instamart" | "food"; label: string } | null
 ): Promise<CompanionReply> => {
   let response: Response;
 
@@ -83,6 +84,7 @@ export const askCookingCompanion = async (
         currentStepInstruction,
         totalSteps,
         addressId,
+        orderStatus: orderStatus ?? null,
       }),
     });
   } catch (error) {
@@ -167,7 +169,8 @@ export const streamCookingCompanion = async (
   currentStepNumber: number | null,
   currentStepInstruction: string | null,
   totalSteps: number,
-  onChunk: (text: string) => void
+  onChunk: (text: string) => void,
+  orderStatus?: { type: "instamart" | "food"; label: string } | null
 ): Promise<string> => {
   let response: Response;
 
@@ -184,6 +187,7 @@ export const streamCookingCompanion = async (
         currentStepInstruction,
         totalSteps,
         stream: true,
+        orderStatus: orderStatus ?? null,
       }),
     });
   } catch (error) {
