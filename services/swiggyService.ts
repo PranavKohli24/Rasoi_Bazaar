@@ -133,6 +133,14 @@ export interface InstamartTrackedOrder {
    * it in here.
    */
   etaMinutes?: number | null;
+  /**
+   * 0–100, how far along the delivery is. Comes from Swiggy's
+   * `progressPercentage` field (real responses have given "68", "94").
+   * Drives the route visual only — never shown as a raw number. Null
+   * when the field wasn't in the response, in which case the UI falls
+   * back to a rough value based on the status stage.
+   */
+  progressPercentage?: number | null;
   /** The unprocessed structuredContent, so nothing is lost while field
    * names above get confirmed against real responses. */
   raw?: unknown;
@@ -211,6 +219,14 @@ const errorText = (value: unknown): string => {
 
   const message = (value as { message?: unknown } | null)?.message;
   return typeof message === "string" ? message : "";
+};
+
+/** Swiggy's progress number arrives as a string, sometimes nested under
+ * `orders[0]` instead of flat on `tracking`. Reads either shape. */
+const parseProgressPercentage = (tracking: any): number | null => {
+  const raw = tracking?.progressPercentage ?? tracking?.orders?.[0]?.progressPercentage;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
 };
 
 interface RequestOptions {
@@ -523,6 +539,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 5,
+    progressPercentage: 2,
   },
   {
     orderTitle: "Instamart order",
@@ -534,6 +551,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 5,
+    progressPercentage: 18,
   },
   {
     orderId: "250780698930835",
@@ -551,6 +569,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 30,
+    progressPercentage: 60,
   },
   {
     orderId: "250780698930835",
@@ -568,6 +587,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 30,
+    progressPercentage: 85,
   },
   {
     orderId: "250780698930835",
@@ -580,6 +600,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 30,
+    progressPercentage: 96,
   },
   {
     orderId: "250780698930835",
@@ -592,6 +613,7 @@ const MOCK_ORDER_STAGES: any[] = [
     itemCount: 6,
     placedAt: "06:48 PM",
     pollingIntervalSeconds: -1,
+    progressPercentage: 100,
   },
 ];
 
@@ -617,6 +639,7 @@ const trackMockInstamartOrder = async (orderId: string): Promise<InstamartTracke
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     etaMinutes: tracking.status?.etaMinutes ?? null,
+    progressPercentage: tracking.progressPercentage ?? null,
     raw: tracking,
   };
 };
@@ -658,6 +681,7 @@ export const trackInstamartOrder = async (
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     // PLACEHOLDER — see the InstamartTrackedOrder.etaMinutes comment above.
     etaMinutes: tracking.status?.etaMinutes ?? null,
+    progressPercentage: parseProgressPercentage(tracking),
     raw: tracking,
   };
 };
@@ -869,6 +893,7 @@ const MOCK_FOOD_ORDER_STAGES: any[] = [
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 30,
     etaMinutes: 11,
+    progressPercentage: 68,
   },
   {
     orderTitle: "Swiggy order",
@@ -881,6 +906,7 @@ const MOCK_FOOD_ORDER_STAGES: any[] = [
     placedAt: "06:48 PM",
     pollingIntervalSeconds: 30,
     etaMinutes: null,
+    progressPercentage: 94,
   },
   {
     orderTitle: "Swiggy order",
@@ -893,6 +919,7 @@ const MOCK_FOOD_ORDER_STAGES: any[] = [
     placedAt: "06:48 PM",
     pollingIntervalSeconds: -1,
     etaMinutes: null,
+    progressPercentage: 100,
   },
 ];
 
@@ -916,6 +943,7 @@ const trackMockFoodOrder = async (orderId: string): Promise<InstamartTrackedOrde
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     etaMinutes: tracking.etaMinutes ?? null,
+    progressPercentage: tracking.progressPercentage ?? null,
     raw: tracking,
   };
 };
@@ -950,6 +978,7 @@ export const trackFoodOrder = async (
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     etaMinutes: tracking.etaMinutes ?? tracking.eta ?? null,
+    progressPercentage: parseProgressPercentage(tracking),
     raw: tracking,
   };
 };
