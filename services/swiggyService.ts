@@ -172,6 +172,27 @@ const buildMockCartSummary = (): InstamartCartSummary => {
   };
 };
 
+let mockFoodCartItems: InstamartCartLineItem[] = [];
+let mockFoodCartRestaurantName = "";
+
+const buildMockFoodCartSummary = (): SwiggyFoodCartSummary => {
+  const totalPaise = mockFoodCartItems.reduce((sum, item) => {
+    const n = Number((item.price ?? "₹0").replace(/[^\d.]/g, ""));
+    return sum + n * 100;
+  }, 0);
+  const maxOrderPaise = 100000;
+
+  return {
+    items: mockFoodCartItems,
+    bill: {
+      lineItems: [{ label: "Items total", value: `₹${(totalPaise / 100).toFixed(0)}` }],
+      toPay: { label: "To pay", value: `₹${(totalPaise / 100).toFixed(0)}` },
+    },
+    exceedsMaxOrder: totalPaise > maxOrderPaise,
+    maxOrderPaise,
+  };
+};
+
 const NOT_CONNECTED = "SWIGGY_NOT_CONNECTED";
 
 const GENERIC_ERROR = "Something went wrong. Please try again.";
@@ -726,6 +747,13 @@ export const addDishToFoodCart = async (
   restaurantName: string,
   dishName: string
 ) => {
+  if (MOCK_CHECKOUT) {
+    await sleep(400);
+    mockFoodCartItems = [{ name: dishName, quantity: 1, price: "₹249" }];
+    mockFoodCartRestaurantName = restaurantName;
+    return { success: true };
+  }
+
   // No retries here: a food cart update should never risk being sent twice.
   const data = await getApiResponse<any>(
     "/api/swiggy/food-cart",
@@ -768,6 +796,11 @@ export const addDishToFoodCart = async (
 export const getFoodCart = async (
   addressId: string
 ): Promise<SwiggyFoodCartSummary> => {
+  if (MOCK_CHECKOUT) {
+    await sleep(300);
+    return buildMockFoodCartSummary();
+  }
+
   const data = await getApiResponse<any>(
     `/api/swiggy/food-cart?addressId=${encodeURIComponent(addressId)}`,
     undefined,
@@ -792,6 +825,12 @@ export const getFoodCart = async (
 export const checkoutFoodOrder = async (
   addressId: string
 ): Promise<FoodCheckoutResult> => {
+  if (MOCK_CHECKOUT) {
+    await sleep(500);
+    mockFoodCartItems = [];
+    return { orderId: `MOCK-FOOD-${Date.now()}` };
+  }
+
   const data = await getApiResponse<any>(
     "/api/swiggy/food-cart",
     {
@@ -814,9 +853,77 @@ export const checkoutFoodOrder = async (
  * Live status for one food order. Same polling rules as Instamart: no
  * faster than every 10 seconds, stop once `pollingIntervalSeconds` is -1.
  */
+const MOCK_FOOD_ITEMS = [
+  { name: "1 x Classic Cheese Burger", quantity: 1, price: "₹249" },
+];
+
+const MOCK_FOOD_ORDER_STAGES: any[] = [
+  {
+    orderTitle: "Swiggy order",
+    orderSubtitle: "Dam Burgers",
+    status: { statusMessage: "Picking your order now" },
+    storeInfo: { name: "Dam Burgers" },
+    deliveryInfo: { addressLabel: "Home" },
+    items: MOCK_FOOD_ITEMS,
+    itemCount: 1,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 30,
+    etaMinutes: 11,
+  },
+  {
+    orderTitle: "Swiggy order",
+    orderSubtitle: "Dam Burgers",
+    status: { statusMessage: "Arrived at location" },
+    storeInfo: { name: "Dam Burgers" },
+    deliveryInfo: { addressLabel: "Home" },
+    items: MOCK_FOOD_ITEMS,
+    itemCount: 1,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: 30,
+    etaMinutes: null,
+  },
+  {
+    orderTitle: "Swiggy order",
+    orderSubtitle: "Dam Burgers",
+    status: { statusMessage: "Order Delivered" },
+    storeInfo: { name: "Dam Burgers" },
+    deliveryInfo: { addressLabel: "Home" },
+    items: MOCK_FOOD_ITEMS,
+    itemCount: 1,
+    placedAt: "06:48 PM",
+    pollingIntervalSeconds: -1,
+    etaMinutes: null,
+  },
+];
+
+const mockFoodOrderProgress = new Map<string, number>();
+
+const trackMockFoodOrder = async (orderId: string): Promise<InstamartTrackedOrder> => {
+  await sleep(400);
+  const i = mockFoodOrderProgress.get(orderId) ?? 0;
+  const tracking = MOCK_FOOD_ORDER_STAGES[Math.min(i, MOCK_FOOD_ORDER_STAGES.length - 1)];
+  mockFoodOrderProgress.set(orderId, i + 1);
+
+  return {
+    orderId,
+    orderTitle: tracking.orderTitle,
+    orderSubtitle: tracking.orderSubtitle,
+    status: tracking.status,
+    storeInfo: tracking.storeInfo,
+    deliveryInfo: tracking.deliveryInfo,
+    items: tracking.items,
+    itemCount: tracking.itemCount,
+    placedAt: tracking.placedAt,
+    pollingIntervalSeconds: tracking.pollingIntervalSeconds,
+    etaMinutes: tracking.etaMinutes ?? null,
+    raw: tracking,
+  };
+};
+
 export const trackFoodOrder = async (
   orderId: string
 ): Promise<InstamartTrackedOrder> => {
+  if (isMockOrderId(orderId)) return trackMockFoodOrder(orderId);
   const data = await getApiResponse<any>(
     `/api/swiggy/track-food-order?orderId=${encodeURIComponent(orderId)}`,
     undefined,

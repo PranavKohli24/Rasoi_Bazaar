@@ -1363,12 +1363,9 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [instamartCartSnapshot, setInstamartCartSnapshot] = useState<string | null>(null);
   
   const trackedOrderKey = `recipe-tracked-instamart-order:${recipe.dishName}`;
+const trackedOrderTypeKey = `recipe-tracked-order-type:${recipe.dishName}`;
 const [isTrackerOpen, setIsTrackerOpen] = useState(false);
 const [orderStatusLabel, setOrderStatusLabel] = useState<string | null>(null);
-// True only for the order just placed in this session — tells the tracker
-// to play its "Order placed!" beat once. Never restored from storage, so
-// an order resumed after a refresh (or reopened via "tap to see status")
-// goes straight to live tracking instead of replaying the beat.
 const [orderJustPlaced, setOrderJustPlaced] = useState(false);
 const [trackedOrderId, setTrackedOrderId] = useState<string | null>(() => {
   try {
@@ -1377,15 +1374,27 @@ const [trackedOrderId, setTrackedOrderId] = useState<string | null>(() => {
     return null;
   }
 });
+const [trackedOrderType, setTrackedOrderType] = useState<"instamart" | "food">(() => {
+  try {
+    return (localStorage.getItem(trackedOrderTypeKey) as "instamart" | "food") || "instamart";
+  } catch {
+    return "instamart";
+  }
+});
 
 useEffect(() => {
   try {
-    if (trackedOrderId) localStorage.setItem(trackedOrderKey, trackedOrderId);
-    else localStorage.removeItem(trackedOrderKey);
+    if (trackedOrderId) {
+      localStorage.setItem(trackedOrderKey, trackedOrderId);
+      localStorage.setItem(trackedOrderTypeKey, trackedOrderType);
+    } else {
+      localStorage.removeItem(trackedOrderKey);
+      localStorage.removeItem(trackedOrderTypeKey);
+    }
   } catch {
     // storage unavailable — tracking just won't survive a refresh
   }
-}, [trackedOrderId, trackedOrderKey]);
+}, [trackedOrderId, trackedOrderKey, trackedOrderType, trackedOrderTypeKey]);
 
   const [searchedIngredientsKey, setSearchedIngredientsKey] = useState<string | null>(null);
   const [lastSearchedAddressId, setLastSearchedAddressId] = useState<string | null>(null);
@@ -1946,10 +1955,13 @@ const handlePrevStep = () => {
     setCartSummaryError(null);
     try {
       const { orderId } = await checkoutInstamartOrder();
-      setOrderJustPlaced(true);
-      setTrackedOrderId(orderId);
-      setIsTrackerOpen(true);
       handleCloseModal();
+      window.setTimeout(() => {
+        setOrderJustPlaced(true);
+        setTrackedOrderType("instamart");
+        setTrackedOrderId(orderId);
+        setIsTrackerOpen(true);
+      }, 50);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Couldn't place your order.";
       if (message === "SWIGGY_NOT_CONNECTED") {
@@ -2076,12 +2088,13 @@ const handlePrevStep = () => {
     setFoodCartSummaryError(null);
     try {
       const { orderId } = await checkoutFoodOrder(selectedAddressId);
-      // Food order tracking isn't wired into OrderTrackerModal yet (it
-      // currently assumes an Instamart order) — close the modal and let the
-      // success state stand rather than opening a tracker built for the
-      // wrong order type.
-      void orderId;
       handleCloseModal();
+      window.setTimeout(() => {
+        setOrderJustPlaced(true);
+        setTrackedOrderType("food");
+        setTrackedOrderId(orderId);
+        setIsTrackerOpen(true);
+      }, 50);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Couldn't place your order.";
       if (message === "SWIGGY_NOT_CONNECTED") {
@@ -2268,15 +2281,27 @@ const handlePrevStep = () => {
               Jump to the method
             </button>
 
-            <button
-              type="button"
-              onClick={handleOrderFromSwiggy}
-              className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2"
-              style={{ borderColor: COLOR.border, color: COLOR.inkSoft }}
-            >
-              <UtensilsIcon className="h-4 w-4" />
-              Or order it from Swiggy instead
-            </button>
+            {trackedOrderId && trackedOrderType === "food" ? (
+              <button
+                type="button"
+                onClick={() => setIsTrackerOpen(true)}
+                className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2"
+                style={{ borderColor: COLOR.saffron, color: COLOR.saffronDark, backgroundColor: COLOR.saffronTint }}
+              >
+                <UtensilsIcon className="h-4 w-4" />
+                {orderStatusLabel ?? "Tracking your Swiggy order"}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleOrderFromSwiggy}
+                className="inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2"
+                style={{ borderColor: COLOR.border, color: COLOR.inkSoft }}
+              >
+                <UtensilsIcon className="h-4 w-4" />
+                Or order it from Swiggy instead
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -2379,7 +2404,7 @@ const handlePrevStep = () => {
                     All set - you have everything you need.
                   </p>
                 </div>
-              ) : trackedOrderId ? (
+              ) : trackedOrderId && trackedOrderType === "instamart" ? (
                 <div key="tracking" className="animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
                   <button
                     type="button"
@@ -3009,6 +3034,7 @@ const handlePrevStep = () => {
 
       <OrderTrackerModal
         orderId={trackedOrderId}
+        orderType={trackedOrderType}
         isOpen={isTrackerOpen}
         justPlaced={orderJustPlaced}
         onMinimize={() => setIsTrackerOpen(false)}

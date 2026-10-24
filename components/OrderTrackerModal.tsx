@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { trackInstamartOrder, InstamartTrackedOrder } from "../services/swiggyService";
+import { trackInstamartOrder, trackFoodOrder, InstamartTrackedOrder } from "../services/swiggyService";
 
 /* ------------------------------------------------------------------------
    Same token set as RecipeDisplay / SwiggyActionModal — warm cream
@@ -210,6 +210,10 @@ const OrderPlacedScene: React.FC<{ subtitle?: string }> = ({ subtitle }) => (
 
 interface OrderTrackerModalProps {
   orderId: string | null;
+  /** Which checkout this order came from — picks trackInstamartOrder vs
+   *  trackFoodOrder, and the "Instamart Order" / "Swiggy Order" label.
+   *  Defaults to "instamart" so existing callers don't need updating. */
+  orderType?: "instamart" | "food";
   isOpen: boolean;
   onMinimize: () => void;
   onClose: () => void;
@@ -222,7 +226,7 @@ interface OrderTrackerModalProps {
   justPlaced?: boolean;
 }
 
-const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, onMinimize, onClose, onStatusChange, justPlaced }) => {
+const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, orderType = "instamart", isOpen, onMinimize, onClose, onStatusChange, justPlaced }) => {
   const [order, setOrder] = useState<InstamartTrackedOrder | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -248,7 +252,8 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, 
 
   const fetchStatus = useCallback(async (id: string) => {
     try {
-      const result = await trackInstamartOrder(id);
+      const result =
+        orderType === "food" ? await trackFoodOrder(id) : await trackInstamartOrder(id);
       if (!isMountedRef.current) return;
       setOrder(result);
       setError(null);
@@ -269,7 +274,7 @@ const OrderTrackerModal: React.FC<OrderTrackerModalProps> = ({ orderId, isOpen, 
     } finally {
       if (isMountedRef.current) setIsLoading(false);
     }
-  }, []);
+  }, [orderType]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -451,7 +456,7 @@ return createPortal(
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs font-semibold" style={{ color: COLOR.saffronDark }}>
-                Instamart Order
+                {orderType === "food" ? "Swiggy Order" : "Instamart Order"}
               </p>
               <h3 id="order-tracker-title" className="font-serif text-xl font-black leading-tight tracking-tight sm:text-2xl" style={{ color: COLOR.ink }}>
                 {stage === "placed"
