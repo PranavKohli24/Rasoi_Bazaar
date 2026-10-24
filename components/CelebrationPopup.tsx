@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
+import { toSlug } from "@/utils/slug";
 
 interface CelebrationPopupProps {
   dishName?: string;
@@ -373,10 +374,13 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
       const file = new File([blob], "rasoi-bazaar-recipe.png", { type: "image/png" });
 
       if (navigator.canShare?.({ files: [file] })) {
+        const name = dishName ?? "something delicious";
+        const recipeUrl = `https://rasoi-bazaar.vercel.app/recipe/${toSlug(name)}`;
+
         await navigator.share({
           files: [file],
           title: "Rasoi Bazaar",
-          text: `I just cooked ${dishName ?? "something delicious"} with Rasoi Bazaar! 🍲`,
+          text: `I just cooked ${name} with Rasoi Bazaar! 🍲\n\nTry the recipe: ${recipeUrl}`,
         });
       } else {
         const url = URL.createObjectURL(blob);
