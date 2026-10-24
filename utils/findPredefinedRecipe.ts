@@ -1452,6 +1452,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "honey chili potato": "honey chilli potato",
   "honey chilly potato": "honey chilli potato",
 
+  "fried rice" : "veg fried rice",
   "egg fried rice recipe": "egg fried rice",
   "anda fried rice": "egg fried rice",
   "egg rice": "egg fried rice",
@@ -1537,6 +1538,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "fruit chat": "fruit chaat",
 
   // manchurian, 65, drinks, sweets
+  "manchurian" : "veg manchurian",
   "chicken manchurian recipe": "chicken manchurian",
   "dry chicken manchurian": "chicken manchurian",
   "gravy chicken manchurian": "chicken manchurian",

@@ -183,6 +183,11 @@ const buildMockCartSummary = (): InstamartCartSummary => {
 let mockFoodCartItems: InstamartCartLineItem[] = [];
 let mockFoodCartRestaurantName = "";
 
+/** What was actually in the cart at the moment each mock order was placed,
+ * keyed by orderId — so tracking can show the real items instead of the
+ * hardcoded MOCK_ITEMS/MOCK_FOOD_ITEMS placeholders. */
+const mockOrderItemsById = new Map<string, InstamartCartLineItem[]>();
+
 const buildMockFoodCartSummary = (): SwiggyFoodCartSummary => {
   const totalPaise = mockFoodCartItems.reduce((sum, item) => {
     const n = Number((item.price ?? "₹0").replace(/[^\d.]/g, ""));
@@ -429,8 +434,9 @@ export const addToInstamartCart = async (
     mockCartItems = items.map((item) => {
       const variation = mockProductCache.get(item.spinId);
       const unitPrice = variation?.price.offerPrice ?? 0;
+      const baseName = variation?.displayName ?? "Item";
       return {
-        name: variation?.displayName ?? "Item",
+        name: item.quantity > 1 ? `${item.quantity} x ${baseName}` : baseName,
         quantity: item.quantity,
         price: `₹${unitPrice * item.quantity}`,
       };
@@ -459,8 +465,10 @@ export const addToInstamartCart = async (
 export const checkoutInstamartOrder = async (): Promise<InstamartCheckoutResult> => {
   if (MOCK_CHECKOUT) {
     await sleep(500);
+    const orderId = `MOCK-${Date.now()}`;
+    mockOrderItemsById.set(orderId, mockCartItems);
     mockCartItems = [];
-    return { orderId: `MOCK-${Date.now()}`, verifiedViaOrderHistory: true };
+    return { orderId, verifiedViaOrderHistory: true };
   }
 
   const data = await getApiResponse<any>(
@@ -627,15 +635,24 @@ const trackMockInstamartOrder = async (orderId: string): Promise<InstamartTracke
   const tracking = MOCK_ORDER_STAGES[Math.min(i, MOCK_ORDER_STAGES.length - 1)];
   mockOrderProgress.set(orderId, i + 1);
 
+  const actualItems = mockOrderItemsById.get(orderId);
+  const items = actualItems?.length ? actualItems : tracking.items;
+  const itemCount = actualItems?.length ? actualItems.reduce((n, it) => n + it.quantity, 0) : tracking.itemCount;
+
+  const orderSubtitle = actualItems?.length
+    ? tracking.orderSubtitle?.replace(/\d+\s*items?/i, `${itemCount} item${itemCount === 1 ? "" : "s"}`) ??
+      tracking.orderSubtitle
+    : tracking.orderSubtitle;
+
   return {
     orderId,
     orderTitle: tracking.orderTitle,
-    orderSubtitle: tracking.orderSubtitle,
+    orderSubtitle,
     status: tracking.status,
     storeInfo: tracking.storeInfo,
     deliveryInfo: tracking.deliveryInfo,
-    items: tracking.items,
-    itemCount: tracking.itemCount,
+    items,
+    itemCount,
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     etaMinutes: tracking.status?.etaMinutes ?? null,
@@ -773,7 +790,10 @@ export const addDishToFoodCart = async (
 ) => {
   if (MOCK_CHECKOUT) {
     await sleep(400);
-    mockFoodCartItems = [{ name: dishName, quantity: 1, price: "₹249" }];
+    const quantity = 1;
+    mockFoodCartItems = [
+      { name: quantity > 1 ? `${quantity} x ${dishName}` : dishName, quantity, price: "₹249" },
+    ];
     mockFoodCartRestaurantName = restaurantName;
     return { success: true };
   }
@@ -851,8 +871,10 @@ export const checkoutFoodOrder = async (
 ): Promise<FoodCheckoutResult> => {
   if (MOCK_CHECKOUT) {
     await sleep(500);
+    const orderId = `MOCK-FOOD-${Date.now()}`;
+    mockOrderItemsById.set(orderId, mockFoodCartItems);
     mockFoodCartItems = [];
-    return { orderId: `MOCK-FOOD-${Date.now()}` };
+    return { orderId };
   }
 
   const data = await getApiResponse<any>(
@@ -931,15 +953,24 @@ const trackMockFoodOrder = async (orderId: string): Promise<InstamartTrackedOrde
   const tracking = MOCK_FOOD_ORDER_STAGES[Math.min(i, MOCK_FOOD_ORDER_STAGES.length - 1)];
   mockFoodOrderProgress.set(orderId, i + 1);
 
+  const actualItems = mockOrderItemsById.get(orderId);
+  const items = actualItems?.length ? actualItems : tracking.items;
+  const itemCount = actualItems?.length ? actualItems.reduce((n, it) => n + it.quantity, 0) : tracking.itemCount;
+
+  const orderSubtitle = actualItems?.length
+    ? tracking.orderSubtitle?.replace(/\d+\s*items?/i, `${itemCount} item${itemCount === 1 ? "" : "s"}`) ??
+      tracking.orderSubtitle
+    : tracking.orderSubtitle;
+
   return {
     orderId,
     orderTitle: tracking.orderTitle,
-    orderSubtitle: tracking.orderSubtitle,
+    orderSubtitle,
     status: tracking.status,
     storeInfo: tracking.storeInfo,
     deliveryInfo: tracking.deliveryInfo,
-    items: tracking.items,
-    itemCount: tracking.itemCount,
+    items,
+    itemCount,
     placedAt: tracking.placedAt,
     pollingIntervalSeconds: tracking.pollingIntervalSeconds,
     etaMinutes: tracking.etaMinutes ?? null,
