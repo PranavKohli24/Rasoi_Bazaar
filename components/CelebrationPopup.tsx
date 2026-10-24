@@ -164,19 +164,15 @@ const loadImage = (src: string): Promise<HTMLImageElement> =>
     img.src = src;
   });
 
-const loadBrandFonts = () =>
+const loadShareCardFonts = () =>
   Promise.all([
     document.fonts.load('900 68px Fraunces'),
     document.fonts.load('600 44px Caveat'),
-    document.fonts.load('700 26px "DM Sans"'),
-    document.fonts.load('600 22px "DM Sans"'),
   ]);
 
 // Fallback used when there's no photo, or the photo can't be loaded /
 // drawn to canvas (broken URL, CORS-tainted source, etc). Sharing should
-// never hard-fail just because the hero image didn't cooperate — this is
-// the same warm cream card as before, just recentred for the portrait
-// canvas and sharing font sizing with the photo version.
+// never hard-fail just because the hero image didn't cooperate.
 const drawTextOnlyCard = (
   ctx: CanvasRenderingContext2D,
   dishName: string
@@ -205,57 +201,61 @@ const drawTextOnlyCard = (
   ctx.shadowBlur = 0;
 
   const centerX = CARD_WIDTH / 2;
+  const maxWidth = CARD_WIDTH - 160;
+  const { fontSize, lines: measuredLines } = fitDishNameFont(ctx, dishName, maxWidth);
+  const lines = measuredLines.slice(0, 2);
+  const lineHeight = fontSize * 1.12;
+  const visibleLineCount = Math.max(1, lines.length);
+
+  // Center the complete message as one group; no brand footer or website.
+  const tagToNameOffset = 62;
+  const nameLinesOffset = (visibleLineCount - 1) * lineHeight;
+  const tagBaseline = CARD_HEIGHT / 2 - (tagToNameOffset + nameLinesOffset) / 2;
 
   ctx.fillStyle = "#D1560F";
   ctx.font = '600 46px Caveat, cursive';
-  ctx.fillText("I just cooked", centerX, 520);
+  ctx.fillText("I just cooked", centerX, tagBaseline);
 
-  // Reuse the same font-fitting logic as the photo card for a consistent
-  // dish-name treatment, just centered instead of left-aligned.
-  const maxWidth = CARD_WIDTH - 160;
-  const { fontSize, lines } = fitDishNameFont(ctx, dishName, maxWidth);
-  const lineHeight = fontSize * 1.12;
   ctx.fillStyle = "#3E2E23";
   ctx.font = `900 ${fontSize}px Fraunces, serif`;
-  const startY = 650 - ((lines.length - 1) * lineHeight) / 2;
-  lines.slice(0, 2).forEach((l, i) => ctx.fillText(l, centerX, startY + i * lineHeight));
-
-  ctx.font = '700 30px "DM Sans", sans-serif';
-  ctx.fillStyle = "#FC6C26";
-  ctx.fillText("Rasoi Bazaar", centerX, 1250);
-
-  ctx.font = '400 22px "DM Sans", sans-serif';
-  ctx.fillStyle = "#7E6038";
-  ctx.fillText("rasoi-bazaar.vercel.app", centerX, 1286);
+  lines.forEach((line, i) => {
+    ctx.fillText(line, centerX, tagBaseline + tagToNameOffset + i * lineHeight);
+  });
 };
 
-// Full-bleed photo, almost the whole frame — a portrait canvas means
-// "cover" fit barely has to crop a typical dish photo at all. A rounded
-// panel rises off the bottom like a bottom sheet, lifted with its own
-// shadow, carrying every piece of text on flat, guaranteed-legible color.
+// Full-bleed photo with a compact, content-sized panel. The canvas carries
+// only the cooking message and dish name; the recipe link is shared as text.
 const drawPhotoCard = (
   ctx: CanvasRenderingContext2D,
   img: HTMLImageElement,
   dishName: string
 ) => {
   const PAD = 56;
-  const panelHeight = 468;
-  const panelY = CARD_HEIGHT - panelHeight; // 882
   const panelRadius = 44;
+  const contentX = PAD;
+  const contentWidth = CARD_WIDTH - PAD * 2;
 
-  // Photo fills the entire canvas — the hero, uncropped as much as the
-  // portrait ratio allows.
+  // Measure the title first so the panel can fit one- or two-line names.
+  const { fontSize, lines: measuredLines } = fitDishNameFont(ctx, dishName, contentWidth);
+  const lines = measuredLines.slice(0, 2);
+  const lineHeight = fontSize * 1.12;
+  const bottomPadding = 82;
+  const tagToNameOffset = 154;
+  const nameLinesOffset = (lines.length - 1) * lineHeight;
+  const panelY = CARD_HEIGHT - bottomPadding - tagToNameOffset - nameLinesOffset;
+  const panelHeight = CARD_HEIGHT - panelY;
+
+  // Photo fills the entire canvas, cropped rather than squashed.
   drawImageCover(ctx, img, 0, 0, CARD_WIDTH, CARD_HEIGHT);
 
-  // A gentle darkening right where the photo meets the panel, so the
-  // seam feels designed rather than like a hard cut.
+  // A gentle darkening where the photo meets the panel softens the seam.
   const seam = ctx.createLinearGradient(0, panelY - 140, 0, panelY + 20);
   seam.addColorStop(0, "rgba(20,12,6,0)");
   seam.addColorStop(1, "rgba(20,12,6,0.22)");
   ctx.fillStyle = seam;
   ctx.fillRect(0, panelY - 140, CARD_WIDTH, 160);
 
-  // Shadow caster — lifts the panel off the photo with a soft upward glow.
+  // Shadow caster lifts the compact panel off the photo.
   ctx.save();
   ctx.shadowColor = "rgba(20,12,6,0.35)";
   ctx.shadowBlur = 46;
@@ -265,50 +265,30 @@ const drawPhotoCard = (
   ctx.fill();
   ctx.restore();
 
-  // A thin warm highlight tracing the top edge of the panel — catches
-  // the eye as a deliberate seam, not a clipped rectangle.
+  // A thin warm highlight traces the top edge of the panel.
   roundRectTopPath(ctx, 0, panelY, CARD_WIDTH, panelHeight + 40, panelRadius);
   ctx.lineWidth = 2;
   ctx.strokeStyle = "rgba(255,255,255,0.5)";
   ctx.stroke();
 
-  // --- Panel content: flat #FFF8F1 behind everything from here down, so
-  // text is legible no matter what the photo looks like. ---
+  // Panel content uses a flat cream background for reliable legibility.
   ctx.textAlign = "left";
   ctx.shadowColor = "transparent";
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
-
-  const contentX = PAD;
-  const contentWidth = CARD_WIDTH - PAD * 2;
 
   const tagBaseline = panelY + 92;
   ctx.fillStyle = "#D1560F";
   ctx.font = '600 42px Caveat, cursive';
   ctx.fillText("I just cooked", contentX, tagBaseline);
 
-  const { fontSize, lines } = fitDishNameFont(ctx, dishName, contentWidth);
-  const lineHeight = fontSize * 1.12;
   const nameFirstBaseline = tagBaseline + 62;
   ctx.fillStyle = "#3E2E23";
   ctx.font = `900 ${fontSize}px Fraunces, serif`;
-  lines.slice(0, 2).forEach((line, i) => {
+  lines.forEach((line, i) => {
     ctx.fillText(line, contentX, nameFirstBaseline + i * lineHeight);
   });
-
-  // Footer pinned to the bottom edge regardless of how many lines the
-  // dish name took.
-  const footerY = CARD_HEIGHT - 54;
-  ctx.font = '700 28px "DM Sans", sans-serif';
-  ctx.fillStyle = "#FC6C26";
-  ctx.fillText("Rasoi Bazaar", contentX, footerY);
-
-  const brandWidth = ctx.measureText("Rasoi Bazaar").width;
-  ctx.font = '400 22px "DM Sans", sans-serif';
-  ctx.fillStyle = "#7E6038";
-  ctx.fillText("  ·  rasoi-bazaar.vercel.app", contentX + brandWidth, footerY);
 };
-
 const generateShareCard = async (
   dishName: string,
   dishImage?: string
@@ -318,7 +298,7 @@ const generateShareCard = async (
   canvas.height = CARD_HEIGHT;
   const ctx = canvas.getContext("2d")!;
 
-  await loadBrandFonts();
+  await loadShareCardFonts();
 
   let usedPhoto = false;
 
