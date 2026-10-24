@@ -1946,7 +1946,7 @@ useEffect(() => {
                                         onClick={() => handlePickProduct(ingredientName, variation)}
                                         className="hover-float relative w-32 shrink-0 snap-start rounded-2xl border-2 p-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-40 sm:w-[168px] sm:p-3.5"
                                         style={{
-                                          borderColor: selected ? COLOR.saffron : COLOR.border,
+                                          borderColor: selected ? COLOR.saffron : "transparent",
                                           backgroundColor: selected ? COLOR.saffronTint : COLOR.surface,
                                           boxShadow: selected
                                             ? `0 0 0 1px ${COLOR.saffron}, 0 8px 16px -10px rgba(43,26,12,0.3)`
