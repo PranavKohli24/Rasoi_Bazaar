@@ -40,6 +40,19 @@ interface ConfirmItem {
   quantity: number;
 }
 
+interface RestaurantOption {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  cuisines?: string[];
+  deliveryText?: string;
+  distanceText?: string;
+  costForTwoText?: string;
+  offer?: string;
+  veg?: boolean;
+  isOpen: boolean;
+}
+
 interface UIProduct {
   spinId: string;
   skuId: string;
@@ -58,7 +71,7 @@ interface OrderStatusContext {
 }
 
 interface RequestBody {
-  action?: "chat" | "confirm_add";
+  action?: "chat" | "confirm_add" | "confirm_add_dish";
   recipe: Recipe;
   history: ChatMessage[];
   question: string;
@@ -67,12 +80,13 @@ interface RequestBody {
   totalSteps: number;
   stream?: boolean;
   addressId?: string | null;
-  /** Current order status, if the person placed one through the app — read
-   *  only, lets the model answer "where's my order" from the same text the
-   *  tracker UI shows, without any tool call or live lookup of its own. */
   orderStatus?: OrderStatusContext | null;
   // only for action: "confirm_add"
   items?: ConfirmItem[];
+  // only for action: "confirm_add_dish"
+  restaurantId?: string;
+  restaurantName?: string;
+  dishName?: string;
 }
 
 const isValidHistory = (value: unknown): value is ChatMessage[] =>
@@ -127,6 +141,25 @@ async function callSwiggyTool(accessToken: string, name: string, args: Record<st
       id: Date.now(),
       method: "tools/call",
       params: { name, arguments: args },
+    }),
+  });
+  const text = await response.text();
+  return { status: response.status, data: parseSwiggyResponse(text) };
+}
+
+async function callFoodMcp(accessToken: string, name: string, mcpArguments: Record<string, unknown>) {
+  const response = await fetch("https://mcp.swiggy.com/food", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+      Accept: "application/json, text/event-stream",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: Date.now(),
+      method: "tools/call",
+      params: { name, arguments: mcpArguments },
     }),
   });
   const text = await response.text();
@@ -212,7 +245,7 @@ function getRelevantProducts(products: any[], query: string): any[] {
     .filter((x): x is { product: any; score: number } => x !== null)
     .sort((a, b) => b.score - a.score);
 
-  return scored.slice(0, 3).map(({ product }) => ({
+  return scored.map(({ product }) => ({
     ...product,
     variations: product.variations?.filter((v: any) => v?.isInStockAndAvailable) ?? [],
   }));
@@ -271,8 +304,135 @@ async function execSearchProducts(
     }
   }
 
-  const capped = uiProducts.slice(0, 6);
+   const capped = uiProducts.slice(0, 12);
   return { modelResult: { ingredient, products: capped.map(stripForModel) }, uiProducts: capped };
+}
+
+function normalizeRestaurantForModel(r: RestaurantOption) {
+  return {
+    id: r.id,
+    name: r.name,
+    cuisines: r.cuisines,
+    deliveryText: r.deliveryText,
+    costForTwoText: r.costForTwoText,
+  };
+}
+
+async function execSearchRestaurants(
+  accessToken: string,
+  addressId: string | null | undefined,
+  args: { dish?: string; query?: string }
+): Promise<{ modelResult: unknown; uiRestaurants: RestaurantOption[] }> {
+  const query = (args.dish || args.query || "").trim();
+  if (!query) return { modelResult: { error: "Missing dish name" }, uiRestaurants: [] };
+
+  if (!addressId) {
+    throw new NeedsAddress(await fetchAddresses(accessToken));
+  }
+
+  const { status, data } = await callFoodMcp(accessToken, "search_restaurants", { addressId, query });
+  if (status === 401) throw new SwiggyNotConnected();
+
+  const raw =
+    data?.result?.structuredContent?.restaurants ??
+    data?.result?.structuredContent?.data?.restaurants ??
+    [];
+
+  const restaurants: RestaurantOption[] = raw
+    .map(
+      (r: any): RestaurantOption => ({
+        id: String(r?.id ?? r?.restaurantId ?? r?.name ?? Math.random()),
+        name: String(r?.name ?? "Restaurant"),
+        imageUrl: r?.imageUrl || r?.image || undefined,
+        cuisines: Array.isArray(r?.cuisines) ? r.cuisines : undefined,
+        deliveryText: r?.deliveryTimeRange || (typeof r?.eta === "string" ? r.eta : undefined),
+        distanceText: typeof r?.distance === "string" ? r.distance : undefined,
+        costForTwoText: r?.costForTwo ? `${r.costForTwo} for two` : undefined,
+        offer: r?.offer || undefined,
+        veg: typeof r?.veg === "boolean" ? r.veg : undefined,
+        isOpen: (r?.availabilityStatus ?? "OPEN") === "OPEN",
+      })
+    )
+    .filter((r: RestaurantOption) => r.isOpen)
+    .slice(0, 5);
+
+  return {
+    modelResult: { dish: query, restaurants: restaurants.map(normalizeRestaurantForModel) },
+    uiRestaurants: restaurants,
+  };
+}
+
+/** Finds the dish on the restaurant's menu and adds it — same resolution
+ * logic as the "add" action in food-cart.ts, kept intentionally simple:
+ * dishes needing a customization step are declined rather than guessed at,
+ * and the person is pointed at the full Swiggy modal for those. */
+async function execAddDishToCart(
+  accessToken: string,
+  addressId: string,
+  restaurantId: string,
+  restaurantName: string,
+  dishName: string
+): Promise<{ dishName: string }> {
+  const searchResult = await callFoodMcp(accessToken, "search_menu", {
+    addressId,
+    query: dishName,
+    restaurantIdOfAddedItem: restaurantId,
+  });
+  if (searchResult.status === 401) throw new SwiggyNotConnected();
+
+  const items =
+    searchResult.data?.result?.structuredContent?.items ??
+    searchResult.data?.result?.structuredContent?.data?.items ??
+    [];
+
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error(`Couldn't find ${dishName} at ${restaurantName}.`);
+  }
+
+  const normalizedQuery = dishName.trim().toLowerCase();
+  const exact = items.find((i: any) => String(i?.name ?? "").trim().toLowerCase() === normalizedQuery);
+  const partial = items.find((i: any) => {
+    const name = String(i?.name ?? "").trim().toLowerCase();
+    return name.includes(normalizedQuery) || normalizedQuery.includes(name);
+  });
+  const selected = exact ?? partial ?? items[0];
+  const menuItemId = selected?.menu_item_id ?? selected?.id;
+  if (!menuItemId) throw new Error(`Couldn't identify ${dishName} at ${restaurantName}.`);
+
+  if (Array.isArray(selected?.variantsV2) && selected.variantsV2.length > 0) {
+    throw new Error(
+      `${selected.name} needs a customization choice — add it from the "Order from Swiggy" screen instead.`
+    );
+  }
+
+  const cartItem: any = { menu_item_id: String(menuItemId), quantity: 1 };
+
+  if (Array.isArray(selected?.variations) && selected.variations.length > 0) {
+    const availableVariation =
+      selected.variations.find((v: any) => Number(v?.inStock ?? 1) > 0 && Number(v?.default ?? 0) === 1) ??
+      selected.variations.find((v: any) => Number(v?.inStock ?? 1) > 0);
+    if (availableVariation?.id) {
+      cartItem.variants = [{ group_id: availableVariation.groupId, variation_id: availableVariation.id }];
+    }
+  }
+
+  const update = await callFoodMcp(accessToken, "update_food_cart", {
+    restaurantId,
+    addressId,
+    cartItems: [cartItem],
+  });
+  if (update.status === 401) throw new SwiggyNotConnected();
+
+  const updateContent = update.data?.result?.structuredContent;
+  const toolError =
+    update.data?.result?.isError || updateContent?.success === false || updateContent?.successful === false;
+  if (toolError) {
+    throw new Error(
+      updateContent?.titleMessage ?? updateContent?.statusMessage ?? "Swiggy could not update the food cart."
+    );
+  }
+
+  return { dishName: selected.name as string };
 }
 
 async function execGetCart(accessToken: string) {
@@ -343,8 +503,22 @@ async function addItemsToCart(accessToken: string, addressId: string, items: Con
 /* ------------------------------------------------------------------ */
 /* Tool schemas + system prompt                                        */
 /* ------------------------------------------------------------------ */
-
 const TOOLS = [
+  {
+    type: "function",
+    function: {
+      name: "search_restaurants_for_dish",
+      description:
+        "Search Swiggy for restaurants near the cook's delivery address that deliver a specific DISH — a finished, cooked, restaurant-style item (e.g. 'butter chicken', 'margherita pizza'), not a raw ingredient to cook with. Use this when the cook wants to order a prepared dish rather than buy something to cook. Never use this for a plain ingredient — use search_instamart_products for that instead.",
+      parameters: {
+        type: "object",
+        properties: {
+          dish: { type: "string", description: "The dish to find, e.g. 'butter chicken'." },
+        },
+        required: ["dish"],
+      },
+    },
+  },
   {
     type: "function",
     function: {
@@ -487,6 +661,8 @@ const buildSystemPrompt = (
         "- You do NOT have access to ratings, reviews, or quality data of any kind. If asked which product is 'better' or better quality, say plainly that you don't have ratings data and offer to compare by price or size instead. Never guess at or imply a quality opinion.",
         "- To add anything to the cart you must call propose_add_to_cart with the exact spinId/skuId/price from a search result. This only proposes the items, it does not add them. Never say something was added unless propose_add_to_cart was actually called and the cook has separately confirmed it.",
         "- Only propose items you've actually seen in a search_instamart_products result earlier in this conversation. Search first if you haven't.",
+        "- search_instamart_products can return several relevant options (different brands, pack sizes, prices). All of them are shown to the cook as tappable cards right here in this chat - don't narrow it down to just one in your own text. Briefly mention in plain text that there are a few options shown below (e.g. differing by brand or size), and let the cook pick by tapping.",
+        "- Never pick or propose_add_to_cart a single product on the cook's behalf just because a search returned multiple results - only propose_add_to_cart after the cook names or clearly implies a specific choice (e.g. 'add the Amul one', 'get the 500g pack').",
         "- For several ingredients at once, you may call search_instamart_products multiple times before proposing the full set together in one propose_add_to_cart call.",
         "- Use get_cart_summary if asked what's already in the cart.",
         "- Never assume what's in the cart from earlier in this conversation. If the cook asks whether something was added, or anything about current cart contents, call get_cart_summary to check the real cart rather than repeating an earlier claim.",
@@ -494,13 +670,21 @@ const buildSystemPrompt = (
           ? "- A delivery address has already been selected for this session - you don't need to ask for one."
           : "- No delivery address is selected yet. If a search needs one, it will be requested automatically - you don't need to ask for it yourself.",
         "",
+        "ORDERING A DISH (Swiggy, separate from ingredients):",
+        "- If the cook names something from this recipe's ingredient list, or clearly wants to buy groceries to cook with, use search_instamart_products.",
+        "- If the cook asks to order, buy, or get delivered a finished DISH - this recipe itself, or any other prepared dish - use search_restaurants_for_dish instead. Never use it for a raw ingredient.",
+        "- If a request is genuinely ambiguous (e.g. 'get me some chicken' could mean raw chicken or a chicken dish), prefer the ingredient interpretation (search_instamart_products) unless the wording clearly means a cooked/restaurant item (e.g. 'order', 'deliver the dish', naming a finished preparation like 'butter chicken').",
+        "- After search_restaurants_for_dish returns, list the restaurants found in plain text - do not pick one for the cook. The results you return are shown right here as tappable cards in this chat, and the cook will tap one themselves.",
+        "- You can never place or complete a Swiggy food order yourself, and you have no checkout tool for dishes. The cook adds a dish to their Swiggy cart by tapping a restaurant card shown here in the chat - you only ever search and report back.",
+        "",
         "STAYING ON TOPIC TURN BY TURN:",
         "- Judge the cook's LATEST message on its own. A cooking question (technique, timing, doneness, substitutions, etc.) gets a plain cooking answer - full stop - even if the conversation was about buying something a moment ago.",
         "- Only call search_instamart_products or propose_add_to_cart when the cook's CURRENT message itself is asking to find, buy, or add something. An earlier shopping turn in this conversation is just history, not a standing instruction to keep shopping.",
         "- Do not call propose_add_to_cart again just because products were shown earlier or a cart proposal was made earlier - only do it in direct response to a fresh add/buy request in the latest message.",
         "- If the cook's latest message is ambiguous between 'continue shopping' and 'cooking question', prefer answering as a cooking question unless it clearly references an item, quantity, or the cart.",
-        "- The cook approves or cancels a cart proposal ONLY by tapping buttons shown in the app - never by typing anything. You never see whether a proposal was approved or cancelled.",
+        "- The cook approves or cancels a cart proposal ONLY by tapping Add/Cancel buttons shown here in the chat, right below your message - never by typing anything. You never see whether a proposal was approved or cancelled.",
         "- If the cook's latest message is a short acknowledgment or closing remark (e.g. 'ok', 'okay thanks', 'sure', 'cool', 'got it', 'thank you', 'no that's fine') and not a new request, do NOT call search_instamart_products or propose_add_to_cart again. Just reply naturally and briefly - acknowledge, or ask if they need anything else. Treat it exactly like you would after any plain cooking answer.",
+        "- Search results and cart proposals both appear as cards directly in this chat window - the cook interacts with them right here, not elsewhere in the app.",
         "- A short acknowledgment is never implicit confirmation to add something to the cart. Only an explicit new request (naming an item, saying 'add it', 'order it', etc.) should trigger search or propose tools again.",
       ]
     : [];
@@ -532,7 +716,7 @@ const buildSystemPrompt = (
 /* ------------------------------------------------------------------ */
 
 type AgentReply =
-  | { type: "text"; content: string; products?: UIProduct[] }
+  | { type: "text"; content: string; products?: UIProduct[]; restaurants?: RestaurantOption[] }
   | { type: "confirm_add"; content: string; items: ConfirmItem[] }
   | { type: "needs_address"; addresses: AddressOption[] }
   | { type: "needs_auth" };
@@ -549,6 +733,7 @@ async function runAgentLoop(opts: {
 
   const messages: any[] = [{ role: "system", content: systemPrompt }, ...history, { role: "user", content: question }];
   const lastSearchResults: UIProduct[] = [];
+  const lastRestaurantResults: RestaurantOption[] = [];
   const MAX_ITERATIONS = 4;
 
   for (let i = 0; i < MAX_ITERATIONS; i++) {
@@ -581,6 +766,7 @@ async function runAgentLoop(opts: {
         type: "text",
         content: (msg.content ?? "").trim() || "Okay.",
         products: lastSearchResults.length ? lastSearchResults : undefined,
+        restaurants: lastRestaurantResults.length ? lastRestaurantResults : undefined,
       };
     }
 
@@ -624,6 +810,10 @@ async function runAgentLoop(opts: {
           const { modelResult, uiProducts } = await execSearchProducts(session.accessToken, addressId, args);
           result = modelResult;
           lastSearchResults.push(...uiProducts);
+        } else if (name === "search_restaurants_for_dish") {
+          const { modelResult, uiRestaurants } = await execSearchRestaurants(session.accessToken, addressId, args);
+          result = modelResult;
+          lastRestaurantResults.push(...uiRestaurants);
         } else if (name === "get_cart_summary") {
           result = await execGetCart(session.accessToken);
         } else {
@@ -654,7 +844,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const body = (req.body ?? {}) as Partial<RequestBody>;
-  const action = body.action === "confirm_add" ? "confirm_add" : "chat";
+  const action =
+    body.action === "confirm_add" ? "confirm_add" : body.action === "confirm_add_dish" ? "confirm_add_dish" : "chat";
 
   /* ---- confirm_add: a direct action, not a model turn ---- */
   if (action === "confirm_add") {
@@ -684,6 +875,41 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       console.error("confirm_add failed:", err);
       send(res, 502, { error: { message: "Couldn't add that to your cart. Please try again." } });
+    }
+    return;
+  }
+
+  /* ---- confirm_add_dish: adds the dish to the Swiggy cart, never checks out ---- */
+  if (action === "confirm_add_dish") {
+    const session = getSwiggySession(req);
+    if (!session) {
+      send(res, 200, { type: "needs_auth" });
+      return;
+    }
+    const addressId = body.addressId;
+    const { restaurantId, restaurantName, dishName } = body;
+    if (!addressId || !restaurantId || !dishName) {
+      send(res, 400, { error: { message: "Missing addressId, restaurantId, or dishName" } });
+      return;
+    }
+    try {
+      const result = await execAddDishToCart(
+        session.accessToken,
+        addressId,
+        restaurantId,
+        restaurantName ?? "the restaurant",
+        dishName
+      );
+      send(res, 200, { type: "dish_added", dishName: result.dishName, restaurantName: restaurantName ?? null });
+    } catch (err) {
+      if (err instanceof SwiggyNotConnected) {
+        send(res, 200, { type: "needs_auth" });
+        return;
+      }
+      console.error("confirm_add_dish failed:", err);
+      send(res, 502, {
+        error: { message: err instanceof Error ? err.message : "Couldn't add that dish to your cart. Please try again." },
+      });
     }
     return;
   }

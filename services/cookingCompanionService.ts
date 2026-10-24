@@ -3,10 +3,19 @@ import { Recipe } from "../types";
 export interface CompanionMessage {
   role: "user" | "assistant";
   content: string;
-  kind?: "text" | "address_picker" | "product_results" | "confirm_action" | "connect_swiggy";
+  kind?:
+    | "text"
+    | "address_picker"
+    | "product_results"
+    | "confirm_action"
+    | "restaurant_results"
+    | "confirm_dish"
+    | "connect_swiggy";
   addresses?: AddressOption[];
   products?: CommerceProduct[];
   pendingItems?: CommercePendingItem[];
+  restaurants?: CommerceRestaurant[];
+  pendingDish?: CommercePendingDish;
   /** For kind "connect_swiggy": the question to resume once connected. */
   pendingQuestion?: string;
 }
@@ -39,8 +48,27 @@ export interface CommercePendingItem {
   quantity: number;
 }
 
+export interface CommerceRestaurant {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  cuisines?: string[];
+  deliveryText?: string;
+  distanceText?: string;
+  costForTwoText?: string;
+  offer?: string;
+  veg?: boolean;
+  isOpen: boolean;
+}
+
+export interface CommercePendingDish {
+  restaurantId: string;
+  restaurantName: string;
+  dishName: string;
+}
+
 export type CompanionReply =
-  | { type: "text"; content: string; products?: CommerceProduct[] }
+  | { type: "text"; content: string; products?: CommerceProduct[]; restaurants?: CommerceRestaurant[] }
   | { type: "confirm_add"; content: string; items: CommercePendingItem[] }
   | { type: "needs_address"; addresses: AddressOption[] }
   | { type: "needs_auth" };
@@ -48,6 +76,12 @@ export type CompanionReply =
 export interface CommerceAddResult {
   type: "added" | "needs_auth";
   shortageNote?: string | null;
+}
+
+export interface CommerceDishAddResult {
+  type: "dish_added" | "needs_auth";
+  dishName?: string;
+  restaurantName?: string | null;
 }
 
 const GENERIC_ERROR = "Hmm, I got a little distracted at the stove. Mind asking me that again?";
@@ -113,7 +147,12 @@ export const askCookingCompanion = async (
     return { type: "confirm_add", content: data.content ?? "", items: Array.isArray(data.items) ? data.items : [] };
   }
   if (data?.type === "text") {
-    return { type: "text", content: data.content ?? "", products: Array.isArray(data.products) ? data.products : undefined };
+    return {
+      type: "text",
+      content: data.content ?? "",
+      products: Array.isArray(data.products) ? data.products : undefined,
+      restaurants: Array.isArray(data.restaurants) ? data.restaurants : undefined,
+    };
   }
 
   console.error("The cooking companion API returned an unusable reply:", data);
@@ -154,6 +193,54 @@ export const confirmCartAdd = async (
 
   if (data?.type === "needs_auth") return { type: "needs_auth" };
   if (data?.type === "added") return { type: "added", shortageNote: data.shortageNote ?? null };
+
+  throw new Error(GENERIC_ERROR);
+};
+
+/**
+ * Adds a chosen dish to the Swiggy food cart. Not a model turn — a direct
+ * action. Never checks out; the cook completes checkout in the Swiggy
+ * ordering screen, same as today.
+ */
+export const confirmDishAdd = async (
+  addressId: string,
+  dish: CommercePendingDish
+): Promise<CommerceDishAddResult> => {
+  let response: Response;
+
+  try {
+    response = await fetch("/api/cooking-companion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "confirm_add_dish",
+        addressId,
+        restaurantId: dish.restaurantId,
+        restaurantName: dish.restaurantName,
+        dishName: dish.dishName,
+      }),
+    });
+  } catch (error) {
+    console.error("Confirm-add-dish request failed:", error);
+    throw new Error(OFFLINE_ERROR);
+  }
+
+  let data: any = null;
+  try {
+    data = await response.json();
+  } catch {
+    console.error("The confirm-add-dish API didn't return JSON.");
+  }
+
+  if (!response.ok) {
+    const message = typeof data?.error?.message === "string" && data.error.message ? data.error.message : GENERIC_ERROR;
+    throw new Error(message);
+  }
+
+  if (data?.type === "needs_auth") return { type: "needs_auth" };
+  if (data?.type === "dish_added") {
+    return { type: "dish_added", dishName: data.dishName, restaurantName: data.restaurantName ?? null };
+  }
 
   throw new Error(GENERIC_ERROR);
 };

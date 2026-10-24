@@ -5,11 +5,14 @@ import { Recipe } from "../types";
 import {
   askCookingCompanion,
   confirmCartAdd,
+  confirmDishAdd,
   streamCookingCompanion,
   createSentenceSplitter,
   CompanionMessage,
   CommerceProduct,
   CommercePendingItem,
+  CommerceRestaurant,
+  CommercePendingDish,
   AddressOption,
 } from "../services/cookingCompanionService";
 import { getSwiggyAddresses, loginWithSwiggyPopup, SwiggyAddress } from "../services/swiggyService";
@@ -60,7 +63,7 @@ const THINKING_PHRASES = [
 // Same idea, shown instead when the question looks like it's about
 // buying ingredients.
 const COMMERCE_THINKING_PHRASES = [
-  "Checking Instamart…",
+  "Checking Swiggy",
   "Looking up prices…",
   "Almost there…",
 ];
@@ -806,6 +809,108 @@ const ConfirmActionBubble: React.FC<{
   );
 };
 
+const UtensilsIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+    <path d="M7 2v20" />
+    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+  </svg>
+);
+
+const RestaurantRow: React.FC<{
+  restaurant: CommerceRestaurant;
+  dishName: string;
+  onTap: (restaurant: CommerceRestaurant, dishName: string) => void;
+}> = ({ restaurant: r, dishName, onTap }) => {
+  const [imgFailed, setImgFailed] = useState(false);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onTap(r, dishName)}
+      className="flex w-full items-start gap-3 rounded-xl border p-2.5 text-left transition-colors hover:border-[#FC6C26] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FC6C26]"
+      style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}
+    >
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg"
+        style={{ backgroundColor: COMMERCE.saffronTint, color: COMMERCE.saffronDark }}
+      >
+        {r.imageUrl && !imgFailed ? (
+          <img
+            src={r.imageUrl}
+            alt=""
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <UtensilsIcon className="h-5 w-5" />
+        )}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-[13px] font-semibold leading-snug" style={{ color: COMMERCE.ink }}>
+          {r.name}
+        </p>
+        {r.cuisines?.length ? (
+          <p className="mt-0.5 truncate text-[11px]" style={{ color: COMMERCE.inkSoft }}>
+            {r.cuisines.slice(0, 3).join(", ")}
+          </p>
+        ) : null}
+        {(r.deliveryText || r.costForTwoText) && (
+          <p className="mt-0.5 text-[11px]" style={{ color: COMMERCE.inkSoft }}>
+            {[r.deliveryText, r.costForTwoText].filter(Boolean).join(" · ")}
+          </p>
+        )}
+      </div>
+    </button>
+  );
+};
+
+const RestaurantResultsBubble: React.FC<{
+  restaurants: CommerceRestaurant[];
+  onTap: (restaurant: CommerceRestaurant, dishName: string) => void;
+  dishName: string;
+}> = ({ restaurants, onTap, dishName }) => (
+  <div className="mt-2.5 space-y-2">
+    {restaurants.map((r) => (
+      <RestaurantRow key={r.id} restaurant={r} dishName={dishName} onTap={onTap} />
+    ))}
+  </div>
+);
+
+const ConfirmDishBubble: React.FC<{
+  dish: CommercePendingDish;
+  onConfirm: (dish: CommercePendingDish) => void;
+  onCancel: () => void;
+  isBusy?: boolean;
+}> = ({ dish, onConfirm, onCancel, isBusy }) => (
+  <div className="mt-2.5 rounded-xl border p-3" style={{ borderColor: COMMERCE.border, backgroundColor: COMMERCE.surface }}>
+    <p className="text-xs" style={{ color: COMMERCE.ink }}>
+      <span className="font-semibold">{dish.dishName}</span> from {dish.restaurantName}
+    </p>
+    <div className="mt-3 flex justify-end gap-2">
+      <button
+        type="button"
+        onClick={onCancel}
+        disabled={isBusy}
+        className="rounded-full px-3 py-1.5 text-xs font-semibold"
+        style={{ color: COMMERCE.inkSoft, backgroundColor: "#F8F3E7" }}
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        onClick={() => onConfirm(dish)}
+        disabled={isBusy}
+        className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-white"
+        style={{ backgroundColor: COMMERCE.saffron }}
+      >
+        {isBusy ? "Adding…" : "Add to Swiggy cart"}
+      </button>
+    </div>
+  </div>
+);
+
 const ConnectSwiggyBubble: React.FC<{ onConnect: () => void; isBusy?: boolean }> = ({ onConnect, isBusy }) => (
   <button
     type="button"
@@ -978,6 +1083,7 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
 
   const [commerceAddressId, setCommerceAddressId] = useState<string | null>(null);
 const [isAddingToCart, setIsAddingToCart] = useState(false);
+const [isAddingDish, setIsAddingDish] = useState(false);
 const [isConnectingSwiggy, setIsConnectingSwiggy] = useState(false);
 const pendingAddressQuestionRef = useRef<string | null>(null);
   // ---- companion presence ----
@@ -1525,9 +1631,11 @@ const speak = (index: number, text: string) => {
       const textMessage: CompanionMessage = {
         role: "assistant",
         content: reply.content,
-        kind: reply.products?.length ? "product_results" : undefined,
+        kind: reply.products?.length ? "product_results" : reply.restaurants?.length ? "restaurant_results" : undefined,
         products: reply.products,
+        restaurants: reply.restaurants,
       };
+
       setMessages((current) => [...current, textMessage]);
       setLastQuestion(null);
       if (isOpenRef.current) {
@@ -1586,6 +1694,53 @@ const speak = (index: number, text: string) => {
       },
     ]);
   };
+
+  const handleRestaurantTapped = (restaurant: CommerceRestaurant, dishName: string) => {
+  setMessages((current) => [
+    ...current,
+    {
+      role: "assistant",
+      content: `Add ${dishName} from ${restaurant.name} to your Swiggy cart?`,
+      kind: "confirm_dish",
+      pendingDish: { restaurantId: restaurant.id, restaurantName: restaurant.name, dishName },
+    },
+  ]);
+};
+
+const handleConfirmDish = async (dish: CommercePendingDish) => {
+  if (!commerceAddressId) return;
+  setIsAddingDish(true);
+  try {
+    const result = await confirmDishAdd(commerceAddressId, dish);
+    if (result.type === "needs_auth") {
+      showConnectPrompt();
+      return;
+    }
+    setMessages((current) => [
+      ...current,
+      {
+        role: "assistant",
+        content: `Added ${result.dishName ?? dish.dishName} to your Swiggy cart. Review and check out anytime from Swiggy App.`,
+      },
+    ]);
+  } catch (err) {
+    console.error("Add dish to cart failed:", err);
+    setMessages((current) => [
+      ...current,
+      { role: "assistant", content: err instanceof Error ? err.message : "Couldn't add that dish just now — mind trying again?" },
+    ]);
+  } finally {
+    setIsAddingDish(false);
+  }
+};
+
+const handleCancelDish = (messageIndex: number) => {
+  setMessages((current) => {
+    const next = [...current];
+    next[messageIndex] = { role: "assistant", content: "No problem, not adding that." };
+    return next;
+  });
+};
 
   const handleConfirmAdd = async (items: CommercePendingItem[]) => {
     if (!commerceAddressId) return;
@@ -2378,6 +2533,23 @@ const speak = (index: number, text: string) => {
                           isBusy={isAddingToCart}
                           onConfirm={(items) => handleConfirmAdd(items)}
                           onCancel={() => handleCancelAdd(index)}
+                        />
+                      )}
+
+                      {message.kind === "restaurant_results" && message.restaurants && (
+                        <RestaurantResultsBubble
+                          restaurants={message.restaurants}
+                          dishName={lastQuestion ?? recipe.dishName}
+                          onTap={(r, dish) => handleRestaurantTapped(r, dish)}
+                        />
+                      )}
+
+                      {message.kind === "confirm_dish" && message.pendingDish && (
+                        <ConfirmDishBubble
+                          dish={message.pendingDish}
+                          isBusy={isAddingDish}
+                          onConfirm={(dish) => handleConfirmDish(dish)}
+                          onCancel={() => handleCancelDish(index)}
                         />
                       )}
 
