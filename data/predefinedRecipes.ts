@@ -48185,6 +48185,6160 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "notes": ["Mutton mince should be cooked completely before serving — check a piece from the thickest kabab."],
     "nutrition": { "calories": 400, "protein": 22, "carbs": 35, "fat": 20 }
   },
+
+
+  // ===== NEW RECIPES: paste these entries inside predefinedRecipes, before the closing `};` =====
+
+
+  "handi chicken": {
+    "dishName": "Handi Chicken",
+    "image": "/dishes/chicken-curry.webp",
+    "description": "A rich onion-tomato chicken curry slow-cooked in a handi-style pot for a deep, home-style flavour.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut"
+      },
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely sliced"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, pureed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, whisked"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhania Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat oil in a kadai on the gas stove. Add the sliced onions and cook on medium heat for 8 to 10 minutes, stirring often, until deep golden brown."
+      },
+      {
+        "step": 2,
+        "instruction": "Add ginger garlic paste and cook for 1 minute until the raw smell goes away."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the tomato puree, turmeric, red chilli powder and coriander powder. Cook for 5 to 6 minutes until the oil starts to separate."
+      },
+      {
+        "step": 4,
+        "instruction": "Lower the heat and stir in the whisked yogurt, one spoon at a time, so it doesn't split.",
+        "tip": {
+          "title": "Prevent curdling",
+          "content": "Keep the flame low and stir continuously while adding yogurt."
+        }
+      },
+      {
+        "step": 5,
+        "instruction": "Add the chicken pieces and salt. Mix well so every piece is coated in the masala."
+      },
+      {
+        "step": 6,
+        "instruction": "Cover and cook on low heat for 20 to 25 minutes, stirring occasionally, until the chicken is tender and the gravy is thick."
+      },
+      {
+        "step": 7,
+        "instruction": "Sprinkle garam masala and chopped coriander leaves. Give it a final stir and serve hot."
+      },
+    ],
+    "notes": [
+      "Tastes even better the next day as the masala deepens in flavour.",
+      "Serve with roti, naan or steamed rice.",
+    ],
+    "nutrition": {
+      "calories": 410,
+      "protein": 32,
+      "carbs": 12,
+      "fat": 26
+    }
+  },
+
+  "tawa chicken": {
+    "dishName": "Tawa Chicken",
+    "image": "/dishes/kadai-chicken.webp",
+    "description": "Boneless chicken cooked fast on a hot tawa with onions, capsicum and bold spices, in the style of roadside dhabas.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, cubed"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, sliced"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, sliced"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kasuri Methi",
+        "englishName": "dried fenugreek leaves"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat oil on a tawa over medium-high heat. Add the chicken cubes and sear for 4 to 5 minutes until lightly browned. Remove and set aside."
+      },
+      {
+        "step": 2,
+        "instruction": "In the same oil, add onions and cook for 2 to 3 minutes until slightly soft."
+      },
+      {
+        "step": 3,
+        "instruction": "Add ginger garlic paste and cook for a minute, then add tomatoes and cook until mushy."
+      },
+      {
+        "step": 4,
+        "instruction": "Add turmeric, red chilli powder and salt. Mix well."
+      },
+      {
+        "step": 5,
+        "instruction": "Return the chicken to the tawa along with capsicum. Toss everything together on high heat for 5 to 7 minutes until the chicken is cooked through."
+      },
+      {
+        "step": 6,
+        "instruction": "Crush the kasuri methi between your palms and sprinkle it over, along with garam masala. Toss once more and serve hot."
+      },
+    ],
+    "notes": [
+      "Keep the flame high while tossing for that authentic smoky tawa flavour.",
+      "Great with tawa roti or as a side with dal-rice.",
+    ],
+    "nutrition": {
+      "calories": 330,
+      "protein": 30,
+      "carbs": 9,
+      "fat": 19
+    }
+  },
+
+  "chicken shahi korma": {
+    "dishName": "Chicken Shahi Korma",
+    "image": "/dishes/chicken-korma.webp",
+    "description": "A royal, mildly spiced chicken curry in a creamy cashew-yogurt gravy, rich and festive.",
+    "prepTime": "Approx. 50 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut"
+      },
+      {
+        "amount": "10 to 12",
+        "commonName": "Kaju",
+        "englishName": "cashew nuts"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, whisked"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, sliced and fried"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhania Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee or oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Kesar",
+        "englishName": "saffron strands (optional)"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Soak cashews in warm water for 15 minutes, then grind to a smooth paste in a mixer with a little water."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat ghee in a kadai on the gas stove. Add ginger garlic paste and cook for a minute."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the chicken and sear on medium-high heat for 5 minutes until the colour changes."
+      },
+      {
+        "step": 4,
+        "instruction": "Lower the heat, add whisked yogurt gradually, stirring continuously so it does not split.",
+        "tip": {
+          "title": "Low and slow",
+          "content": "Yogurt curdles on high heat, so keep the flame low while adding it."
+        }
+      },
+      {
+        "step": 5,
+        "instruction": "Add the cashew paste, coriander powder, red chilli powder and salt. Mix well."
+      },
+      {
+        "step": 6,
+        "instruction": "Cover and cook on low heat for 20 minutes, stirring occasionally, until the chicken is tender and the gravy is thick and creamy."
+      },
+      {
+        "step": 7,
+        "instruction": "Sprinkle garam masala and crushed fried onions. Simmer for 2 more minutes and serve hot."
+      },
+    ],
+    "notes": [
+      "Soak the saffron in a tablespoon of warm milk and swirl it in at the end for a festive touch.",
+      "Pairs beautifully with sheermal, naan or jeera rice.",
+    ],
+    "nutrition": {
+      "calories": 460,
+      "protein": 31,
+      "carbs": 11,
+      "fat": 32
+    }
+  },
+
+  "chicken kali mirch": {
+    "dishName": "Chicken Kali Mirch",
+    "image": "/dishes/chicken-korma.webp",
+    "description": "A fragrant white-pepper chicken curry with a light, creamy yogurt gravy and minimal spices.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, whisked"
+      },
+      {
+        "amount": "2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper, coarsely crushed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Fresh Cream",
+        "englishName": "fresh cream"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee or butter"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat ghee in a kadai on the gas stove. Add chopped onion and cook until soft and translucent, about 4 to 5 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Add ginger garlic paste and cook for a minute until fragrant."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the chicken and sear for 4 to 5 minutes on medium-high heat."
+      },
+      {
+        "step": 4,
+        "instruction": "Lower the heat and stir in the whisked yogurt gradually, mixing continuously."
+      },
+      {
+        "step": 5,
+        "instruction": "Add half the crushed black pepper and salt. Cover and cook on low heat for 15 to 18 minutes until the chicken is tender."
+      },
+      {
+        "step": 6,
+        "instruction": "Stir in the cream and the remaining black pepper. Simmer uncovered for 2 to 3 minutes and serve hot.",
+        "tip": {
+          "title": "Go easy on heat",
+          "content": "This curry gets its warmth entirely from pepper, not chilli, so taste before adding more."
+        }
+      },
+    ],
+    "notes": [
+      "Use freshly crushed black pepper for the best aroma.",
+      "Serve with butter naan or plain rice.",
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein": 30,
+      "carbs": 6,
+      "fat": 28
+    }
+  },
+
+  "tawa chaap masala": {
+    "dishName": "Tawa Chaap Masala",
+    "image": "/dishes/malai-chaap.webp",
+    "description": "Soya chaap seared on a hot tawa and tossed in a spicy onion-tomato masala, a popular vegetarian street favourite.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Soya Chaap",
+        "englishName": "soya chaap, cut into pieces"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, pureed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kasuri Methi",
+        "englishName": "dried fenugreek leaves"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat 1 tablespoon oil on a tawa and shallow-fry the chaap pieces for 4 to 5 minutes, turning often, until lightly browned on all sides. Set aside."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the remaining oil to the tawa and cook the onions for 5 to 6 minutes until golden."
+      },
+      {
+        "step": 3,
+        "instruction": "Add ginger garlic paste and cook for a minute, then add tomato puree, turmeric and red chilli powder. Cook until the masala thickens and oil separates."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the fried chaap, salt and a splash of water. Toss well to coat and cook for 5 minutes on medium heat."
+      },
+      {
+        "step": 5,
+        "instruction": "Crush kasuri methi over the top, sprinkle garam masala and toss once more. Serve hot."
+      },
+    ],
+    "notes": [
+      "Chaap cooks quickly, so avoid overcooking or it can turn chewy.",
+      "Serve with butter naan or as a roll filling.",
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 18,
+      "carbs": 14,
+      "fat": 20
+    }
+  },
+
+  "amritsari dal": {
+    "dishName": "Amritsari Dal",
+    "image": "/dishes/dal-makhani.webp",
+    "description": "A hearty mixed-lentil dal slow-simmered and finished with a smoky ghee tempering, Punjabi dhaba style.",
+    "prepTime": "Approx. 1 hour (plus soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1/2 cup",
+        "commonName": "Chana Dal",
+        "englishName": "split chickpea lentils"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Urad Dal",
+        "englishName": "split black gram, with skin"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Rajma",
+        "englishName": "red kidney beans (optional, soaked overnight)"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash and soak the chana dal and urad dal together for 1 hour. Drain."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure-cook the soaked dals (and rajma if using) with 4 cups water, turmeric and salt for 5 to 6 whistles, until completely soft. Let the pressure release naturally."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat 2 tablespoons ghee in a kadai on the gas stove. Add cumin seeds and let them sizzle."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onions and cook until golden, then add ginger garlic paste and cook for a minute."
+      },
+      {
+        "step": 5,
+        "instruction": "Add tomatoes and red chilli powder. Cook until the tomatoes turn soft and the oil separates."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour in the cooked dal and simmer on low heat for 20 to 25 minutes, mashing some of it with the back of a spoon for a creamy texture."
+      },
+      {
+        "step": 7,
+        "instruction": "Just before serving, heat the remaining ghee in a small pan and drizzle it over the dal as a final tempering.",
+        "tip": {
+          "title": "The dhaba touch",
+          "content": "A hot ghee tempering right before serving is what gives Amritsari dal its signature aroma."
+        }
+      },
+    ],
+    "notes": [
+      "The longer this dal simmers on low heat, the better it tastes.",
+      "Serve with jeera rice, tandoori roti or plain steamed rice.",
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein": 13,
+      "carbs": 30,
+      "fat": 12
+    }
+  },
+
+  "paneer tikka masala": {
+    "dishName": "Paneer Tikka Masala",
+    "image": "/dishes/kadai-paneer.webp",
+    "description": "Smoky, air-fried paneer tikka simmered in a rich tomato-onion gravy, a restaurant favourite made at home.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "250 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, cubed"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tandoori Masala",
+        "englishName": "tandoori masala"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, pureed"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, pureed"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kasuri Methi",
+        "englishName": "dried fenugreek leaves"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Fresh Cream",
+        "englishName": "fresh cream"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, half the ginger garlic paste, tandoori masala, half the red chilli powder and salt. Coat the paneer cubes in this marinade for 15 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry the marinated paneer at 200°C for 8 to 10 minutes, shaking the basket halfway, until lightly charred at the edges."
+      },
+      {
+        "step": 3,
+        "instruction": "Meanwhile, heat oil in a kadai on the gas stove. Add the remaining ginger garlic paste and the onion puree. Cook for 5 to 6 minutes until the raw smell is gone."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the tomato puree and the remaining red chilli powder. Cook for 6 to 8 minutes until the masala thickens and oil separates."
+      },
+      {
+        "step": 5,
+        "instruction": "Add a little water to adjust consistency, then stir in the cream and crushed kasuri methi."
+      },
+      {
+        "step": 6,
+        "instruction": "Add the air-fried paneer tikka pieces and simmer gently for 3 to 4 minutes so they soak up the gravy. Serve hot."
+      },
+    ],
+    "notes": [
+      "Do not overcook the paneer once it is added to the gravy, or it can turn rubbery.",
+      "Great with naan, roti or jeera rice.",
+    ],
+    "nutrition": {
+      "calories": 390,
+      "protein": 18,
+      "carbs": 13,
+      "fat": 29
+    }
+  },
+
+  "paneer mushroom bhurji": {
+    "dishName": "Paneer Mushroom Bhurji",
+    "image": "/dishes/paneer-bhurji.webp",
+    "description": "Crumbled paneer and chopped mushrooms scrambled together with onions, tomatoes and simple spices.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "150 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, crumbled"
+      },
+      {
+        "amount": "150 g",
+        "commonName": "Khumb",
+        "englishName": "mushrooms, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, chopped"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat oil in a kadai on the gas stove. Add onion and green chilli, and cook for 3 to 4 minutes until soft."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the chopped mushrooms and cook on medium-high heat for 5 to 6 minutes until they release their water and it dries up."
+      },
+      {
+        "step": 3,
+        "instruction": "Add tomatoes, turmeric and red chilli powder. Cook for 3 to 4 minutes until the tomatoes soften."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the crumbled paneer and salt. Mix gently and cook for 2 to 3 minutes, just until heated through."
+      },
+      {
+        "step": 5,
+        "instruction": "Sprinkle garam masala, give it a final toss and serve hot."
+      },
+    ],
+    "notes": [
+      "Don't overcook once paneer goes in, or it turns rubbery.",
+      "Great stuffing for parathas or as a side with roti.",
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein": 17,
+      "carbs": 8,
+      "fat": 20
+    }
+  },
+
+  "dum chicken biryani": {
+    "dishName": "Dum Chicken Biryani",
+    "image": "/dishes/chicken-biryani.webp",
+    "description": "Marinated chicken and fragrant basmati rice layered and slow-cooked together on dum, home-style.",
+    "prepTime": "Approx. 1 hour 15 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Basmati Chawal",
+        "englishName": "basmati rice, soaked 30 minutes"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced and fried"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Biryani Masala",
+        "englishName": "biryani masala"
+      },
+      {
+        "amount": "a few strands",
+        "commonName": "Kesar",
+        "englishName": "saffron, soaked in warm milk"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Pudina",
+        "englishName": "mint leaves"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee or oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2",
+        "commonName": "Tej Patta",
+        "englishName": "bay leaves"
+      },
+      {
+        "amount": "4",
+        "commonName": "Laung",
+        "englishName": "cloves"
+      },
+      {
+        "amount": "2",
+        "commonName": "Dalchini",
+        "englishName": "cinnamon sticks"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Marinate the chicken with yogurt, ginger garlic paste, red chilli powder, biryani masala and salt. Rest for at least 1 hour, or overnight in the fridge."
+      },
+      {
+        "step": 2,
+        "instruction": "Boil the soaked rice in a large pot of salted water with bay leaves, cloves and cinnamon until it is about 70% cooked. Drain and set aside."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat ghee in a kadai on the gas stove. Spread the marinated chicken evenly at the bottom."
+      },
+      {
+        "step": 4,
+        "instruction": "Layer the partially cooked rice over the chicken. Top with fried onions, mint, coriander and the saffron milk."
+      },
+      {
+        "step": 5,
+        "instruction": "Cover the kadai tightly with a lid. Place it over a hot tawa on low heat so the kadai gets gentle, even heat from below.",
+        "tip": {
+          "title": "Sealing the dum",
+          "content": "A damp cloth or dough rope around the lid edge helps trap the steam if your lid does not fit tightly."
+        }
+      },
+      {
+        "step": 6,
+        "instruction": "Cook on very low heat for 30 to 35 minutes without opening the lid, allowing the rice and chicken to finish cooking together in the trapped steam."
+      },
+      {
+        "step": 7,
+        "instruction": "Turn off the heat and let it rest for 10 minutes before gently fluffing and serving."
+      },
+    ],
+    "notes": [
+      "Resting the biryani before opening lets the flavours settle.",
+      "Serve with raita and a simple salad.",
+    ],
+    "nutrition": {
+      "calories": 520,
+      "protein": 28,
+      "carbs": 58,
+      "fat": 18
+    }
+  },
+
+  "dum mutton biryani": {
+    "dishName": "Dum Mutton Biryani",
+    "image": "/dishes/mutton-biryani.webp",
+    "description": "Tender marinated mutton layered with par-boiled basmati rice and slow-cooked on dum for deep, smoky flavour.",
+    "prepTime": "Approx. 1 hour 30 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "600 g",
+        "commonName": "Mutton",
+        "englishName": "mutton, curry cut"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Basmati Chawal",
+        "englishName": "basmati rice, soaked 30 minutes"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced and fried"
+      },
+      {
+        "amount": "1.5 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1.5 tsp",
+        "commonName": "Biryani Masala",
+        "englishName": "biryani masala"
+      },
+      {
+        "amount": "a few strands",
+        "commonName": "Kesar",
+        "englishName": "saffron, soaked in warm milk"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Pudina",
+        "englishName": "mint leaves"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee or oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2",
+        "commonName": "Tej Patta",
+        "englishName": "bay leaves"
+      },
+      {
+        "amount": "4",
+        "commonName": "Laung",
+        "englishName": "cloves"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Marinate the mutton with yogurt, ginger garlic paste, red chilli powder, biryani masala and salt. Cover and rest for at least 2 hours, or overnight in the fridge."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure-cook the marinated mutton with a little water for 4 to 5 whistles until just tender but not falling apart. Set aside with its liquid."
+      },
+      {
+        "step": 3,
+        "instruction": "Boil the soaked rice in salted water with bay leaves and cloves until about 70% cooked. Drain."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat ghee in a kadai on the gas stove. Spread the part-cooked mutton with its liquid evenly at the bottom."
+      },
+      {
+        "step": 5,
+        "instruction": "Layer the rice on top. Scatter fried onions, mint, coriander and saffron milk over it."
+      },
+      {
+        "step": 6,
+        "instruction": "Cover tightly and place the kadai over a hot tawa on low heat to cook gently on dum for 25 to 30 minutes."
+      },
+      {
+        "step": 7,
+        "instruction": "Rest for 10 minutes off the heat, then fluff gently and serve hot."
+      },
+    ],
+    "notes": [
+      "Pre-cooking the mutton briefly ensures it turns out tender within the dum time.",
+      "Serve with onion raita and lemon wedges.",
+    ],
+    "nutrition": {
+      "calories": 560,
+      "protein": 32,
+      "carbs": 55,
+      "fat": 20
+    }
+  },
+
+  "plain rice": {
+    "dishName": "Plain Rice",
+    "image": "/dishes/plain-rice.webp",
+    "description": "Simple, fluffy steamed white rice, the everyday base for any Indian meal.",
+    "prepTime": "Approx. 20 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Chawal",
+        "englishName": "rice, washed"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Pani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt (optional)"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Tel",
+        "englishName": "oil or ghee (optional)"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the rice two to three times in water until the water runs mostly clear. Drain."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the rice, water, salt and oil to a pressure cooker."
+      },
+      {
+        "step": 3,
+        "instruction": "Close the lid and cook on medium heat on the gas stove for 2 whistles."
+      },
+      {
+        "step": 4,
+        "instruction": "Turn off the heat and let the pressure release naturally for about 10 minutes before opening."
+      },
+      {
+        "step": 5,
+        "instruction": "Fluff the rice gently with a fork before serving."
+      },
+    ],
+    "notes": [
+      "For separate, non-sticky grains, use a 1:1.5 water ratio instead and reduce to 1 whistle.",
+      "Pairs with any dal, curry or sabzi.",
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein": 4,
+      "carbs": 46,
+      "fat": 0
+    }
+  },
+
+
+  "stuffed naan": {
+    "dishName": "Stuffed Naan",
+    "image": "/dishes/amritsari-kulcha.webp",
+    "description": "Soft leavened flatbread stuffed with a spiced potato filling and cooked on a hot tawa, no tandoor needed.",
+    "prepTime": "Approx. 1 hour (plus resting)",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Baking Soda",
+        "englishName": "baking soda"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "potato, boiled and mashed (for filling)"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter, for brushing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix flour, yogurt, baking soda, sugar, salt and oil with enough warm water to form a soft dough. Knead for 5 minutes, cover and rest for 30 to 45 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "For the filling, mix mashed potato, green chilli, garam masala and salt together."
+      },
+      {
+        "step": 3,
+        "instruction": "Divide the dough into balls. Flatten one, place a spoon of potato filling in the centre, and bring the edges together to seal."
+      },
+      {
+        "step": 4,
+        "instruction": "Roll out the stuffed ball gently into an oval, taking care not to let the filling spill out."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat a tawa on the gas stove until hot. Place the rolled naan on it and cook until bubbles form, then flip."
+      },
+      {
+        "step": 6,
+        "instruction": "Cook the other side until golden brown spots appear, pressing lightly with a cloth so it puffs up."
+      },
+      {
+        "step": 7,
+        "instruction": "Brush with butter and serve hot."
+      },
+    ],
+    "notes": [
+      "Seal the filling well so it doesn't leak while rolling.",
+      "Serve with any curry or just plain yogurt and pickle.",
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein": 7,
+      "carbs": 42,
+      "fat": 9
+    }
+  },
+
+  "butter garlic naan": {
+    "dishName": "Butter Garlic Naan",
+    "image": "/dishes/butter-naan.webp",
+    "description": "Soft tawa-cooked naan brushed generously with garlic butter, a home-kitchen favourite.",
+    "prepTime": "Approx. 50 minutes (plus resting)",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Baking Soda",
+        "englishName": "baking soda"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter, melted"
+      },
+      {
+        "amount": "4 cloves",
+        "commonName": "Lahsun",
+        "englishName": "garlic, finely minced"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix flour, yogurt, baking soda, sugar, salt and oil with warm water to make a soft dough. Knead well, cover and rest for 30 to 40 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Divide the dough into equal balls. Roll each one out into an oval shape."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat a tawa on the gas stove until hot. Place the rolled naan on it and cook until bubbles appear."
+      },
+      {
+        "step": 4,
+        "instruction": "Flip and cook the other side until golden brown spots form, pressing gently with a clean cloth so it puffs."
+      },
+      {
+        "step": 5,
+        "instruction": "Mix melted butter with minced garlic and chopped coriander."
+      },
+      {
+        "step": 6,
+        "instruction": "Brush the hot naan generously with the garlic butter and serve immediately."
+      },
+    ],
+    "notes": [
+      "Keep the tawa hot throughout so each naan cooks quickly without drying out.",
+      "Great with any dal or curry.",
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 7,
+      "carbs": 40,
+      "fat": 13
+    }
+  },
+
+  "paneer tikka roll": {
+    "dishName": "Paneer Tikka Roll",
+    "image": "/dishes/paneer-roll.webp",
+    "description": "Smoky air-fried paneer tikka rolled inside a soft tawa-cooked paratha with crunchy onions and mint chutney.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "200 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, cubed"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tandoori Masala",
+        "englishName": "tandoori masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "4",
+        "commonName": "Paratha",
+        "englishName": "plain paratha or roti"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pudina Chutney",
+        "englishName": "mint-coriander chutney"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, tandoori masala, red chilli powder, ginger garlic paste and salt. Coat the paneer cubes and marinate for 15 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry the paneer at 200°C for 8 minutes, shaking once, until lightly charred at the edges."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat the paratha or roti on a hot tawa on the gas stove until warm and soft."
+      },
+      {
+        "step": 4,
+        "instruction": "Spread mint chutney on the warm paratha. Place a line of air-fried paneer tikka and sliced onions in the centre."
+      },
+      {
+        "step": 5,
+        "instruction": "Roll the paratha tightly, securing with a toothpick or parchment paper if needed, and serve warm."
+      },
+    ],
+    "notes": [
+      "Keep the paratha warm and pliable so it rolls without cracking.",
+      "Squeeze a little lemon over the filling for extra zing.",
+    ],
+    "nutrition": {
+      "calories": 360,
+      "protein": 16,
+      "carbs": 32,
+      "fat": 19
+    }
+  },
+
+  "malai chaap roll": {
+    "dishName": "Malai Chaap Roll",
+    "image": "/dishes/masala-chaap-roll.webp",
+    "description": "Creamy, mildly spiced soya chaap rolled in a hot tawa paratha, a popular vegetarian street food roll.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "250 g",
+        "commonName": "Soya Chaap",
+        "englishName": "soya chaap, cut into pieces"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Fresh Cream",
+        "englishName": "fresh cream"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kaju Paste",
+        "englishName": "cashew paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "4",
+        "commonName": "Paratha",
+        "englishName": "plain paratha or roti"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter, melted"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, cream, cashew paste, ginger garlic paste, black pepper and salt. Coat the chaap pieces and marinate for 20 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry the marinated chaap at 200°C for 10 minutes, shaking the basket halfway, until lightly browned."
+      },
+      {
+        "step": 3,
+        "instruction": "Warm the paratha or roti on a hot tawa on the gas stove and brush lightly with butter."
+      },
+      {
+        "step": 4,
+        "instruction": "Place the chaap pieces and sliced onion in the centre of the paratha."
+      },
+      {
+        "step": 5,
+        "instruction": "Roll it up tightly and serve immediately while warm."
+      },
+    ],
+    "notes": [
+      "Don't skip the resting time for marination; it keeps the chaap tender.",
+      "A squeeze of lemon lifts the creamy flavour nicely.",
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein": 17,
+      "carbs": 33,
+      "fat": 20
+    }
+  },
+
+  "chicken tikka roll": {
+    "dishName": "Chicken Tikka Roll",
+    "image": "/dishes/chicken-kathi-roll.webp",
+    "description": "Juicy air-fried chicken tikka wrapped in a soft tawa paratha with onions and chutney, a classic roadside roll.",
+    "prepTime": "Approx. 40 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "300 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, cubed"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tandoori Masala",
+        "englishName": "tandoori masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "4",
+        "commonName": "Paratha",
+        "englishName": "plain paratha or roti"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pudina Chutney",
+        "englishName": "mint-coriander chutney"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, tandoori masala, red chilli powder, ginger garlic paste, oil and salt. Coat the chicken and marinate for at least 1 hour in the fridge."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry the marinated chicken at 200°C for 12 to 14 minutes, shaking the basket halfway, until cooked through and lightly charred."
+      },
+      {
+        "step": 3,
+        "instruction": "Warm the paratha or roti on a hot tawa on the gas stove."
+      },
+      {
+        "step": 4,
+        "instruction": "Spread mint chutney on the warm paratha, then add the chicken tikka pieces and sliced onion."
+      },
+      {
+        "step": 5,
+        "instruction": "Roll tightly and serve immediately."
+      },
+    ],
+    "notes": [
+      "Marinating longer gives deeper flavour and more tender chicken.",
+      "Add a squeeze of lemon just before rolling.",
+    ],
+    "nutrition": {
+      "calories": 400,
+      "protein": 26,
+      "carbs": 32,
+      "fat": 18
+    }
+  },
+
+  "lemon fish": {
+    "dishName": "Lemon Fish",
+    "image": "/dishes/fish-fry.webp",
+    "description": "Pan-seared fish fillets finished with a bright, buttery lemon sauce, light and easy on a weeknight.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 fillets",
+        "commonName": "Machli",
+        "englishName": "fish fillets (such as basa or pomfret)"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pat the fish fillets dry and rub with turmeric, half the lemon juice, ginger garlic paste, black pepper and salt. Rest for 15 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil on a tawa over medium-high heat on the gas stove. Place the fillets and cook for 3 to 4 minutes per side until golden and cooked through."
+      },
+      {
+        "step": 3,
+        "instruction": "Lower the heat, push the fish to one side, and add butter and the remaining lemon juice to the tawa."
+      },
+      {
+        "step": 4,
+        "instruction": "Spoon the buttery lemon sauce over the fillets for a minute, then turn off the heat."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with coriander leaves and serve hot with the pan juices drizzled over."
+      },
+    ],
+    "notes": [
+      "Use a firm, boneless fish fillet so it holds together while searing.",
+      "Serve with steamed rice or a simple salad.",
+    ],
+    "nutrition": {
+      "calories": 280,
+      "protein": 24,
+      "carbs": 2,
+      "fat": 19
+    }
+  },
+
+  "chilli fish": {
+    "dishName": "Chilli Fish",
+    "image": "/dishes/chilli-fish.webp",
+    "description": "Crisp fried fish tossed in a tangy, spicy Indo-Chinese chilli-garlic sauce.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Machli",
+        "englishName": "boneless fish, cubed"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, cubed"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, cubed"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, sliced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Soy Sauce",
+        "englishName": "soy sauce"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Red Chilli Sauce",
+        "englishName": "red chilli sauce"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Toss the fish cubes with flour, cornflour, half the ginger garlic paste and salt until lightly coated."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry at 200°C for 10 to 12 minutes, shaking the basket halfway, until crisp and golden."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a kadai on the gas stove. Add the remaining ginger garlic paste and green chilli, and sauté for a minute."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and capsicum, and stir-fry on high heat for 2 to 3 minutes, keeping them crunchy."
+      },
+      {
+        "step": 5,
+        "instruction": "Add soy sauce, chilli sauce and a splash of water. Bring to a quick boil."
+      },
+      {
+        "step": 6,
+        "instruction": "Toss in the air-fried fish and mix well for a minute so the sauce coats evenly. Serve immediately."
+      },
+    ],
+    "notes": [
+      "Toss the fish into the sauce only right before serving so it stays crisp.",
+      "Great as a starter or with fried rice.",
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein": 22,
+      "carbs": 20,
+      "fat": 16
+    }
+  },
+
+  "lemon grilled fish": {
+    "dishName": "Lemon Grilled Fish",
+    "image": "/dishes/fish-tikka.webp",
+    "description": "Marinated fish grilled in the oven with lemon and herbs, for a light, healthy main.",
+    "prepTime": "Approx. 35 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 fillets",
+        "commonName": "Machli",
+        "englishName": "fish fillets"
+      },
+      {
+        "amount": "2",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix lemon juice, ginger garlic paste, black pepper, red chilli powder, oil and salt into a marinade."
+      },
+      {
+        "step": 2,
+        "instruction": "Coat the fish fillets well and marinate in the fridge for 20 to 30 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Preheat the oven to 200°C. Place the fillets on a lined tray."
+      },
+      {
+        "step": 4,
+        "instruction": "Grill or bake for 15 to 18 minutes, until the fish flakes easily with a fork and is lightly charred at the edges."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with coriander leaves and a little extra lemon juice before serving."
+      },
+    ],
+    "notes": [
+      "Don't over-marinate with lemon, as the acid can start to 'cook' the fish if left too long.",
+      "Serve with a side salad or steamed vegetables.",
+    ],
+    "nutrition": {
+      "calories": 250,
+      "protein": 23,
+      "carbs": 2,
+      "fat": 15
+    }
+  },
+
+  "lemon coriander soup": {
+    "dishName": "Lemon Coriander Soup",
+    "description": "A light, tangy vegetable soup brightened with fresh coriander and lemon, an Indo-Chinese restaurant favourite.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 cups",
+        "commonName": "Sabzi Shorba",
+        "englishName": "vegetable stock or water"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gajar",
+        "englishName": "carrot, finely chopped"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gobhi",
+        "englishName": "cabbage, shredded"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Spring Onion",
+        "englishName": "spring onion, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour, mixed with water"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat oil in a kadai on the gas stove. Add the white part of spring onion and sauté for a minute."
+      },
+      {
+        "step": 2,
+        "instruction": "Add carrot and cabbage, and stir-fry for 2 to 3 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Pour in the stock or water and bring to a boil. Simmer for 5 to 6 minutes until the vegetables are just tender."
+      },
+      {
+        "step": 4,
+        "instruction": "Stir in the cornflour slurry and cook for 2 minutes until the soup thickens slightly."
+      },
+      {
+        "step": 5,
+        "instruction": "Add salt and black pepper. Turn off the heat, then stir in the lemon juice and most of the coriander leaves.",
+        "tip": {
+          "title": "Add lemon off the heat",
+          "content": "Adding lemon juice after turning off the flame keeps the soup's flavour fresh and bright."
+        }
+      },
+      {
+        "step": 6,
+        "instruction": "Garnish with the remaining coriander and the green part of the spring onion. Serve hot."
+      },
+    ],
+    "notes": [
+      "Keep the vegetables slightly crunchy for the best texture.",
+      "A comforting starter for any Indo-Chinese meal.",
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein": 2,
+      "carbs": 14,
+      "fat": 3
+    }
+  },
+
+  "talumein soup": {
+    "dishName": "Talumein Soup",
+    "description": "A thick, comforting Indo-Chinese soup loaded with shredded chicken, vegetables and soft noodles.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 cups",
+        "commonName": "Chicken Shorba",
+        "englishName": "chicken stock or water"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Chicken",
+        "englishName": "boiled chicken, shredded"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Noodles",
+        "englishName": "thin noodles, boiled"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gajar",
+        "englishName": "carrot, finely chopped"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Gobhi",
+        "englishName": "cabbage, shredded"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Spring Onion",
+        "englishName": "spring onion, chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour, mixed with water"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Soy Sauce",
+        "englishName": "soy sauce"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat oil in a kadai on the gas stove. Add the white part of spring onion and sauté briefly."
+      },
+      {
+        "step": 2,
+        "instruction": "Add carrot and cabbage, and stir-fry for 2 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Pour in the stock, add shredded chicken and bring to a boil."
+      },
+      {
+        "step": 4,
+        "instruction": "Simmer for 5 minutes, then stir in the cornflour slurry and soy sauce. Cook for 2 to 3 minutes until slightly thickened."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the boiled noodles, salt and black pepper. Simmer for another 2 minutes."
+      },
+      {
+        "step": 6,
+        "instruction": "Garnish with the green part of spring onion and serve piping hot."
+      },
+    ],
+    "notes": [
+      "Adjust thickness with a little extra cornflour slurry if you prefer it heartier.",
+      "A meal in a bowl on a cold evening.",
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein": 15,
+      "carbs": 26,
+      "fat": 6
+    }
+  },
+
+  "chicken soup": {
+    "dishName": "Chicken Soup",
+    "description": "A simple, soothing home-style chicken soup with vegetables, perfect for a light meal.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "300 g",
+        "commonName": "Chicken",
+        "englishName": "chicken with bones, for stock"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gajar",
+        "englishName": "carrot, chopped"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Mutter",
+        "englishName": "green peas"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pressure-cook the chicken with 5 cups of water and a little salt for 3 to 4 whistles to make a light stock. Let the pressure release naturally, then strain and keep the stock aside. Shred the meat."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil in a kadai on the gas stove. Add onion and ginger garlic paste, and sauté until soft."
+      },
+      {
+        "step": 3,
+        "instruction": "Add carrot and peas, and cook for 2 to 3 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Pour in the chicken stock and bring to a boil. Simmer for 8 to 10 minutes until the vegetables are tender."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the shredded chicken back in, along with black pepper and salt to taste. Simmer for 2 more minutes."
+      },
+      {
+        "step": 6,
+        "instruction": "Garnish with coriander leaves and serve hot."
+      },
+    ],
+    "notes": [
+      "Making your own stock gives this soup a much richer flavour than using water alone.",
+      "Great as a light dinner or when feeling under the weather.",
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein": 18,
+      "carbs": 8,
+      "fat": 7
+    }
+  },
+
+  "virgin mojito": {
+    "dishName": "Virgin Mojito",
+    "image": "/dishes/virgin-mojito.webp",
+    "description": "A refreshing, non-alcoholic mint and lime cooler, fizzy and perfect for hot afternoons.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "10 to 12",
+        "commonName": "Pudina",
+        "englishName": "mint leaves"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lime, cut into wedges"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar or sugar syrup"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Soda",
+        "englishName": "chilled soda water"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a mixer jar, lightly pulse the mint leaves, lime wedges and sugar for just a second or two to release the juices and aroma without pureeing them.",
+        "tip": {
+          "title": "Don't over-blend",
+          "content": "Mint turns bitter if blended too long, so just a quick pulse is enough."
+        }
+      },
+      {
+        "step": 2,
+        "instruction": "Pour this mixture into a tall glass."
+      },
+      {
+        "step": 3,
+        "instruction": "Fill the glass with ice cubes."
+      },
+      {
+        "step": 4,
+        "instruction": "Top up with chilled soda water and stir gently."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with a sprig of mint and a lime wedge, and serve immediately."
+      },
+    ],
+    "notes": [
+      "Use chilled soda for the best fizz.",
+      "Adjust sugar to taste depending on how tangy your limes are.",
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein": 0,
+      "carbs": 15,
+      "fat": 0
+    }
+  },
+
+  "mint cucumber juice": {
+    "dishName": "Mint Cucumber Juice",
+    "image": "/dishes/mint-cucumber-juice.webp",
+    "description": "A cooling, hydrating summer juice made with fresh cucumber and mint, lightly sweetened.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 medium",
+        "commonName": "Kheera",
+        "englishName": "cucumber, peeled and chopped"
+      },
+      {
+        "amount": "10 to 12",
+        "commonName": "Pudina",
+        "englishName": "mint leaves"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar or honey"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Kala Namak",
+        "englishName": "black salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Add the chopped cucumber, mint leaves, lemon juice, sugar and a little water to a mixer jar."
+      },
+      {
+        "step": 2,
+        "instruction": "Blend until smooth."
+      },
+      {
+        "step": 3,
+        "instruction": "Strain the juice through a sieve into a jug for a smoother texture, if you like."
+      },
+      {
+        "step": 4,
+        "instruction": "Add black salt and stir well."
+      },
+      {
+        "step": 5,
+        "instruction": "Pour over ice and serve immediately, garnished with a mint sprig."
+      },
+    ],
+    "notes": [
+      "Keep the cucumber chilled beforehand for an extra-refreshing drink.",
+      "A great detox-style drink for warm days.",
+    ],
+    "nutrition": {
+      "calories": 50,
+      "protein": 1,
+      "carbs": 11,
+      "fat": 0
+    }
+  },
+
+  "home made ginger ale": {
+    "dishName": "Homemade Ginger Ale",
+    "image": "/dishes/ginger-ale.webp",
+    "description": "A spicy-sweet ginger syrup mixed with soda for a homemade take on classic ginger ale.",
+    "prepTime": "Approx. 20 minutes (plus cooling)",
+    "equipment": [
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1/2 cup",
+        "commonName": "Adrak",
+        "englishName": "ginger, peeled and roughly chopped"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Pani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Soda",
+        "englishName": "chilled soda water"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Add ginger, sugar and water to a pan on the gas stove. Bring to a boil, then simmer on low heat for 10 minutes until it forms a light syrup."
+      },
+      {
+        "step": 2,
+        "instruction": "Turn off the heat and let the syrup cool completely, then strain out the ginger pieces."
+      },
+      {
+        "step": 3,
+        "instruction": "Stir the lemon juice into the cooled ginger syrup."
+      },
+      {
+        "step": 4,
+        "instruction": "To serve, pour 2 to 3 tablespoons of the syrup into a glass filled with ice."
+      },
+      {
+        "step": 5,
+        "instruction": "Top up with chilled soda water and stir gently before serving."
+      },
+    ],
+    "notes": [
+      "The syrup keeps in the fridge for about a week, so you can make it ahead.",
+      "Adjust the ginger quantity for a milder or spicier ale.",
+    ],
+    "nutrition": {
+      "calories": 80,
+      "protein": 0,
+      "carbs": 21,
+      "fat": 0
+    }
+  },
+
+  "green apple fizz": {
+    "dishName": "Green Apple Fizz",
+    "image": "/dishes/green-apple-fizz.webp",
+    "description": "A crisp, tangy green apple cooler topped up with soda, simple and refreshing.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 large",
+        "commonName": "Hara Seb",
+        "englishName": "green apple, chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar or sugar syrup"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Soda",
+        "englishName": "chilled soda water"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Blend the chopped green apple with lemon juice, sugar and a little water in a mixer until smooth."
+      },
+      {
+        "step": 2,
+        "instruction": "Strain the mixture if you prefer a smoother drink without pulp."
+      },
+      {
+        "step": 3,
+        "instruction": "Fill a glass with ice cubes and pour in the apple mixture."
+      },
+      {
+        "step": 4,
+        "instruction": "Top up with chilled soda water and stir gently."
+      },
+      {
+        "step": 5,
+        "instruction": "Serve immediately, garnished with a thin apple slice."
+      },
+    ],
+    "notes": [
+      "Use a tart green apple variety for the best tangy flavour.",
+      "Serve right after mixing so the fizz doesn't go flat.",
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein": 0,
+      "carbs": 22,
+      "fat": 0
+    }
+  },
+
+  "fresh lime soda": {
+    "dishName": "Fresh Lime Soda",
+    "image": "/dishes/shikanji.webp",
+    "description": "The classic Indian roadside cooler, sweet, salty or plain, with fresh lime juice and chilled soda.",
+    "prepTime": "Approx. 5 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lime, juiced"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar (for sweet version)"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Kala Namak",
+        "englishName": "black salt (for salted version)"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Soda",
+        "englishName": "chilled soda water"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Squeeze the lime juice into a tall glass."
+      },
+      {
+        "step": 2,
+        "instruction": "Add sugar for a sweet lime soda, or black salt for a salted version, and stir with a little water until dissolved."
+      },
+      {
+        "step": 3,
+        "instruction": "Fill the glass with ice cubes."
+      },
+      {
+        "step": 4,
+        "instruction": "Top up with chilled soda water and give it a gentle stir just before serving."
+      },
+    ],
+    "notes": [
+      "Stir gently so the soda doesn't go flat.",
+      "You can also make it half-sweet, half-salted for the classic mixed version.",
+    ],
+    "nutrition": {
+      "calories": 60,
+      "protein": 0,
+      "carbs": 15,
+      "fat": 0
+    }
+  },
+
+  "iced tea": {
+    "dishName": "Iced Tea",
+    "image": "/dishes/iced-tea.webp",
+    "description": "A refreshing chilled tea infused with lemon, perfect for a hot day.",
+    "prepTime": "Approx. 15 minutes (plus cooling)",
+    "equipment": [
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Pani",
+        "englishName": "water"
+      },
+      {
+        "amount": "2",
+        "commonName": "Tea Bags",
+        "englishName": "tea bags or 2 tsp loose tea"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+      {
+        "amount": "a few slices",
+        "commonName": "Nimbu",
+        "englishName": "lemon slices, for garnish"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Boil the water in a pan on the gas stove. Add the tea bags or loose tea and let it steep for 4 to 5 minutes for a strong brew."
+      },
+      {
+        "step": 2,
+        "instruction": "Strain the tea into a jug and stir in the sugar while it is still hot, until fully dissolved."
+      },
+      {
+        "step": 3,
+        "instruction": "Let the tea cool to room temperature, then refrigerate until completely chilled."
+      },
+      {
+        "step": 4,
+        "instruction": "Stir in the lemon juice just before serving."
+      },
+      {
+        "step": 5,
+        "instruction": "Pour over a glass full of ice cubes and garnish with a lemon slice."
+      },
+    ],
+    "notes": [
+      "Brew the tea a little stronger than usual since the ice will dilute it.",
+      "Add a few mint leaves for an extra refreshing twist.",
+    ],
+    "nutrition": {
+      "calories": 70,
+      "protein": 0,
+      "carbs": 18,
+      "fat": 0
+    }
+  },
+
+  "green tea": {
+    "dishName": "Green Tea",
+    "image": "/dishes/green-tea.webp",
+    "description": "A simple, soothing cup of hot green tea, light and antioxidant-rich.",
+    "prepTime": "Approx. 5 minutes",
+    "equipment": [
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": "microwave"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Pani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1",
+        "commonName": "Green Tea Bag",
+        "englishName": "green tea bag or 1 tsp loose green tea"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Shahad",
+        "englishName": "honey (optional)"
+      },
+      {
+        "amount": "a few drops",
+        "commonName": "Nimbu",
+        "englishName": "lemon juice (optional)"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat the water in a pan on the gas stove until it just comes to a boil, then turn off the heat."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the green tea bag or leaves and let it steep for 2 to 3 minutes. Avoid steeping too long, as green tea can turn bitter.",
+        "tip": {
+          "title": "Watch the steep time",
+          "content": "Unlike black tea, green tea turns bitter fast, so keep the steeping time short."
+        }
+      },
+      {
+        "step": 3,
+        "instruction": "Remove the tea bag or strain the leaves."
+      },
+      {
+        "step": 4,
+        "instruction": "Stir in honey and a few drops of lemon juice if you like, and serve hot."
+      },
+    ],
+    "notes": [
+      "Use water just off the boil rather than a rolling boil for a smoother cup.",
+      "Best enjoyed fresh, right after brewing.",
+    ],
+    "nutrition": {
+      "calories": 5,
+      "protein": 0,
+      "carbs": 1,
+      "fat": 0
+    }
+  },
+
+  "mushroom tikka": {
+    "dishName": "Mushroom Tikka",
+    "image": "/dishes/paneer-tikka.webp",
+    "description": "Smoky, spiced mushrooms marinated in yogurt and air-fried until lightly charred, a quick vegetarian starter.",
+    "prepTime": "Approx. 30 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "250 g",
+        "commonName": "Khumb",
+        "englishName": "button mushrooms, halved"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tandoori Masala",
+        "englishName": "tandoori masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Nimbu",
+        "englishName": "lemon wedges, to serve"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, tandoori masala, red chilli powder, ginger garlic paste, oil and salt into a smooth marinade."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the mushrooms and coat well. Marinate for 20 to 30 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Thread the mushrooms onto skewers if you like, or air-fry them loose in the basket."
+      },
+      {
+        "step": 4,
+        "instruction": "Air-fry at 200°C for 10 to 12 minutes, shaking the basket halfway, until lightly charred and cooked through."
+      },
+      {
+        "step": 5,
+        "instruction": "Serve hot with lemon wedges and mint chutney."
+      },
+    ],
+    "notes": [
+      "Don't marinate mushrooms for too long, as they can release excess water.",
+      "A quick, delicious starter for any party.",
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein": 6,
+      "carbs": 6,
+      "fat": 8
+    }
+  },
+
+  "bhatti chicken": {
+    "dishName": "Bhatti Chicken",
+    "image": "/dishes/tandoori-chicken.webp",
+    "description": "Smoky, char-grilled whole chicken pieces marinated in a punchy spice blend, oven-roasted at home.",
+    "prepTime": "Approx. 45 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "600 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut with skin"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Bhatti Masala",
+        "englishName": "bhatti/tandoori masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Make deep slits in the chicken pieces so the marinade can penetrate."
+      },
+      {
+        "step": 2,
+        "instruction": "Mix yogurt, ginger garlic paste, bhatti masala, red chilli powder, lemon juice, oil and salt into a thick marinade."
+      },
+      {
+        "step": 3,
+        "instruction": "Rub the marinade all over the chicken, working it into the slits. Marinate for at least 2 hours, or overnight in the fridge."
+      },
+      {
+        "step": 4,
+        "instruction": "Preheat the oven to 220°C. Arrange the chicken pieces on a lined tray."
+      },
+      {
+        "step": 5,
+        "instruction": "Roast for 25 to 30 minutes, turning halfway, until the chicken is charred at the edges and fully cooked."
+      },
+      {
+        "step": 6,
+        "instruction": "Rest for 5 minutes before serving with onion rings and lemon wedges."
+      },
+    ],
+    "notes": [
+      "A longer marination gives the most authentic bhatti flavour.",
+      "Finish under a hot grill for the last couple of minutes for extra char, if your oven has that setting.",
+    ],
+    "nutrition": {
+      "calories": 330,
+      "protein": 30,
+      "carbs": 5,
+      "fat": 21
+    }
+  },
+
+  "bhatti chicken tikka": {
+    "dishName": "Bhatti Chicken Tikka",
+    "image": "/dishes/chicken-tikka.webp",
+    "description": "Boneless chicken chunks marinated in smoky bhatti spices and oven-roasted on skewers.",
+    "prepTime": "Approx. 40 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, cubed"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt, thick"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Bhatti Masala",
+        "englishName": "bhatti/tandoori masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix yogurt, ginger garlic paste, bhatti masala, red chilli powder, lemon juice, oil and salt into a marinade."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the chicken cubes and coat well. Marinate in the fridge for at least 1 hour."
+      },
+      {
+        "step": 3,
+        "instruction": "Thread the chicken onto skewers, leaving a little space between pieces."
+      },
+      {
+        "step": 4,
+        "instruction": "Preheat the oven to 220°C and place the skewers on a lined tray."
+      },
+      {
+        "step": 5,
+        "instruction": "Roast for 15 to 18 minutes, turning once, until charred at the edges and cooked through."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve hot with mint chutney and lemon wedges."
+      },
+    ],
+    "notes": [
+      "Soak wooden skewers in water for 20 minutes before use so they don't burn.",
+      "Great as a starter or rolled into a tikka roll.",
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein": 27,
+      "carbs": 3,
+      "fat": 15
+    }
+  },
+
+  "mutton seekh kabab": {
+    "dishName": "Mutton Seekh Kabab",
+    "image": "/dishes/seekh-kabab.webp",
+    "description": "Spiced minced mutton moulded onto skewers and oven-roasted until juicy and lightly charred.",
+    "prepTime": "Approx. 45 minutes (plus resting)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Mutton Keema",
+        "englishName": "minced mutton"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped and squeezed dry"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Besan",
+        "englishName": "gram flour, roasted"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for brushing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a bowl, mix the minced mutton with onion, ginger garlic paste, green chilli, garam masala, red chilli powder, coriander leaves, roasted gram flour and salt."
+      },
+      {
+        "step": 2,
+        "instruction": "Knead the mixture well for a couple of minutes until it becomes slightly sticky and holds together."
+      },
+      {
+        "step": 3,
+        "instruction": "Cover and rest in the fridge for 20 to 30 minutes to firm up.",
+        "tip": {
+          "title": "Chill before shaping",
+          "content": "Chilled mince is much easier to mould onto skewers without falling apart."
+        }
+      },
+      {
+        "step": 4,
+        "instruction": "Wet your hands and mould portions of the mixture onto skewers into long sausage shapes."
+      },
+      {
+        "step": 5,
+        "instruction": "Preheat the oven to 220°C. Brush the kababs lightly with oil and place on a lined tray."
+      },
+      {
+        "step": 6,
+        "instruction": "Roast for 18 to 20 minutes, turning once, until browned and cooked through."
+      },
+      {
+        "step": 7,
+        "instruction": "Serve hot with mint chutney, onion rings and lemon wedges."
+      },
+    ],
+    "notes": [
+      "Squeezing excess water from the onion keeps the kababs from falling apart.",
+      "Great as a starter or rolled into a kathi roll.",
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein": 24,
+      "carbs": 4,
+      "fat": 20
+    }
+  },
+
+  "chicken seekh kabab": {
+    "dishName": "Chicken Seekh Kabab",
+    "image": "/dishes/seekh-kabab.webp",
+    "description": "Minced chicken blended with warm spices, shaped onto skewers and oven-roasted until juicy.",
+    "prepTime": "Approx. 45 minutes (plus resting)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken Keema",
+        "englishName": "minced chicken"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped and squeezed dry"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Besan",
+        "englishName": "gram flour, roasted"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for brushing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix the minced chicken with onion, ginger garlic paste, green chilli, garam masala, red chilli powder, coriander leaves, roasted gram flour and salt."
+      },
+      {
+        "step": 2,
+        "instruction": "Knead well for a couple of minutes until the mixture holds together and feels slightly sticky."
+      },
+      {
+        "step": 3,
+        "instruction": "Cover and chill in the fridge for 20 to 30 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Wet your hands and mould the mixture onto skewers into long shapes."
+      },
+      {
+        "step": 5,
+        "instruction": "Preheat the oven to 220°C. Brush lightly with oil and arrange on a lined tray."
+      },
+      {
+        "step": 6,
+        "instruction": "Roast for 15 to 18 minutes, turning once, until browned and cooked through."
+      },
+      {
+        "step": 7,
+        "instruction": "Serve hot with mint chutney and sliced onions."
+      },
+    ],
+    "notes": [
+      "Chicken mince is softer than mutton, so handle gently while shaping.",
+      "Works well as a tikka roll filling too.",
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein": 25,
+      "carbs": 3,
+      "fat": 16
+    }
+  },
+
+  "chilli mushroom": {
+    "dishName": "Chilli Mushroom",
+    "image": "/dishes/gobi-manchurian.webp",
+    "description": "Crisp air-fried mushrooms tossed in a tangy Indo-Chinese chilli-garlic sauce.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "250 g",
+        "commonName": "Khumb",
+        "englishName": "button mushrooms, halved"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, cubed"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, cubed"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, sliced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Soy Sauce",
+        "englishName": "soy sauce"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Red Chilli Sauce",
+        "englishName": "red chilli sauce"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Toss the mushrooms with cornflour, flour and a little salt until evenly coated."
+      },
+      {
+        "step": 2,
+        "instruction": "Air-fry at 200°C for 10 minutes, shaking once, until crisp and golden."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a kadai on the gas stove. Add ginger garlic paste and green chilli, and sauté for a minute."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and capsicum, and stir-fry on high heat for 2 minutes, keeping them crunchy."
+      },
+      {
+        "step": 5,
+        "instruction": "Add soy sauce, chilli sauce and a splash of water. Bring to a quick boil."
+      },
+      {
+        "step": 6,
+        "instruction": "Toss in the air-fried mushrooms and mix well for a minute. Serve hot immediately."
+      },
+    ],
+    "notes": [
+      "Toss the mushrooms in right before serving so they stay crisp.",
+      "A popular Indo-Chinese starter for parties.",
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein": 6,
+      "carbs": 18,
+      "fat": 9
+    }
+  },
+
+  "crispy corn": {
+    "dishName": "Crispy Corn",
+    "image": "/dishes/crispy-corn.webp",
+    "description": "Golden, crunchy corn kernels tossed with spring onion and spices, a favourite restaurant starter made at home.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Makai",
+        "englishName": "sweet corn kernels, boiled and patted dry"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Spring Onion",
+        "englishName": "spring onion, chopped, for garnish"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for tossing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pat the boiled corn kernels completely dry with a clean cloth or paper towel.",
+        "tip": {
+          "title": "Dry corn is key",
+          "content": "Excess moisture stops the coating from turning crisp in the air fryer."
+        }
+      },
+      {
+        "step": 2,
+        "instruction": "Toss the corn with cornflour, flour, red chilli powder, black pepper and salt until evenly coated."
+      },
+      {
+        "step": 3,
+        "instruction": "Lightly toss with a teaspoon of oil so the coating crisps up well."
+      },
+      {
+        "step": 4,
+        "instruction": "Air-fry at 200°C for 12 to 15 minutes, shaking the basket every 4 to 5 minutes, until golden and crunchy."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with spring onion and serve hot immediately."
+      },
+    ],
+    "notes": [
+      "Serve right away, as crispy corn softens quickly once it cools.",
+      "Toss with a little extra chilli powder for a spicier version.",
+    ],
+    "nutrition": {
+      "calories": 190,
+      "protein": 4,
+      "carbs": 30,
+      "fat": 6
+    }
+  },
+
+  "lemon chicken": {
+    "dishName": "Lemon Chicken",
+    "image": "/dishes/pepper-chicken.webp",
+    "description": "Golden pan-fried chicken pieces tossed in a tangy, buttery lemon-pepper sauce.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, cubed"
+      },
+      {
+        "amount": "2",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Toss the chicken cubes with ginger garlic paste, half the lemon juice, black pepper, cornflour and salt. Rest for 10 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil on a tawa over medium-high heat on the gas stove. Fry the chicken pieces for 6 to 8 minutes, turning often, until golden and cooked through. Remove and set aside."
+      },
+      {
+        "step": 3,
+        "instruction": "Lower the heat and add butter to the same tawa, followed by the remaining lemon juice."
+      },
+      {
+        "step": 4,
+        "instruction": "Return the chicken to the tawa and toss well to coat in the buttery lemon sauce for a minute."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with coriander leaves and serve hot."
+      },
+    ],
+    "notes": [
+      "Don't skip resting the marinated chicken; it helps the cornflour coating stick.",
+      "Pairs well with fried rice or as a starter.",
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 27,
+      "carbs": 9,
+      "fat": 18
+    }
+  },
+
+  "chilli coriander chicken": {
+    "dishName": "Chilli Coriander Chicken",
+    "image": "/dishes/chilli-chicken.webp",
+    "description": "A punchy, herby Indo-Chinese style chicken tossed with fresh coriander, green chilli and garlic.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, cubed"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, roughly chopped"
+      },
+      {
+        "amount": "4",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, cubed"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, cubed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Soy Sauce",
+        "englishName": "soy sauce"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Blend the coriander leaves and green chillies with a splash of water into a coarse paste using a mixer, or chop very finely by hand."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil in a kadai on the gas stove. Add ginger garlic paste and cook for a minute."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the chicken and cook on medium-high heat for 7 to 8 minutes, stirring often, until nearly cooked through."
+      },
+      {
+        "step": 4,
+        "instruction": "Add onion and capsicum, and stir-fry for 2 to 3 minutes, keeping them slightly crunchy."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the coriander-chilli paste, soy sauce, black pepper and salt. Toss everything together on high heat for 2 to 3 minutes."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve hot, garnished with extra coriander leaves."
+      },
+    ],
+    "notes": [
+      "Adjust green chilli quantity to control the heat.",
+      "Great as a starter or with fried rice.",
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein": 27,
+      "carbs": 8,
+      "fat": 17
+    }
+  },
+
+  "paneer pasanda": {
+    "dishName": "Paneer Pasanda",
+    "image": "/dishes/paneer-butter-masala.webp",
+    "description": "Paneer slices stuffed with a sweet-nutty filling, shallow-fried and simmered in a rich cashew-tomato gravy.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "250 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, cut into thin slices and slit for stuffing"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kaju",
+        "englishName": "cashew nuts, finely chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kishmish",
+        "englishName": "raisins, finely chopped"
+      },
+      {
+        "amount": "10 to 12",
+        "commonName": "Kaju",
+        "englishName": "cashew nuts, for the gravy, soaked"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, pureed"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, pureed"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Fresh Cream",
+        "englishName": "fresh cream"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix the chopped cashews and raisins and stuff a little into each slit paneer slice."
+      },
+      {
+        "step": 2,
+        "instruction": "Grind the soaked cashews with a little water into a smooth paste using a mixer."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat 1 tablespoon oil on a tawa and shallow-fry the stuffed paneer slices for a minute on each side until lightly golden. Set aside."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat the remaining oil in a kadai on the gas stove. Add ginger garlic paste and onion puree, and cook for 5 to 6 minutes."
+      },
+      {
+        "step": 5,
+        "instruction": "Add tomato puree and red chilli powder. Cook for 6 to 7 minutes until the oil separates."
+      },
+      {
+        "step": 6,
+        "instruction": "Stir in the cashew paste and cream, and simmer for 3 to 4 minutes with a little water to adjust consistency."
+      },
+      {
+        "step": 7,
+        "instruction": "Gently slide in the fried paneer slices and simmer for 2 minutes without stirring too hard, so they don't break. Serve hot."
+      },
+    ],
+    "notes": [
+      "Handle the stuffed paneer gently so the filling stays intact.",
+      "A rich, slightly sweet gravy that pairs beautifully with naan.",
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein": 16,
+      "carbs": 14,
+      "fat": 32
+    }
+  },
+
+  "tawa pulao": {
+    "dishName": "Tawa Pulao",
+    "image": "/dishes/veg-pulao.webp",
+    "description": "Mumbai street-style spiced rice tossed with mixed vegetables and pav bhaji masala on a hot tawa.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Chawal",
+        "englishName": "cooked rice, cooled"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Mutter",
+        "englishName": "green peas"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gajar",
+        "englishName": "carrot, finely chopped"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, chopped"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pav Bhaji Masala",
+        "englishName": "pav bhaji masala"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Cook the rice in a cooker ahead of time and let it cool completely, or use leftover rice."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat butter on a tawa over medium-high heat on the gas stove. Add onion and cook for 2 to 3 minutes until soft."
+      },
+      {
+        "step": 3,
+        "instruction": "Add carrot, peas and capsicum, and cook for 3 to 4 minutes until nearly tender."
+      },
+      {
+        "step": 4,
+        "instruction": "Add tomatoes, pav bhaji masala, red chilli powder and salt. Mash and cook for 3 to 4 minutes until it turns into a thick masala."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the cooled rice and toss well on high heat for 3 to 4 minutes until everything is evenly coated and heated through."
+      },
+      {
+        "step": 6,
+        "instruction": "Garnish with coriander leaves and a knob of butter on top. Serve hot."
+      },
+    ],
+    "notes": [
+      "Using day-old, cooled rice keeps the pulao from turning mushy.",
+      "Serve with raita or papad.",
+    ],
+    "nutrition": {
+      "calories": 340,
+      "protein": 7,
+      "carbs": 48,
+      "fat": 13
+    }
+  },
+
+  "kashmiri pulao": {
+    "dishName": "Kashmiri Pulao",
+    "image": "/dishes/veg-pulao.webp",
+    "description": "A lightly sweet, fragrant rice dish studded with dried fruits, nuts and whole spices.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1.5 cups",
+        "commonName": "Basmati Chawal",
+        "englishName": "basmati rice, soaked 30 minutes"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kaju",
+        "englishName": "cashew nuts"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kishmish",
+        "englishName": "raisins"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Anardana",
+        "englishName": "pomegranate seeds, for garnish"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Pineapple",
+        "englishName": "pineapple chunks (optional)"
+      },
+      {
+        "amount": "1",
+        "commonName": "Dalchini",
+        "englishName": "cinnamon stick"
+      },
+      {
+        "amount": "3",
+        "commonName": "Laung",
+        "englishName": "cloves"
+      },
+      {
+        "amount": "2",
+        "commonName": "Elaichi",
+        "englishName": "green cardamom"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Heat ghee in a kadai on the gas stove. Add cashews and raisins, and fry until golden. Remove and set aside."
+      },
+      {
+        "step": 2,
+        "instruction": "In the same ghee, add cinnamon, cloves and cardamom, and let them sizzle for a few seconds."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the drained rice and gently sauté for 2 minutes to coat each grain."
+      },
+      {
+        "step": 4,
+        "instruction": "Transfer everything to a pressure cooker, add 2.5 cups water, sugar and salt. Cook for 2 whistles on medium heat."
+      },
+      {
+        "step": 5,
+        "instruction": "Let the pressure release naturally, then gently fluff the rice with a fork."
+      },
+      {
+        "step": 6,
+        "instruction": "Fold in the fried cashews, raisins, pineapple if using, and garnish with pomegranate seeds before serving."
+      },
+    ],
+    "notes": [
+      "Be gentle while fluffing so the rice grains stay whole and separate.",
+      "Pairs beautifully with a mild paneer or vegetable kurma.",
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein": 5,
+      "carbs": 54,
+      "fat": 9
+    }
+  },
+
+  "mughlai paratha": {
+    "dishName": "Mughlai Paratha",
+    "image": "/dishes/anda-paratha.webp",
+    "description": "A Kolkata favourite — a flaky paratha stuffed with a spiced egg-mince filling and pan-fried until crisp.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2",
+        "commonName": "Anda",
+        "englishName": "eggs"
+      },
+      {
+        "amount": "150 g",
+        "commonName": "Chicken Keema",
+        "englishName": "minced chicken, cooked and cooled (optional)"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for shallow-frying"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Make a soft dough with flour, 2 tablespoons oil, salt and water. Knead well, cover and rest for 20 to 30 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Whisk eggs with onion, green chilli, garam masala, coriander leaves, salt and the cooked minced chicken if using."
+      },
+      {
+        "step": 3,
+        "instruction": "Divide the dough into balls and roll each one out thin into a large square or circle."
+      },
+      {
+        "step": 4,
+        "instruction": "Pour a portion of the egg mixture in the centre and fold the edges of the dough over it to form a sealed square packet."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat oil on a tawa on the gas stove. Shallow-fry the stuffed paratha on both sides for 3 to 4 minutes each, pressing gently, until golden and crisp."
+      },
+      {
+        "step": 6,
+        "instruction": "Cut into strips and serve hot with a simple onion-chilli salad."
+      },
+    ],
+    "notes": [
+      "Roll the dough thin enough that it stays crisp but doesn't tear while folding.",
+      "Can be made purely with egg for a simpler version.",
+    ],
+    "nutrition": {
+      "calories": 420,
+      "protein": 15,
+      "carbs": 35,
+      "fat": 25
+    }
+  },
+
+  "kolkata biryani": {
+    "dishName": "Kolkata Biryani",
+    "image": "/dishes/chicken-biryani.webp",
+    "description": "A lightly spiced, fragrant biryani with tender meat and the signature soft, spiced potato tucked inside.",
+    "prepTime": "Approx. 1 hour 30 minutes (plus marination)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chicken",
+        "englishName": "chicken, curry cut"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "potato, halved"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Basmati Chawal",
+        "englishName": "basmati rice, soaked 30 minutes"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced and fried"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Biryani Masala",
+        "englishName": "Kolkata-style biryani masala"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Kewra Jal",
+        "englishName": "kewra water (optional)"
+      },
+      {
+        "amount": "a few strands",
+        "commonName": "Kesar",
+        "englishName": "saffron, soaked in warm milk"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Marinate the chicken with yogurt, ginger garlic paste, biryani masala and salt for at least 1 hour."
+      },
+      {
+        "step": 2,
+        "instruction": "Rub the potato halves with a little salt and turmeric, and shallow-fry in a kadai on the gas stove until golden on the outside. Set aside."
+      },
+      {
+        "step": 3,
+        "instruction": "Boil the soaked rice in salted water until about 70% cooked. Drain."
+      },
+      {
+        "step": 4,
+        "instruction": "In the same kadai, heat ghee and layer the marinated chicken at the bottom, tucking in the fried potatoes."
+      },
+      {
+        "step": 5,
+        "instruction": "Layer the rice over the chicken and potatoes. Top with fried onions, saffron milk and a splash of kewra water."
+      },
+      {
+        "step": 6,
+        "instruction": "Cover tightly and place the kadai over a hot tawa on low heat. Cook on dum for 25 to 30 minutes."
+      },
+      {
+        "step": 7,
+        "instruction": "Rest for 10 minutes, then fluff gently, making sure each serving gets a piece of the soft potato, and serve hot."
+      },
+    ],
+    "notes": [
+      "The potato is the signature of this biryani, so don't skip it.",
+      "This version is lighter and less spicy than other regional biryanis.",
+    ],
+    "nutrition": {
+      "calories": 480,
+      "protein": 24,
+      "carbs": 55,
+      "fat": 17
+    }
+  },
+
+  "double ka meetha": {
+    "dishName": "Double Ka Meetha",
+    "image": "/dishes/shahi-tukda.webp",
+    "description": "A Hyderabadi bread pudding — fried bread slices soaked in sweet saffron-cardamom milk, topped with nuts.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "air_fryer"
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "6 slices",
+        "commonName": "Bread",
+        "englishName": "white bread, crusts removed"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter or ghee, melted"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Doodh",
+        "englishName": "full-fat milk"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "4",
+        "commonName": "Elaichi",
+        "englishName": "green cardamom, crushed"
+      },
+      {
+        "amount": "a few strands",
+        "commonName": "Kesar",
+        "englishName": "saffron"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kaju",
+        "englishName": "cashew nuts, chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Badam",
+        "englishName": "almonds, slivered"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Kishmish",
+        "englishName": "raisins"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Preheat the oven to 180°C. Brush the bread slices with melted butter on both sides and bake for 10 to 12 minutes, turning once, until golden and crisp."
+      },
+      {
+        "step": 2,
+        "instruction": "Meanwhile, heat the milk in a pan on the gas stove with sugar, cardamom and saffron. Simmer for 8 to 10 minutes until slightly thickened."
+      },
+      {
+        "step": 3,
+        "instruction": "Cut the toasted bread slices diagonally into triangles and arrange them in a baking dish."
+      },
+      {
+        "step": 4,
+        "instruction": "Pour the warm sweetened milk evenly over the bread, pressing gently so it soaks in well."
+      },
+      {
+        "step": 5,
+        "instruction": "Scatter chopped cashews, almonds and raisins on top."
+      },
+      {
+        "step": 6,
+        "instruction": "Warm the dish in the oven for 5 minutes before serving, either warm or chilled."
+      },
+    ],
+    "notes": [
+      "Letting it rest for 15 minutes before serving helps the bread soak up the milk fully.",
+      "A classic festive dessert, especially popular at Eid and Ramzan.",
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 8,
+      "carbs": 40,
+      "fat": 13
+    }
+  },
+
+  "corn chaat": {
+    "dishName": "Corn Chaat",
+    "image": "/dishes/corn-chaat.webp",
+    "description": "A tangy, spiced boiled corn salad tossed with onions, tomatoes and chaat masala, a popular street snack.",
+    "prepTime": "Approx. 20 minutes",
+    "equipment": [
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Makai",
+        "englishName": "sweet corn kernels"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Chaat Masala",
+        "englishName": "chaat masala"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Boil the corn kernels in a pan of water on the gas stove for 5 to 6 minutes until tender. Drain and let cool slightly."
+      },
+      {
+        "step": 2,
+        "instruction": "In a large bowl, combine the warm corn with chopped onion, tomato and green chilli."
+      },
+      {
+        "step": 3,
+        "instruction": "Add chaat masala, red chilli powder and salt. Toss well."
+      },
+      {
+        "step": 4,
+        "instruction": "Squeeze in the lemon juice and mix again."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with coriander leaves and serve immediately, either warm or chilled."
+      },
+    ],
+    "notes": [
+      "Serve soon after mixing, as the lemon juice makes the vegetables release water over time.",
+      "A quick, healthy evening snack.",
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein": 4,
+      "carbs": 28,
+      "fat": 2
+    }
+  },
+
+  "masala papad": {
+    "dishName": "Masala Papad",
+    "image": "/dishes/masala-papad.webp",
+    "description": "Crisp roasted papad topped with a tangy onion-tomato salad, a popular starter at Indian restaurants.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [
+      {
+        "item": "microwave",
+        "isSpecialized": false,
+        "alternative": "gas stove"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4",
+        "commonName": "Papad",
+        "englishName": "plain papad"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Chaat Masala",
+        "englishName": "chaat masala"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Microwave each papad on high for 40 to 60 seconds until it turns crisp and puffed. Alternatively, roast directly over a gas flame on the gas stove, turning quickly with tongs, until crisp."
+      },
+      {
+        "step": 2,
+        "instruction": "In a bowl, mix onion, tomato, green chilli, chaat masala, lemon juice, salt and coriander leaves."
+      },
+      {
+        "step": 3,
+        "instruction": "Spoon the mixture evenly over the crisp papads just before serving."
+      },
+      {
+        "step": 4,
+        "instruction": "Serve immediately so the papad stays crunchy."
+      },
+    ],
+    "notes": [
+      "Top the papad only right before eating so it doesn't turn soggy.",
+      "A quick starter that needs almost no cooking.",
+    ],
+    "nutrition": {
+      "calories": 90,
+      "protein": 3,
+      "carbs": 14,
+      "fat": 2
+    }
+  },
+
+  "club sandwich": {
+    "dishName": "Club Sandwich",
+    "image": "/dishes/veg-sandwich.webp",
+    "description": "A hearty, layered grilled sandwich with vegetables, cheese and a tangy mint-mayo spread, tawa-grilled.",
+    "prepTime": "Approx. 20 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "6 slices",
+        "commonName": "Bread",
+        "englishName": "white or brown bread"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter, softened"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pudina Chutney",
+        "englishName": "mint-coriander chutney"
+      },
+      {
+        "amount": "1",
+        "commonName": "Kheera",
+        "englishName": "cucumber, thinly sliced"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tamatar",
+        "englishName": "tomato, thinly sliced"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "2 slices",
+        "commonName": "Cheese",
+        "englishName": "cheese slices"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Namak",
+        "englishName": "salt and pepper, to taste"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Spread butter on one side of each bread slice and mint chutney on the other."
+      },
+      {
+        "step": 2,
+        "instruction": "Layer cucumber, tomato, onion, cheese, salt and pepper between two slices of bread, buttered side facing out."
+      },
+      {
+        "step": 3,
+        "instruction": "Stack a third slice on top to build a double-layer sandwich, repeating the vegetable and cheese layers."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat a tawa on the gas stove over medium heat. Place the assembled sandwich on it and press down gently with a spatula."
+      },
+      {
+        "step": 5,
+        "instruction": "Grill for 2 to 3 minutes per side until golden and the cheese softens."
+      },
+      {
+        "step": 6,
+        "instruction": "Cut diagonally into triangles and serve hot with ketchup."
+      },
+    ],
+    "notes": [
+      "Press the sandwich firmly on the tawa for even grilling.",
+      "Swap in boiled potato or paneer slices for extra heartiness.",
+    ],
+    "nutrition": {
+      "calories": 350,
+      "protein": 11,
+      "carbs": 40,
+      "fat": 16
+    }
+  },
+
+  "veg seekh kebab": {
+    "dishName": "Veg Seekh Kebab",
+    "image": "/dishes/hara-bhara-kebab.webp",
+    "description": "Spiced mixed vegetable and paneer kebabs shaped onto skewers and air-fried until lightly crisp.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": "oven"
+      },
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Mixed Sabzi",
+        "englishName": "mixed boiled vegetables (carrot, beans, peas), mashed"
+      },
+      {
+        "amount": "100 g",
+        "commonName": "Paneer",
+        "englishName": "paneer, grated"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "potato, boiled and mashed"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Besan",
+        "englishName": "gram flour, roasted"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for brushing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pulse the mixed boiled vegetables briefly in a mixer to chop them finely without turning into a puree."
+      },
+      {
+        "step": 2,
+        "instruction": "In a bowl, combine the chopped vegetables, grated paneer, mashed potato, ginger garlic paste, green chilli, garam masala, roasted gram flour and salt."
+      },
+      {
+        "step": 3,
+        "instruction": "Mix and knead until the mixture holds together well. Chill for 15 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Wet your hands and shape portions of the mixture around skewers, or into flat cutlet shapes."
+      },
+      {
+        "step": 5,
+        "instruction": "Brush lightly with oil and air-fry at 200°C for 12 to 15 minutes, turning halfway, until golden and firm."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve hot with mint chutney."
+      },
+    ],
+    "notes": [
+      "If the mixture feels too wet, add a little more roasted gram flour to bind it.",
+      "A great vegetarian starter for parties.",
+    ],
+    "nutrition": {
+      "calories": 180,
+      "protein": 6,
+      "carbs": 20,
+      "fat": 8
+    }
+  },
+
+  "dahi kebab": {
+    "dishName": "Dahi Kebab",
+    "description": "Creamy hung-curd kebabs with a crisp air-fried shell, a popular North Indian vegetarian starter.",
+    "prepTime": "Approx. 30 minutes (plus hanging time)",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Dahi",
+        "englishName": "yogurt, hung for 4 to 6 hours to make hung curd"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Besan",
+        "englishName": "gram flour, roasted"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Chaat Masala",
+        "englishName": "chaat masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "coriander leaves, chopped"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Breadcrumbs",
+        "englishName": "breadcrumbs"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for brushing"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a bowl, mix the hung curd with roasted gram flour, green chilli, chaat masala, coriander leaves and salt until smooth and thick."
+      },
+      {
+        "step": 2,
+        "instruction": "Shape the mixture into small, flat round patties with lightly greased hands."
+      },
+      {
+        "step": 3,
+        "instruction": "Coat each patty in breadcrumbs, pressing gently so they stick."
+      },
+      {
+        "step": 4,
+        "instruction": "Chill the patties in the fridge for 15 minutes to firm up."
+      },
+      {
+        "step": 5,
+        "instruction": "Brush lightly with oil and air-fry at 200°C for 12 to 15 minutes, turning once, until golden and crisp outside."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve hot with mint chutney."
+      },
+    ],
+    "notes": [
+      "Hanging the curd well is essential, or the kebabs will be too soft to hold shape.",
+      "Handle gently while air-frying as the inside stays soft and creamy.",
+    ],
+    "nutrition": {
+      "calories": 160,
+      "protein": 7,
+      "carbs": 15,
+      "fat": 8
+    }
+  },
+
+  "gobi 65": {
+    "dishName": "Gobi 65",
+    "image": "/dishes/paneer-65.webp",
+    "description": "Crispy, spicy air-fried cauliflower florets tossed in a tangy chilli-curry leaf coating.",
+    "prepTime": "Approx. 30 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 medium",
+        "commonName": "Gobhi",
+        "englishName": "cauliflower, cut into florets"
+      },
+      {
+        "amount": "3 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "a few",
+        "commonName": "Kadi Patta",
+        "englishName": "curry leaves"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, slit"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Dahi",
+        "englishName": "yogurt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Blanch the cauliflower florets in hot water for 2 minutes, then drain well and pat dry."
+      },
+      {
+        "step": 2,
+        "instruction": "Toss the florets with cornflour, flour, half the red chilli powder, yogurt, half the ginger garlic paste and salt."
+      },
+      {
+        "step": 3,
+        "instruction": "Air-fry at 200°C for 12 to 15 minutes, shaking the basket halfway, until crisp and golden."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat oil in a kadai on the gas stove. Add curry leaves and green chillies, and sauté for a few seconds."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the remaining ginger garlic paste and red chilli powder, and cook for a minute."
+      },
+      {
+        "step": 6,
+        "instruction": "Toss in the air-fried cauliflower and mix well for a minute so it's evenly coated. Serve hot."
+      },
+    ],
+    "notes": [
+      "Patting the cauliflower dry before coating helps it crisp up better.",
+      "A popular South Indian-style starter.",
+    ],
+    "nutrition": {
+      "calories": 170,
+      "protein": 5,
+      "carbs": 24,
+      "fat": 6
+    }
+  },
+
+  "onion rings": {
+    "dishName": "Onion Rings",
+    "image": "/dishes/kanda-bhaji.webp",
+    "description": "Crispy, golden battered onion rings air-fried for a lighter take on the classic snack.",
+    "prepTime": "Approx. 25 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, cut into thick rings"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Cornflour",
+        "englishName": "cornflour"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Baking Soda",
+        "englishName": "baking soda"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Pani",
+        "englishName": "cold water"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Breadcrumbs",
+        "englishName": "breadcrumbs"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Tel",
+        "englishName": "cooking oil spray"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Separate the onion slices into individual rings."
+      },
+      {
+        "step": 2,
+        "instruction": "Whisk flour, cornflour, red chilli powder, baking soda, salt and cold water into a smooth, thick batter."
+      },
+      {
+        "step": 3,
+        "instruction": "Dip each onion ring into the batter, letting the excess drip off, then coat well in breadcrumbs."
+      },
+      {
+        "step": 4,
+        "instruction": "Arrange the coated rings in a single layer in the air fryer basket and lightly spray with oil."
+      },
+      {
+        "step": 5,
+        "instruction": "Air-fry at 200°C for 10 to 12 minutes, turning halfway, until golden and crisp."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve hot with ketchup or a dip of your choice."
+      },
+    ],
+    "notes": [
+      "Don't overcrowd the air fryer basket, or the rings won't crisp evenly.",
+      "Serve immediately, as they soften on standing.",
+    ],
+    "nutrition": {
+      "calories": 200,
+      "protein": 4,
+      "carbs": 30,
+      "fat": 7
+    }
+  },
+
+  "american chopsuey": {
+    "dishName": "American Chopsuey",
+    "description": "Crispy fried noodles topped with a sweet-and-sour vegetable and chicken gravy, an Indo-Chinese favourite.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "air_fryer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "200 g",
+        "commonName": "Noodles",
+        "englishName": "noodles, boiled"
+      },
+      {
+        "amount": "150 g",
+        "commonName": "Chicken",
+        "englishName": "boneless chicken, shredded (optional)"
+      },
+      {
+        "amount": "1",
+        "commonName": "Gajar",
+        "englishName": "carrot, julienned"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gobhi",
+        "englishName": "cabbage, shredded"
+      },
+      {
+        "amount": "1",
+        "commonName": "Shimla Mirch",
+        "englishName": "capsicum, julienned"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tomato Ketchup",
+        "englishName": "tomato ketchup"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Red Chilli Sauce",
+        "englishName": "red chilli sauce"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Soy Sauce",
+        "englishName": "soy sauce"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cornflour",
+        "englishName": "cornflour, mixed with water"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Toss the boiled noodles with a little cornflour and oil, then air-fry at 200°C for 10 to 12 minutes, shaking occasionally, until crisp and golden. Set aside as the base."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil in a kadai on the gas stove. Add the chicken if using, and stir-fry for 4 to 5 minutes until cooked."
+      },
+      {
+        "step": 3,
+        "instruction": "Add carrot, cabbage and capsicum, and stir-fry on high heat for 2 to 3 minutes."
+      },
+      {
+        "step": 4,
+        "instruction": "Add 2 cups of water, ketchup, chilli sauce, soy sauce and salt. Bring to a boil."
+      },
+      {
+        "step": 5,
+        "instruction": "Stir in the cornflour slurry and simmer for 3 to 4 minutes until the gravy thickens to a glossy consistency."
+      },
+      {
+        "step": 6,
+        "instruction": "Place the crispy noodles on a plate and pour the hot gravy over them just before serving so they stay crunchy."
+      },
+    ],
+    "notes": [
+      "Pour the gravy over the noodles only right before serving to keep them crisp.",
+      "Works equally well as a fully vegetarian dish by skipping the chicken.",
+    ],
+    "nutrition": {
+      "calories": 380,
+      "protein": 16,
+      "carbs": 50,
+      "fat": 12
+    }
+  },
+
+  "kadala curry": {
+    "dishName": "Kadala Curry",
+    "image": "/dishes/chana-masala.webp",
+    "description": "A Kerala-style black chickpea curry in a coconut-spiced gravy, the classic pairing for puttu.",
+    "prepTime": "Approx. 50 minutes (plus soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Kala Chana",
+        "englishName": "black chickpeas, soaked overnight"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Nariyal",
+        "englishName": "grated coconut"
+      },
+      {
+        "amount": "1",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "2",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhania Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "a few",
+        "commonName": "Kadi Patta",
+        "englishName": "curry leaves"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Pressure-cook the soaked black chickpeas with water, turmeric and salt for 5 to 6 whistles until soft. Set aside with the cooking liquid."
+      },
+      {
+        "step": 2,
+        "instruction": "Dry roast the grated coconut in a kadai on the gas stove for 3 to 4 minutes until lightly golden and fragrant, then blend to a paste in a mixer with a little water."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in the kadai. Add curry leaves and onion, and cook until the onion turns soft and golden."
+      },
+      {
+        "step": 4,
+        "instruction": "Add ginger garlic paste and cook for a minute, then add tomatoes, coriander powder and red chilli powder. Cook until soft and the oil separates."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the cooked chickpeas with their liquid and the coconut paste. Simmer for 10 to 12 minutes, mashing a few chickpeas to thicken the gravy."
+      },
+      {
+        "step": 6,
+        "instruction": "Adjust salt and consistency with water, and serve hot."
+      },
+    ],
+    "notes": [
+      "Mashing a portion of the chickpeas gives the curry a naturally thick texture.",
+      "Traditionally served with puttu, but also great with rice or appam.",
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein": 11,
+      "carbs": 34,
+      "fat": 9
+    }
+  },
+
+  "fish moilee": {
+    "dishName": "Fish Moilee",
+    "image": "/dishes/kerala-fish-curry.webp",
+    "description": "A mild, fragrant Kerala fish curry in a coconut milk gravy with curry leaves and green chillies.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Machli",
+        "englishName": "fish fillets or steaks"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Nariyal Doodh",
+        "englishName": "coconut milk"
+      },
+      {
+        "amount": "1 large",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak Lahsun Paste",
+        "englishName": "ginger garlic paste"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, slit"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "a few",
+        "commonName": "Kadi Patta",
+        "englishName": "curry leaves"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "coconut oil or cooking oil"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Rub the fish with turmeric and a little salt, and set aside for 10 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat oil in a kadai on the gas stove. Add curry leaves and sliced onion, and cook until soft and translucent, about 5 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Add ginger garlic paste and green chillies, and cook for a minute."
+      },
+      {
+        "step": 4,
+        "instruction": "Pour in the coconut milk and bring to a gentle simmer. Do not let it boil hard.",
+        "tip": {
+          "title": "Keep it gentle",
+          "content": "Coconut milk can split if boiled too vigorously, so simmer on low heat throughout."
+        }
+      },
+      {
+        "step": 5,
+        "instruction": "Carefully slide in the fish pieces and simmer on low heat for 10 to 12 minutes until cooked through."
+      },
+      {
+        "step": 6,
+        "instruction": "Turn off the heat, stir in the lemon juice, and serve hot with steamed rice."
+      },
+    ],
+    "notes": [
+      "Simmer gently throughout so the coconut milk stays smooth and doesn't curdle.",
+      "A comforting, lightly spiced curry perfect with appam or rice.",
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein": 24,
+      "carbs": 7,
+      "fat": 20
+    }
+  },
+
+  "mohanthal": {
+    "dishName": "Mohanthal",
+    "image": "/dishes/barfi.webp",
+    "description": "A rich, fudgy Gujarati sweet made from roasted gram flour, ghee and sugar syrup, topped with nuts.",
+    "prepTime": "Approx. 1 hour",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Besan",
+        "englishName": "coarse gram flour"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Doodh",
+        "englishName": "milk, for binding"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Ghee",
+        "englishName": "ghee"
+      },
+      {
+        "amount": "1.5 cups",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "3/4 cup",
+        "commonName": "Pani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Badam",
+        "englishName": "almonds, slivered, for garnish"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Pista",
+        "englishName": "pistachios, slivered, for garnish"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Sprinkle the milk over the gram flour and rub it in with your fingers until it resembles coarse breadcrumbs. Rest for 15 minutes, then pass through a coarse sieve."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat ghee in a kadai on the gas stove. Add the gram flour mixture and roast on low heat, stirring continuously, for 20 to 25 minutes until it turns golden and fragrant.",
+        "tip": {
+          "title": "Low heat is key",
+          "content": "Mohanthal needs slow roasting; rushing on high heat will burn the flour before it cooks through."
+        }
+      },
+      {
+        "step": 3,
+        "instruction": "Meanwhile, make a sugar syrup by heating sugar and water in a separate pan until it reaches a one-string consistency."
+      },
+      {
+        "step": 4,
+        "instruction": "Turn off the heat under the roasted gram flour and let it cool slightly for 2 to 3 minutes."
+      },
+      {
+        "step": 5,
+        "instruction": "Pour the warm sugar syrup into the roasted flour, add cardamom powder, and mix quickly and vigorously until well combined."
+      },
+      {
+        "step": 6,
+        "instruction": "Spread the mixture evenly into a greased tray, top with slivered almonds and pistachios, and let it set for at least 2 hours before cutting into squares."
+      },
+    ],
+    "notes": [
+      "Work quickly once the syrup is added, as the mixture sets fast.",
+      "Keeps well in an airtight container for up to a week.",
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein": 4,
+      "carbs": 24,
+      "fat": 12
+    }
+  },
+
+  "churma ladoo": {
+    "dishName": "Churma Ladoo",
+    "image": "/dishes/dal-baati-churma.webp",
+    "description": "Sweet, nutty balls made from roasted wheat flour, ghee and jaggery, a traditional Rajasthani sweet.",
+    "prepTime": "Approx. 1 hour",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Gehu Ka Atta",
+        "englishName": "whole wheat flour, coarse"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Ghee",
+        "englishName": "ghee, for dough and roasting"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Gud",
+        "englishName": "jaggery, grated"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Sooji",
+        "englishName": "semolina (optional, for texture)"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Badam",
+        "englishName": "almonds, chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee, extra for binding ladoos"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix the wheat flour and semolina with 3 tablespoons of warm ghee and a little water to form a stiff dough. Knead well and rest for 15 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Shape the dough into small, thick discs and poke a hole in the centre of each with your thumb so they cook evenly."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat the remaining ghee in a kadai on the gas stove and shallow-fry the discs on low-medium heat for 10 to 12 minutes per batch, turning often, until deep golden and cooked through inside."
+      },
+      {
+        "step": 4,
+        "instruction": "Let the fried discs cool completely, then break them into pieces and grind coarsely in a mixer into a crumbly texture."
+      },
+      {
+        "step": 5,
+        "instruction": "Mix the ground churma with grated jaggery, cardamom powder, chopped almonds and a little melted ghee."
+      },
+      {
+        "step": 6,
+        "instruction": "While still warm, shape the mixture into small round ladoos with your palms. Let them cool and firm up before serving."
+      },
+    ],
+    "notes": [
+      "Cooking the dough discs on low heat ensures they cook through without burning outside.",
+      "Pairs traditionally with dal baati, but is delicious on its own too.",
+    ],
+    "nutrition": {
+      "calories": 260,
+      "protein": 4,
+      "carbs": 30,
+      "fat": 14
+    }
+  },
+
+  "aam ras": {
+    "dishName": "Aam Ras",
+    "image": "/dishes/mango-juice.webp",
+    "description": "Sweet, smooth pureed mango pulp, a simple and beloved summer favourite often served with puri.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 medium",
+        "commonName": "Aam",
+        "englishName": "ripe mangoes, peeled and chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar (optional, depending on mango sweetness)"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Doodh",
+        "englishName": "milk or chilled water, to adjust consistency"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Kesar",
+        "englishName": "saffron strands (optional)"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Blend the chopped mango pulp in a mixer until completely smooth."
+      },
+      {
+        "step": 2,
+        "instruction": "Add sugar if the mangoes aren't sweet enough, along with cardamom powder, and blend again briefly."
+      },
+      {
+        "step": 3,
+        "instruction": "Add a splash of milk or chilled water to reach your preferred pouring consistency."
+      },
+      {
+        "step": 4,
+        "instruction": "Chill in the fridge for 30 minutes, garnish with a few saffron strands, and serve."
+      },
+    ],
+    "notes": [
+      "Use ripe, sweet mangoes like Alphonso or Kesar for the best flavour.",
+      "Traditionally served with hot puris for a classic combination.",
+    ],
+    "nutrition": {
+      "calories": 150,
+      "protein": 2,
+      "carbs": 35,
+      "fat": 1
+    }
+  },
+
+  "begun bhaja": {
+    "dishName": "Begun Bhaja",
+    "description": "Crisp, golden shallow-fried eggplant slices coated in turmeric and spices, a simple Bengali classic.",
+    "prepTime": "Approx. 20 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "gas stove",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "1 large",
+        "commonName": "Baingan",
+        "englishName": "eggplant, cut into thin round slices"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Chawal Ka Atta",
+        "englishName": "rice flour (optional, for extra crispness)"
+      },
+      {
+        "amount": "4 tbsp",
+        "commonName": "Tel",
+        "englishName": "mustard oil or cooking oil"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Rub the eggplant slices with turmeric, red chilli powder and salt. Let them rest for 10 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "If using, lightly dust the slices with rice flour on both sides for extra crispness."
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil on a tawa over medium heat on the gas stove."
+      },
+      {
+        "step": 4,
+        "instruction": "Shallow-fry the eggplant slices in a single layer for 3 to 4 minutes per side, until golden brown and crisp at the edges."
+      },
+      {
+        "step": 5,
+        "instruction": "Drain briefly and serve hot as a side with dal and rice."
+      },
+    ],
+    "notes": [
+      "Salting the slices beforehand helps draw out excess moisture for a crisper fry.",
+      "A simple, quick side dish for any Bengali thali.",
+    ],
+    "nutrition": {
+      "calories": 130,
+      "protein": 2,
+      "carbs": 10,
+      "fat": 9
+    }
+  },
+
+  "bhapa doi": {
+    "dishName": "Bhapa Doi",
+    "image": "/dishes/mishti-doi.webp",
+    "description": "A steamed, custard-like sweetened yogurt dessert, smooth and lightly caramelised, a Bengali favourite.",
+    "prepTime": "Approx. 30 minutes (plus chilling)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": "microwave"
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Dahi",
+        "englishName": "thick, hung yogurt"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Condensed Milk",
+        "englishName": "sweetened condensed milk"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Doodh",
+        "englishName": "milk"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "a few",
+        "commonName": "Pista",
+        "englishName": "pistachios, chopped, for garnish"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Whisk the hung yogurt, condensed milk, milk and cardamom powder together until completely smooth and lump-free."
+      },
+      {
+        "step": 2,
+        "instruction": "Pour the mixture into small heatproof bowls or ramekins."
+      },
+      {
+        "step": 3,
+        "instruction": "Preheat the oven to 160°C. Place the filled bowls in a baking tray and pour hot water into the tray until it reaches halfway up the sides of the bowls, creating a water bath."
+      },
+      {
+        "step": 4,
+        "instruction": "Bake for 20 to 25 minutes, until just set with a slight wobble in the centre."
+      },
+      {
+        "step": 5,
+        "instruction": "Let the bowls cool, then refrigerate for at least 2 hours before serving, garnished with chopped pistachios."
+      },
+    ],
+    "notes": [
+      "The water bath keeps the yogurt custard smooth instead of curdling.",
+      "Best served chilled, straight from the fridge.",
+    ],
+    "nutrition": {
+      "calories": 210,
+      "protein": 6,
+      "carbs": 32,
+      "fat": 6
+    }
+  },
+
+  "sattu sharbat": {
+    "dishName": "Sattu Sharbat",
+    "image": "/dishes/masala-chaas.webp",
+    "description": "A cooling, protein-rich roasted gram flour drink with lemon and spices, popular in Bihar summers.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "4 tbsp",
+        "commonName": "Sattu",
+        "englishName": "roasted gram flour"
+      },
+      {
+        "amount": "2 cups",
+        "commonName": "Pani",
+        "englishName": "cold water"
+      },
+      {
+        "amount": "1",
+        "commonName": "Nimbu",
+        "englishName": "lemon, juiced"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "roasted cumin powder"
+      },
+      {
+        "amount": "a pinch",
+        "commonName": "Kala Namak",
+        "englishName": "black salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Add sattu, water, lemon juice, roasted cumin powder and black salt to a mixer jar."
+      },
+      {
+        "step": 2,
+        "instruction": "Blend briefly until completely smooth and frothy, with no lumps."
+      },
+      {
+        "step": 3,
+        "instruction": "Pour into glasses over ice cubes."
+      },
+      {
+        "step": 4,
+        "instruction": "Stir once more and serve immediately before it settles."
+      },
+    ],
+    "notes": [
+      "Drink fresh, as sattu tends to settle at the bottom quickly.",
+      "A traditional way to beat the summer heat while staying full for longer.",
+    ],
+    "nutrition": {
+      "calories": 120,
+      "protein": 6,
+      "carbs": 20,
+      "fat": 2
+    }
+  },
+
+  "rose sharbat": {
+    "dishName": "Rose Sharbat",
+    "description": "A vibrant, fragrant rose-flavoured syrup drink served chilled, a classic refreshing Indian cooler.",
+    "prepTime": "Approx. 5 minutes",
+    "equipment": [
+      {
+        "item": "mixer",
+        "isSpecialized": false,
+        "alternative": null
+      },
+    ],
+    "ingredients": [
+      {
+        "amount": "3 tbsp",
+        "commonName": "Rooh Afza",
+        "englishName": "rose syrup (such as rooh afza)"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Doodh",
+        "englishName": "chilled milk or chilled water"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Barf",
+        "englishName": "ice cubes"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Sabja Seeds",
+        "englishName": "basil seeds, soaked (optional)"
+      },
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Soak the basil seeds in a little water for 15 minutes until they swell up, if using."
+      },
+      {
+        "step": 2,
+        "instruction": "Pour the rose syrup into a glass."
+      },
+      {
+        "step": 3,
+        "instruction": "Add chilled milk or water and stir well until evenly pink and combined."
+      },
+      {
+        "step": 4,
+        "instruction": "Add ice cubes and the soaked basil seeds if using."
+      },
+      {
+        "step": 5,
+        "instruction": "Give it a final stir and serve immediately."
+      },
+    ],
+    "notes": [
+      "Using chilled milk makes it richer, while water keeps it lighter and more refreshing.",
+      "A quick drink that needs no cooking at all.",
+    ],
+    "nutrition": {
+      "calories": 140,
+      "protein": 2,
+      "carbs": 28,
+      "fat": 2
+    }
+  },
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -48541,4 +54695,67 @@ export const predefinedRecipeServings: Record<string, number> = {
   "achari chicken roll": 4,
   "tandoori chicken roll": 4,
   "mutton seekh roll": 4,
+
+  
+  "handi chicken": 4,
+  "tawa chicken": 4,
+  "chicken shahi korma": 4,
+  "chicken kali mirch": 4,
+  "tawa chaap masala": 4,
+  "amritsari dal": 4,
+  "paneer tikka masala": 4,
+  "paneer mushroom bhurji": 3,
+  "dum chicken biryani": 4,
+  "dum mutton biryani": 4,
+  "plain rice": 2,
+  "stuffed naan": 4,
+  "butter garlic naan": 4,
+  "paneer tikka roll": 2,
+  "malai chaap roll": 2,
+  "chicken tikka roll": 2,
+  "lemon fish": 4,
+  "chilli fish": 4,
+  "lemon grilled fish": 4,
+  "lemon coriander soup": 4,
+  "talumein soup": 4,
+  "chicken soup": 4,
+  "virgin mojito": 1,
+  "mint cucumber juice": 2,
+  "home made ginger ale": 2,
+  "green apple fizz": 1,
+  "fresh lime soda": 1,
+  "iced tea": 2,
+  "green tea": 1,
+  "mushroom tikka": 3,
+  "bhatti chicken": 4,
+  "bhatti chicken tikka": 4,
+  "mutton seekh kabab": 4,
+  "chicken seekh kabab": 4,
+  "chilli mushroom": 3,
+  "crispy corn": 3,
+  "lemon chicken": 4,
+  "chilli coriander chicken": 4,
+  "paneer pasanda": 4,
+  "tawa pulao": 3,
+  "kashmiri pulao": 4,
+  "mughlai paratha": 2,
+  "kolkata biryani": 4,
+  "double ka meetha": 4,
+  "corn chaat": 2,
+  "masala papad": 2,
+  "club sandwich": 2,
+  "veg seekh kebab": 4,
+  "dahi kebab": 4,
+  "gobi 65": 3,
+  "onion rings": 3,
+  "american chopsuey": 3,
+  "kadala curry": 4,
+  "fish moilee": 4,
+  "mohanthal": 12,
+  "churma ladoo": 10,
+  "aam ras": 4,
+  "begun bhaja": 3,
+  "bhapa doi": 4,
+  "sattu sharbat": 2,
+  "rose sharbat": 1,
 };
