@@ -2265,13 +2265,12 @@ const handlePrevStep = () => {
                 onClick={() => setImageBounceKey((key) => key + 1)}
                 onContextMenu={(e) => e.preventDefault()}
                 onDragStart={(e) => e.preventDefault()}
-                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
                   } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
                 style={{
                   transformStyle: "preserve-3d",
                   pointerEvents: "auto",
                   userSelect: "none",
-                  borderColor: COLOR.border,
                 }}
               />
             </div>
@@ -3139,8 +3138,8 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
       {images.map((src, i) => (
         <div
           key={src + i}
-          className="relative aspect-square overflow-hidden rounded-2xl border"
-          style={{ borderColor: COLOR.border, perspective: "800px" }}
+          className="relative aspect-square overflow-hidden rounded-2xl"
+          style={{ perspective: "800px" }}
         >
           <div
             aria-hidden="true"
