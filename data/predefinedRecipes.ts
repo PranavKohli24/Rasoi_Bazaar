@@ -53129,6 +53129,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dahi kebab": {
     "dishName": "Dahi Kebab",
+    "image": "/dishes/dahi-kebab.webp",
     "description": "Creamy hung-curd kebabs with a crisp air-fried shell, a popular North Indian vegetarian starter.",
     "prepTime": "Approx. 30 minutes (plus hanging time)",
     "equipment": [
@@ -53220,7 +53221,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gobi 65": {
     "dishName": "Gobi 65",
-    "image": "/dishes/paneer-65.webp",
+    "image": "/dishes/gobi-65.webp",
     "description": "Crispy, spicy air-fried cauliflower florets tossed in a tangy chilli-curry leaf coating.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -53429,6 +53430,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "american chopsuey": {
     "dishName": "American Chopsuey",
+    "image": "/dishes/american-chopsuey.webp",
     "description": "Crispy fried noodles topped with a sweet-and-sour vegetable and chicken gravy, an Indo-Chinese favourite.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -53879,7 +53881,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "churma ladoo": {
     "dishName": "Churma Ladoo",
-    "image": "/dishes/dal-baati-churma.webp",
+    "image": "/dishes/churma-ladoo.webp",
     "description": "Sweet, nutty balls made from roasted wheat flour, ghee and jaggery, a traditional Rajasthani sweet.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -54045,6 +54047,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "begun bhaja": {
     "dishName": "Begun Bhaja",
+    "image": "/dishes/begun-bhaja.webp",
     "description": "Crisp, golden shallow-fried eggplant slices coated in turmeric and spices, a simple Bengali classic.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -54200,7 +54203,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sattu sharbat": {
     "dishName": "Sattu Sharbat",
-    "image": "/dishes/masala-chaas.webp",
+    "image": "/dishes/sattu-sharbat.webp",
     "description": "A cooling, protein-rich roasted gram flour drink with lemon and spices, popular in Bihar summers.",
     "prepTime": "Approx. 10 minutes",
     "equipment": [
@@ -54274,6 +54277,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rose sharbat": {
     "dishName": "Rose Sharbat",
+    "image": "/dishes/rose-sharbat.webp",
     "description": "A vibrant, fragrant rose-flavoured syrup drink served chilled, a classic refreshing Indian cooler.",
     "prepTime": "Approx. 5 minutes",
     "equipment": [
