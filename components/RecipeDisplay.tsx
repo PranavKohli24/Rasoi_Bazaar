@@ -3143,11 +3143,12 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
         >
           <div
             aria-hidden="true"
-            className={`absolute inset-0 transition-opacity duration-300 ${
-              loaded[i] ? "opacity-0" : "animate-pulse opacity-100"
+            className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-300 ${
+              loaded[i] ? "opacity-0" : "opacity-100"
             }`}
-            style={{ backgroundColor: COLOR.saffronTint }}
-          />
+          >
+            <div className="dish-image-shimmer__glow" />
+          </div>
           <img
             key={bounceKeys[i]}
             src={src}
