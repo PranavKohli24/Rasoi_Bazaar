@@ -25,7 +25,6 @@
   "Sweet Lassi": "hsl(42, 10%, 89%)",
   "Coconut Chutney": "hsl(40, 10%, 89%)",
   "White Sauce Pasta": "hsl(43, 17%, 88%)",
-  "White Chole (Safed Chole)": "hsl(42, 18%, 86%)",
   "Rasgulla": "hsl(42, 10%, 90%)",
   "Rasmalai": "hsl(45, 18%, 88%)",
   "Kaju Katli": "hsl(42, 10%, 87%)",
@@ -118,5 +117,41 @@
   "Bedmi Puri": "hsl(34, 32%, 79%)",
   "Tandoori Momos": "hsl(18, 35%, 80%)",
 
-  "Grape Juice": "hsl(285, 28%, 82%)"
+  "Grape Juice": "hsl(285, 28%, 82%)",
+
+  "Rose Sharbat": "hsl(350, 20%, 89%)",
+  "Rose Kulfi": "hsl(345, 23%, 87%)",
+
+  "Plain Rice": "hsl(42, 8%, 90%)",
+  "Patra": "hsl(115, 20%, 83%)",
+  "Methi Matar Malai": "hsl(105, 18%, 87%)",
+  "Yakhni Pulao": "hsl(38, 15%, 87%)",
+
+  "Olan": "hsl(42, 10%, 89%)",
+  "Fish Moilee": "hsl(42, 18%, 87%)",
+  "Kerala Vegetable Stew (Ishtu)": "hsl(42, 14%, 88%)",
+  "Kerala Chicken Stew": "hsl(42, 16%, 87%)",
+  "Kerala Mutton Stew": "hsl(42, 14%, 87%)",
+  "Chingri Malai Curry": "hsl(42, 18%, 86%)",
+  "Chana Madra": "hsl(42, 18%, 86%)",
+  "Gushtaba": "hsl(42, 16%, 87%)",
+  "Nadru Yakhni": "hsl(42, 16%, 87%)",
+
+  "Afghani Chaap": "hsl(42, 18%, 86%)",
+  "Malai Chaap": "hsl(35, 20%, 85%)",
+  "Reshmi Kebab (Malai Tikka)": "hsl(30, 24%, 83%)",
+
+  "Sattu Sharbat": "hsl(32, 18%, 86%)",
+
+  "Semiya Kheer (Vermicelli Kheer)": "hsl(42, 12%, 89%)",
+  "Phirni": "hsl(42, 12%, 89%)",
+  "Shrikhand": "hsl(42, 14%, 88%)",
+  "Basundi": "hsl(42, 16%, 87%)",
+  "Sheer Khurma": "hsl(38, 18%, 86%)",
+  "Bhapa Doi": "hsl(42, 10%, 89%)",
+
+  "Pouring Custard": "hsl(42, 14%, 88%)",
+  "Baked Custard": "hsl(42, 16%, 87%)",
+  "Fruit Custard": "hsl(42, 14%, 88%)",
+  "Set Custard": "hsl(42, 14%, 88%)"
 }
