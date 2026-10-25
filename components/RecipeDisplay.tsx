@@ -336,6 +336,44 @@ const STEP_ANIMATION_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .swipe-hint-chevron { animation: none; opacity: 0.3; }
 }
+
+.dish-image-shimmer {
+  background: linear-gradient(
+    135deg,
+    #f8f0df 0%,
+    #f3e6ce 45%,
+    #faf4e8 100%
+  );
+  transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dish-image-shimmer__glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 25%,
+    rgba(255, 254, 250, 0.15) 35%,
+    rgba(255, 254, 250, 0.75) 48%,
+    rgba(255, 254, 250, 0.15) 61%,
+    transparent 72%
+  );
+  transform: translateX(-100%);
+  animation: dish-shimmer-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes dish-shimmer-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dish-image-shimmer__glow {
+    animation: none;
+    opacity: 0.35;
+  }
+}
 `;
 
 const HEY_CHEF_LABEL: Record<HeyChefPhase, string> = {
@@ -1333,7 +1371,8 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   // Tracks when the header photo has actually finished loading, so it can
   // fade in smoothly instead of popping in abruptly.
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [loadedImageSrc, setLoadedImageSrc] = useState<string | null>(null);
+  const isImageLoaded = loadedImageSrc === recipe.image;
 
   // Bumped on every tap so the bounce can replay even on repeated clicks.
   const [imageBounceKey, setImageBounceKey] = useState(0);
@@ -2204,10 +2243,12 @@ const handlePrevStep = () => {
               {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
               <div
                 aria-hidden="true"
-                className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isImageLoaded ? "opacity-0" : "animate-pulse opacity-100"
-                  }`}
-                style={{ backgroundColor: COLOR.saffronTint }}
-              />
+                className={`dish-image-shimmer absolute inset-0 overflow-hidden rounded-2xl ${
+                  isImageLoaded ? "opacity-0" : "opacity-100"
+                }`}
+              >
+                <div className="dish-image-shimmer__glow" />
+              </div>
               <img
                 key={imageBounceKey}
                 src={recipe.image}
@@ -2217,14 +2258,14 @@ const handlePrevStep = () => {
                 loading="eager"
                 decoding="sync"
                 {...{ fetchpriority: "high" }}
-                onLoad={() => setIsImageLoaded(true)}
+                onLoad={() => setLoadedImageSrc(recipe.image ?? null)}
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
                 onClick={() => setImageBounceKey((key) => key + 1)}
                 onContextMenu={(e) => e.preventDefault()}
                 onDragStart={(e) => e.preventDefault()}
-                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-300 ease-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl border object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
                   } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
                 style={{
                   transformStyle: "preserve-3d",
