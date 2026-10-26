@@ -505,7 +505,6 @@ const STEP_ANIMATION_CSS = `
   .hey-chef-ring.is-awake { opacity: 0.6; }
 }
 
-
 .hey-chef-shimmer {
   background: linear-gradient(90deg, #6B5238 0%, #6B5238 35%, #FC6C26 50%, #6B5238 65%, #6B5238 100%);
   background-size: 200% 100%;
