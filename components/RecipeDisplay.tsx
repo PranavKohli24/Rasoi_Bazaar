@@ -2813,8 +2813,13 @@ const handlePrevStep = () => {
   {heyChefBlockedAt !== null && (
     <p
       role="status"
-      className="mb-4 rounded-xl border p-3 text-sm"
-      style={{ backgroundColor: COLOR.mustard, borderColor: COLOR.border, color: COLOR.ink }}
+      className="mb-4 animate-fade-in-up rounded-xl border p-3 text-sm"
+      style={{
+        backgroundColor: COLOR.mustard,
+        borderColor: COLOR.border,
+        color: COLOR.ink,
+        animationDuration: "0.3s",
+      }}
     >
       The microphone is blocked. Allow it in your browser&apos;s site settings to
       use Hey chef.
