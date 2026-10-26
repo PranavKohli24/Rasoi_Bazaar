@@ -193,6 +193,18 @@ const NotesIcon: IconC = ({ className }) => (
   </Icon>
 );
 
+// Asymmetric corner radii — each value pair (horizontal/vertical) is
+// deliberately uneven, so the photo reads as an object placed on the
+// page rather than a photo boxed into a frame. No blur involved.
+const DISH_BLOB_RADIUS = "8% 30% 26% 10% / 10% 24% 30% 12%";
+const DISH_BLOB_ROTATE = "-1deg";
+
+const BLOB_RADII = [
+  "8% 30% 26% 10% / 10% 24% 30% 12%",
+  "10% 26% 30% 8% / 12% 30% 24% 10%",
+];
+const BLOB_ROTATIONS = ["-1.1deg", "0.9deg"];
+
 /* Pictures reused from the kitchen selector, matched by equipment name */
 
 const EQUIPMENT_IMAGES: [RegExp, string][] = [
@@ -2232,43 +2244,46 @@ const handlePrevStep = () => {
         ) : (
           recipe.image && (
             <div
-              className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
-              style={{ perspective: "800px" }}
-            >
-              {/* Quiet placeholder while the photo loads, so nothing pops in on a slow connection */}
-              <div
-                aria-hidden="true"
-                className={`dish-image-shimmer absolute inset-0 overflow-hidden rounded-2xl ${
-                  isImageLoaded ? "opacity-0" : "opacity-100"
-                }`}
-              >
-                <div className="dish-image-shimmer__glow" />
-              </div>
-              <img
-                key={imageBounceKey}
-                src={recipe.image}
-                alt={recipe.dishName}
-                width={600}
-                height={600}
-                loading="eager"
-                decoding="sync"
-                {...{ fetchpriority: "high" }}
-                onLoad={() => setLoadedImageSrc(recipe.image ?? null)}
-                onError={(e) => {
-                  e.currentTarget.style.display = "none";
-                }}
-                onClick={() => setImageBounceKey((key) => key + 1)}
-                onContextMenu={(e) => e.preventDefault()}
-                onDragStart={(e) => e.preventDefault()}
-                className={`absolute inset-0 h-full w-full cursor-pointer rounded-2xl object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-                  } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-                style={{
-                  transformStyle: "preserve-3d",
-                  pointerEvents: "auto",
-                  userSelect: "none",
-                }}
-              />
-            </div>
+  className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
+  style={{ perspective: "800px" }}
+>
+  <div
+    aria-hidden="true"
+    className={`dish-image-shimmer absolute inset-0 overflow-hidden ${
+      isImageLoaded ? "opacity-0" : "opacity-100"
+    }`}
+    style={{ borderRadius: DISH_BLOB_RADIUS, transform: `rotate(${DISH_BLOB_ROTATE})` }}
+  >
+    <div className="dish-image-shimmer__glow" />
+  </div>
+  <img
+    key={imageBounceKey}
+    src={recipe.image}
+    alt={recipe.dishName}
+    width={600}
+    height={600}
+    loading="eager"
+    decoding="sync"
+    {...{ fetchpriority: "high" }}
+    onLoad={() => setLoadedImageSrc(recipe.image ?? null)}
+    onError={(e) => {
+      e.currentTarget.style.display = "none";
+    }}
+    onClick={() => setImageBounceKey((key) => key + 1)}
+    onContextMenu={(e) => e.preventDefault()}
+    onDragStart={(e) => e.preventDefault()}
+    className={`absolute inset-0 h-full w-full cursor-pointer object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
+      } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+    style={{
+      transformStyle: "preserve-3d",
+      pointerEvents: "auto",
+      userSelect: "none",
+      borderRadius: DISH_BLOB_RADIUS,
+      transform: `rotate(${DISH_BLOB_ROTATE})`,
+      boxShadow: "0 10px 26px -10px rgba(43,26,12,0.35), 0 2px 8px rgba(43,26,12,0.12)",
+    }}
+  />
+</div>
           )
         )}
 
@@ -3128,37 +3143,44 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
     <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:w-56 md:w-64">
       {images.map((src, i) => (
         <div
-          key={src + i}
-          className="relative aspect-square overflow-hidden rounded-2xl"
-          style={{ perspective: "800px" }}
-        >
-          <div
-            aria-hidden="true"
-            className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-300 ${
-              loaded[i] ? "opacity-0" : "opacity-100"
-            }`}
-          >
-            <div className="dish-image-shimmer__glow" />
-          </div>
-          <img
-            key={bounceKeys[i]}
-            src={src}
-            alt={alt}
-            loading="eager"
-            decoding="sync"
-            onLoad={() => markLoaded(i)}
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-            onClick={() => bounce(i)}
-            onContextMenu={(e) => e.preventDefault()}
-            onDragStart={(e) => e.preventDefault()}
-            className={`absolute inset-0 h-full w-full cursor-pointer select-none object-cover transition-opacity duration-300 ${
-              bounceKeys[i] > 0 ? "animate-image-bounce-3d" : ""
-            } ${loaded[i] ? "opacity-100" : "opacity-0"}`}
-            style={{ transformStyle: "preserve-3d", userSelect: "none" }}
-          />
-        </div>
+  key={src + i}
+  className="relative aspect-square"
+  style={{ perspective: "800px" }}
+>
+  <div
+    aria-hidden="true"
+    className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-300 ${
+      loaded[i] ? "opacity-0" : "opacity-100"
+    }`}
+    style={{ borderRadius: BLOB_RADII[i % BLOB_RADII.length], transform: `rotate(${BLOB_ROTATIONS[i % BLOB_ROTATIONS.length]})` }}
+  >
+    <div className="dish-image-shimmer__glow" />
+  </div>
+  <img
+    key={bounceKeys[i]}
+    src={src}
+    alt={alt}
+    loading="eager"
+    decoding="sync"
+    onLoad={() => markLoaded(i)}
+    onError={(e) => {
+      e.currentTarget.style.display = "none";
+    }}
+    onClick={() => bounce(i)}
+    onContextMenu={(e) => e.preventDefault()}
+    onDragStart={(e) => e.preventDefault()}
+    className={`absolute inset-0 h-full w-full cursor-pointer select-none object-cover transition-opacity duration-300 ${
+      bounceKeys[i] > 0 ? "animate-image-bounce-3d" : ""
+    } ${loaded[i] ? "opacity-100" : "opacity-0"}`}
+    style={{
+      transformStyle: "preserve-3d",
+      userSelect: "none",
+      borderRadius: BLOB_RADII[i % BLOB_RADII.length],
+      transform: `rotate(${BLOB_ROTATIONS[i % BLOB_ROTATIONS.length]})`,
+      boxShadow: "0 8px 20px -10px rgba(43,26,12,0.35), 0 2px 6px rgba(43,26,12,0.12)",
+    }}
+  />
+</div>
       ))}
     </div>
   );
