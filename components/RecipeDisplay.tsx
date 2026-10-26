@@ -2636,10 +2636,6 @@ const handlePrevStep = () => {
     style={{ color: COLOR.inkSoft }}
   >
     <span
-      aria-hidden="true"
-      className={`hey-chef-dot shrink-0 ${heyChefPhase === "awake" ? "is-awake" : ""}`}
-    />
-    <span
       className={
         !commandFlash && heyChefPhase === "processing" ? "hey-chef-shimmer" : undefined
       }
