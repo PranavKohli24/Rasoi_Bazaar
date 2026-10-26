@@ -416,7 +416,7 @@ const ZoomableDishImage: React.FC<{
             ? "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)"
             : "opacity 700ms ease-in-out",
           borderRadius: DISH_BLOB_RADIUS,
-          boxShadow: "0 10px 26px -10px rgba(43,26,12,0.35), 0 2px 8px rgba(43,26,12,0.12)",
+          boxShadow: "none",
           userSelect: "none",
         }}
         onTransitionEnd={() => setSettling(false)}
