@@ -570,8 +570,8 @@ const STEP_ANIMATION_CSS = `
 
 @keyframes thumb-squish {
   0%   { transform: scaleX(1); }
-  35%  { transform: scaleX(1.45); }
-  65%  { transform: scaleX(0.82); }
+  35%  { transform: scaleX(1.25); }
+  65%  { transform: scaleX(0.9); }
   100% { transform: scaleX(1); }
 }
 .thumb-squish {
