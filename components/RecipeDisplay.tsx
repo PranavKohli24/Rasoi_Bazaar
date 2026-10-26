@@ -2910,11 +2910,15 @@ const handlePrevStep = () => {
   </div>
 )}
 
-  {heyChefActive && !heyChefIntroSeen && (
+  {heyChefActive && heyChefPhase !== "off" && !heyChefIntroSeen && (
     <div
       role="status"
-      className="mb-4 rounded-2xl border p-4 sm:p-5"
-      style={{ borderColor: COLOR.saffron, backgroundColor: COLOR.saffronTint }}
+      className="mb-4 animate-fade-in-up rounded-2xl border p-4 sm:p-5"
+      style={{
+        borderColor: COLOR.saffron,
+        backgroundColor: COLOR.saffronTint,
+        animationDuration: "0.3s",
+      }}
     >
       <div className="flex items-start justify-between gap-3">
         <p className="font-serif text-lg font-black" style={{ color: COLOR.ink }}>
