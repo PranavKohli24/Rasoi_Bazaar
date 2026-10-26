@@ -26,7 +26,6 @@
   "Coconut Chutney": "hsl(40, 10%, 89%)",
   "White Sauce Pasta": "hsl(43, 17%, 88%)",
   "Rasgulla": "hsl(42, 10%, 90%)",
-  "Rasmalai": "hsl(45, 18%, 88%)",
   "Kaju Katli": "hsl(42, 10%, 87%)",
   "Milk Barfi": "hsl(42, 13%, 88%)",
   "Coconut Barfi": "hsl(40, 10%, 89%)",
@@ -84,9 +83,6 @@
   "Coffee Frappe": "hsl(28, 25%, 79%)",
   "Iced Latte": "hsl(30, 20%, 83%)",
   "Vietnamese Coffee": "hsl(28, 25%, 79%)",
-  "South Indian Filter Coffee": "hsl(28, 25%, 78%)",
-  "Chai (Masala Chai)": "hsl(29, 25%, 80%)",
-  "Caramel Custard": "hsl(30, 32%, 82%)",
 
   "Plain Dosa": "hsl(38, 35%, 81%)",
   "Mysore Masala Dosa": "hsl(35, 38%, 79%)",

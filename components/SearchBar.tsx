@@ -319,6 +319,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <input
               id="recipe-search"
               type="text"
+              maxLength={50}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
