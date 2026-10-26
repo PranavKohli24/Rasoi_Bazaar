@@ -568,6 +568,20 @@ const STEP_ANIMATION_CSS = `
   pointer-events: none;
 }
 
+@keyframes thumb-squish {
+  0%   { transform: scaleX(1); }
+  35%  { transform: scaleX(1.45); }
+  65%  { transform: scaleX(0.82); }
+  100% { transform: scaleX(1); }
+}
+.thumb-squish {
+  animation: thumb-squish 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .thumb-squish { animation: none; }
+}
+
 
 @keyframes swipe-hint-chevron {
   0%, 100% { opacity: 0.15; transform: translateX(0); }
@@ -2987,19 +3001,26 @@ const handlePrevStep = () => {
           >
             <span
               aria-hidden="true"
-              className="glass-switch-thumb absolute h-[22px] w-[22px] rounded-full border"
+              className="absolute h-[22px] w-[22px] rounded-full"
               style={{
                 top: "2.5px",
                 left: "2.5px",
                 transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)",
                 transition: "transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-                background: isHeyChefOn
-                  ? "linear-gradient(155deg, #FFFFFF 0%, rgba(255,255,255,0.98) 35%, #FFF9F1 68%, #FFE3C7 100%)"
-                  : "linear-gradient(155deg, #FFFFFF 0%, #FCFBF8 38%, #F0EEE8 72%, #E3DFD6 100%)",
-                borderColor: "rgba(255, 255, 255, 0.98)",
-                boxShadow: "0 1px 3px rgba(43,26,12,0.25), 0 1px 1px rgba(43,26,12,0.1)",
               }}
-            />
+            >
+              <span
+                key={isHeyChefOn ? "on" : "off"}
+                className="glass-switch-thumb thumb-squish relative block h-full w-full rounded-full border"
+                style={{
+                  background: isHeyChefOn
+                    ? "linear-gradient(155deg, #FFFFFF 0%, rgba(255,255,255,0.98) 35%, #FFF9F1 68%, #FFE3C7 100%)"
+                    : "linear-gradient(155deg, #FFFFFF 0%, #FCFBF8 38%, #F0EEE8 72%, #E3DFD6 100%)",
+                  borderColor: "rgba(255, 255, 255, 0.98)",
+                  boxShadow: "0 1px 3px rgba(43,26,12,0.25), 0 1px 1px rgba(43,26,12,0.1)",
+                }}
+              />
+            </span>
           </button>
         </div>
       ) : (
