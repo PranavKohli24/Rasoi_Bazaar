@@ -288,7 +288,7 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
     role="tab"
     aria-selected={mode === "search"}
     onClick={() => setMode("search")}
-    className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+    className={`relative z-10 select-none rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
       mode === "search" ? "text-stone-900" : "text-stone-300 hover:text-stone-100"
     }`}
   >
@@ -299,7 +299,7 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
     role="tab"
     aria-selected={mode === "cook"}
     onClick={() => setMode("cook")}
-    className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+    className={`relative z-10 select-none rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
       mode === "cook" ? "text-stone-900" : "text-stone-300 hover:text-stone-100"
     }`}
   >
@@ -426,7 +426,7 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
 
     <Link
       to="/cook-what-you-have"
-      className="mt-6 inline-flex w-fit items-center justify-center rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+      className="mt-6 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
     >
       See what you can make
     </Link>

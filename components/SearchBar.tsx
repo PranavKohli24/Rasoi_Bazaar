@@ -331,7 +331,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               disabled={isLoading}
               autoComplete="off"
               enterKeyHint="search"
-              className={`relative w-full border border-transparent bg-transparent text-stone-100 placeholder-stone-500 transition-all duration-200 focus:outline-none disabled:opacity-60 text-ellipsis ${
+              className={`relative w-full border border-transparent bg-transparent text-stone-100 caret-orange-300 placeholder-stone-500 transition-all duration-200 focus:outline-none disabled:opacity-60 text-ellipsis ${
                 compact
                   ? 'h-11 rounded-full pl-10 pr-3 text-xs sm:pr-4 sm:text-sm'
                   : `h-12 rounded-xl pl-11 text-sm sm:h-14 sm:pl-12 sm:text-lg ${
@@ -457,7 +457,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
             onClick={handleSearchClick}
             disabled={isLoading}
             aria-label="Let’s Cook"
-            className={`flex items-center justify-center bg-orange-200 font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:active:scale-100 ${
+            className={`flex select-none items-center justify-center bg-orange-200 font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 disabled:cursor-not-allowed disabled:bg-stone-800 disabled:text-stone-500 disabled:shadow-none disabled:active:scale-100 ${
               compact
                 ? 'h-11 w-11 shrink-0 rounded-full text-sm sm:w-auto sm:px-4'
                 : 'h-12 w-full min-w-[160px] rounded-xl sm:h-14 sm:w-auto sm:px-6'
