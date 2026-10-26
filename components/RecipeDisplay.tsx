@@ -1286,9 +1286,30 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
     ? "Say next when you're ready."
     : "Tap Next when you're ready.";
 
-  const toggleHeyChef = () => {
+  const toggleHeyChef = async () => {
     const next = !isHeyChefOn;
-    if (!next) setHeyChefBlockedAt(null);
+
+    if (next) {
+      // Check mic permission *before* flipping the switch on. If it's
+      // already denied, we know synchronously — no need to optimistically
+      // show "on" and then race an async mic request that fails a moment
+      // later. That race was the actual source of the flicker.
+      try {
+        const status = await navigator.permissions?.query?.({
+          name: "microphone" as PermissionName,
+        });
+        if (status?.state === "denied") {
+          setHeyChefBlockedAt(Date.now());
+          return;
+        }
+      } catch {
+        // Permissions API unavailable, or this query unsupported — fall
+        // through to the normal flow; onMicBlocked still catches it there.
+      }
+    } else {
+      setHeyChefBlockedAt(null);
+    }
+
     setIsHeyChefOn(next);
     try {
       localStorage.setItem("recipe-heychef-enabled", String(next));
