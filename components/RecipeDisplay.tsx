@@ -375,7 +375,7 @@ const ZoomableDishImage: React.FC<{
     <div
       ref={containerRef}
       className="relative aspect-square w-full shrink-0 overflow-hidden sm:w-56 md:w-64"
-      style={{ touchAction: "none", perspective: "800px" }}
+      style={{ touchAction: zoom.scale > 1.02 ? "none" : "pan-y", perspective: "800px" }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
