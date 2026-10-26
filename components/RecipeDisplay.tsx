@@ -1267,7 +1267,20 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
 
   // Only paint the toggle as "on" once the mic has actually engaged — avoids
   // a one-frame ON→OFF flicker when permission turns out to be blocked.
-  const heyChefConfirmedOn = isHeyChefOn && heyChefPhase !== "off";
+    const heyChefConfirmedOn = isHeyChefOn && heyChefPhase !== "off";
+
+  // Debounced mirror of heyChefPhase, used only for display: a blocked mic
+  // can flip the real phase off→sleeping→off within milliseconds, which
+  // would otherwise flash "Try saying ..." for a frame before reverting.
+  const [displayPhase, setDisplayPhase] = useState<HeyChefPhase>("off");
+  useEffect(() => {
+    if (heyChefPhase === "off") {
+      setDisplayPhase("off");
+      return;
+    }
+    const id = window.setTimeout(() => setDisplayPhase(heyChefPhase), 250);
+    return () => window.clearTimeout(id);
+  }, [heyChefPhase]);
 
   const doneHint = heyChefActive
     ? "Say next when you're ready."
@@ -2868,7 +2881,7 @@ const handlePrevStep = () => {
       )}
     </button>
 
-    {heyChefActive && heyChefPhase !== "off" ? (
+    {heyChefActive && displayPhase !== "off" ? (
   <div
     role="status"
     className="mt-2 flex items-center gap-2 text-sm font-medium"
@@ -2914,7 +2927,7 @@ const handlePrevStep = () => {
   </div>
 )}
 
-  {heyChefActive && heyChefPhase !== "off" && !heyChefIntroSeen && (
+    {heyChefActive && displayPhase !== "off" && !heyChefIntroSeen && (
     <div
       role="status"
       className="mb-4 animate-fade-in-up rounded-2xl border p-4 sm:p-5"
