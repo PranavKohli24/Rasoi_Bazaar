@@ -205,6 +205,226 @@ const BLOB_RADII = [
 ];
 const BLOB_ROTATIONS = ["-1.1deg", "0.9deg"];
 
+const ZOOM_MIN = 1;
+const ZOOM_MAX = 3.5;
+const DOUBLE_TAP_MS = 280;
+const DOUBLE_TAP_SCALE = 2.2;
+
+const ZoomableDishImage: React.FC<{
+  src: string;
+  alt: string;
+  isLoaded: boolean;
+  bounceKey: number;
+  onLoad: () => void;
+  onError: React.ReactEventHandler<HTMLImageElement>;
+  onTapWhileFlat: () => void;
+}> = ({ src, alt, isLoaded, bounceKey, onLoad, onError, onTapWhileFlat }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [zoom, setZoom] = useState({ scale: 1, x: 0, y: 0 });
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
+
+  const gesture = useRef<{
+    mode: "pinch" | "pan";
+    distance: number;
+    scale: number;
+    x: number;
+    y: number;
+    midX: number;
+    midY: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
+
+  const lastTap = useRef(0);
+  const moved = useRef(false);
+  const [settling, setSettling] = useState(false);
+
+  const clamp = (scale: number, x: number, y: number) => {
+    const el = containerRef.current;
+    if (!el) return { x, y };
+
+    return {
+      x: Math.max(-el.clientWidth * (scale - 1) / 2,
+        Math.min(el.clientWidth * (scale - 1) / 2, x)),
+      y: Math.max(-el.clientHeight * (scale - 1) / 2,
+        Math.min(el.clientHeight * (scale - 1) / 2, y)),
+    };
+  };
+
+  const resetZoom = () => {
+    setSettling(true);
+    setZoom({ scale: 1, x: 0, y: 0 });
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    moved.current = false;
+
+    if (e.touches.length === 2) {
+      const [a, b] = [e.touches[0], e.touches[1]];
+      gesture.current = {
+        mode: "pinch",
+        distance: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
+        scale: zoomRef.current.scale,
+        x: zoomRef.current.x,
+        y: zoomRef.current.y,
+        midX: (a.clientX + b.clientX) / 2,
+        midY: (a.clientY + b.clientY) / 2,
+        startX: 0,
+        startY: 0,
+      };
+    } else if (e.touches.length === 1 && zoomRef.current.scale > 1.02) {
+      const t = e.touches[0];
+      gesture.current = {
+        mode: "pan",
+        distance: 0,
+        scale: zoomRef.current.scale,
+        x: zoomRef.current.x,
+        y: zoomRef.current.y,
+        midX: 0,
+        midY: 0,
+        startX: t.clientX,
+        startY: t.clientY,
+      };
+    } else {
+      gesture.current = null;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    const g = gesture.current;
+    if (!g) return;
+
+    if (g.mode === "pinch" && e.touches.length === 2) {
+      e.preventDefault();
+      moved.current = true;
+
+      const [a, b] = [e.touches[0], e.touches[1]];
+      const distance = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+      const scale = Math.max(ZOOM_MIN, Math.min(
+        ZOOM_MAX,
+        g.scale * distance / Math.max(g.distance, 1)
+      ));
+
+      const midX = (a.clientX + b.clientX) / 2;
+      const midY = (a.clientY + b.clientY) / 2;
+      const offset = clamp(scale, g.x + midX - g.midX, g.y + midY - g.midY);
+      setZoom({ scale, ...offset });
+    } else if (g.mode === "pan" && e.touches.length === 1) {
+      e.preventDefault();
+      moved.current = true;
+
+      const t = e.touches[0];
+      const offset = clamp(
+        g.scale,
+        g.x + t.clientX - g.startX,
+        g.y + t.clientY - g.startY
+      );
+      setZoom({ scale: g.scale, ...offset });
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1 && zoomRef.current.scale > 1.02) {
+      const t = e.touches[0];
+      gesture.current = {
+        mode: "pan",
+        distance: 0,
+        scale: zoomRef.current.scale,
+        x: zoomRef.current.x,
+        y: zoomRef.current.y,
+        midX: 0,
+        midY: 0,
+        startX: t.clientX,
+        startY: t.clientY,
+      };
+      return;
+    }
+
+    if (e.touches.length !== 0) return;
+
+    gesture.current = null;
+
+    if (moved.current) return;
+
+    const now = Date.now();
+    const isDoubleTap = now - lastTap.current < DOUBLE_TAP_MS;
+    lastTap.current = now;
+
+    if (isDoubleTap) {
+      if (zoomRef.current.scale > 1.02) {
+        resetZoom();
+      } else {
+        setSettling(true);
+        setZoom({ scale: DOUBLE_TAP_SCALE, x: 0, y: 0 });
+      }
+    } else if (zoomRef.current.scale <= 1.02) {
+      onTapWhileFlat();
+    }
+
+    if (zoomRef.current.scale <= 1.02 && !isDoubleTap) {
+      // Preserve the existing single-tap bounce.
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative aspect-square w-full shrink-0 overflow-hidden sm:w-56 md:w-64"
+      style={{ touchAction: "none", perspective: "800px" }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={() => {
+        gesture.current = null;
+        if (zoomRef.current.scale <= 1.02) resetZoom();
+      }}
+    >
+      <div
+        aria-hidden="true"
+        className={`dish-image-shimmer absolute inset-0 overflow-hidden ${
+          isLoaded ? "opacity-0" : "opacity-100"
+        }`}
+        style={{
+          borderRadius: DISH_BLOB_RADIUS,
+          transform: `rotate(${DISH_BLOB_ROTATE})`,
+        }}
+      >
+        <div className="dish-image-shimmer__glow" />
+      </div>
+
+      <img
+        key={bounceKey}
+        src={src}
+        alt={alt}
+        width={600}
+        height={600}
+        loading="eager"
+        decoding="sync"
+        {...{ fetchpriority: "high" }}
+        onLoad={onLoad}
+        onError={onError}
+        onContextMenu={(e) => e.preventDefault()}
+        onDragStart={(e) => e.preventDefault()}
+        className={`absolute inset-0 h-full w-full select-none object-cover ${
+          bounceKey > 0 && zoom.scale <= 1.02 ? "animate-image-bounce-3d" : ""
+        } ${isLoaded ? "opacity-100" : "opacity-0"}`}
+        style={{
+          transformOrigin: "center",
+          transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale}) rotate(${DISH_BLOB_ROTATE})`,
+          transition: settling
+            ? "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)"
+            : "opacity 700ms ease-in-out",
+          borderRadius: DISH_BLOB_RADIUS,
+          boxShadow: "0 10px 26px -10px rgba(43,26,12,0.35), 0 2px 8px rgba(43,26,12,0.12)",
+          userSelect: "none",
+        }}
+        onTransitionEnd={() => setSettling(false)}
+      />
+    </div>
+  );
+};
+
 /* Pictures reused from the kitchen selector, matched by equipment name */
 
 const EQUIPMENT_IMAGES: [RegExp, string][] = [
@@ -2243,47 +2463,19 @@ const handlePrevStep = () => {
           <ComboHeaderImages images={recipe.images} alt={recipe.dishName} />
         ) : (
           recipe.image && (
-            <div
-  className="relative aspect-square w-full shrink-0 sm:w-56 md:w-64"
-  style={{ perspective: "800px" }}
->
-  <div
-    aria-hidden="true"
-    className={`dish-image-shimmer absolute inset-0 overflow-hidden ${
-      isImageLoaded ? "opacity-0" : "opacity-100"
-    }`}
-    style={{ borderRadius: DISH_BLOB_RADIUS, transform: `rotate(${DISH_BLOB_ROTATE})` }}
-  >
-    <div className="dish-image-shimmer__glow" />
-  </div>
-  <img
-    key={imageBounceKey}
-    src={recipe.image}
-    alt={recipe.dishName}
-    width={600}
-    height={600}
-    loading="eager"
-    decoding="sync"
-    {...{ fetchpriority: "high" }}
-    onLoad={() => setLoadedImageSrc(recipe.image ?? null)}
-    onError={(e) => {
-      e.currentTarget.style.display = "none";
-    }}
-    onClick={() => setImageBounceKey((key) => key + 1)}
-    onContextMenu={(e) => e.preventDefault()}
-    onDragStart={(e) => e.preventDefault()}
-    className={`absolute inset-0 h-full w-full cursor-pointer object-cover transition-opacity duration-700 ease-in-out select-none ${imageBounceKey > 0 ? "animate-image-bounce-3d" : ""
-      } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-    style={{
-      transformStyle: "preserve-3d",
-      pointerEvents: "auto",
-      userSelect: "none",
-      borderRadius: DISH_BLOB_RADIUS,
-      transform: `rotate(${DISH_BLOB_ROTATE})`,
-      boxShadow: "0 10px 26px -10px rgba(43,26,12,0.35), 0 2px 8px rgba(43,26,12,0.12)",
-    }}
-  />
-</div>
+            <ZoomableDishImage
+              src={recipe.image}
+              alt={recipe.dishName}
+              isLoaded={isImageLoaded}
+              bounceKey={imageBounceKey}
+              onLoad={() => setLoadedImageSrc(recipe.image ?? null)}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+              onTapWhileFlat={() =>
+                setImageBounceKey((key) => key + 1)
+              }
+            />
           )
         )}
 
