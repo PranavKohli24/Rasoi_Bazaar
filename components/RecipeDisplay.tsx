@@ -1263,7 +1263,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   const [heyChefBlockedAt, setHeyChefBlockedAt] = useState<number | null>(null);
 
   // Only listens while someone is actually cooking.
-  const heyChefActive = isCooking && isHeyChefOn && heyChefSupported;
+    const heyChefActive = isCooking && isHeyChefOn && heyChefSupported;
+
+  // Only paint the toggle as "on" once the mic has actually engaged — avoids
+  // a one-frame ON→OFF flicker when permission turns out to be blocked.
+  const heyChefConfirmedOn = isHeyChefOn && heyChefPhase !== "off";
 
   const doneHint = heyChefActive
     ? "Say next when you're ready."
@@ -2831,18 +2835,18 @@ const handlePrevStep = () => {
     <button
       type="button"
       onClick={toggleHeyChef}
-      aria-pressed={isHeyChefOn}
+      aria-pressed={heyChefConfirmedOn}
       aria-label={
-        isHeyChefOn
+        heyChefConfirmedOn
           ? "Turn off hands-free voice control"
           : "Turn on hands-free voice control"
       }
       title="Hands-free: say “Hey chef”"
       className="relative inline-flex h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2"
       style={{
-        borderColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
-        backgroundColor: isHeyChefOn ? COLOR.saffronTint : COLOR.surface,
-        color: isHeyChefOn ? COLOR.saffronDark : COLOR.inkSoft,
+        borderColor: heyChefConfirmedOn ? COLOR.saffron : COLOR.border,
+        backgroundColor: heyChefConfirmedOn ? COLOR.saffronTint : COLOR.surface,
+        color: heyChefConfirmedOn ? COLOR.saffronDark : COLOR.inkSoft,
       }}
     >
       <MicIcon className="h-4 w-4" />
@@ -2850,11 +2854,11 @@ const handlePrevStep = () => {
       <span
         className="rounded-full px-1.5 py-0.5 text-[10px] font-bold"
         style={{
-          backgroundColor: isHeyChefOn ? COLOR.saffron : COLOR.border,
-          color: isHeyChefOn ? COLOR.surface : COLOR.inkSoft,
+          backgroundColor: heyChefConfirmedOn ? COLOR.saffron : COLOR.border,
+          color: heyChefConfirmedOn ? COLOR.surface : COLOR.inkSoft,
         }}
       >
-        {isHeyChefOn ? "ON" : "OFF"}
+        {heyChefConfirmedOn ? "ON" : "OFF"}
       </span>
       {heyChefActive && heyChefPhase !== "paused" && (
         <span
