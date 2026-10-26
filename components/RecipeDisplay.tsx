@@ -338,12 +338,7 @@ const STEP_ANIMATION_CSS = `
 }
 
 .dish-image-shimmer {
-  background: linear-gradient(
-    135deg,
-    #f8f0df 0%,
-    #f3e6ce 45%,
-    #faf4e8 100%
-  );
+  background: var(--bg-tint, #FFF8F1);
   transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
