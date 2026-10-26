@@ -3142,9 +3142,9 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
   return (
     <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:w-56 md:w-64">
       {images.map((src, i) => (
-        <div
+      <div
   key={src + i}
-  className="relative aspect-square"
+  className="relative aspect-square overflow-hidden rounded-2xl"
   style={{ perspective: "800px" }}
 >
   <div
@@ -3152,7 +3152,6 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
     className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-300 ${
       loaded[i] ? "opacity-0" : "opacity-100"
     }`}
-    style={{ borderRadius: BLOB_RADII[i % BLOB_RADII.length], transform: `rotate(${BLOB_ROTATIONS[i % BLOB_ROTATIONS.length]})` }}
   >
     <div className="dish-image-shimmer__glow" />
   </div>
@@ -3172,13 +3171,7 @@ const ComboHeaderImages: React.FC<{ images: string[]; alt: string }> = ({ images
     className={`absolute inset-0 h-full w-full cursor-pointer select-none object-cover transition-opacity duration-300 ${
       bounceKeys[i] > 0 ? "animate-image-bounce-3d" : ""
     } ${loaded[i] ? "opacity-100" : "opacity-0"}`}
-    style={{
-      transformStyle: "preserve-3d",
-      userSelect: "none",
-      borderRadius: BLOB_RADII[i % BLOB_RADII.length],
-      transform: `rotate(${BLOB_ROTATIONS[i % BLOB_ROTATIONS.length]})`,
-      boxShadow: "0 8px 20px -10px rgba(43,26,12,0.35), 0 2px 6px rgba(43,26,12,0.12)",
-    }}
+    style={{ transformStyle: "preserve-3d", userSelect: "none" }}
   />
 </div>
       ))}
