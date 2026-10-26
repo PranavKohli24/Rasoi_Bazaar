@@ -2987,11 +2987,12 @@ const handlePrevStep = () => {
           >
             <span
               aria-hidden="true"
-              className="glass-switch-thumb absolute h-[22px] w-[22px] rounded-full border transition-transform duration-300"
+              className="glass-switch-thumb absolute h-[22px] w-[22px] rounded-full border"
               style={{
                 top: "2.5px",
                 left: "2.5px",
                 transform: isHeyChefOn ? "translateX(20px)" : "translateX(0)",
+                transition: "transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1)",
                 background: isHeyChefOn
                   ? "linear-gradient(155deg, #FFFFFF 0%, rgba(255,255,255,0.98) 35%, #FFF9F1 68%, #FFE3C7 100%)"
                   : "linear-gradient(155deg, #FFFFFF 0%, #FCFBF8 38%, #F0EEE8 72%, #E3DFD6 100%)",
