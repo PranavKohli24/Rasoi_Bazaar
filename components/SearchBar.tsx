@@ -249,11 +249,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     setIsPhotoMenuOpen(false);
   };
 
-    const placeholder = compact
-    ? compactPlaceholder
-    : isTypewriterIdle
-      ? typedExample
-      : 'What do you feel like eating?';
+  const placeholderText = isTypewriterIdle ? typedExample : 'What do you feel like eating?';
 
   return (
     <div
@@ -303,6 +299,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
               <SearchIcon className="h-5 w-5" />
             </div>
 
+            {/* Custom placeholder overlay — fades in/out instead of the native placeholder's instant swap */}
+            {!compact && (
+              <div
+                aria-hidden="true"
+                className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre pl-11 text-sm text-stone-500 transition-opacity duration-300 ease-out sm:pl-12 sm:text-lg ${
+                  showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
+                } ${searchTerm ? 'opacity-0' : 'opacity-100'}`}
+              >
+                {placeholderText}
+              </div>
+            )}
+
             {/* Ghost completion: "rajma ch" (invisible, matches real input exactly) + "awal" (dim) */}
             {!compact && suggestion && (
               <div
@@ -328,7 +336,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
               onFocus={() => setIsInputFocused(true)}
               onBlur={() => setIsInputFocused(false)}
               autoFocus={compact && isExpanded}
-              placeholder={placeholder}
+              placeholder={compact ? compactPlaceholder : ''}
               disabled={isLoading}
               autoComplete="off"
               enterKeyHint="search"
