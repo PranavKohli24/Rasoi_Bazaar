@@ -52,12 +52,31 @@ const HomePage: React.FC = () => {
     startedAt: number;
     isHorizontal: boolean;
   } | null>(null);
-  const modeViewportRef = useRef<HTMLDivElement>(null);
-  const searchPanelRef = useRef<HTMLDivElement>(null);
-  const cookPanelRef = useRef<HTMLDivElement>(null);
-  const [modePanelHeight, setModePanelHeight] = useState<number>();
+const modeViewportRef = useRef<HTMLDivElement>(null);
+const searchPanelRef = useRef<HTMLDivElement>(null);
+const cookPanelRef = useRef<HTMLDivElement>(null);
+const [modePanelHeight, setModePanelHeight] = useState<number>();
+
+const searchTabRef = useRef<HTMLButtonElement>(null);
+const cookTabRef = useRef<HTMLButtonElement>(null);
+const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
   const [dragOffset, setDragOffset] = useState(0);
   const [isDraggingMode, setIsDraggingMode] = useState(false);
+
+  useLayoutEffect(() => {
+  const activeTab = mode === "search" ? searchTabRef.current : cookTabRef.current;
+  if (!activeTab) return;
+
+  const updatePill = () =>
+    setPillRect({ left: activeTab.offsetLeft, width: activeTab.offsetWidth });
+
+  updatePill();
+
+  if (typeof ResizeObserver === "undefined") return;
+  const observer = new ResizeObserver(updatePill);
+  observer.observe(activeTab);
+  return () => observer.disconnect();
+}, [mode]);
 
   const handleModeTouchStart = (
     event: React.TouchEvent<HTMLDivElement>
@@ -255,35 +274,38 @@ const HomePage: React.FC = () => {
           >
             {/* Mode toggle — replaces two sections competing for attention */}
             <div
-              role="tablist"
-              aria-label="How do you want to start?"
-              className="mt-7 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
-            >
-              <button
-                role="tab"
-                aria-selected={mode === "search"}
-                onClick={() => setMode("search")}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                  mode === "search"
-                    ? "bg-orange-200 text-stone-900"
-                    : "text-stone-300 hover:text-stone-100"
-                }`}
-              >
-                I know what I want
-              </button>
-              <button
-                role="tab"
-                aria-selected={mode === "cook"}
-                onClick={() => setMode("cook")}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                  mode === "cook"
-                    ? "bg-orange-200 text-stone-900"
-                    : "text-stone-300 hover:text-stone-100"
-                }`}
-              >
-                Help me decide
-              </button>
-            </div>
+  role="tablist"
+  aria-label="How do you want to start?"
+  className="relative mt-7 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
+>
+  <span
+    aria-hidden="true"
+    className="absolute inset-y-1 left-0 rounded-full bg-orange-200 transition-[transform,width] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none"
+    style={{ width: pillRect.width, transform: `translateX(${pillRect.left}px)` }}
+  />
+  <button
+    ref={searchTabRef}
+    role="tab"
+    aria-selected={mode === "search"}
+    onClick={() => setMode("search")}
+    className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+      mode === "search" ? "text-stone-900" : "text-stone-300 hover:text-stone-100"
+    }`}
+  >
+    I know what I want
+  </button>
+  <button
+    ref={cookTabRef}
+    role="tab"
+    aria-selected={mode === "cook"}
+    onClick={() => setMode("cook")}
+    className={`relative z-10 rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+      mode === "cook" ? "text-stone-900" : "text-stone-300 hover:text-stone-100"
+    }`}
+  >
+    Help me decide
+  </button>
+</div>
 
             <div className="mx-auto mt-8 w-full max-w-2xl">
               <div
