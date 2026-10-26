@@ -31,13 +31,20 @@ const RecentlyCooked: React.FC = () => {
         {dishes.map((dish) => {
           const hasMultipleImages =
             (dish.images?.length ?? 0) > 1;
+          const comboWidth = dish.images
+            ? {
+                ["--combo-w" as string]: `${112 + (dish.images.length - 1) * 92}px`,
+                ["--combo-w-sm" as string]: `${128 + (dish.images.length - 1) * 108}px`,
+              }
+            : undefined;
 
           return (
             <Link
               key={dish.path}
               to={dish.path}
+              style={comboWidth}
               className={`group relative flex shrink-0 flex-col overflow-hidden rounded-2xl border border-stone-700 bg-stone-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 ${
-                hasMultipleImages ? "w-max" : "w-28 sm:w-32"
+                hasMultipleImages ? "w-[var(--combo-w)] sm:w-[var(--combo-w-sm)]" : "w-28 sm:w-32"
               }`}
             >
               <button
@@ -109,7 +116,7 @@ const RecentlyCooked: React.FC = () => {
                 </div>
               )}
 
-              <span className="px-2.5 py-2 text-xs font-medium leading-tight text-stone-100 sm:text-sm">
+              <span className="min-w-0 break-words px-2.5 py-2 text-xs font-medium leading-tight text-stone-100 sm:text-sm">
                 {dish.dishName}
               </span>
             </Link>
