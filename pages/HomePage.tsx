@@ -13,7 +13,7 @@ const AUTO_SEARCH_CONFIDENCE = 0.7;
 
 const COOK_STEPS = [
   "Tap the appliances you own",
-  "Add what's in your pantry",
+  "Add your groceries",
   "Pick a dish and get the recipe",
 ];
 
@@ -369,64 +369,47 @@ const HomePage: React.FC = () => {
                     }`}
                     style={{ width: "50%" }}
                   >
-                    <div className="rounded-3xl border border-orange-400/30 bg-[#FFE3C2] p-6 text-left sm:p-7">
-                  <div className="flex items-start justify-between gap-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-stone-900">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-6 w-6 text-orange-200"
-                        aria-hidden="true"
-                      >
-                        <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z" />
-                        <path d="M6 17h12" />
-                      </svg>
-                    </span>
+                    <div className="group relative overflow-hidden rounded-2xl border border-stone-700/70 bg-stone-900">
+  {/* Photo as a soft backdrop wash — not boxed, not cropped into a panel */}
+  <img
+    src="/cookwhatyouhave_cover.png"
+    alt=""
+    className="absolute inset-0 h-full w-full object-cover opacity-[0.35] transition-transform duration-700 ease-out group-hover:scale-105"
+    draggable={false}
+  />
+  <div className="absolute inset-0 bg-gradient-to-r from-stone-900 via-stone-900/85 to-stone-900/35" />
+  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
 
-                    <img
-                      src="/cookwhatyouhave_cover.png"
-                      alt=""
-                      className="-mr-1 -mt-2 h-24 w-auto object-contain drop-shadow-lg sm:h-28"
-                      draggable={false}
-                    />
-                  </div>
+  {/* Content */}
+  <div className="relative px-6 py-8 sm:max-w-md sm:px-9 sm:py-10">
+    <h2 className="font-serif text-2xl font-semibold leading-tight text-orange-50 sm:text-[1.7rem]">
+      Cook what you have
+    </h2>
 
-                  <h2 className="mt-4 font-serif text-2xl font-black text-orange-50 sm:text-3xl">
-                    Cook what you have
-                  </h2>
+    <p className="mt-2.5 text-sm leading-relaxed text-stone-300 sm:text-base">
+      Show us your appliances and groceries - we&apos;ll match them to dishes
+      you can start cooking right now.
+    </p>
 
-                  <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
-                    Not sure what to make? Show us your kitchen and pantry, and
-                    we&apos;ll suggest dishes you can cook right now.
-                  </p>
+    <div className="mt-6 divide-y divide-stone-700/50 border-y border-stone-700/50">
+      {COOK_STEPS.map((step, index) => (
+        <div key={step} className="flex items-baseline gap-3 py-2.5">
+          <span className="font-serif text-sm text-orange-300/80">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="text-sm text-stone-200">{step}</span>
+        </div>
+      ))}
+    </div>
 
-                  <ol className="mt-5 space-y-3">
-                    {COOK_STEPS.map((step, index) => (
-                      <li
-                        key={step}
-                        className="flex items-center gap-3 text-sm text-stone-200"
-                      >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-200 text-xs font-bold text-stone-900">
-                          {index + 1}
-                        </span>
-                        {step}
-                      </li>
-                    ))}
-                  </ol>
-
-                  <Link
-                    to="/cook-what-you-have"
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-200 px-5 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950 sm:w-auto"
-                  >
-                    Get started
-                    <span aria-hidden="true">→</span>
-                  </Link>
-                    </div>
+    <Link
+      to="/cook-what-you-have"
+      className="mt-6 inline-flex w-fit items-center justify-center rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+    >
+      See what you can make
+    </Link>
+  </div>
+</div>
                   </div>
                 </div>
               </div>
