@@ -110,6 +110,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     if (!compact) setIsExpanded(false);
   }, [compact]);
 
+
   // Type and erase example dishes while the input is not focused.
   // The typewriter only runs while the box is idle. Otherwise it is paused and
   // the placeholder falls back to its full default text.
