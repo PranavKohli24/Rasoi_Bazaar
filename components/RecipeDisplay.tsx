@@ -239,6 +239,7 @@ const ZoomableDishImage: React.FC<{
   const lastTap = useRef(0);
   const moved = useRef(false);
   const [settling, setSettling] = useState(false);
+  const tapTimer = useRef<number | null>(null);
 
   const clamp = (scale: number, x: number, y: number) => {
     const el = containerRef.current;
@@ -259,6 +260,7 @@ const ZoomableDishImage: React.FC<{
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     moved.current = false;
+    setSettling(false);
 
     if (e.touches.length === 2) {
       const [a, b] = [e.touches[0], e.touches[1]];
@@ -352,6 +354,8 @@ const ZoomableDishImage: React.FC<{
     lastTap.current = now;
 
     if (isDoubleTap) {
+      lastTap.current = 0;
+      if (tapTimer.current) window.clearTimeout(tapTimer.current);
       if (zoomRef.current.scale > 1.02) {
         resetZoom();
       } else {
@@ -359,7 +363,7 @@ const ZoomableDishImage: React.FC<{
         setZoom({ scale: DOUBLE_TAP_SCALE, x: 0, y: 0 });
       }
     } else if (zoomRef.current.scale <= 1.02) {
-      onTapWhileFlat();
+      tapTimer.current = window.setTimeout(onTapWhileFlat, DOUBLE_TAP_MS);
     }
 
     if (zoomRef.current.scale <= 1.02 && !isDoubleTap) {
@@ -393,8 +397,11 @@ const ZoomableDishImage: React.FC<{
         <div className="dish-image-shimmer__glow" />
       </div>
 
+<div
+  key={bounceKey}
+  className={`absolute inset-0 ${bounceKey > 0 ? "animate-image-bounce-3d" : ""}`}
+>
       <img
-        key={bounceKey}
         src={src}
         alt={alt}
         width={600}
@@ -407,8 +414,8 @@ const ZoomableDishImage: React.FC<{
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
         className={`absolute inset-0 h-full w-full select-none object-cover ${
-          bounceKey > 0 && zoom.scale <= 1.02 ? "animate-image-bounce-3d" : ""
-        } ${isLoaded ? "opacity-100" : "opacity-0"}`}
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
         style={{
           transformOrigin: "center",
           transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale}) rotate(${DISH_BLOB_ROTATE})`,
@@ -419,8 +426,11 @@ const ZoomableDishImage: React.FC<{
           boxShadow: "none",
           userSelect: "none",
         }}
-        onTransitionEnd={() => setSettling(false)}
+        onTransitionEnd={(e) => {
+          if (e.propertyName === "transform") setSettling(false);
+        }}
       />
+      </div>
     </div>
   );
 };
