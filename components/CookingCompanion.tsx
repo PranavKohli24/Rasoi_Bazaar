@@ -1075,9 +1075,13 @@ const CookingCompanion: React.FC<CookingCompanionProps> = ({
   // flight. Cleared automatically once the request finishes.
   const [loadingStage, setLoadingStage] = useState<string | null>(null);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // Some mobile browsers briefly flash the keyboard on focus even with the
+  // readonly trick below, which bounces --kb-inset (and the input pinned
+  // to it) up and back down. Viewport changes are ignored until this time.
+  const suppressInsetUntilRef = useRef(0);
   const isOpenRef = useRef(false);
   isOpenRef.current = isOpen;
 
@@ -1191,6 +1195,7 @@ const pendingAddressQuestionRef = useRef<string | null>(null);
 const focusInputWithoutKeyboard = () => {
   const el = textareaRef.current;
   if (!el) return;
+  suppressInsetUntilRef.current = Date.now() + 400;
   el.setAttribute("readonly", "readonly");
   el.focus();
   window.setTimeout(() => el.removeAttribute("readonly"), 50);
@@ -1389,6 +1394,10 @@ const speak = (index: number, text: string) => {
     if (!panel || !vv) return;
 
     const applyInset = () => {
+      if (Date.now() < suppressInsetUntilRef.current) {
+        panel.style.setProperty("--kb-inset", "0px");
+        return;
+      }
       const covered = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
       panel.style.setProperty("--kb-inset", `${covered}px`);
     };
