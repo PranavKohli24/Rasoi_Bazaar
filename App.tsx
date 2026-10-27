@@ -65,7 +65,7 @@ const App: React.FC = () => {
             </p>
           </div>
 
-          <p className="text-sm leading-relaxed text-stone-400">
+          {/* <p className="text-sm leading-relaxed text-stone-400">
             Designed & built by{" "}
             <a
               href="https://www.linkedin.com/in/pranavkohli24/"
@@ -78,7 +78,7 @@ const App: React.FC = () => {
             <span className="mx-2 text-stone-600" aria-hidden="true">
               ·
             </span>
-          </p>
+          </p> */}
         </div>
       </footer>
     </div>

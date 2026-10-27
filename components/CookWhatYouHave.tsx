@@ -1098,7 +1098,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                     <p className="text-sm font-semibold text-orange-50">
                       Use your saved kitchen?
                     </p>
-                    <p className="mt-0.5 truncate text-xs text-stone-400 sm:text-sm">
+                    <p className="mt-0.5 text-xs text-stone-400 sm:text-sm">
                       {savedKitchen.join(", ")}
                     </p>
                   </div>
