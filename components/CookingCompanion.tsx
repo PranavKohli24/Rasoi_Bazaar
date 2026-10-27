@@ -1422,6 +1422,23 @@ const speak = (index: number, text: string) => {
     }
   }, [isOpen]);
 
+  // history.back() in closeCompanion() is a real navigation, and browsers
+  // auto-save/restore scroll position per history entry. Without this, the
+  // page silently jumps back to whatever scroll position it had at the
+  // moment the panel opened, every time the panel closes. "manual" turns
+  // that off so popping our throwaway entry never touches scroll.
+  useEffect(() => {
+    const original = window.history.scrollRestoration;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = original;
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const onPopState = () => {
       if (pushedHistoryStateRef.current) {
