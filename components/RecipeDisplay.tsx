@@ -351,6 +351,7 @@ const ZoomableDishImage: React.FC<{
 
     const now = Date.now();
     const isDoubleTap = now - lastTap.current < DOUBLE_TAP_MS;
+    const tapTouch = e.changedTouches[0];
     lastTap.current = now;
 
     if (isDoubleTap) {
@@ -359,15 +360,32 @@ const ZoomableDishImage: React.FC<{
       if (zoomRef.current.scale > 1.02) {
         resetZoom();
       } else {
+        // Zoom in centered on the tapped point, not the image center.
+        let targetX = 0;
+        let targetY = 0;
+        const el = containerRef.current;
+
+        if (el && tapTouch) {
+          const rect = el.getBoundingClientRect();
+          const tapX = tapTouch.clientX - rect.left;
+          const tapY = tapTouch.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const offset = clamp(
+            DOUBLE_TAP_SCALE,
+            DOUBLE_TAP_SCALE * (centerX - tapX),
+            DOUBLE_TAP_SCALE * (centerY - tapY)
+          );
+          targetX = offset.x;
+          targetY = offset.y;
+        }
+
         setSettling(true);
-        setZoom({ scale: DOUBLE_TAP_SCALE, x: 0, y: 0 });
+        setZoom({ scale: DOUBLE_TAP_SCALE, x: targetX, y: targetY });
       }
     } else if (zoomRef.current.scale <= 1.02) {
       tapTimer.current = window.setTimeout(onTapWhileFlat, DOUBLE_TAP_MS);
-    }
-
-    if (zoomRef.current.scale <= 1.02 && !isDoubleTap) {
-      // Preserve the existing single-tap bounce.
     }
   };
 
@@ -420,7 +438,7 @@ const ZoomableDishImage: React.FC<{
           transformOrigin: "center",
           transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale}) rotate(${DISH_BLOB_ROTATE})`,
           transition: settling
-            ? "transform 250ms cubic-bezier(0.22, 1, 0.36, 1)"
+            ? "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)"
             : "opacity 700ms ease-in-out",
           borderRadius: DISH_BLOB_RADIUS,
           boxShadow: "none",
