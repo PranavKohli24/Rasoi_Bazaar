@@ -207,8 +207,22 @@
           cubic-bezier(0.16, 1, 0.3, 1) both;
       }
 
+      @keyframes refresh-icon-spin {
+        0%   { transform: rotate(0deg); }
+        60%  { transform: rotate(50deg); }
+        100% { transform: rotate(0deg); }
+      }
+
+      .refresh-icon-spin {
+        animation: refresh-icon-spin 0.35s ease-out;
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .suggestion-chip-enter {
+          animation: none;
+        }
+
+        .refresh-icon-spin {
           animation: none;
         }
       }

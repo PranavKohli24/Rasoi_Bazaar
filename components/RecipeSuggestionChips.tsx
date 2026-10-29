@@ -134,6 +134,7 @@ const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasRefreshed, setHasRefreshed] = useState(false);
+  const [spinTick, setSpinTick] = useState(0);
 
   const refreshTimeoutRef =
     useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -149,6 +150,7 @@ const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
   const refreshSuggestions = () => {
     if (isRefreshing) return;
 
+    setSpinTick((t) => t + 1);
     setIsRefreshing(true);
 
     refreshTimeoutRef.current = setTimeout(() => {
@@ -178,6 +180,7 @@ const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
             disabled:cursor-default"
         >
           <svg
+            key={spinTick}
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="18"
@@ -188,6 +191,7 @@ const RecipeSuggestionChips: React.FC<RecipeSuggestionChipsProps> = ({
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
+            className={spinTick > 0 ? "refresh-icon-spin" : ""}
           >
             <path d="M20 7v5h-5" />
             <path d="M4 17v-5h5" />
