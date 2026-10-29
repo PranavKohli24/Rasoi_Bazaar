@@ -5112,6 +5112,145 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 9
     }
   },
+  "dal fry": {
+    "dishName": "Dal Fry",
+    "image": "/dishes/dal-tadka.webp",
+    "description": "Soft yellow dal cooked with onions, tomatoes and simple Indian spices.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1/2 cup",
+        "commonName": "Toor Dal",
+        "englishName": "split pigeon peas"
+      },
+      {
+        "amount": "1 1/2 cups",
+        "commonName": "Paani",
+        "englishName": "water for cooking the dal"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel ya Ghee",
+        "englishName": "cooking oil or ghee"
+      },
+      {
+        "amount": "1/2 to 1 cup",
+        "commonName": "Garam Paani",
+        "englishName": "hot water to adjust thickness"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the dal 2 to 3 times. Add it to a pressure cooker with turmeric and 1 1/2 cups water."
+      },
+      {
+        "step": 2,
+        "instruction": "Pressure-cook for 3 to 4 whistles, until the dal is soft. Turn off the heat and let the pressure release naturally."
+      },
+      {
+        "step": 3,
+        "instruction": "Open the cooker and mash the dal lightly with the back of a spoon until it becomes creamy."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat oil or ghee in a kadai. Add cumin seeds and let them sizzle for a few seconds."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the chopped onion. Cook for 3 to 4 minutes, stirring often, until it turns soft and lightly golden."
+      },
+      {
+        "step": 6,
+        "instruction": "Add ginger-garlic paste and cook for 30 seconds. Add the chopped tomato, coriander powder, red chilli powder and salt. Cook for 4 to 5 minutes until the tomato becomes soft and the masala thickens."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the cooked dal and 1/2 cup hot water. Mix well and simmer for 5 to 7 minutes, stirring occasionally. Add more hot water if the dal is too thick."
+      },
+      {
+        "step": 8,
+        "instruction": "Add garam masala and chopped coriander. Mix well, taste and adjust the salt if needed. Serve hot with roti or rice.",
+        "tip": {
+          "title": "Get the right thickness",
+          "content": "Dal thickens as it cools. Keep it slightly loose in the kadai and add a little hot water if needed."
+        }
+      }
+    ],
+    "notes": [
+      "For a milder dal, use less red chilli powder.",
+      "Ghee gives the dal a richer taste, but regular cooking oil works well too.",
+      "Serve with roti, plain rice or jeera rice."
+    ],
+    "nutrition": {
+      "calories": 185,
+      "protein": 8,
+      "carbs": 27,
+      "fat": 6
+    }
+  },
   "matar paneer": {
     "dishName": "Matar Paneer",
     "image": "/dishes/matar-paneer.webp",

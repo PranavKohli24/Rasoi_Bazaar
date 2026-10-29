@@ -447,7 +447,6 @@ const MANUAL_ALIASES: Record<string, string> = {
   "chole batura": "chole bhature",
   "dal": "dal tadka",
   "tadka dal": "dal tadka",
-  "dal fry": "dal tadka",
   "egg toast": "french toast (anda bread)",
   "fries" : "french fries",
 
