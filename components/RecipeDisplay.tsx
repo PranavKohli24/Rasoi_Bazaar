@@ -18,6 +18,7 @@ import {
   getFoodCart,
   checkoutFoodOrder,
   loginWithSwiggyPopup,
+  attemptSwiggyLoginPopup,
   MAX_CART_QUANTITY,
   SwiggyAddress,
   InstamartProduct,
@@ -1742,7 +1743,7 @@ useEffect(() => {
 
   // Sends the person to sign in with Swiggy; if it can't, say so.
 const redirectToLogin = async () => {
-    const connected = await loginWithSwiggyPopup();
+    const connected = await attemptSwiggyLoginPopup();
     if (connected) {
       fetchSwiggyAddresses();
     } else {
@@ -1750,9 +1751,14 @@ const redirectToLogin = async () => {
     }
   };
 
-  const handleRetrySwiggyLogin = () => {
+  const handleRetrySwiggyLogin = async () => {
     setNeedsSwiggyReconnect(false);
-    redirectToLogin();
+    const connected = await loginWithSwiggyPopup();
+    if (connected) {
+      fetchSwiggyAddresses();
+    } else {
+      setNeedsSwiggyReconnect(true);
+    }
   };
 
   /* ----- Recipe handlers ----- */

@@ -1017,6 +1017,30 @@ export const trackFoodOrder = async (
 const POPUP_FEATURES = "width=480,height=640,menubar=no,toolbar=no,location=no,status=no";
 
 /**
+ * Same as loginWithSwiggyPopup, but throttled like startSwiggyLogin used to
+ * be: if we already tried a moment ago and it's still not connected, skip
+ * opening another popup and just resolve false. Meant for *automatic*
+ * login attempts (e.g. a background address fetch hitting
+ * SWIGGY_NOT_CONNECTED) — never for a person deliberately tapping
+ * "Sign in to Swiggy", which should always open the popup.
+ */
+export const attemptSwiggyLoginPopup = (): Promise<boolean> => {
+  try {
+    const lastAttempt = Number(sessionStorage.getItem(LOGIN_ATTEMPT_KEY) ?? 0);
+
+    if (Date.now() - lastAttempt < LOGIN_RETRY_WINDOW_MS) {
+      return Promise.resolve(false);
+    }
+
+    sessionStorage.setItem(LOGIN_ATTEMPT_KEY, String(Date.now()));
+  } catch {
+    /* ignore storage problems */
+  }
+
+  return loginWithSwiggyPopup();
+};
+
+/**
  * Opens Swiggy login in a popup — the main app page never navigates away,
  * so it stays alive and can react the instant we know the outcome, with
  * no reload required. Resolves true if connected, false otherwise
