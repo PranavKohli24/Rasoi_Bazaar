@@ -3,23 +3,49 @@ import { predefinedRecipes } from "../data/predefinedRecipes";
 import { toSlug } from "./slug";
 
 // Strips conversational filler ("i want to eat ... today") from a search.
+// Strips conversational filler ("i want to eat ... today") from a search.
 export const normalizeDishQuery = (input: string): string => {
   let text = input.trim().toLowerCase();
 
   const leadingFillers = [
-    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook)\s+/,
+    // intent phrases
+    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook|order)\s+/,
     /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+/,
-    /^(can|could|would)\s+you\s+(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
-    /^(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
-    /^how\s+(do\s+i|to)\s+(make|cook|prepare)\s+/,
-    /^(recipe|make|cook|prepare)\s+(for|of)\s+/,
+    /^i\s+feel\s+like\s+eating\s+/,
+    /^(?:i\s+)?(?:would|'d)\s+love\s+to\s+(?:eat|have|make|cook)\s+/,
+    /^i\s*(?:’|'|a)?m\s+hungry\s+for\s+/,
+    /^i\s+am\s+hungry\s+for\s+/,
+    /^(?:i\s+)?(?:got|have)\s+a\s+craving\s+for\s+/,
+    /^in\s+the\s+mood\s+for\s+/,
     /^i(’|'| a)?m\s+craving\s+/,
     /^craving\s+/,
+    /^let'?s\s+(?:make|cook|prepare|eat|order)\s+/,
+
+    // "please give/show/tell/send me a recipe for ..."
+    /^(can|could|would)\s+you\s+(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
+    /^(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
+    /^can\s+i\s+(?:get|have)\s+(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+    /^what(?:'s|\s+is)\s+the\s+recipe\s+(?:for|of)\s+/,
+    /^suggest\s+(?:me\s+)?(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+    /^(?:find|search(?:\s+for)?|look\s*up)\s+(?:me\s+)?(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+    /^teach\s+me\s+(?:how\s+to\s+(?:make|cook|prepare)\s+)?/,
+
+    // "how do i make ..." / "recipe for ..."
+    /^how\s+(do\s+i|to)\s+(make|cook|prepare)\s+/,
+    /^(recipe|make|cook|prepare)\s+(for|of)\s+/,
+
+    // casual address / time prefixes
+    /^(?:hey|hi|hello)?\s*(?:bhai|yaar|bro|dost|buddy)\s*[,:]?\s*/,
+    /^(?:today|tonight|tomorrow)(?:'s)?\s+/,
+
     /^please\s+/,
   ];
 
   const trailingFillers = [
     /\s+(today|tonight|now|please|asap|tomorrow|for\s+dinner|for\s+lunch|for\s+breakfast)\s*$/,
+    /\s+(?:right\s+now|quickly|fast|in\s+a\s+hurry)\s*$/,
+    /\s+for\s+(?:\d+\s*(?:people|persons?|ppl)|the\s+family|guests|everyone)\s*$/,
+    /\s+(?:dinner|lunch|breakfast|snacks?)\s*$/,
   ];
 
   let changed = true;
@@ -47,15 +73,22 @@ export const normalizeDishQuery = (input: string): string => {
     /^(?:mujhe|mereko|mujhko|mujko|muje)\s+/,
     /^(?:aaj|abhi|ghar\s+(?:pe|par))\s+/,
     /^kaise\s+(?:banaye|banayen|banau|banate\s+hain|banani\s+hai|banana\s+hai)\s+/,
+    /^(?:mera\s+)?(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|chahta\s+hai|chah\s+raha\s+hai)\s+/,
+    /^jaldi\s+(?:se\s+)?/,
+    /^(?:bhai|yaar|bro|dost)\s*[,:]?\s*/,
   ];
 
   const hinglishTrailingFillers = [
-    /\s+(?:chahiye|batao|bata\s+do|bataiye)\s*$/,
+    /\s+(?:jaldi\s+)?(?:chahiye|batao(?:\s+na)?|bata\s+do|bataiye)\s*$/,
     /\s+(?:banana|banani|khana|khani)\s+hai\s*$/,
     /\s+kaise\s+(?:banaye|banayen|banau|banate\s+hain)\s*$/,
     /\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
     /\s+(?:banane|banaane)\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
     /\s+recipe\s+(?:batao|bata\s+do|bataiye)\s*$/,
+    /\s+(?:ka|ki|ke)\s+recipe\s+(?:de\s*do|dedo|send\s+karo|bhejo)\s*$/,
+    /\s+khane\s+(?:ka|ki|ke)\s*$/,
+    /\s+khane\s+ko\s+(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|chahta\s+hai)\s*$/,
+    /\s+(?:nashte|lunch|dinner|khane)\s+ke\s+liye\s*$/,
   ];
 
   let hinglishChanged = true;
