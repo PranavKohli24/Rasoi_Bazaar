@@ -2192,32 +2192,79 @@ export const findSimilarRecipes = (query: string, limit = 6): string[] => {
     .map((s) => s.name);
 };
 
-
 /* ------------------------------------------------------------------ */
 /* Inline "ghost text" autocomplete: suggests the rest of a dish name  */
 /* only when we're confident — i.e. every dish that starts with what   */
-/* the user typed agrees on how it continues.                          */
+/* the user typed agrees on how it continues. Also looks past          */
+/* conversational wrapper text ("i want to cook rajma cha") so the     */
+/* ghost suggestion still shows up mid-sentence.                       */
 /* ------------------------------------------------------------------ */
 
-export const suggestDishCompletion = (query: string): string | null => {
-  // Don't guess on a trailing space — the user just finished a word on purpose.
-  if (!query || /\s$/.test(query) || query.trim().length < 3) return null;
+// Leading-only filler patterns for ghost text. Deliberately NOT the same
+// list as normalizeDishQuery's trailing fillers — the user may still be
+// mid-word at the end of the string, so we only ever strip from the front.
+const GHOST_LEADING_FILLERS = [
+  /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook|order)\s+/,
+  /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+/,
+  /^i\s+feel\s+like\s+eating\s+/,
+  /^(?:i\s+)?(?:would|'d)\s+love\s+to\s+(?:eat|have|make|cook)\s+/,
+  /^i\s*(?:’|'|a)?m\s+hungry\s+for\s+/,
+  /^i\s+am\s+hungry\s+for\s+/,
+  /^(?:i\s+)?(?:got|have)\s+a\s+craving\s+for\s+/,
+  /^in\s+the\s+mood\s+for\s+/,
+  /^i(’|'| a)?m\s+craving\s+/,
+  /^craving\s+/,
+  /^let'?s\s+(?:make|cook|prepare|eat|order)\s+/,
+  /^(can|could|would)\s+you\s+(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
+  /^(please\s+)?(give|show|tell|send)\s+me\s+(a\s+|the\s+)?(recipe\s+(for|of)\s+)?/,
+  /^can\s+i\s+(?:get|have)\s+(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+  /^suggest\s+(?:me\s+)?(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+  /^(?:find|search(?:\s+for)?|look\s*up)\s+(?:me\s+)?(?:a\s+|the\s+)?(?:recipe\s+(?:for|of)\s+)?/,
+  /^teach\s+me\s+(?:how\s+to\s+(?:make|cook|prepare)\s+)?/,
+  /^how\s+(do\s+i|to)\s+(make|cook|prepare)\s+/,
+  /^(recipe|make|cook|prepare)\s+(for|of)\s+/,
+  /^(?:hey|hi|hello)?\s*(?:bhai|yaar|bro|dost|buddy)\s*[,:]?\s*/,
+  /^please\s+/,
+  // Hinglish
+  /^(?:mujhe|mereko|mujhko|mujko|muje)\s+/,
+  /^(?:aaj|abhi|ghar\s+(?:pe|par))\s+/,
+  /^(?:mera\s+)?(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|chahta\s+hai|chah\s+raha\s+hai)\s+/,
+  /^jaldi\s+(?:se\s+)?/,
+];
 
+const stripLeadingFillerForGhost = (text: string): string => {
+  let out = text;
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pattern of GHOST_LEADING_FILLERS) {
+      const stripped = out.replace(pattern, "");
+      if (stripped !== out) {
+        out = stripped;
+        changed = true;
+      }
+    }
+  }
+  return out;
+};
+
+// Matches a single typed string directly against known dish names.
+// Returns the full completed string (same leading text as typed) or null.
+const completeAgainstDishNames = (query: string): string | null => {
   const leadingWhitespace = query.match(/^\s*/)?.[0] ?? '';
   const q = query.trimStart().toLowerCase();
+  if (q.length < 3) return null;
+
   const matches = allRecipesByDishName.filter((r) =>
     r.dishName.toLowerCase().startsWith(q)
   );
 
   if (matches.length === 1) {
     const name = matches[0].dishName;
-    return name.toLowerCase() === q ? null : leadingWhitespace + name; // already an exact match
+    return name.toLowerCase() === q ? null : leadingWhitespace + name;
   }
 
   if (matches.length > 1) {
-    // Multiple dishes share this prefix — only offer a completion if they're
-    // all just longer variants of the same shortest name, e.g. "Chole Bhature"
-    // and "Chole Bhature (Amritsari style)". Otherwise we'd be guessing.
     const shortest = matches.reduce((a, b) =>
       a.dishName.length <= b.dishName.length ? a : b
     );
@@ -2230,9 +2277,7 @@ export const suggestDishCompletion = (query: string): string | null => {
     }
   }
 
-  // The full typed string doesn't complete to a single dish — see if it's
-  // a combo in progress instead, e.g. "dal ro" -> "dal roti".
-  return suggestComboCompletion(query);
+  return null;
 };
 
 // Ghost-text completion for a combo query in progress — e.g. "dal ro"
@@ -2248,8 +2293,6 @@ const suggestComboCompletion = (query: string): string | null => {
   if (partial.length === 0) return null;
   const firstDishText = words.slice(0, -1).join(' ');
 
-  // Exact match only (same reasoning as combo-splitting) — fuzzy here
-  // would risk the first part "absorbing" words it shouldn't.
   const firstDish = resolveSingleDish(firstDishText);
   if (!firstDish) return null;
 
@@ -2259,7 +2302,6 @@ const suggestComboCompletion = (query: string): string | null => {
   );
   if (matches.length === 0) return null;
 
-  // Same "only if every match agrees" rule as the single-dish completion.
   const shortest = matches.reduce((a, b) => (a.dishName.length <= b.dishName.length ? a : b));
   const allAgree = matches.every((r) =>
     r.dishName.toLowerCase().startsWith(shortest.dishName.toLowerCase())
@@ -2267,4 +2309,39 @@ const suggestComboCompletion = (query: string): string | null => {
   if (!allAgree || shortest.dishName.toLowerCase() === partialLower) return null;
 
   return leadingWhitespace + trimmed.slice(0, trimmed.length - partial.length) + shortest.dishName;
+};
+
+export const suggestDishCompletion = (query: string): string | null => {
+  // Don't guess on a trailing space — the user just finished a word on purpose.
+  if (!query || /\s$/.test(query) || query.trim().length < 3) return null;
+
+  // 1. Try the query exactly as typed.
+  const direct = completeAgainstDishNames(query);
+  if (direct !== null) return direct;
+
+  // 2. Maybe it's a combo in progress, e.g. "dal ro" -> "dal roti".
+  const combo = suggestComboCompletion(query);
+  if (combo !== null) return combo;
+
+  // 3. Maybe there's wrapper text in front of the dish name, e.g.
+  // "i want to cook rajma cha". Strip just the leading filler and retry,
+  // then glue the suffix back onto the ORIGINAL (unstripped) query so the
+  // ghost text still lines up with exactly what's on screen.
+  const trimmed = query.trimStart();
+  const remainder = stripLeadingFillerForGhost(trimmed.toLowerCase());
+
+  if (remainder.length >= 3 && remainder.length < trimmed.length) {
+    const fillerLen = trimmed.length - remainder.length;
+    const typedRemainder = trimmed.slice(fillerLen); // original casing preserved
+
+    const inner =
+      completeAgainstDishNames(typedRemainder) ?? suggestComboCompletion(typedRemainder);
+
+    if (inner !== null && inner.length > typedRemainder.length) {
+      const suffix = inner.slice(typedRemainder.length);
+      return query + suffix; // query === leadingWhitespace + trimmed, by construction
+    }
+  }
+
+  return null;
 };
