@@ -392,7 +392,9 @@ const ZoomableDishImage: React.FC<{
   return (
     <div
       ref={containerRef}
-      className="relative aspect-square w-full shrink-0 overflow-hidden sm:w-56 md:w-64"
+      className={`relative aspect-square w-full shrink-0 sm:w-56 md:w-64 ${
+        zoom.scale > 1.02 ? "overflow-hidden" : "overflow-visible"
+      }`}
       style={{ touchAction: zoom.scale > 1.02 ? "none" : "pan-y", perspective: "800px" }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
@@ -404,11 +406,10 @@ const ZoomableDishImage: React.FC<{
     >
       <div
         aria-hidden="true"
-        className={`dish-image-shimmer absolute inset-0 overflow-hidden ${
+        className={`dish-image-shimmer dish-image-bleed absolute -inset-[4%] overflow-hidden ${
           isLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{
-          borderRadius: DISH_BLOB_RADIUS,
           transform: `rotate(${DISH_BLOB_ROTATE})`,
         }}
       >
@@ -431,7 +432,9 @@ const ZoomableDishImage: React.FC<{
         onError={onError}
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
-        className={`absolute inset-0 h-full w-full select-none object-cover ${
+        className={`absolute -inset-[4%] h-[108%] w-[108%] select-none object-cover ${
+          zoom.scale <= 1.02 ? "dish-image-bleed" : ""
+        } ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{
@@ -440,7 +443,6 @@ const ZoomableDishImage: React.FC<{
           transition: settling
             ? "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)"
             : "opacity 700ms ease-in-out",
-          borderRadius: DISH_BLOB_RADIUS,
           boxShadow: "none",
           userSelect: "none",
         }}
@@ -613,6 +615,18 @@ const STEP_ANIMATION_CSS = `
 .dish-image-shimmer {
   background: var(--bg-tint, #FFF8F1);
   transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dish-image-bleed {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+
+  mask-image:
+    linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+  mask-composite: intersect;
 }
 
 .dish-image-shimmer__glow {
