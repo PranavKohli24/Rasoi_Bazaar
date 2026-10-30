@@ -87,18 +87,41 @@ export const normalizeDishQuery = (input: string): string => {
     /^(?:bhai|yaar|bro|dost)\s*[,:]?\s*/,
   ];
 
-  const hinglishTrailingFillers = [
-    /\s+(?:jaldi\s+)?(?:chahiye|batao(?:\s+na)?|bata\s+do|bataiye)\s*$/,
-    /\s+(?:banana|banani|khana|khani)\s+hai\s*$/,
-    /\s+kaise\s+(?:banaye|banayen|banau|banate\s+hain)\s*$/,
-    /\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
-    /\s+(?:banane|banaane)\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
-    /\s+recipe\s+(?:batao|bata\s+do|bataiye)\s*$/,
-    /\s+(?:ka|ki|ke)\s+recipe\s+(?:de\s*do|dedo|send\s+karo|bhejo)\s*$/,
-    /\s+khane\s+(?:ka|ki|ke)\s*$/,
-    /\s+khane\s+ko\s+(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|chahta\s+hai)\s*$/,
-    /\s+(?:nashte|lunch|dinner|khane)\s+ke\s+liye\s*$/,
-  ];
+const hinglishTrailingFillers = [
+  // "chahiye" / "batao" family — unchanged
+  /\s+(?:jaldi\s+)?(?:chahiye|batao(?:\s+na)?|bata\s+do|bataiye)\s*$/,
+
+  // "khana/khane/khani/khaane hai" and "banana/banane/banani hai"
+  // (the original only covered khana/khani — khane was the common miss)
+  /\s+(?:khane|khana|khani|khaane|banane|banana|banani|bananai)\s+(?:hain|hai)\s*$/,
+
+  // "khane/banane ka/ki mann/dil (kar raha) hai"
+  /\s+(?:khane|khana|banane|banana)\s+(?:ka|ki|ke)\s+(?:mann|dil|man)\s+(?:kar\s+raha\s+hai|kar\s+rahi\s+hai|chahta\s+hai|chahti\s+hai|hai)\s*$/,
+
+  // "khane ko dil/mann chahta hai" (ka/ko both, original only had ko)
+  /\s+khane\s+(?:ka|ko)\s+(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|kar\s+rahi\s+hai|chahta\s+hai|chahti\s+hai)\s*$/,
+
+  // "kaise banaye/banayen" etc. as a trailing question
+  /\s+kaise\s+(?:banaye|banayen|banau|banate\s+hain)\s*$/,
+
+  // "<dish> ki/ka/ke recipe batao/bata do/bataiye/de do/send karo/bhejo"
+  /\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye|de\s*do|dedo|send\s+karo|bhejo)?\s*$/,
+  /\s+(?:banane|banaane)\s+(?:ki|ka|ke)\s+(?:recipe|vidhi|tarika)\s*(?:batao|bata\s+do|bataiye)?\s*$/,
+  /\s+recipe\s+(?:batao|bata\s+do|bataiye)\s*$/,
+
+  // "<dish> khane ke liye" / "nashte/lunch/dinner ke liye"
+  /\s+(?:khane|nashte|lunch|dinner)\s+ke\s+liye\s*$/,
+  /\s+khane\s+(?:ka|ki|ke)\s*$/,
+
+  // "bana do / bana lo / bana den / bana dena" — command form, very common
+  /\s+bana\s+(?:do|lo|den|dena|dijiye|deejiye)\s*$/,
+
+  // "khaunga/khaungi/khayenge" — "I will eat X" future tense
+  /\s+(?:khaunga|khaungi|khayenge|khayenge)\s*$/,
+
+  // "taiyar karna/karni hai", "order karna hai"
+  /\s+(?:taiyar|order)\s+(?:karna|karni|karo)\s+hai\s*$/,
+];
 
   let hinglishChanged = true;
   while (hinglishChanged) {
