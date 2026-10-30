@@ -421,7 +421,9 @@ const ZoomableDishImage: React.FC<{
 
 <div
   key={bounceKey}
-  className={`absolute inset-0 ${bounceKey > 0 ? "animate-image-bounce-3d" : ""}`}
+  className={`absolute inset-0 flex items-center justify-center ${
+    bounceKey > 0 ? "animate-image-bounce-3d" : ""
+  }`}
 >
       <img
         src={src}
@@ -435,14 +437,12 @@ const ZoomableDishImage: React.FC<{
         onError={onError}
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
-        className={`absolute left-1/2 top-1/2 h-[108%] w-[108%] select-none object-cover ${
+        className={`h-[108%] w-[108%] max-w-none shrink-0 select-none object-cover ${
           zoom.scale <= 1.02 && !settling ? "dish-image-bleed" : ""
         } ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{
-          marginLeft: "-54%",
-          marginTop: "-54%",
           transformOrigin: "center",
           transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale}) rotate(${DISH_BLOB_ROTATE})`,
           transition: settling
