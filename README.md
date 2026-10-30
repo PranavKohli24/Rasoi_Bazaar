@@ -1,150 +1,41 @@
+# 🍲 Rasoi Bazaar
 
-# 🍲 Rasoi Bazaar  
+Cook real Indian food at home, without the guesswork.
 
-<img src="Thumbnail.png" alt="thumnail"/>
+**Live:** [rasoi-bazaar.vercel.app](http://rasoi-bazaar.vercel.app/)
 
-
-**Rasoi Bazaar** is a full-stack web app that helps you cook Indian dishes right at home.  
-Pick any Indian cuisine you want - Rasoi Bazaar gives you everything you need: ingredients, basic equipment, and step-by-step instructions to follow along.  
-
-👉 **Live Demo:** [rasoi-bazaar.vercel.app](http://rasoi-bazaar.vercel.app/)
+<img src="Thumbnail.png" alt="Rasoi Bazaar" />
 
 ---
 
-## 🧩 Overview
+## What it does
 
-Rasoi Bazaar is your digital kitchen companion for exploring Indian cuisine.  
-It guides you through the entire cooking process - from finding a recipe to plating your dish.  
-Each recipe comes with the full ingredient list, tools needed, and clear instructions anyone can follow.
+Rasoi Bazaar is built to make Indian cooking easy for anyone, with recipes that use basic equipment and ingredients you probably already have - no fancy gadgets, no hunting for obscure spices.
 
-The goal: make Indian cooking accessible, simple, and genuinely fun to do at home.
+- **600+ recipes** - Indian dishes from across regions, explained step by step so you're never left guessing what to do next.
 
----
-## 💡 Motivation  
-<img src="public/chef_photo.png" height="280px" width="280px"/>
+- **Order instead of cook** - Don't feel like making the dish yourself? Order it straight from Swiggy, right inside the app - search, order, and track it, all without switching apps.
 
-<p>
-Built this because most Indian recipes online skip steps assuming you already know them. or are too distracting.
-</p>
-<p>
-This keeps it clear. No guessing. Just cooking.
-</p>
+- **Missing an ingredient?** - Order it on the spot through Instamart, so a missing item never stops you mid-recipe.
 
+- **An AI cooking companion that actually knows your recipe** - It knows which dish you're making and exactly which step you're on, so you can ask it questions anytime. You can even just tell it "order this for me" and it'll get the ingredient delivered.
 
----
-## 🧠 Features
-<img src="demo.png" alt="app demo"/>
+- **"Hey Chef" - cook hands-free** - Like talking to Alexa, but for your kitchen. Just say "Hey Chef" and ask your question out loud while your hands are busy cooking.
 
-- 🔎 **Explore Authentic Recipes** - Browse Indian dishes across regions and categories.  
-- 🧾 **Step-by-Step Cooking Guide** - Follow clear, easy-to-understand instructions.  
-- 🥣 **Ingredient Breakdown** - See what you need and in what quantity.  
-- 🧰 **Equipment List** - Know the tools you'll need before you start.  
-- 📱 **Responsive Design** - Works smoothly on desktop, tablet, and mobile.  
-- 🌶️ **Real Indian Flavors** - Recipes curated for authenticity and taste.  
+- **Cook With What You Already Have** - Tell the app what equipment and groceries you have using a simple kitchen canvas, and it'll suggest dishes you can actually make right now.
+
+- **A UI that feels alive** - Each recipe page is tinted to match the dish - a warm brown for rajma chawal, a soft pink for a strawberry dessert, and so on. Add in built-in timers and a clean, easy-to-follow layout, and cooking along feels effortless.
 
 ---
 
-## ⚙️ Tech Stack
-
-**Frontend:**  
-- React.js  
-- Next.js  
-- Tailwind CSS  
-
-**Backend:**  
-- Node.js  
-- Gemini API
-
-
-**Deployment:**  
-- Vercel
-
----
-
-## 🚀 Getting Started
-
-If you want to run Rasoi Bazaar locally, here’s how to set it up.
-
-### 1. Clone the Repository
-```bash
-cd Desktop
-git clone https://github.com/PranavKohli24/Rasoi-Bazaar.git
-cd  Rasoi-Bazaar
-````
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Set Up Environment Variables
-
-Create a `.env` file in the root directory and add the following:
-
-```
-GEMINI_API_KEY=your_api_key
-```
-
-Get your gemini api key from https://aistudio.google.com/api-keys
-Then Create New API Key or use an existing one.
-
-### 4. Start the Development Servers
-
-Run the **Project**:
-
-```bash
-npm run dev
-```
-
-
-Now open [http://localhost:5173](http://localhost:5173) and you’re good to go.
-
-
----
-
-
-## 🌱 Future Enhancements
-
-* 👤 User accounts to save favorite recipes
-* 🍛 Personalized recommendations
-* 🔁 Ingredient substitution suggestions
-* 📸 User-submitted recipes
-* 🎥 Video tutorials for each dish
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-To get started:
+## Contributing
 
 1. Fork the repo
-2. Create a new branch (`feature/your-feature-name`)
-3. Make your changes
-4. Commit and push
-5. Open a pull request
+2. Create a branch (`feature/your-feature-name`)
+3. Commit, push, open a PR
 
 ---
 
-## 📬 Contact
+## Contact
 
-**Pranav Kohli**
-<p>
-  Email me at
-  <a href="mailto:hey@pranavkohli.me">
-      hey@pranavkohli.me
-  </a>
-</p>
-
-
----
-
-## 🧡 Credits
-
-Built with love for Indian food and web development.
-Every recipe, every line of code - made to bring the flavors of India to your kitchen.
-
----
-
-
+**Pranav Kohli** - [kohlipranav24@gmail.com](mailto:kohlipranav24@gmail.com)
