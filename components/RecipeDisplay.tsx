@@ -632,6 +632,10 @@ const STEP_ANIMATION_CSS = `
     linear-gradient(to right, transparent, #000 7%, #000 93%, transparent),
     linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
   mask-composite: intersect;
+
+  will-change: mask-image, -webkit-mask-image;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .dish-image-shimmer__glow {
