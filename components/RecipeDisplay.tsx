@@ -196,7 +196,6 @@ const NotesIcon: IconC = ({ className }) => (
 // Asymmetric corner radii — each value pair (horizontal/vertical) is
 // deliberately uneven, so the photo reads as an object placed on the
 // page rather than a photo boxed into a frame. No blur involved.
-const DISH_BLOB_RADIUS = "8% 30% 26% 10% / 10% 24% 30% 12%";
 const DISH_BLOB_ROTATE = "-1deg";
 
 const BLOB_RADII = [
@@ -408,10 +407,12 @@ const ZoomableDishImage: React.FC<{
     >
       <div
         aria-hidden="true"
-        className={`dish-image-shimmer dish-image-bleed absolute -inset-[4%] overflow-hidden ${
+        className={`dish-image-shimmer dish-image-bleed absolute left-1/2 top-1/2 h-[108%] w-[108%] overflow-hidden ${
           isLoaded ? "opacity-0" : "opacity-100"
         }`}
         style={{
+          marginLeft: "-54%",
+          marginTop: "-54%",
           transform: `rotate(${DISH_BLOB_ROTATE})`,
         }}
       >
@@ -434,12 +435,14 @@ const ZoomableDishImage: React.FC<{
         onError={onError}
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
-        className={`absolute -inset-[4%] h-[108%] w-[108%] select-none object-cover ${
+        className={`absolute left-1/2 top-1/2 h-[108%] w-[108%] select-none object-cover ${
           zoom.scale <= 1.02 && !settling ? "dish-image-bleed" : ""
         } ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
         style={{
+          marginLeft: "-54%",
+          marginTop: "-54%",
           transformOrigin: "center",
           transform: `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale}) rotate(${DISH_BLOB_ROTATE})`,
           transition: settling
