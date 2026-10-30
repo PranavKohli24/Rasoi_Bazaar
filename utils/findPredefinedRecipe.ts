@@ -1948,6 +1948,11 @@ const MANUAL_ALIASES: Record<string, string> = {
   "gudok tripura": "gudok",
   "berma vegetable stew": "gudok",
 
+  "nimbu paani" : "shikanji",
+  "lemon water" : "shikanji",
+  "lemon paani" : "shikanji",
+  "nimbu water" : "shikanji",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {

@@ -54484,6 +54484,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
     "kootu (mixed vegetable kootu)": {
     dishName: "Kootu (Mixed Vegetable Kootu)",
+    "image": "/dishes/vegetable-kootu.webp",
     description: "A mild South Indian dish of vegetables, dal and a simple coconut-cumin paste.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54513,6 +54514,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kollu rasam": {
     dishName: "Kollu Rasam (Horse Gram Rasam)",
+    "image": "/dishes/kollu-rasam.webp",
     description: "A peppery South Indian rasam made with horse gram, tomato, garlic and tamarind.",
     prepTime: "Approx. 45 minutes (plus soaking)",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54544,6 +54546,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kambu koozh": {
     dishName: "Kambu Koozh (Pearl Millet Porridge)",
+    "image": "/dishes/kambu-koozh.webp",
     description: "A cooling Tamil-style pearl millet porridge mixed with buttermilk, onion and green chilli.",
     prepTime: "Approx. 25 minutes, plus cooling",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54568,6 +54571,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "vazhaipoo vadai": {
     dishName: "Vazhaipoo Vadai (Banana Flower Vada)",
+     "image": "/dishes/vazhaipoo-vadai.webp",
     description: "Crisp homemade fritters made with banana flower, soaked chana dal and simple spices.",
     prepTime: "Approx. 35 minutes (plus soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54595,6 +54599,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kallummakkaya nirachathu": {
     dishName: "Kallummakkaya Nirachathu (Stuffed Mussels)",
+    "image": "/dishes/kallummakkaya-nirachathu.webp",
     description: "A Malabar snack of mussels filled with a rice and coconut paste, then cooked with chilli.",
     prepTime: "Approx. 50 minutes (plus rice soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54623,6 +54628,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pidi and kozhi curry": {
     dishName: "Pidi and Kozhi Curry (Rice Dumplings with Chicken Curry)",
+     "image": "/dishes/pidi-and-kozhi-curry.webp",
     description: "Kerala rice flour dumplings served with a simple homemade chicken and coconut curry.",
     prepTime: "Approx. 1 hour",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54659,6 +54665,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "theeyal": {
     dishName: "Theeyal (Kerala Roasted Coconut Curry)",
+     "image": "/dishes/theeyal.webp",
     description: "A Kerala curry of shallots in a dark, tangy sauce made with browned coconut and tamarind.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
