@@ -393,7 +393,9 @@ const ZoomableDishImage: React.FC<{
     <div
       ref={containerRef}
       className={`relative aspect-square w-full shrink-0 sm:w-56 md:w-64 ${
-        zoom.scale > 1.02 ? "overflow-hidden" : "overflow-visible"
+        zoom.scale > 1.02 || settling
+          ? "overflow-hidden"
+          : "overflow-visible"
       }`}
       style={{ touchAction: zoom.scale > 1.02 ? "none" : "pan-y", perspective: "800px" }}
       onTouchStart={handleTouchStart}
@@ -433,7 +435,7 @@ const ZoomableDishImage: React.FC<{
         onContextMenu={(e) => e.preventDefault()}
         onDragStart={(e) => e.preventDefault()}
         className={`absolute -inset-[4%] h-[108%] w-[108%] select-none object-cover ${
-          zoom.scale <= 1.02 ? "dish-image-bleed" : ""
+          zoom.scale <= 1.02 && !settling ? "dish-image-bleed" : ""
         } ${
           isLoaded ? "opacity-100" : "opacity-0"
         }`}
