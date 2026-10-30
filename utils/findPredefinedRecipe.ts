@@ -9,9 +9,14 @@ export const normalizeDishQuery = (input: string): string => {
 
   const leadingFillers = [
     // intent phrases
-    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook|order)\s+/,
-    /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+/,
-    /^i\s+feel\s+like\s+eating\s+/,
+    // "want to X" / "would like to X" / "need to X" — these take "to"
+    /^i\s+(really\s+)?(?:want|would\s+like|need)\s+to\s+(?:eat|have|make|cook|order)\s+/,
+    // "wanna X" — no "to" ("I wanna cook rajma chawal")
+    /^i\s+(really\s+)?wanna\s+(?:eat|have|make|cook|order)\s+/,
+    // "feel like Xing" — gerund, not "to" ("I feel like cooking rajma chawal")
+    /^i\s+feel\s+like\s+(?:eating|having|making|cooking|ordering)\s+/,
+    // bare fallback — "I want/wanna/need X" with no verb at all
+    /^i\s+(really\s+)?(want|wanna|would like|need)\s+/,
     /^(?:i\s+)?(?:would|'d)\s+love\s+to\s+(?:eat|have|make|cook)\s+/,
     /^i\s*(?:’|'|a)?m\s+hungry\s+for\s+/,
     /^i\s+am\s+hungry\s+for\s+/,
@@ -39,6 +44,10 @@ export const normalizeDishQuery = (input: string): string => {
     /^(?:today|tonight|tomorrow)(?:'s)?\s+/,
 
     /^please\s+/,
+
+    // catches a leftover bare action verb after an earlier strip,
+    // e.g. "cook rajma chawal" -> "rajma chawal"
+    /^(?:let's\s+)?(?:please\s+)?(?:eat|have|make|cook|prepare|order)\s+/,
   ];
 
   const trailingFillers = [
@@ -2204,9 +2213,14 @@ export const findSimilarRecipes = (query: string, limit = 6): string[] => {
 // list as normalizeDishQuery's trailing fillers — the user may still be
 // mid-word at the end of the string, so we only ever strip from the front.
 const GHOST_LEADING_FILLERS = [
-  /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+to\s+(eat|have|make|cook|order)\s+/,
-  /^i\s+(really\s+)?(want|wanna|feel like|would like|need)\s+/,
-  /^i\s+feel\s+like\s+eating\s+/,
+  // "want to X" / "would like to X" / "need to X" — these take "to"
+  /^i\s+(really\s+)?(?:want|would\s+like|need)\s+to\s+(?:eat|have|make|cook|order)\s+/,
+  // "wanna X" — no "to" ("I wanna cook rajma chawal")
+  /^i\s+(really\s+)?wanna\s+(?:eat|have|make|cook|order)\s+/,
+  // "feel like Xing" — gerund, not "to" ("I feel like cooking rajma chawal")
+  /^i\s+feel\s+like\s+(?:eating|having|making|cooking|ordering)\s+/,
+  // bare fallback — "I want/wanna/need X" with no verb at all
+  /^i\s+(really\s+)?(want|wanna|would like|need)\s+/,
   /^(?:i\s+)?(?:would|'d)\s+love\s+to\s+(?:eat|have|make|cook)\s+/,
   /^i\s*(?:’|'|a)?m\s+hungry\s+for\s+/,
   /^i\s+am\s+hungry\s+for\s+/,
@@ -2230,6 +2244,8 @@ const GHOST_LEADING_FILLERS = [
   /^(?:aaj|abhi|ghar\s+(?:pe|par))\s+/,
   /^(?:mera\s+)?(?:dil|mann|man)\s+(?:kar\s+raha\s+hai|chahta\s+hai|chah\s+raha\s+hai)\s+/,
   /^jaldi\s+(?:se\s+)?/,
+  // leftover bare action verb after an earlier strip
+  /^(?:let's\s+)?(?:please\s+)?(?:eat|have|make|cook|prepare|order)\s+/,
 ];
 
 const stripLeadingFillerForGhost = (text: string): string => {
