@@ -54695,6 +54695,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pandi curry": {
     dishName: "Pandi Curry (Coorg Pork Curry)",
+    "image": "/dishes/pandi-curry.webp",
     description: "A Coorg-style pork curry with roasted spices and a tangy finish from kachampuli or tamarind.",
     prepTime: "Approx. 50 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "cooker", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54725,6 +54726,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "maddur vada": {
     dishName: "Maddur Vada",
+    "image": "/dishes/maddur-vada.webp",
     description: "Crisp Karnataka onion fritters made with rice flour, rava and a few everyday spices.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54755,6 +54757,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "ulavacharu": {
     dishName: "Ulavacharu (Andhra Horse Gram Rasam)",
+    "image": "/dishes/ulavacharu.webp",
     description: "A tangy Andhra soup made from horse gram cooking water, tamarind and simple spices.",
     prepTime: "Approx. 1 hour (plus soaking)",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54787,6 +54790,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sarva pindi": {
     dishName: "Sarva Pindi (Telangana Rice Flour Pancake)",
+    "image": "/dishes/sarva-pindi.webp",
     description: "A savoury Telangana pancake made with rice flour, peanuts, sesame and onion.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54817,6 +54821,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sakinalu": {
     dishName: "Sakinalu (Telangana Sesame Rice Spirals)",
+    "image": "/dishes/sakinalu.webp",
     description: "Crunchy Telangana rice snacks shaped into rings and flavoured with sesame.",
     prepTime: "Approx. 45 minutes, plus drying",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54840,6 +54845,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chha gosht": {
     dishName: "Chha Gosht (Himachali Yogurt Mutton Curry)",
+    "image": "/dishes/chha-gosht.webp",
     description: "A Himachali mutton curry cooked with curd, gram flour and warming whole spices.",
     prepTime: "Approx. 1 hour (plus marinating)",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54872,6 +54878,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chainsoo": {
     dishName: "Chainsoo (Uttarakhand Roasted Black Gram Dal)",
+    "image": "/dishes/chainsoo.webp",
     description: "A hearty Garhwali dal made with roasted black urad, garlic and a few spices.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54899,6 +54906,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "thechwani": {
     dishName: "Thechwani (Pahadi Crushed Potato and Radish Curry)",
+    "image": "/dishes/thechwani.webp",
     description: "A simple Uttarakhand curry of crushed potato and radish cooked with ginger, garlic and spices.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54928,6 +54936,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "monje haakh": {
     dishName: "Monje Haakh (Kashmiri Kohlrabi and Greens)",
+    "image": "/dishes/monje-haakh.webp",
     description: "A light Kashmiri dish of kohlrabi and leafy greens cooked with mustard oil and mild spices.",
     prepTime: "Approx. 30 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54953,6 +54962,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kalari": {
     dishName: "Kalari (Jammu-Style Fried Cheese)",
+    "image": "/dishes/kalari.webp",
     description: "A simple Jammu-region snack of local kalari cheese browned on a hot tawa.",
     prepTime: "Approx. 10 minutes",
     equipment: [{ item: "tawa", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54974,6 +54984,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mochar ghonto": {
     dishName: "Mochar Ghonto (Bengali Banana Blossom Curry)",
+    "image": "/dishes/mochar-ghonto.webp",
     description: "A Bengali dry curry of banana blossom with potato, coconut and gentle spices.",
     prepTime: "Approx. 50 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55005,6 +55016,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "dhokar dalna": {
     dishName: "Dhokar Dalna (Bengali Lentil Cake Curry)",
+    "image": "/dishes/dhokar-dalna.webp",
     description: "Bengali lentil cakes cooked in a simple potato and tomato gravy.",
     prepTime: "Approx. 1 hour (plus soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55121,6 +55133,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "besara": {
     dishName: "Besara (Odia Mustard Vegetable Curry)",
+    "image": "/dishes/besara.webp",
     description: "An Odisha vegetable curry with a sharp mustard, garlic and chilli paste.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55205,6 +55218,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "zunka bhakar": {
     dishName: "Zunka Bhakar (Maharashtrian Besan and Flatbread)",
+    "image": "/dishes/zunka-bhakar.webp",
     description: "A simple Maharashtrian meal of spiced gram flour with a millet flatbread.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "tawa", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55312,6 +55326,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "sannas": {
     dishName: "Sannas (Goan Steamed Rice Cakes)",
+    "image": "/dishes/sannas.webp",
     description: "Soft, slightly sweet Goan rice cakes made with coconut and a fermented batter.",
     prepTime: "Approx. 30 minutes (plus soaking and rising)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55337,6 +55352,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "patoleo": {
     dishName: "Patoleo (Goan Coconut and Jaggery Leaf Cakes)",
+    "image": "/dishes/patoleo.webp",
     description: "A Goan sweet made with rice batter and coconut-jaggery filling steamed in turmeric leaves.",
     prepTime: "Approx. 40 minutes (plus rice soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55362,6 +55378,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bhutte ka kees": {
     dishName: "Bhutte Ka Kees (Indori Grated Corn)",
+    "image": "/dishes/bhutte-ka-kees.webp",
     description: "A Madhya Pradesh street-style dish of grated corn cooked with milk and mild spices.",
     prepTime: "Approx. 25 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55390,6 +55407,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bafauri": {
     dishName: "Bafauri (Chhattisgarh Steamed Chana Dal Balls)",
+    "image": "/dishes/bafauri.webp",
     description: "A Chhattisgarh snack of spiced chana dal balls cooked by steaming instead of frying.",
     prepTime: "Approx. 35 minutes (plus soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55556,6 +55574,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "zan": {
     dishName: "Zan (Mizo Millet Porridge)",
+    "image": "/dishes/zan.webp",
     description: "A warm Mizo staple made by cooking millet flour into a thick, simple porridge.",
     prepTime: "Approx. 20 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55576,6 +55595,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "pehak": {
     dishName: "Pehak (Manipuri Fermented Fish Chutney)",
+    "image": "/dishes/pehak.webp",
     description: "A small, bold Manipuri-style chutney made with fermented fish and roasted chilli.",
     prepTime: "Approx. 15 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55597,6 +55617,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "akki rotti": {
     dishName: "Akki Rotti (Rice Flour Flatbread)",
+    "image": "/dishes/akki-rotti.webp",
     description: "A Karnataka flatbread made with rice flour, onion, chilli and fresh herbs.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -55627,6 +55648,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "goli baje": {
     dishName: "Goli Baje (Mangaluru Bonda)",
+    "image": "/dishes/goli-baje.webp",
     description: "Soft, fluffy coastal Karnataka fritters made with flour, curd, ginger and green chilli.",
     prepTime: "Approx. 35 minutes (including resting time)",
     equipment: [
@@ -55822,6 +55844,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chicken cafreal": {
     dishName: "Chicken Cafreal (Goan Green Masala Chicken)",
+    "image": "/dishes/chicken-cafreal.webp",
     description: "Goan chicken coated in a bright green paste of coriander, chilli, garlic and warm spices.",
     prepTime: "Approx. 45 minutes (plus marinating time)",
     equipment: [
