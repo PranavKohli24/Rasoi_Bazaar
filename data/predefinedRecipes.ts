@@ -56605,6 +56605,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pinni": {
   "dishName": "Pinni (Punjabi Wheat Flour Sweet Balls)",
+  "image": "/dishes/onion-dosa.webp",
   "description": "Rich, nutty whole wheat flour ladoos cooked in ghee with sugar and nuts.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56626,6 +56627,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "bathua raita": {
   "dishName": "Bathua Raita",
+  "image": "/dishes/bathua-raita.webp",
   "description": "A winter raita made with boiled bathua greens mixed into spiced yogurt.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56669,6 +56671,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "hara chana": {
   "dishName": "Hara Chana (Fresh Green Chickpea Curry)",
+  "image": "/dishes/hara-chana.webp",
   "description": "A simple curry made with fresh green chickpeas, onion and tomato.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58376,6 +58379,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "madurai kari dosa": {
   "dishName": "Madurai Kari Dosa",
+  "image": "/dishes/madurai-kari-dosa.webp",
   "description": "A crisp dosa topped with a spicy minced meat masala, Madurai street-food style.",
   "prepTime": "Approx. 40 minutes (using ready dosa batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58488,6 +58492,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "onion dosa": {
   "dishName": "Onion Dosa",
+  "image": "/dishes/onion-dosa.webp",
   "description": "A crisp dosa topped with finely chopped onions and mild spice.",
   "prepTime": "Approx. 20 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58510,6 +58515,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "podi dosa": {
   "dishName": "Podi Dosa",
+  "image": "/dishes/podi-dosa.webp",
   "description": "A crisp dosa smeared with spicy roasted lentil chutney powder and ghee.",
   "prepTime": "Approx. 20 minutes (using ready batter and podi)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58529,6 +58535,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "paper dosa": {
   "dishName": "Paper Dosa",
+  "image": "/dishes/paper-dosa.webp",
   "description": "An extra-thin, large crisp dosa, a South Indian classic.",
   "prepTime": "Approx. 20 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58546,6 +58553,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kal dosa": {
   "dishName": "Kal Dosa",
+  "image": "/dishes/kal-dosa.webp",
   "description": "A soft, thick fermented dosa, lightly spongy, popular in Tamil Nadu.",
   "prepTime": "Approx. 20 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58563,6 +58571,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "paneer dosa": {
   "dishName": "Paneer Dosa",
+  "image": "/dishes/paneer-dosa.webp",
   "description": "A crisp dosa topped with crumbled, lightly spiced paneer.",
   "prepTime": "Approx. 25 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58584,6 +58593,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "egg dosa": {
   "dishName": "Egg Dosa",
+  "image": "/dishes/egg-dosa.webp",
   "description": "A crisp dosa topped with a thin layer of spiced beaten egg.",
   "prepTime": "Approx. 20 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58605,6 +58615,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "ragi dosa": {
   "dishName": "Ragi Dosa",
+  "image": "/dishes/ragi-dosa.webp",
   "description": "A healthy finger millet dosa, crisp and easy to make without fermentation.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -59025,6 +59036,80 @@ export const predefinedRecipes: Record<string, Recipe> = {
   ],
   "notes": ["Keep oil at medium heat so the khoya cooks through without browning too fast."]
 },
+
+
+"pheni (milk feniya)": {
+  "dishName": "Pheni (Milk Feniya)",
+  "image": "/dishes/pheni.webp",
+  "description": "Crisp, thread-like fried wheat vermicelli soaked in warm sweetened milk, a classic Rajasthani winter breakfast.",
+  "prepTime": "Approx. 45 minutes (plus resting)",
+  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "ingredients": [
+    { "amount": "2 cups", "commonName": "Maida", "englishName": "all-purpose flour" },
+    { "amount": "2 tbsp", "commonName": "Ghee", "englishName": "ghee, for dough" },
+    { "amount": "as needed", "commonName": "Paani", "englishName": "water, for kneading" },
+    { "amount": "as needed", "commonName": "Tel", "englishName": "oil, for stretching and deep frying" },
+    { "amount": "2 cups", "commonName": "Doodh", "englishName": "full-fat milk" },
+    { "amount": "3 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+    { "amount": "1/4 tsp", "commonName": "Elaichi Powder", "englishName": "cardamom powder" },
+    { "amount": "a few strands", "commonName": "Kesar", "englishName": "saffron, optional" },
+    { "amount": "1 tbsp", "commonName": "Badam aur Pista", "englishName": "slivered almonds and pistachios, for garnish" }
+  ],
+  "method": [
+    { "step": 1, "instruction": "Mix flour, ghee and a little water into a soft, smooth dough. Knead well for 5 minutes, cover with oiled plastic and rest for 30 minutes." },
+    { "step": 2, "instruction": "Divide the dough into small balls. Rub each ball generously with oil and stretch and fold it repeatedly by hand until it becomes very soft and elastic, like a thick rubber band.", "tip": { "title": "Stretch well", "content": "The more you stretch and fold the dough with oiled hands, the finer and flakier the pheni threads will be." } },
+    { "step": 3, "instruction": "Roll each stretched ball into a very thin rope, then coil it around your fingers to form a small flat spiral or loosely roll it into thin layered coils." },
+    { "step": 4, "instruction": "Rest the shaped coils for 15 minutes so the gluten relaxes." },
+    { "step": 5, "instruction": "Heat oil in a kadai on medium-low heat. Gently stretch each coil out a little more and deep-fry until light golden and crisp, turning once." },
+    { "step": 6, "instruction": "Drain the fried pheni on a plate and let it cool and crisp up fully." },
+    { "step": 7, "instruction": "Warm the milk in the kadai with sugar, cardamom and saffron until the sugar dissolves." },
+    { "step": 8, "instruction": "Just before serving, crumble the crisp pheni into a bowl and pour the warm sweet milk over it. Garnish with nuts and serve immediately." }
+  ],
+  "notes": [
+    "Add the milk only right before eating, or the pheni will turn soft and lose its crispness.",
+    "This home version simplifies the traditional multi-day stretching process while keeping the same flavour."
+  ]
+},
+
+"chicken lollipop": {
+  "dishName": "Chicken Lollipop",
+  "image": "/dishes/chicken-lollipop.webp",
+  "description": "Crispy fried chicken winglets shaped like lollipops, a popular Indo-Chinese party starter, tossed in a spicy garlic sauce.",
+  "prepTime": "Approx. 50 minutes (plus marination)",
+  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "ingredients": [
+    { "amount": "10", "commonName": "Chicken Lollipop", "englishName": "chicken winglets, frenched into lollipop shape" },
+    { "amount": "1 tbsp", "commonName": "Adrak-Lehsun Paste", "englishName": "ginger-garlic paste" },
+    { "amount": "1 tbsp", "commonName": "Soy Sauce", "englishName": "soy sauce" },
+    { "amount": "1 tsp", "commonName": "Kali Mirch", "englishName": "black pepper powder" },
+    { "amount": "1", "commonName": "Anda", "englishName": "egg" },
+    { "amount": "3 tbsp", "commonName": "Corn Flour", "englishName": "cornflour" },
+    { "amount": "2 tbsp", "commonName": "Maida", "englishName": "all-purpose flour" },
+    { "amount": "1 tsp", "commonName": "Lal Mirch Powder", "englishName": "red chilli powder" },
+    { "amount": "as needed", "commonName": "Tel", "englishName": "oil, for deep frying" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "1 tbsp", "commonName": "Lehsun", "englishName": "garlic, finely chopped, for sauce" },
+    { "amount": "2 tbsp", "commonName": "Red Chilli Sauce", "englishName": "red chilli sauce" },
+    { "amount": "1 tbsp", "commonName": "Tomato Ketchup", "englishName": "tomato ketchup" },
+    { "amount": "1 tsp", "commonName": "Soy Sauce", "englishName": "soy sauce, for sauce" },
+    { "amount": "1 tbsp", "commonName": "Tel", "englishName": "oil, for sauce" }
+  ],
+  "method": [
+    { "step": 1, "instruction": "If the chicken winglets are not already frenched, use a small knife to push the meat down to one end of the thin bone, scraping it clean so it looks like a lollipop stick.", "tip": { "title": "Ask your butcher", "content": "Most butchers can prepare chicken lollipop cuts for you, which saves time and effort at home." } },
+    { "step": 2, "instruction": "Mix ginger-garlic paste, soy sauce, pepper, salt and the egg in a bowl. Add the chicken lollipops and coat well. Marinate for 30 minutes." },
+    { "step": 3, "instruction": "Add cornflour, maida and red chilli powder to the marinated chicken. Mix well so each piece gets a thin, even coating." },
+    { "step": 4, "instruction": "Heat oil in a kadai on medium heat. Fry the lollipops in batches, turning occasionally, for 8 to 10 minutes until golden and cooked through. Drain on paper.", "tip": { "title": "Check doneness", "content": "Cut into the thickest piece to confirm there is no pink meat near the bone before serving." } },
+    { "step": 5, "instruction": "For the sauce, heat 1 tablespoon oil in a clean kadai. Add chopped garlic and cook for 20 seconds." },
+    { "step": 6, "instruction": "Add chilli sauce, ketchup, soy sauce and a splash of water. Simmer for 1 to 2 minutes until it turns into a thick, glossy sauce." },
+    { "step": 7, "instruction": "Add the fried lollipops and toss quickly to coat, or serve the sauce on the side for dipping." }
+  ],
+  "notes": [
+    "For extra crunch, double-fry the lollipops: fry once until light golden, rest 5 minutes, then fry again briefly until deep golden.",
+    "Hold the exposed bone with a napkin or foil wrap when serving, in classic lollipop style."
+  ]
+},
+
+
 
 }
 
@@ -59474,4 +59559,7 @@ export const predefinedRecipeServings: Record<string, number> = {
 "garelu": 6, "angakar roti": 6, "dubki kadhi": 4, "muthiya": 4, "kochai patta bhaji": 4,
 "dehrori": 10, "khurmi": 10, "dal bafla": 4, "chakki ki shaak": 4, "mawa bati": 8,
 "mawa jalebi": 8,
+
+"pheni (milk feniya)": 4,
+"chicken lollipop": 4,
 };

@@ -2154,6 +2154,27 @@ const MANUAL_ALIASES: Record<string, string> = {
 "dal bafla recipe": "dal bafla",
 "chakki shaak": "chakki ki shaak",
 
+"pheni": "pheni (milk feniya)",
+"feni": "pheni (milk feniya)",
+"feniya": "pheni (milk feniya)",
+"milk pheni": "pheni (milk feniya)",
+"milk feniya": "pheni (milk feniya)",
+"doodh pheni": "pheni (milk feniya)",
+"doodh feniya": "pheni (milk feniya)",
+"pheni recipe": "pheni (milk feniya)",
+"feniya recipe": "pheni (milk feniya)",
+"rajasthani pheni": "pheni (milk feniya)",
+"jodhpuri pheni": "pheni (milk feniya)",
+"vermicelli milk sweet": "pheni (milk feniya)",
+
+"lollipop": "chicken lollipop",
+"chicken lolipop": "chicken lollipop",
+"chicken lollypop": "chicken lollipop",
+"chicken lollipop recipe": "chicken lollipop",
+"chicken lollypop recipe": "chicken lollipop",
+"crispy chicken lollipop": "chicken lollipop",
+"indo chinese chicken lollipop": "chicken lollipop",
+
 };
 
 for (const [alias, targetKey] of Object.entries(MANUAL_ALIASES)) {
