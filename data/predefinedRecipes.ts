@@ -56605,7 +56605,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pinni": {
   "dishName": "Pinni (Punjabi Wheat Flour Sweet Balls)",
-  "image": "/dishes/onion-dosa.webp",
+  "image": "/dishes/pinni.webp",
   "description": "Rich, nutty whole wheat flour ladoos cooked in ghee with sugar and nuts.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
