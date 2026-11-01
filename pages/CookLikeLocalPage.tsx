@@ -190,7 +190,7 @@ const CookLikeLocalPage: React.FC = () => {
     <div className="relative z-10 w-full">
       <style>{`
   .cook-local-image-shimmer {
-    background: #292524;
+    background: #F3EBDD;
     transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -201,7 +201,7 @@ const CookLikeLocalPage: React.FC = () => {
       105deg,
       transparent 25%,
       rgba(255, 255, 255, 0.04) 35%,
-      rgba(255, 255, 255, 0.14) 48%,
+        rgba(255, 255, 255, 0.65) 48%,
       rgba(255, 255, 255, 0.04) 61%,
       transparent 72%
     );
