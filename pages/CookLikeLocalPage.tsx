@@ -1,8 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import CompactHeader from "../components/CompactHeader";
 import IndiaMap from "../components/IndiaMap";
 import { toSlug } from "../utils/dishRoutes";
+import { DEFAULT_TINT } from "../utils/dishTint";
 import {
   INDIA_REGIONS,
   POPULAR_REGIONS,
@@ -12,16 +13,23 @@ import {
 } from "../utils/indiaRegions";
 
 const DISHES_PREVIEW_COUNT = 4;
+const MAP_TINT = "#FBE8D3";
 
-/** Thin dashed rule with a dot at each end — the page's one recurring
- *  "travel route" motif, used sparingly between major sections. */
-const RouteDivider: React.FC<{ className?: string }> = ({ className = "" }) => (
-  <div className={`flex items-center gap-2 ${className}`} aria-hidden="true">
-    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-200/70" />
-    <span className="h-px flex-1 border-t border-dashed border-stone-600" />
-    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-orange-200/70" />
-  </div>
+// Same button recipes as CookWhatYouHave, so actions look identical across both features.
+const primaryButton =
+  "inline-flex items-center justify-center gap-2 rounded-xl bg-orange-200 px-6 py-3 font-semibold text-stone-900 shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950";
+
+const footerButton = primaryButton.replace(
+  "px-6 py-3",
+  "px-4 py-2.5 text-sm sm:px-6 sm:py-3 sm:text-base"
 );
+
+const ghostButton =
+  "inline-flex items-center justify-center gap-1.5 rounded-xl px-3 py-2.5 text-sm font-medium text-stone-400 transition-colors hover:text-orange-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70";
+
+// Same gradient-card recipe used for recipe-result cards in CookWhatYouHave.
+const tileCard =
+  "rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_1px_0_rgba(0,0,0,0.5),0_10px_24px_-8px_rgba(0,0,0,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_1px_0_rgba(0,0,0,0.5),0_16px_32px_-10px_rgba(0,0,0,0.8)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
 const CookLikeLocalPage: React.FC = () => {
   const navigate = useNavigate();
@@ -39,6 +47,16 @@ const CookLikeLocalPage: React.FC = () => {
   const previewDishes = dishes.slice(0, DISHES_PREVIEW_COUNT);
   const remainingCount = Math.max(dishes.length - DISHES_PREVIEW_COUNT, 0);
   const suggestions = useMemo(() => searchRegions(query), [query]);
+
+  useEffect(() => {
+    document.title = selectedRegion
+      ? `${selectedRegion.name} dishes | Rasoi Bazaar`
+      : "Cook like a local | Rasoi Bazaar";
+    document.documentElement.style.setProperty("--bg-tint", MAP_TINT);
+    return () => {
+      document.documentElement.style.setProperty("--bg-tint", DEFAULT_TINT);
+    };
+  }, [selectedRegion]);
 
   const goToRegion = (slug: string) => navigate(`/cook-like-a-local/${slug}`);
 
@@ -98,231 +116,238 @@ const CookLikeLocalPage: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full">
-      <CompactHeader showSearch={false} />
+      <CompactHeader />
 
-      <main className="mx-auto max-w-2xl px-4 pb-20 pt-8 sm:px-6">
-        <h1 className="font-brand text-4xl font-black tracking-tight text-orange-200 sm:text-5xl">
-          Cook like a local
-        </h1>
-        <p className="mt-3 max-w-md text-base leading-relaxed text-stone-400 sm:text-lg">
-          Travelling somewhere? Discover traditional dishes from that region and cook them yourself.
-        </p>
+      <section className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20">
+        <div className="rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_12px_40px_rgba(120,70,30,0.10)]">
+          <header className="px-5 pb-6 pt-8 text-center sm:px-12 sm:pb-8 sm:pt-12">
+            <h2 className="font-serif text-[25px] font-black tracking-tight text-orange-50 sm:text-4xl">
+              Cook like a local
+            </h2>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-400 sm:text-base">
+              Travelling somewhere? Discover traditional dishes from that region and cook them
+              yourself.
+            </p>
+          </header>
 
-        <form onSubmit={handleSearchSubmit} className="relative mt-7">
-          <div className="flex items-center gap-3 rounded-full border border-stone-700 bg-stone-900 px-4 py-3 shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0 text-stone-500" aria-hidden="true">
-              <circle cx="11" cy="11" r="7" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search city or state..."
-              className="w-full bg-transparent text-stone-100 placeholder:text-stone-500 focus:outline-none"
-            />
-          </div>
+          <div className="border-t border-stone-700" />
 
-          {suggestions.length > 0 && (
-            <ul className="absolute left-0 right-0 top-full z-20 mt-2 overflow-hidden rounded-2xl border border-stone-700 bg-stone-900 shadow-lg">
-              {suggestions.map((region) => (
-                <li key={region.slug}>
-                  <button
-                    type="button"
-                    onClick={() => handleSuggestionClick(region.slug)}
-                    className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-orange-100/10"
-                  >
-                    <span className="font-medium text-stone-100">{region.name}</span>
-                    <span className="text-xs text-stone-400">{region.cities.slice(0, 2).join(", ")}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </form>
-
-        {!selectedRegion && (
-          <>
-            <button
-              type="button"
-              onClick={handleUseMyLocation}
-              disabled={locating}
-              className="mt-3 flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left hover:bg-orange-100/10 disabled:opacity-60"
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-orange-200/40 text-orange-200">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} aria-hidden="true">
-                  <circle cx="12" cy="12" r="3" />
-                  <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+          <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <div className="flex items-center gap-3 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0 text-stone-500" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
                 </svg>
-              </span>
-              <span className="flex-1 text-sm">
-                <span className="font-semibold text-stone-100">
-                  {locating ? "Finding your location..." : "Use my current location"}
-                </span>
-                <span className="block text-stone-400">Find local dishes near you</span>
-              </span>
-            </button>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search city or state..."
+                  className="w-full bg-transparent text-base text-stone-100 outline-none placeholder:text-sm placeholder:text-stone-500"
+                />
+              </div>
 
-            {locationError && (
-              <p className="mt-1 pl-4 text-sm text-red-300" role="alert">
-                {locationError}
-              </p>
-            )}
-          </>
-        )}
+              {suggestions.length > 0 && (
+                <ul className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg">
+                  {suggestions.map((region) => (
+                    <li key={region.slug}>
+                      <button
+                        type="button"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => handleSuggestionClick(region.slug)}
+                        className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-stone-200 transition-colors hover:bg-stone-800"
+                      >
+                        <span className="font-medium">{region.name}</span>
+                        <span className="text-xs text-stone-400">{region.cities.slice(0, 2).join(", ")}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </form>
 
-        <RouteDivider className="mt-8" />
-
-        {!selectedRegion ? (
-          <>
-            <section className="mt-8">
-              <div className="flex items-baseline justify-between">
-                <h2 className="font-serif text-xl font-bold text-stone-100">
-                  {showAllRegions ? "All states & union territories" : "Popular destinations"}
-                </h2>
+            {!selectedRegion && (
+              <>
                 <button
                   type="button"
-                  onClick={() => setShowAllRegions((v) => !v)}
-                  className="text-sm font-semibold text-orange-200 hover:text-orange-100"
+                  onClick={handleUseMyLocation}
+                  disabled={locating}
+                  className="mt-3 flex w-full items-center gap-3 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-left transition-colors hover:border-orange-400/50 disabled:opacity-60"
                 >
-                  {showAllRegions ? "Show less" : "See all"}
-                </button>
-              </div>
-
-              <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-7">
-                {(showAllRegions ? INDIA_REGIONS : POPULAR_REGIONS).map((region, i) => (
-                  <button
-                    key={region.slug}
-                    type="button"
-                    onClick={() => goToRegion(region.slug)}
-                    className={`group text-left transition-transform duration-200 hover:-translate-y-0.5 ${
-                      i % 2 === 0 ? "-rotate-1" : "rotate-1"
-                    } hover:rotate-0`}
-                  >
-                    <div className="relative">
-                      {/* washi-tape accent, pinning the photo to the page */}
-                      <span
-                        aria-hidden="true"
-                        className="absolute -top-2 left-5 z-10 h-5 w-12 -rotate-3 bg-orange-100/20 shadow-sm"
-                      />
-                      <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
-                        {region.coverImage ? (
-                          <img
-                            src={region.coverImage}
-                            alt=""
-                            className="h-28 w-full rounded-[2px] object-cover sm:h-32"
-                          />
-                        ) : (
-                          <div className="flex h-28 w-full items-center justify-center rounded-[2px] bg-orange-100/10 sm:h-32">
-                            <span className="font-brand text-2xl text-orange-200/50">{region.code}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="mt-2 px-1">
-                      <span className="block font-serif font-semibold text-stone-100">{region.name}</span>
-                      <span className="block text-xs text-stone-400">{region.cities.slice(0, 3).join(", ")}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </section>
-
-            <RouteDivider className="mt-9" />
-
-            <div className="mt-8 flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-orange-200/40 text-orange-200">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-                  <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z" />
-                  <path d="M9 4v14M15 6v14" />
-                  <circle cx="17" cy="9" r="2.3" className="fill-orange-200" stroke="none" />
-                </svg>
-              </span>
-              <div>
-                <h3 className="font-serif text-lg font-bold text-stone-100">Explore every corner of India</h3>
-                <p className="mt-1.5 max-w-sm text-sm leading-relaxed text-stone-400">
-                  From famous classics to hidden regional specialities, discover authentic recipes
-                  from all 28 states and 8 union territories.
-                </p>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <section className="relative mt-8 flex items-stretch gap-5 rounded-2xl border border-stone-700/60 bg-stone-900 p-5">
-              {/* postmark badge — the page's one bold device, used once here */}
-              <div
-                aria-hidden="true"
-                className="absolute -right-3 -top-4 flex h-[4.5rem] w-[4.5rem] rotate-6 items-center justify-center rounded-full border-2 border-dashed border-orange-200/60 bg-stone-900"
-              >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-orange-200/40 text-center">
-                  <span className="font-hand text-sm leading-none text-orange-100">
-                    Selected
-                    <br />
-                    Region
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} aria-hidden="true">
+                      <circle cx="12" cy="12" r="3" />
+                      <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+                    </svg>
                   </span>
+                  <span className="flex-1 text-sm">
+                    <span className="font-semibold text-stone-100">
+                      {locating ? "Finding your location..." : "Use my current location"}
+                    </span>
+                    <span className="block text-stone-400">Find local dishes near you</span>
+                  </span>
+                </button>
+
+                {locationError && (
+                  <p className="mt-2 text-sm text-orange-100" role="alert">
+                    {locationError}
+                  </p>
+                )}
+              </>
+            )}
+
+            {!selectedRegion ? (
+              <>
+                <div className="mt-8 flex items-center justify-between gap-4">
+                  <h3 className="font-serif text-xl font-bold text-orange-50">
+                    {showAllRegions ? "All states & union territories" : "Popular destinations"}
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowAllRegions((v) => !v)}
+                    className="shrink-0 text-sm font-semibold text-orange-200 transition-colors hover:text-orange-100"
+                  >
+                    {showAllRegions ? "Show less" : "See all"}
+                  </button>
                 </div>
-              </div>
 
-              <div className="w-24 shrink-0 sm:w-28">
-                <IndiaMap variant="compact" selectedSlug={selectedRegion.slug} />
-              </div>
-              <div className="flex-1 pt-1">
-                <h2 className="font-brand text-2xl font-black leading-tight text-stone-100 sm:text-3xl">
-                  {selectedRegion.name}
-                </h2>
-                <p className="mt-2 text-sm text-stone-400">{selectedRegion.cities.join(", ")}</p>
-              </div>
-            </section>
-
-            <RouteDivider className="mt-8" />
-
-            <section className="mt-8">
-              <h2 className="font-serif text-xl font-bold text-stone-100">
-                Popular dishes from {selectedRegion.name}
-              </h2>
-
-              {previewDishes.length === 0 ? (
-                <p className="mt-4 text-sm text-stone-400">
-                  We don't have dishes tagged for {selectedRegion.name} yet.
-                </p>
-              ) : (
-                <div className="mt-5 grid grid-cols-2 gap-4">
-                  {previewDishes.map((dish) => (
-                    <Link
-                      key={dish.dishName}
-                      to={`/recipe/${toSlug(dish.dishName)}`}
-                      className="overflow-hidden rounded-xl border border-stone-700/60 bg-stone-900 transition-transform duration-200 hover:-translate-y-0.5"
+                <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-7">
+                  {(showAllRegions ? INDIA_REGIONS : POPULAR_REGIONS).map((region, i) => (
+                    <button
+                      key={region.slug}
+                      type="button"
+                      onClick={() => goToRegion(region.slug)}
+                      className={`group text-left transition-transform duration-200 hover:-translate-y-0.5 ${
+                        i % 2 === 0 ? "-rotate-1" : "rotate-1"
+                      } hover:rotate-0`}
                     >
-                      {dish.image && (
-                        <img src={dish.image} alt="" className="h-28 w-full object-cover sm:h-36" />
-                      )}
-                      <div className="px-3 py-3">
-                        <span className="block font-semibold text-stone-100">{dish.dishName}</span>
-                        <span className="block text-xs text-stone-400">{dish.description}</span>
+                      <div className="relative">
+                        <span
+                          aria-hidden="true"
+                          className="absolute -top-2 left-5 z-10 h-5 w-12 -rotate-3 bg-orange-100/20 shadow-sm"
+                        />
+                        <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
+                          {region.coverImage ? (
+                            <img
+                              src={region.coverImage}
+                              alt=""
+                              className="h-28 w-full rounded-[2px] object-cover sm:h-32"
+                            />
+                          ) : (
+                            <div className="flex h-28 w-full items-center justify-center rounded-[2px] bg-orange-100/10 sm:h-32">
+                              <span className="font-serif text-2xl font-black text-orange-300/50">{region.code}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </Link>
+                      <div className="mt-2 px-1">
+                        <span className="block font-serif font-semibold text-stone-100">{region.name}</span>
+                        <span className="block text-xs text-stone-400">{region.cities.slice(0, 3).join(", ")}</span>
+                      </div>
+                    </button>
                   ))}
                 </div>
-              )}
 
-              {remainingCount > 0 && (
-                <button
-                  type="button"
-                  className="relative mt-6 w-full rounded-xl border border-dashed border-orange-200/50 bg-orange-100/5 py-4 pl-7 pr-5 text-left font-semibold text-orange-100 hover:bg-orange-100/10"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="absolute -left-2 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-[var(--bg-tint,#FFF8F1)]"
-                  />
-                  More from {selectedRegion.name}
-                  <span className="float-right text-orange-200">{remainingCount}+ dishes</span>
-                </button>
-              )}
-            </section>
-          </>
-        )}
-      </main>
+                <div className="mt-8 flex items-start gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-5">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+                      <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z" />
+                      <path d="M9 4v14M15 6v14" />
+                      <circle cx="17" cy="9" r="2.3" className="fill-orange-200" stroke="none" />
+                    </svg>
+                  </span>
+                  <div>
+                    <h4 className="font-serif text-base font-bold text-orange-50">
+                      Explore every corner of India
+                    </h4>
+                    <p className="mt-1 text-sm leading-relaxed text-stone-400">
+                      From famous classics to hidden regional specialities, discover authentic
+                      recipes from all 28 states and 8 union territories.
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mt-8 flex items-stretch gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
+                  <div className="w-24 shrink-0 sm:w-28">
+                    <IndiaMap variant="compact" selectedSlug={selectedRegion.slug} />
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <span className="inline-block rounded-full bg-orange-400/15 px-2.5 py-0.5 text-xs font-semibold text-orange-200">
+                      Selected region
+                    </span>
+                    <h3 className="mt-1.5 font-serif text-2xl font-black text-orange-50">
+                      {selectedRegion.name}
+                    </h3>
+                    <p className="mt-1.5 text-sm text-stone-400">
+                      {selectedRegion.cities.join(" · ")}
+                    </p>
+                  </div>
+                </div>
+
+                <h3 className="mt-8 font-serif text-xl font-bold text-orange-50">
+                  Popular dishes from {selectedRegion.name}
+                </h3>
+
+                {previewDishes.length === 0 ? (
+                  <p className="mt-4 text-sm text-stone-400">
+                    We don't have dishes tagged for {selectedRegion.name} yet.
+                  </p>
+                ) : (
+                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-7">
+                    {previewDishes.map((dish, i) => (
+                      <Link
+                        key={dish.dishName}
+                        to={`/recipe/${toSlug(dish.dishName)}`}
+                        className={`block transition-transform duration-200 hover:-translate-y-0.5 ${
+                          i % 2 === 0 ? "rotate-1" : "-rotate-1"
+                        } hover:rotate-0`}
+                      >
+                        <div className="relative">
+                          <span
+                            aria-hidden="true"
+                            className="absolute -top-2 left-5 z-10 h-5 w-12 rotate-3 bg-orange-100/20 shadow-sm"
+                          />
+                          <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
+                            {dish.image ? (
+                              <img src={dish.image} alt="" className="h-28 w-full rounded-[2px] object-cover sm:h-32" />
+                            ) : (
+                              <div className="h-28 w-full rounded-[2px] bg-orange-100/10 sm:h-32" />
+                            )}
+                          </div>
+                        </div>
+                        <div className="mt-2 px-1">
+                          <span className="block font-serif font-semibold text-stone-100">{dish.dishName}</span>
+                          <span className="block text-xs text-stone-400">{dish.description}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+                  {remainingCount > 0 ? (
+                    <button type="button" className={`${footerButton} w-full sm:w-auto`}>
+                      More from {selectedRegion.name} ({remainingCount}+)
+                    </button>
+                  ) : (
+                    <span />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => navigate("/cook-like-a-local")}
+                    className={ghostButton}
+                  >
+                    <span aria-hidden="true">←</span> All destinations
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

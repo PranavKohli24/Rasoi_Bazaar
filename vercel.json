@@ -3,6 +3,8 @@
     { "source": "/recipe", "destination": "/index.html" },
     { "source": "/recipe/:slug", "destination": "/index.html" },
     { "source": "/recipe/combo/:comboSlug", "destination": "/index.html" },
-    { "source": "/cook-what-you-have", "destination": "/index.html" }
+    { "source": "/cook-what-you-have", "destination": "/index.html" },
+    { "source": "/cook-like-a-local", "destination": "/index.html" },
+    { "source": "/cook-like-a-local/:stateSlug", "destination": "/index.html" }
   ]
 }
