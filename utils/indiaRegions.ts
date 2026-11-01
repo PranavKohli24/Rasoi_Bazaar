@@ -14,11 +14,11 @@ export interface IndiaRegion {
 // code -> name comes straight from react-svgmap-india's own state list, so
 // clicking any state on the real map will always resolve to a real region.
 export const INDIA_REGIONS: IndiaRegion[] = [
-  { name: "Andaman and Nicobar Islands", slug: "andaman-and-nicobar-islands", code: "AN", cities: ["Port Blair"] },
-  { name: "Andhra Pradesh", slug: "andhra-pradesh", code: "AP", cities: ["Visakhapatnam", "Vijayawada", "Tirupati"] },
+  { name: "Andaman and Nicobar Islands", slug: "andaman-and-nicobar-islands", code: "AN", cities: ["Port Blair"] , coverImage: "/regions/andaman.png"},
+  { name: "Andhra Pradesh", slug: "andhra-pradesh", code: "AP", cities: ["Visakhapatnam", "Vijayawada", "Tirupati"], coverImage: "/regions/andhra.png" },
   { name: "Arunachal Pradesh", slug: "arunachal-pradesh", code: "AR", cities: ["Itanagar", "Tawang"] },
   { name: "Assam", slug: "assam", code: "AS", cities: ["Guwahati", "Dibrugarh"] },
-  { name: "Bihar", slug: "bihar", code: "BR", cities: ["Patna", "Gaya", "Bodh Gaya"] },
+  { name: "Bihar", slug: "bihar", code: "BR", cities: ["Patna", "Gaya", "Bodh Gaya"], coverImage: "/regions/bihar.png" },
   { name: "Chandigarh", slug: "chandigarh", code: "CH", cities: ["Chandigarh"] },
   { name: "Chhattisgarh", slug: "chhattisgarh", code: "CT", cities: ["Raipur", "Bilaspur"] },
   { name: "Dadra and Nagar Haveli and Daman and Diu", slug: "dadra-nagar-haveli-daman-diu", code: "DD", cities: ["Daman", "Diu", "Silvassa"] },
@@ -60,7 +60,7 @@ export const INDIA_REGIONS: IndiaRegion[] = [
   { name: "Maharashtra", slug: "maharashtra", code: "MH", cities: ["Mumbai", "Pune", "Nagpur"] },
   { name: "Meghalaya", slug: "meghalaya", code: "ML", cities: ["Shillong", "Cherrapunji"] },
   { name: "Manipur", slug: "manipur", code: "MN", cities: ["Imphal"] },
-  { name: "Madhya Pradesh", slug: "madhya-pradesh", code: "MP", cities: ["Bhopal", "Indore", "Ujjain"] },
+  { name: "Madhya Pradesh", slug: "madhya-pradesh", code: "MP", cities: ["Bhopal", "Indore", "Ujjain"], coverImage: "/regions/madhya.png" },
   { name: "Mizoram", slug: "mizoram", code: "MZ", cities: ["Aizawl"] },
   { name: "Nagaland", slug: "nagaland", code: "NL", cities: ["Kohima", "Dimapur"] },
   { name: "Odisha", slug: "odisha", code: "OR", cities: ["Bhubaneswar", "Puri", "Konark"] },
@@ -83,7 +83,7 @@ export const INDIA_REGIONS: IndiaRegion[] = [
     coverImage: "/regions/tamil-nadu.png",
   },
   { name: "Tripura", slug: "tripura", code: "TR", cities: ["Agartala"] },
-  { name: "Uttar Pradesh", slug: "uttar-pradesh", code: "UP", cities: ["Lucknow", "Varanasi", "Agra"] },
+  { name: "Uttar Pradesh", slug: "uttar-pradesh", code: "UP", cities: ["Lucknow", "Varanasi", "Agra"], coverImage: "/regions/uttar.png" },
   { name: "Uttarakhand", slug: "uttarakhand", code: "UT", cities: ["Dehradun", "Rishikesh", "Nainital"] },
   { name: "West Bengal", slug: "west-bengal", code: "WB", cities: ["Kolkata", "Darjeeling"] },
 ];
