@@ -40,6 +40,7 @@ const CookLikeLocalPage: React.FC = () => {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsListRef = useRef<HTMLUListElement>(null);
 
   const selectedRegion = stateSlug ? findRegionBySlug(stateSlug) : undefined;
   const dishes = useMemo(
@@ -62,7 +63,13 @@ const CookLikeLocalPage: React.FC = () => {
 
   const goToRegion = (slug: string) => navigate(`/cook-like-a-local/${slug}`);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
+    if (dropUp && suggestionsListRef.current) {
+      suggestionsListRef.current.scrollTop = suggestionsListRef.current.scrollHeight;
+    }
+  }, [dropUp, suggestions]);
+
+  useLayoutEffect(() => {
     if (suggestions.length === 0) return;
 
     const update = () => {
@@ -208,6 +215,7 @@ const CookLikeLocalPage: React.FC = () => {
 
                 {suggestions.length > 0 && (
                   <ul
+                    ref={suggestionsListRef}
                     className={`absolute left-0 right-0 z-20 max-h-64 overflow-auto border-stone-700 bg-stone-900 shadow-lg ${
                       dropUp
                         ? "bottom-full mb-1 rounded-xl border"
