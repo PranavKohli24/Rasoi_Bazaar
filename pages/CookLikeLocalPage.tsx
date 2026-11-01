@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import CompactHeader from "../components/CompactHeader";
 import IndiaMap from "../components/IndiaMap";
@@ -38,6 +38,8 @@ const CookLikeLocalPage: React.FC = () => {
   const [showAllRegions, setShowAllRegions] = useState(false);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [dropUp, setDropUp] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const selectedRegion = stateSlug ? findRegionBySlug(stateSlug) : undefined;
   const dishes = useMemo(
@@ -59,6 +61,36 @@ const CookLikeLocalPage: React.FC = () => {
   }, [selectedRegion]);
 
   const goToRegion = (slug: string) => navigate(`/cook-like-a-local/${slug}`);
+
+    useLayoutEffect(() => {
+    if (suggestions.length === 0) return;
+
+    const update = () => {
+      const input = inputRef.current;
+      if (!input) return;
+
+      const rect = input.getBoundingClientRect();
+      const viewport = window.visualViewport;
+      const viewBottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight;
+
+      const below = viewBottom - 8 - rect.bottom;
+      const above = rect.top - 8;
+      const needed = suggestions.length * 42 + 8;
+
+      setDropUp(below < needed && above > below);
+    };
+
+    update();
+    window.visualViewport?.addEventListener("resize", update);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [suggestions.length]);
 
   const handleUseMyLocation = () => {
     if (!navigator.geolocation) {
@@ -142,6 +174,7 @@ const CookLikeLocalPage: React.FC = () => {
                       <path d="m21 21-4.3-4.3" />
                     </svg>
                     <input
+                      ref={inputRef}
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
@@ -174,8 +207,13 @@ const CookLikeLocalPage: React.FC = () => {
                 </div>
 
                 {suggestions.length > 0 && (
-                  <ul className="absolute left-0 right-0 top-[53px] z-20 max-h-64 overflow-auto rounded-b-xl border-x border-b border-stone-700 bg-stone-900 shadow-lg">
-                    {suggestions.map((region) => (
+                  <ul
+                    className={`absolute left-0 right-0 z-20 max-h-64 overflow-auto border-stone-700 bg-stone-900 shadow-lg ${
+                      dropUp
+                        ? "bottom-full mb-1 rounded-xl border"
+                        : "top-[53px] rounded-b-xl border-x border-b"
+                    }`}
+                  >                    {suggestions.map((region) => (
                       <li key={region.slug}>
                         <button
                           type="button"
