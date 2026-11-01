@@ -254,7 +254,7 @@ const CookLikeLocalPage: React.FC = () => {
               </>
             ) : (
               <>
-                <div className="mt-8 flex items-stretch gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
+                <div className="flex items-stretch gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
                   <div className="w-24 shrink-0 sm:w-28">
                     <IndiaMap variant="compact" selectedSlug={selectedRegion.slug} />
                   </div>
