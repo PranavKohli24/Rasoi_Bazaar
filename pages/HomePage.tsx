@@ -432,6 +432,25 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
     </Link>
   </div>
 </div>
+
+<Link
+  to="/cook-like-a-local"
+  className="mt-4 flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-900 px-5 py-4 hover:border-orange-400/60"
+>
+  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100/15 text-orange-200">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
+      <path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  </span>
+  <span className="flex-1">
+    <span className="block font-serif text-base font-semibold text-stone-100">Cook like a local</span>
+    <span className="block text-sm text-stone-400">Discover regional dishes from places you're visiting</span>
+  </span>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0 text-stone-500" aria-hidden="true">
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+</Link>
                   </div>
                 </div>
               </div>

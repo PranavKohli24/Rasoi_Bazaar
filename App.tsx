@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage";
 import RecipePage from "./pages/Recipepage";
 import ComboRecipePage from "./pages/ComboRecipePage";
 import CookWhatYouHavePage from "./pages/CookWhatYouHavePage";
+import CookLikeLocalPage from "./pages/CookLikeLocalPage";
 import FoodBackground from "./components/FoodBackground";
 
 /** Scroll to top on new navigations; leave back/forward to the browser */
@@ -47,6 +48,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cook-what-you-have" element={<CookWhatYouHavePage />} />
+          <Route path="/cook-like-a-local" element={<CookLikeLocalPage />} />
+          <Route path="/cook-like-a-local/:stateSlug" element={<CookLikeLocalPage />} />
           <Route path="/recipe" element={<RecipePage />} />
           <Route path="/recipe/combo/:comboSlug" element={<ComboRecipePage />} />
           <Route path="/recipe/:slug" element={<RecipePage />} />

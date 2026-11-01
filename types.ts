@@ -40,4 +40,5 @@ export interface Recipe {
   nutrition?: Nutrition;
   image?: string;
   images?: string[];
+  state?: string;
 }

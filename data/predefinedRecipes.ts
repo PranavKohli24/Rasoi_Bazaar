@@ -8,6 +8,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "quick 20-minute paneer bhurji": {
     "dishName": "Paneer Bhurji",
     "image": "/dishes/paneer-bhurji.webp",
+    "state": "Punjab",
     "description": "A quick, spicy and comforting Indian paneer dish made with crumbled paneer, onions,.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -14140,6 +14141,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "thepla": {
     "dishName": "Thepla",
     "image": "/dishes/thepla.webp",
+    "state" : "Gujarat",
     "description": "Soft Gujarati methi flatbreads made with atta, spices and fresh fenugreek leaves.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -16951,6 +16953,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dhokla (besan dhokla)": {
     "dishName": "Dhokla",
     "image": "/dishes/dhokla.webp",
+    "state" : "Gujarat",
     "description": "Soft, fluffy besan dhokla made at home with a quick batter and simple tempering.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -18833,6 +18836,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bisi bele bath": {
     "dishName": "Bisi Bele Bath",
     "image": "/dishes/bisi-bele-bath.webp",
+    "state" : "Karnataka",
     "description": "Karnataka-style rice and lentils cooked with vegetables, tamarind and a warm spice mix.",
     "prepTime": "Approx. 50 minutes",
     "equipment": [
@@ -22915,6 +22919,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "gatte ki sabzi": {
     dishName: "Gatte Ki Sabzi",
     "image": "/dishes/gatte-sabzi.webp",
+    "state" : "Rajastan",
     description: "Tender gram-flour dumplings simmered in a tangy yogurt gravy with Rajasthani spices.",
     prepTime: "Approx. 45 minutes",
     equipment: [
@@ -26781,6 +26786,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "ker sangri": {
   "dishName": "Ker Sangri",
   "image": "/dishes/ker-sangri.webp",
+  "state" : "Rajastan",
   "description": "Traditional Rajasthani dry sabzi made from rehydrated ker berries and sangri beans.",
   "prepTime": "Approx. 55 minutes (plus soaking)",
   "equipment": [
@@ -28307,6 +28313,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pyaz ki kachori": {
   "dishName": "Pyaz Ki Kachori",
   "image": "/dishes/pyaz-ki-kachori.webp",
+  "state" : "Rajastan",
   "description": "Flaky Rajasthani kachori filled with spiced onion, fennel and coriander.",
   "prepTime": "Approx. 55 minutes",
   "equipment": [
@@ -28552,6 +28559,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dal baati churma": {
   "dishName": "Dal Baati Churma",
   "image": "/dishes/dal-baati-churma.webp",
+  "state" : "Rajastan",
   "description": "Rajasthani meal of baked wheat baati, lentil dal and sweet crumbled churma.",
   "prepTime": "Approx. 1 hour 15 minutes",
   "equipment": [
@@ -36174,6 +36182,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "undhiyu": {
     "dishName": "Undhiyu",
     "image": "/dishes/undhiyu.webp",
+    "state" : "Gujarat",
     "description": "Gujarati mixed-vegetable preparation with potatoes, brinjal, beans and a fresh coconut-coriander masala.",
     "prepTime": "Approx. 60 minutes",
     "equipment": [
@@ -40123,6 +40132,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "gujarati kadhi": {
       "dishName": "Gujarati Kadhi",
       "image": "/dishes/gujarati-kadhi.webp",
+      "state" : "Gujarat",
       "description": "A light sweet-sour yogurt curry made with curd, besan, ginger, green chilli and a simple tadka.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -41452,6 +41462,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "mysore masala dosa": {
       "dishName": "Mysore Masala Dosa",
       "image": "/dishes/mysore-masala-dosa.webp",
+      "state" : "Karnataka",
       "description": "A crisp dosa spread with spicy red garlic chutney and filled with simple potato masala.",
       "prepTime": "Approx. 40 minutes (using ready dosa batter)",
       "equipment": [
@@ -41585,6 +41596,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "ragi mudde": {
       "dishName": "Ragi Mudde",
       "image": "/dishes/ragi-mudde.webp",
+      "state" : "Karnataka",
       "description": "A Karnataka staple made from ragi flour cooked into a soft dough and shaped into warm balls.",
       "prepTime": "Approx. 20 minutes",
       "equipment": [
@@ -54727,6 +54739,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "maddur vada": {
     dishName: "Maddur Vada",
     "image": "/dishes/maddur-vada.webp",
+    "state" : "Karnataka",
     description: "Crisp Karnataka onion fritters made with rice flour, rava and a few everyday spices.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
