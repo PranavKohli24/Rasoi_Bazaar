@@ -400,10 +400,6 @@ const CookLikeLocalPage: React.FC = () => {
                         } hover:rotate-0`}
                       >
                         <div className="relative">
-                          <span
-                            aria-hidden="true"
-                            className="absolute -top-2 left-5 z-10 h-5 w-12 rotate-3 bg-orange-100/20 shadow-sm"
-                          />
                           <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
                             {dish.image ? (
                               <LocalLoadingImage src={dish.image} />
