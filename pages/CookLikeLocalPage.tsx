@@ -120,7 +120,7 @@ const CookLikeLocalPage: React.FC = () => {
 
       <section className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20">
         <div className="rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_12px_40px_rgba(120,70,30,0.10)]">
-          <header className="px-5 pb-6 pt-8 text-center sm:px-12 sm:pb-8 sm:pt-12">
+          <header className="px-5 pb-2 pt-8 text-center sm:px-12 sm:pb-3 sm:pt-12">
             <h2 className="font-serif text-[25px] font-black tracking-tight text-orange-50 sm:text-4xl">
               Cook like a local
             </h2>
@@ -132,7 +132,7 @@ const CookLikeLocalPage: React.FC = () => {
             )}
           </header>
 
-          <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
+          <div className="mx-auto max-w-3xl px-5 pb-8 pt-4 sm:px-12 sm:pb-10 sm:pt-6">
             {!selectedRegion && (
               <form onSubmit={handleSearchSubmit} className="relative">
                 <div className="overflow-hidden rounded-xl border border-stone-700 bg-stone-950">
