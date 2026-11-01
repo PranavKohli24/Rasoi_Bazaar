@@ -116,7 +116,7 @@ const CookLikeLocalPage: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full">
-      <CompactHeader />
+      <CompactHeader showSearch={false} />
 
       <section className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20">
         <div className="rounded-3xl border border-stone-700 bg-stone-900 shadow-[0_12px_40px_rgba(120,70,30,0.10)]">
@@ -124,77 +124,79 @@ const CookLikeLocalPage: React.FC = () => {
             <h2 className="font-serif text-[25px] font-black tracking-tight text-orange-50 sm:text-4xl">
               Cook like a local
             </h2>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-400 sm:text-base">
-              Travelling somewhere? Discover traditional dishes from that region and cook them
-              yourself.
-            </p>
+            {!selectedRegion && (
+              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-stone-400 sm:text-base">
+                Travelling somewhere? Find local dishes from that region and cook them
+                yourself.
+              </p>
+            )}
           </header>
 
-          <div className="border-t border-stone-700" />
-
           <div className="mx-auto max-w-3xl px-5 pb-8 pt-8 sm:px-12 sm:pb-10 sm:pt-10">
-            <form onSubmit={handleSearchSubmit} className="relative">
-              <div className="flex items-center gap-3 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0 text-stone-500" aria-hidden="true">
-                  <circle cx="11" cy="11" r="7" />
-                  <path d="m21 21-4.3-4.3" />
-                </svg>
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search city or state..."
-                  className="w-full bg-transparent text-base text-stone-100 outline-none placeholder:text-sm placeholder:text-stone-500"
-                />
-              </div>
-
-              {suggestions.length > 0 && (
-                <ul className="absolute left-0 right-0 top-full z-20 mt-1 overflow-hidden rounded-xl border border-stone-700 bg-stone-900 shadow-lg">
-                  {suggestions.map((region) => (
-                    <li key={region.slug}>
-                      <button
-                        type="button"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => handleSuggestionClick(region.slug)}
-                        className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-stone-200 transition-colors hover:bg-stone-800"
-                      >
-                        <span className="font-medium">{region.name}</span>
-                        <span className="text-xs text-stone-400">{region.cities.slice(0, 2).join(", ")}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </form>
-
             {!selectedRegion && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleUseMyLocation}
-                  disabled={locating}
-                  className="mt-3 flex w-full items-center gap-3 rounded-xl border border-stone-700 bg-stone-950 px-4 py-3 text-left transition-colors hover:border-orange-400/50 disabled:opacity-60"
-                >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} aria-hidden="true">
-                      <circle cx="12" cy="12" r="3" />
-                      <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+              <form onSubmit={handleSearchSubmit} className="relative">
+                <div className="overflow-hidden rounded-xl border border-stone-700 bg-stone-950">
+                  <div className="flex h-[52px] items-center gap-3 px-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 shrink-0 text-stone-500" aria-hidden="true">
+                      <circle cx="11" cy="11" r="7" />
+                      <path d="m21 21-4.3-4.3" />
                     </svg>
-                  </span>
-                  <span className="flex-1 text-sm">
-                    <span className="font-semibold text-stone-100">
-                      {locating ? "Finding your location..." : "Use my current location"}
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search city or state..."
+                      className="w-full bg-transparent text-base text-stone-100 outline-none placeholder:text-sm placeholder:text-stone-500"
+                    />
+                  </div>
+
+                  <div className="border-t border-stone-800" />
+
+                  <button
+                    type="button"
+                    onClick={handleUseMyLocation}
+                    disabled={locating}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-stone-900 disabled:opacity-60"
+                  >
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 ${locating ? "animate-spin" : ""}`} aria-hidden="true">
+                        <circle cx="12" cy="12" r="3" />
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+                      </svg>
                     </span>
-                    <span className="block text-stone-400">Find local dishes near you</span>
-                  </span>
-                </button>
+                    <span className="flex-1 text-sm">
+                      <span className="font-semibold text-stone-100">
+                        {locating ? "Finding your location..." : "Use my current location"}
+                      </span>
+                      <span className="block text-xs text-stone-400">Find local dishes near you</span>
+                    </span>
+                  </button>
+                </div>
+
+                {suggestions.length > 0 && (
+                  <ul className="absolute left-0 right-0 top-[53px] z-20 max-h-64 overflow-auto rounded-b-xl border-x border-b border-stone-700 bg-stone-900 shadow-lg">
+                    {suggestions.map((region) => (
+                      <li key={region.slug}>
+                        <button
+                          type="button"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => handleSuggestionClick(region.slug)}
+                          className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-stone-200 transition-colors hover:bg-stone-800"
+                        >
+                          <span className="font-medium">{region.name}</span>
+                          <span className="text-xs text-stone-400">{region.cities.slice(0, 2).join(", ")}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 {locationError && (
-                  <p className="mt-2 text-sm text-orange-100" role="alert">
+                  <p className="mt-2 px-1 text-sm text-orange-100" role="alert">
                     {locationError}
                   </p>
                 )}
-              </>
+              </form>
             )}
 
             {!selectedRegion ? (
@@ -249,24 +251,6 @@ const CookLikeLocalPage: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="mt-8 flex items-start gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-5">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-                      <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z" />
-                      <path d="M9 4v14M15 6v14" />
-                      <circle cx="17" cy="9" r="2.3" className="fill-orange-200" stroke="none" />
-                    </svg>
-                  </span>
-                  <div>
-                    <h4 className="font-serif text-base font-bold text-orange-50">
-                      Explore every corner of India
-                    </h4>
-                    <p className="mt-1 text-sm leading-relaxed text-stone-400">
-                      From famous classics to hidden regional specialities, discover authentic
-                      recipes from all 28 states and 8 union territories.
-                    </p>
-                  </div>
-                </div>
               </>
             ) : (
               <>
