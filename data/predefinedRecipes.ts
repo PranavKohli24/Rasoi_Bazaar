@@ -10380,6 +10380,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pongal (ven pongal)": {
     "dishName": "Pongal (Ven Pongal)",
     "image": "/dishes/pongal.webp",
+    "state" : "Tamil Nadu",
     "description": "A soft South Indian rice and moong dal dish cooked with ginger, pepper,.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -13862,6 +13863,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dal baati": {
     "dishName": "Dal Baati",
     "image": "/dishes/dal-baati.webp",
+    "state" : "Rajasthan",
     "description": "A simple Rajasthani meal of baked whole-wheat baati served with spiced mixed dal and ghee.",
     "prepTime": "Approx. 1 hour 15 minutes",
     "equipment": [
@@ -17819,6 +17821,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "rogan josh": {
     "dishName": "Rogan Josh",
     "image": "/dishes/rogan-josh.webp",
+    "state" : "Jammu and Kashmir",
     "description": "Home-style Kashmiri-inspired mutton curry with yogurt and warm spices, made tender in a pressure cooker.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -18445,6 +18448,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "parippu curry": {
     "dishName": "Parippu Curry",
     "image": "/dishes/parippu-curry.webp",
+    "state" : "Kerala",
     "description": "Kerala-style yellow dal cooked with mild spices and coconut for a simple home meal.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -22803,6 +22807,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "rajma gogji": {
     dishName: "Rajma Gogji",
     "image": "/dishes/rajma-gogji.webp",
+    "state" : "Jammu and Kashmir",
     description: "Kashmiri kidney beans and tender turnip simmered with fennel, dry ginger and gentle Kashmiri spices.",
     prepTime: "Approx. 55 minutes (plus overnight soaking)",
     equipment: [
@@ -22920,7 +22925,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "gatte ki sabzi": {
     dishName: "Gatte Ki Sabzi",
     "image": "/dishes/gatte-sabzi.webp",
-    "state" : "Rajastan",
+    "state" : "Rajasthan",
     description: "Tender gram-flour dumplings simmered in a tangy yogurt gravy with Rajasthani spices.",
     prepTime: "Approx. 45 minutes",
     equipment: [
@@ -22966,6 +22971,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "sev tameta": {
     dishName: "Sev Tameta",
     "image": "/dishes/sev-tameta.webp",
+    "state" : "Gujarat",
     description: "Tangy Gujarati tomato curry sweetened lightly and finished with crunchy sev just before serving.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -23091,6 +23097,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "beef ularthiyathu": {
     dishName: "Beef Ularthiyathu",
     "image": "/dishes/beef-ularthiyathu.webp",
+    "state" : "Kerala",
     description: "Kerala-style beef cooked tender with black pepper, ginger, garlic, curry leaves and coconut pieces.",
     prepTime: "Approx. 55 minutes",
     equipment: [
@@ -24284,6 +24291,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "appam": {
   "dishName": "Kerala Appam",
   "image": "/dishes/appam.webp",
+  "state" : "Kerala",
   "description": "Soft-centred, lace-edged Kerala rice pancakes made with a lightly fermented batter.",
   "prepTime": "Approx. 35 minutes (plus soaking and fermentation)",
   "equipment": [
@@ -24379,6 +24387,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "puttu": {
   "dishName": "Puttu",
   "image": "/dishes/puttu.webp",
+  "state" : "Kerala",
   "description": "Steamed rice flour cylinders layered with coconut, a simple Kerala breakfast.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -26788,7 +26797,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "ker sangri": {
   "dishName": "Ker Sangri",
   "image": "/dishes/ker-sangri.webp",
-  "state" : "Rajastan",
+  "state" : "Rajasthan",
   "description": "Traditional Rajasthani dry sabzi made from rehydrated ker berries and sangri beans.",
   "prepTime": "Approx. 55 minutes (plus soaking)",
   "equipment": [
@@ -26914,6 +26923,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "papad ki sabzi": {
   "dishName": "Papad Ki Sabzi",
   "image": "/dishes/papad-ki-sabzi.webp",
+  "state" : "Rajasthan",
   "description": "Rajasthani yogurt gravy with roasted papad, tomato and warming spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -27907,6 +27917,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "khandvi": {
   "dishName": "Khandvi",
   "image": "/dishes/khandvi.webp",
+  "state" : "Gujarat",
   "description": "Soft Gujarati gram-flour rolls cooked into a smooth yogurt-based batter and tempered with mustard.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -28022,6 +28033,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "handvo": {
   "dishName": "Handvo",
   "image": "/dishes/handvo.webp",
+  "state" : "Gujarat",
   "description": "Gujarati savory lentil-rice cake with lauki, sesame and a crisp tempered crust.",
   "prepTime": "Approx. 45 minutes (plus soaking and fermentation)",
   "equipment": [
@@ -28176,6 +28188,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "fafda jalebi": {
   "dishName": "Fafda-Jalebi",
   "image": "/dishes/fafda-jalebi.webp",
+  "state" : "Gujarat",
   "description": "Classic Gujarati breakfast pairing of crisp gram-flour fafda and syrupy jalebi.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -28315,7 +28328,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pyaz ki kachori": {
   "dishName": "Pyaz Ki Kachori",
   "image": "/dishes/pyaz-ki-kachori.webp",
-  "state" : "Rajastan",
+  "state" : "Rajasthan",
   "description": "Flaky Rajasthani kachori filled with spiced onion, fennel and coriander.",
   "prepTime": "Approx. 55 minutes",
   "equipment": [
@@ -28436,6 +28449,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "mirchi vada": {
   "dishName": "Mirchi Vada",
   "image": "/dishes/mirchi-vada.webp",
+  "state" : "Rajasthan",
   "description": "Rajasthani large green chillies stuffed with spiced potato, coated in gram flour and fried.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -28561,7 +28575,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dal baati churma": {
   "dishName": "Dal Baati Churma",
   "image": "/dishes/dal-baati-churma.webp",
-  "state" : "Rajastan",
+  "state" : "Rajasthan",
   "description": "Rajasthani meal of baked wheat baati, lentil dal and sweet crumbled churma.",
   "prepTime": "Approx. 1 hour 15 minutes",
   "equipment": [
@@ -32335,6 +32349,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chicken chettinad": {
   "dishName": "Chicken Chettinad",
   "image": "/dishes/pepper-chicken.webp",
+  "state" : "Tamil Nadu",
   "description": "Tamil Nadu chicken curry with roasted whole spices, coconut and curry leaves.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [
@@ -33289,6 +33304,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "laal maas": {
   "dishName": "Laal Maas",
   "image": "/dishes/laal-maas.webp",
+  "state" : "Rajasthan",
   "description": "Rajasthani mutton curry built around dried red chillies, garlic and a dark spicy gravy.",
   "prepTime": "Approx. 60 minutes",
   "equipment": [
@@ -33761,6 +33777,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kerala fish curry": {
   "dishName": "Kerala Fish Curry",
   "image": "/dishes/kerala-fish-curry.webp",
+  "state" : "Kerala",
   "description": "Tangy Kerala meen curry made with chilli, spices, kudampuli and coconut milk.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [
@@ -36055,6 +36072,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dal dhokli": {
     "dishName": "Dal Dhokli",
     "image": "/dishes/dal-dhokli.webp",
+    "state" : "Gujarat",
     "description": "Gujarati-style wheat flour dumplings simmered directly in a mildly spiced toor dal.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -36329,6 +36347,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "avial": {
     "dishName": "Avial",
     "image": "/dishes/avial.webp",
+    "state" : "Kerala",
     "description": "Kerala-style mixed vegetables cooked with coconut and yogurt into a gently spiced, lightly tangy side dish.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -36430,6 +36449,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "thoran": {
     "dishName": "Vegetable Thoran",
     "image": "/dishes/thoran.webp",
+    "state" : "Kerala",
     "description": "A simple Kerala-style stir-fry of finely chopped vegetables finished with coconut, curry leaves and green chilli.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
@@ -37564,6 +37584,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "thiruvathirai kali": {
     "dishName": "Thiruvathirai Kali",
     "image": "/dishes/thiruvathirai-kali.webp",
+    "state" : "Tamil Nadu",
     "description": "A traditional Tamil sweet-savoury rice and dal preparation made for the Thiruvathirai festival.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -38683,6 +38704,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "idiyappam": {
     "dishName": "Idiyappam (Nool Puttu)",
     "image": "/dishes/idiyappam.webp",
+    "state" : "Tamil Nadu",
     "description": "Delicate steamed rice-flour noodles layered with fresh coconut, a classic South Indian breakfast.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -39896,6 +39918,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "bajra khichdi": {
       "dishName": "Bajra Khichdi",
       "image": "/dishes/bajra-khichdi.webp",
+      "state" : "Rajasthan",
       "description": "A rustic Rajasthani one-pot meal of cracked pearl millet and moong dal cooked until soft and comforting.",
       "prepTime": "Approx. 45 minutes",
       "equipment": [
@@ -39995,6 +40018,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "gujarati dal": {
       "dishName": "Gujarati Dal",
       "image": "/dishes/gujarati-dal.webp",
+      "state" : "Gujarat",
       "description": "A thin, comforting Gujarati toor dal with a balanced sweet-sour taste from jaggery and kokum or lemon.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -41668,6 +41692,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "poricha kootu": {
       "dishName": "Poricha Kootu",
       "image": "/dishes/poricha-kootu.webp",
+      "state" : "Tamil Nadu",
       "description": "A Tamil-style vegetable and moong dal kootu made with coconut, cumin, pepper and roasted spices.",
       "prepTime": "Approx. 35 minutes",
       "equipment": [
@@ -41801,6 +41826,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "puli kootu": {
       "dishName": "Puli Kootu",
       "image": "/dishes/puli-kootu.webp",
+      "state" : "Tamil Nadu",
       "description": "A tangy Tamil-style kootu of pumpkin and chickpeas cooked with tamarind, coconut and roasted lentil spices.",
       "prepTime": "Approx. 40 minutes",
       "equipment": [
@@ -42300,6 +42326,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "gushtaba": {
       "dishName": "Gushtaba",
       "image": "/dishes/gushtaba.webp",
+      "state" : "Jammu and Kashmir",
       "description": "A Kashmiri Wazwan specialty of soft mutton meatballs simmered in a lightly spiced yogurt gravy.",
       "prepTime": "Approx. 1 hour 30 minutes",
       "equipment": [
@@ -42417,6 +42444,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "haak saag": {
       "dishName": "Haak Saag",
       "image": "/dishes/haak-saag.webp",
+      "state" : "Jammu and Kashmir",
       "description": "A simple Kashmiri leafy-green dish cooked with mustard oil, asafoetida, dried chilli and salt.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -42511,6 +42539,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "nadru yakhni": {
       "dishName": "Nadru Yakhni",
       "image": "/dishes/nadru-yakhni.webp",
+      "state" : "Jammu and Kashmir",
       "description": "A Kashmiri yogurt curry of tender lotus stem flavoured with fennel, dry ginger and whole spices.",
       "prepTime": "Approx. 45 minutes",
       "equipment": [
@@ -42867,6 +42896,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "ghevar": {
       "dishName": "Ghevar",
       "image": "/dishes/ghevar.webp",
+      "state" : "Rajasthan",
       "description": "A Rajasthani honeycomb-style sweet made from a thin chilled maida batter, deep-fried and soaked lightly with sugar syrup.",
       "prepTime": "Approx. 1 hour",
       "equipment": [
@@ -44771,6 +44801,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "khaman": {
     "dishName": "Khaman",
     "image": "/dishes/dhokla.webp",
+    "state" : "Gujarat",
     "description": "Soft, airy Gujarati steamed gram-flour cakes topped with a mustard seed, curry leaf and green chilli tempering.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -44928,6 +44959,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "mezhukkuvaratty": {
     "dishName": "Mezhukkuvaratty",
     "image": "/dishes/mezhukkuvaratty.webp",
+    "state" : "Kerala",
     "description": "A traditional Kerala vegetable side dish of tender green beans stir-fried with coconut oil, curry leaves, chilli and black pepper.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45349,6 +45381,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "erissery": {
     "dishName": "Erissery",
     "image": "/dishes/erissery.webp",
+    "state" : "Kerala",
     "description": "A Kerala pumpkin and black-eyed pea curry finished with roasted coconut and a coconut-oil tempering.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -45383,6 +45416,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "olan": {
     "dishName": "Olan",
     "image": "/dishes/olan.webp",
+    "state" : "Kerala",
     "description": "A light, mildly sweet Kerala curry of ash gourd and black-eyed peas cooked in coconut milk.",
     "prepTime": "Approx. 30 minutes",
     "equipment": [
@@ -45760,6 +45794,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pazham pori": {
     "dishName": "Pazham Pori",
     "image": "/dishes/pazham-pori.webp",
+    "state" : "Kerala",
     "description": "Kerala-style ripe banana fritters coated in a sweet maida batter and fried until golden.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -45905,6 +45940,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "patra": {
     "dishName": "Patra",
     "image": "/dishes/patra.webp",
+    "state" : "Gujarat",
     "description": "A Gujarati snack of colocasia leaves spread with a spiced gram-flour paste, rolled, steamed and then pan-tempered.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -46084,6 +46120,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kerala vegetable stew (ishtu)": {
     "dishName": "Kerala Vegetable Stew (Ishtu)",
     "image": "/dishes/kerala-vegetable-stew.webp",
+    "state" : "Kerala",
     "description": "A mild, fragrant Kerala coconut-milk stew with vegetables and whole spices, the classic pairing for appam and idiyappam.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -46551,6 +46588,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "rice dhokla": {
     "dishName": "Rice Dhokla",
     "image": "/dishes/rice-dhokla.webp",
+    "state" : "Gujarat",
     "description": "Soft steamed rice and lentil dhokla served with a simple mustard seed tempering.",
     "prepTime": "Approx. 35 minutes plus 4 hours soaking",
     "equipment": [
@@ -47318,6 +47356,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kerala chicken stew": {
     "dishName": "Kerala Chicken Stew",
     "image": "/dishes/kerala-chicken-stew.webp",
+    "state" : "Kerala",
     "description": "A mild, fragrant Kerala-style chicken stew cooked in coconut milk with whole spices and vegetables, the classic pairing for appam.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
@@ -47355,6 +47394,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kerala mutton stew": {
     "dishName": "Kerala Mutton Stew",
     "image": "/dishes/kerala-mutton-stew.webp",
+    "state" : "Kerala",
     "description": "A mild, aromatic Kerala-style mutton stew simmered in coconut milk with whole spices and potatoes.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -52456,6 +52496,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kashmiri pulao": {
     "dishName": "Kashmiri Pulao",
     "image": "/dishes/veg-pulao.webp",
+    "state" : "Jammu and Kashmir",
     "description": "A lightly sweet, fragrant rice dish studded with dried fruits, nuts and whole spices.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -53702,6 +53743,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kadala curry": {
     "dishName": "Kadala Curry",
     "image": "/dishes/chana-masala.webp",
+    "state" : "Kerala",
     "description": "A Kerala-style black chickpea curry in a coconut-spiced gravy, the classic pairing for puttu.",
     "prepTime": "Approx. 50 minutes (plus soaking)",
     "equipment": [
@@ -53824,6 +53866,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "fish moilee": {
     "dishName": "Fish Moilee",
     "image": "/dishes/kerala-fish-curry.webp",
+    "state" : "Kerala",
     "description": "A mild, fragrant Kerala fish curry in a coconut milk gravy with curry leaves and green chillies.",
     "prepTime": "Approx. 35 minutes",
     "equipment": [
@@ -54036,6 +54079,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "churma ladoo": {
     "dishName": "Churma Ladoo",
     "image": "/dishes/churma-ladoo.webp",
+    "state" : "Rajasthan",
     "description": "Sweet, nutty balls made from roasted wheat flour, ghee and jaggery, a traditional Rajasthani sweet.",
     "prepTime": "Approx. 1 hour",
     "equipment": [
@@ -54562,6 +54606,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kambu koozh": {
     dishName: "Kambu Koozh (Pearl Millet Porridge)",
     "image": "/dishes/kambu-koozh.webp",
+    "state" : "Tamil Nadu",
     description: "A cooling Tamil-style pearl millet porridge mixed with buttermilk, onion and green chilli.",
     prepTime: "Approx. 25 minutes, plus cooling",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54615,6 +54660,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kallummakkaya nirachathu": {
     dishName: "Kallummakkaya Nirachathu (Stuffed Mussels)",
     "image": "/dishes/kallummakkaya-nirachathu.webp",
+    "state" : "Kerala",
     description: "A Malabar snack of mussels filled with a rice and coconut paste, then cooked with chilli.",
     prepTime: "Approx. 50 minutes (plus rice soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54644,6 +54690,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pidi and kozhi curry": {
     dishName: "Pidi and Kozhi Curry (Rice Dumplings with Chicken Curry)",
      "image": "/dishes/pidi-and-kozhi-curry.webp",
+     "state" : "Kerala",
     description: "Kerala rice flour dumplings served with a simple homemade chicken and coconut curry.",
     prepTime: "Approx. 1 hour",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54681,6 +54728,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "theeyal": {
     dishName: "Theeyal (Kerala Roasted Coconut Curry)",
      "image": "/dishes/theeyal.webp",
+     "state" : "Kerala",
     description: "A Kerala curry of shallots in a dark, tangy sauce made with browned coconut and tamarind.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54954,6 +55002,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "monje haakh": {
     dishName: "Monje Haakh (Kashmiri Kohlrabi and Greens)",
     "image": "/dishes/monje-haakh.webp",
+    "state" : "Jammu and Kashmir",
     description: "A light Kashmiri dish of kohlrabi and leafy greens cooked with mustard oil and mild spices.",
     prepTime: "Approx. 30 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -54980,6 +55029,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "kalari": {
     dishName: "Kalari (Jammu-Style Fried Cheese)",
     "image": "/dishes/kalari.webp",
+    "state" : "Jammu and Kashmir",
     description: "A simple Jammu-region snack of local kalari cheese browned on a hot tawa.",
     prepTime: "Approx. 10 minutes",
     equipment: [{ item: "tawa", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55833,6 +55883,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khichu": {
     dishName: "Khichu (Gujarati Steamed Rice Flour Dough)",
+    "state" : "Gujarat",
     description: "A soft, savoury Gujarati snack made by cooking rice flour with cumin, chilli and water.",
     prepTime: "Approx. 20 minutes",
     equipment: [
@@ -56137,12 +56188,9 @@ export const predefinedRecipes: Record<string, Recipe> = {
     notes: ["Berma gives gudok its distinctive traditional flavour and smell. If you cannot find it, the result will be a different vegetable stew rather than a traditional-tasting gudok."],
   },
 
-  // ============================================================
-// PASTE 1: Add inside predefinedRecipes, before the closing `};`
-// ============================================================
-
 "kashmiri dum aloo": {
   "dishName": "Kashmiri Dum Aloo",
+  "state" : "Jammu and Kashmir",
   "description": "Baby potatoes fried and simmered in a tangy yogurt gravy flavoured with fennel and dry ginger.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56171,6 +56219,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chicken yakhni": {
   "dishName": "Chicken Yakhni",
+  "state" : "Jammu and Kashmir",
   "description": "A mild Kashmiri yogurt chicken curry flavoured with fennel and whole spices.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56198,6 +56247,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muj gaad": {
   "dishName": "Muj Gaad (Kashmiri Fish with Radish)",
+  "state" : "Jammu and Kashmir",
   "description": "A Kashmiri fish curry cooked with radish in a mustard oil and chilli gravy.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56222,6 +56272,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chaman kaliya": {
   "dishName": "Chaman Kaliya (Kashmiri Paneer Curry)",
+  "state" : "Jammu and Kashmir",
   "description": "Fried paneer cubes simmered in a mild yellow yogurt gravy, a Kashmiri vegetarian classic.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56248,6 +56299,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "modur pulao": {
   "dishName": "Modur Pulao (Kashmiri Sweet Rice)",
+  "state" : "Jammu and Kashmir",
   "description": "A festive Kashmiri rice dish lightly sweetened with sugar, milk and dried fruits.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56275,6 +56327,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "tabak maaz": {
   "dishName": "Tabak Maaz (Kashmiri Fried Ribs)",
+  "state" : "Jammu and Kashmir",
   "description": "Mutton ribs slow-boiled in milk and spices, then shallow-fried until crisp.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56673,6 +56726,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "singri ki sabzi": {
   "dishName": "Singri Ki Sabzi (Rajasthani Dried Bean Curry)",
+  "state" : "Rajasthan",
   "description": "A Rajasthani dry sabzi made with dried sangri beans and simple spices.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56720,6 +56774,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "panchmel dal": {
   "dishName": "Panchmel Dal (Rajasthani Five Lentil Dal)",
+  "state" : "Rajasthan",
   "description": "A Rajasthani dal cooked with five kinds of lentils, finished with a ghee tempering.",
   "prepTime": "Approx. 45 minutes (plus soaking)",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58306,6 +58361,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "thalassery biryani": {
   "dishName": "Thalassery Biryani",
+  "state" : "Kerala",
   "description": "A fragrant Malabar-style biryani made with short-grain Kaima rice and mild spices.",
   "prepTime": "Approx. 1 hour 15 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58333,6 +58389,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "beef fry": {
   "dishName": "Beef Fry (Kerala-style)",
+  "state" : "Kerala",
   "description": "A Kerala-style dry beef stir-fry with coconut slices, curry leaves and spices.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58358,6 +58415,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "karimeen pollichathu": {
   "dishName": "Karimeen Pollichathu (Kerala Fish Wrapped in Banana Leaf)",
+  "state" : "Kerala",
   "description": "Pearl spot fish marinated in spices, wrapped in banana leaf and pan-cooked.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58382,6 +58440,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "palada pradhaman": {
   "dishName": "Palada Pradhaman",
+  "state" : "Kerala",
   "description": "A creamy Kerala rice flake pudding cooked slowly in sweetened milk.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58405,6 +58464,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "madurai kari dosa": {
   "dishName": "Madurai Kari Dosa",
   "image": "/dishes/madurai-kari-dosa.webp",
+  "state" : "Tamil Nadu",
   "description": "A crisp dosa topped with a spicy minced meat masala, Madurai street-food style.",
   "prepTime": "Approx. 40 minutes (using ready dosa batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58429,6 +58489,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "keerai masiyal": {
   "dishName": "Keerai Masiyal (Tamil Mashed Greens)",
+  "state" : "Tamil Nadu",
   "description": "A simple Tamil dish of mashed boiled greens tempered with garlic and mustard seeds.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58450,6 +58511,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kara kuzhambu": {
   "dishName": "Kara Kuzhambu (Tamil Tangy Vegetable Curry)",
+  "state" : "Tamil Nadu",
   "description": "A spicy, tangy Tamil curry made with tamarind and a roasted spice powder.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58473,6 +58535,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "arisi paruppu sadam": {
   "dishName": "Arisi Paruppu Sadam (Rice and Lentil Mash)",
+  "state" : "Tamil Nadu",
   "description": "A comforting Tamil one-pot rice and dal dish tempered with ghee.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
@@ -58494,6 +58557,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sakkarai pongal": {
   "dishName": "Sakkarai Pongal",
+  "state" : "Tamil Nadu",
   "description": "A sweet South Indian rice and lentil pudding made with jaggery and ghee.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58579,6 +58643,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "kal dosa": {
   "dishName": "Kal Dosa",
   "image": "/dishes/kal-dosa.webp",
+  "state" : "Tamil Nadu",
   "description": "A soft, thick fermented dosa, lightly spongy, popular in Tamil Nadu.",
   "prepTime": "Approx. 20 minutes (using ready batter)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -58884,6 +58949,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muthiya": {
   "dishName": "Muthiya (Gujarati Steamed Dumplings)",
+  "state" : "Gujarat",
   "description": "Steamed and pan-fried savoury dumplings made from wheat flour and bottle gourd.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -59069,6 +59135,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "pheni (milk feniya)": {
   "dishName": "Pheni (Milk Feniya)",
   "image": "/dishes/pheni.webp",
+  "state" : "Rajasthan",
   "description": "Crisp, thread-like fried wheat vermicelli soaked in warm sweetened milk, a classic Rajasthani winter breakfast.",
   "prepTime": "Approx. 45 minutes (plus resting)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
