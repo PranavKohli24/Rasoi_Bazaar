@@ -362,13 +362,15 @@ const CookLikeLocalPage: React.FC = () => {
                 )}
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-                  {!showAllDishes && remainingCount > 0 ? (
+                  {remainingCount > 0 ? (
                     <button
                       type="button"
-                      onClick={() => setShowAllDishes(true)}
+                      onClick={() => setShowAllDishes((v) => !v)}
                       className={`${footerButton} w-full sm:w-auto`}
                     >
-                      More from {selectedRegion.name} ({remainingCount}+)
+                      {showAllDishes
+                        ? "Show less"
+                        : `More from ${selectedRegion.name} (${remainingCount}+)`}
                     </button>
                   ) : (
                     <span />
