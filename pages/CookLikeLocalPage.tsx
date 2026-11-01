@@ -213,7 +213,8 @@ const CookLikeLocalPage: React.FC = () => {
                         ? "bottom-full mb-1 rounded-xl border"
                         : "top-[53px] rounded-b-xl border-x border-b"
                     }`}
-                  >                    {suggestions.map((region) => (
+                  >
+                    {(dropUp ? [...suggestions].reverse() : suggestions).map((region) => (
                       <li key={region.slug}>
                         <button
                           type="button"
