@@ -36,19 +36,23 @@ const CookLikeLocalPage: React.FC = () => {
   const { stateSlug } = useParams<{ stateSlug?: string }>();
   const [query, setQuery] = useState("");
   const [showAllRegions, setShowAllRegions] = useState(false);
+  const [showAllDishes, setShowAllDishes] = useState(false);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsListRef = useRef<HTMLUListElement>(null);
-
   const selectedRegion = stateSlug ? findRegionBySlug(stateSlug) : undefined;
   const dishes = useMemo(
     () => (selectedRegion ? getDishesByState(selectedRegion.name) : []),
     [selectedRegion]
   );
-  const previewDishes = dishes.slice(0, DISHES_PREVIEW_COUNT);
+  const visibleDishes = showAllDishes ? dishes : dishes.slice(0, DISHES_PREVIEW_COUNT);
   const remainingCount = Math.max(dishes.length - DISHES_PREVIEW_COUNT, 0);
+
+  useEffect(() => {
+    setShowAllDishes(false);
+  }, [selectedRegion]);
   const suggestions = useMemo(() => searchRegions(query), [query]);
 
   useEffect(() => {
@@ -321,14 +325,13 @@ const CookLikeLocalPage: React.FC = () => {
                 <h3 className="mt-8 font-serif text-xl font-bold text-orange-50">
                   Popular dishes from {selectedRegion.name}
                 </h3>
-
-                {previewDishes.length === 0 ? (
+                {visibleDishes.length === 0 ? (
                   <p className="mt-4 text-sm text-stone-400">
                     We don't have dishes tagged for {selectedRegion.name} yet.
                   </p>
                 ) : (
                   <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-7">
-                    {previewDishes.map((dish, i) => (
+                    {visibleDishes.map((dish, i) => (
                       <Link
                         key={dish.dishName}
                         to={`/recipe/${toSlug(dish.dishName)}`}
@@ -359,8 +362,12 @@ const CookLikeLocalPage: React.FC = () => {
                 )}
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-                  {remainingCount > 0 ? (
-                    <button type="button" className={`${footerButton} w-full sm:w-auto`}>
+                  {!showAllDishes && remainingCount > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllDishes(true)}
+                      className={`${footerButton} w-full sm:w-auto`}
+                    >
                       More from {selectedRegion.name} ({remainingCount}+)
                     </button>
                   ) : (
