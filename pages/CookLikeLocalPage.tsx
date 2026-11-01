@@ -31,6 +31,35 @@ const ghostButton =
 const tileCard =
   "rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_1px_0_rgba(0,0,0,0.5),0_10px_24px_-8px_rgba(0,0,0,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_1px_0_rgba(0,0,0,0.5),0_16px_32px_-10px_rgba(0,0,0,0.8)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
+  const LocalLoadingImage: React.FC<{ src: string; alt?: string }> = ({
+  src,
+  alt = "",
+}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="relative h-28 w-full overflow-hidden rounded-[2px] bg-stone-800 sm:h-32">
+      <div
+        aria-hidden="true"
+        className={`cook-local-image-shimmer absolute inset-0 ${
+          isLoaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <div className="cook-local-image-shimmer__glow" />
+      </div>
+
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setIsLoaded(true)}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+};
+
 const CookLikeLocalPage: React.FC = () => {
   const navigate = useNavigate();
   const { stateSlug } = useParams<{ stateSlug?: string }>();
@@ -159,6 +188,41 @@ const CookLikeLocalPage: React.FC = () => {
 
   return (
     <div className="relative z-10 w-full">
+      <style>{`
+  .cook-local-image-shimmer {
+    background: #292524;
+    transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .cook-local-image-shimmer__glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.04) 35%,
+      rgba(255, 255, 255, 0.14) 48%,
+      rgba(255, 255, 255, 0.04) 61%,
+      transparent 72%
+    );
+    transform: translateX(-100%);
+    animation: cook-local-image-shimmer-sweep 1.8s
+      cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes cook-local-image-shimmer-sweep {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cook-local-image-shimmer__glow {
+      animation: none;
+      opacity: 0.35;
+    }
+  }
+`}</style>
       <CompactHeader showSearch={false} />
 
       <section className="relative z-10 mx-auto w-full max-w-5xl scroll-mt-24 px-3 py-10 sm:px-4 sm:py-20">
@@ -282,11 +346,7 @@ const CookLikeLocalPage: React.FC = () => {
                         />
                         <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
                           {region.coverImage ? (
-                            <img
-                              src={region.coverImage}
-                              alt=""
-                              className="h-28 w-full rounded-[2px] object-cover sm:h-32"
-                            />
+                            <LocalLoadingImage src={region.coverImage} />
                           ) : (
                             <div className="flex h-28 w-full items-center justify-center rounded-[2px] bg-orange-100/10 sm:h-32">
                               <span className="font-serif text-2xl font-black text-orange-300/50">{region.code}</span>
@@ -346,7 +406,7 @@ const CookLikeLocalPage: React.FC = () => {
                           />
                           <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
                             {dish.image ? (
-                              <img src={dish.image} alt="" className="h-28 w-full rounded-[2px] object-cover sm:h-32" />
+                              <LocalLoadingImage src={dish.image} />
                             ) : (
                               <div className="h-28 w-full rounded-[2px] bg-orange-100/10 sm:h-32" />
                             )}
