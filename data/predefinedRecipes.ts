@@ -22843,6 +22843,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "siddu": {
     dishName: "Siddu",
     "image": "/dishes/siddu.webp",
+     "state" : "Himachal Pradesh",
     description: "Soft Himachali steamed wheat buns filled with a simple spiced urad dal mixture and served warm with ghee.",
     prepTime: "Approx. 5 hours 30 minutes (including 4 to 5 hours proofing)",
     equipment: [
@@ -23549,6 +23550,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "poha jalebi": {
     dishName: "Poha Jalebi",
     "image": "/dishes/poha-jalebi.webp",
+     "state" : "Madhya Pradesh",
     description: "Indore-style poha topped with sev and lemon, served alongside crisp syrupy jalebi for breakfast.",
     prepTime: "Approx. 40 minutes",
     equipment: [
@@ -44727,6 +44729,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chana madra": {
     "dishName": "Chana Madra",
     "image": "/dishes/chana-madra.webp",
+     "state" : "Himachal Pradesh",
     "description": "A traditional Himachali chickpea curry simmered in a tangy yogurt gravy with whole spices and a gentle richness.",
     "prepTime": "Approx. 40 minutes (plus soaking)",
     "equipment": [
@@ -54859,6 +54862,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chha gosht": {
     dishName: "Chha Gosht (Himachali Yogurt Mutton Curry)",
     "image": "/dishes/chha-gosht.webp",
+     "state" : "Himachal Pradesh",
     description: "A Himachali mutton curry cooked with curd, gram flour and warming whole spices.",
     prepTime: "Approx. 1 hour (plus marinating)",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55392,6 +55396,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bhutte ka kees": {
     dishName: "Bhutte Ka Kees (Indori Grated Corn)",
     "image": "/dishes/bhutte-ka-kees.webp",
+    "state" : "Madhya Pradesh",
     description: "A Madhya Pradesh street-style dish of grated corn cooked with milk and mild spices.",
     prepTime: "Approx. 25 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -56294,6 +56299,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sepu badi": {
   "dishName": "Sepu Badi (Himachali Lentil Dumpling Curry)",
+   "state" : "Himachal Pradesh",
   "description": "Spiced sun-dried lentil dumplings cooked in a simple spinach-tomato gravy.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56320,6 +56326,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "babru": {
   "dishName": "Babru (Himachali Stuffed Bread)",
+   "state" : "Himachal Pradesh",
   "description": "A Himachali deep-fried bread stuffed with spiced black gram, similar to kachori.",
   "prepTime": "Approx. 1 hour (plus soaking)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56344,6 +56351,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "khatta chana": {
   "dishName": "Khatta Chana (Himachali Tangy Chickpeas)",
+   "state" : "Himachal Pradesh",
   "description": "A tangy Himachali chickpea curry flavoured with amchur and simple spices.",
   "prepTime": "Approx. 40 minutes (using boiled chickpeas)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56369,6 +56377,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "tudkiya bhath": {
   "dishName": "Tudkiya Bhath (Himachali Spiced Rice)",
+  "state" : "Himachal Pradesh",
   "description": "A Himachali one-pot spiced rice with vegetables and lentils, similar to khichdi.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
@@ -56394,6 +56403,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "aloo palda": {
   "dishName": "Aloo Palda (Himachali Yogurt Potato Curry)",
+  "state" : "Himachal Pradesh",
   "description": "A simple Himachali potato curry in a light yogurt and gram flour gravy.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56441,6 +56451,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "patande": {
   "dishName": "Patande (Himachali Sweet Pancakes)",
+  "state" : "Himachal Pradesh",
   "description": "Soft wheat flour pancakes sweetened lightly, a simple Himachali breakfast.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -56462,6 +56473,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "phaanu": {
   "dishName": "Phaanu (Himachali Mixed Lentils)",
+  "state" : "Himachal Pradesh",
   "description": "A hearty Himachali dal made from a mix of soaked lentils cooked until soft.",
   "prepTime": "Approx. 45 minutes (plus soaking)",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58955,6 +58967,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dal bafla": {
   "dishName": "Dal Bafla (Malwa-style Baked Dumplings with Dal)",
+   "state" : "Madhya Pradesh",
   "description": "A Madhya Pradesh dish of boiled-then-baked wheat dumplings served with dal, similar to dal baati.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "oven", "isSpecialized": false, "alternative": null }, { "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58980,6 +58993,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chakki ki shaak": {
   "dishName": "Chakki Ki Shaak (Malwa-style Wheat Dumpling Curry)",
+   "state" : "Madhya Pradesh",
   "description": "A Malwa specialty of steamed wheat flour dumplings in a tangy yogurt curry.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -59029,6 +59043,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mawa jalebi": {
   "dishName": "Mawa Jalebi",
+   "state" : "Madhya Pradesh",
   "description": "A rich, chewy version of jalebi made with khoya, deep-fried and dipped in sugar syrup.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
