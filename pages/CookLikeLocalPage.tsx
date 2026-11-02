@@ -31,7 +31,7 @@ const ghostButton =
 const tileCard =
   "rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_1px_0_rgba(0,0,0,0.5),0_10px_24px_-8px_rgba(0,0,0,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_1px_0_rgba(0,0,0,0.5),0_16px_32px_-10px_rgba(0,0,0,0.8)] motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
-  const LocalLoadingImage: React.FC<{ src: string; alt?: string }> = ({
+const LocalLoadingImage: React.FC<{ src: string; alt?: string }> = ({
   src,
   alt = "",
 }) => {
@@ -72,142 +72,202 @@ const CookLikeLocalPage: React.FC = () => {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-const suggestionsListRef = useRef<HTMLUListElement>(null);
+  const suggestionsListRef = useRef<HTMLUListElement>(null);
 
-// Cache preloaded region images to avoid duplicate requests.
-const preloadedRegionImages = useRef(
-  new Map<string, HTMLImageElement>()
-);
+  // --- Zoom transition: shared content wrapper + its transition class ---
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [transitionClass, setTransitionClass] = useState("");
+  const transitionTimersRef = useRef<number[]>([]);
+
+  const clearTransitionTimers = () => {
+    transitionTimersRef.current.forEach((id) => window.clearTimeout(id));
+    transitionTimersRef.current = [];
+  };
+
+  useEffect(() => clearTransitionTimers, []);
+
+  const originFromEvent = (
+    e: React.MouseEvent<HTMLElement>
+  ): { x: number; y: number } | undefined => {
+    const root = contentRef.current;
+    if (!root) return undefined;
+    const rect = root.getBoundingClientRect();
+    if (!rect.width || !rect.height) return undefined;
+    return {
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    };
+  };
+
+  const zoomNavigate = (
+    runNavigation: () => void,
+    origin?: { x: number; y: number }
+  ) => {
+    if (transitionClass === "cook-zoom-leave") return; // already mid-transition
+
+    if (origin && contentRef.current) {
+      contentRef.current.style.setProperty("--zoom-x", `${origin.x}%`);
+      contentRef.current.style.setProperty("--zoom-y", `${origin.y}%`);
+    }
+
+    clearTransitionTimers();
+    setTransitionClass("cook-zoom-leave");
+
+    const leaveTimer = window.setTimeout(() => {
+      runNavigation();
+      setTransitionClass("cook-zoom-enter");
+
+      // Double rAF so the browser paints the "enter" (scaled-down, invisible)
+      // frame before we flip to "enter-active" and transition it in.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTransitionClass("cook-zoom-enter-active");
+        });
+      });
+
+      const settleTimer = window.setTimeout(() => {
+        setTransitionClass("");
+      }, 420);
+      transitionTimersRef.current.push(settleTimer);
+    }, 260);
+    transitionTimersRef.current.push(leaveTimer);
+  };
+
+  // Cache preloaded region images to avoid duplicate requests.
+  const preloadedRegionImages = useRef(
+    new Map<string, HTMLImageElement>()
+  );
   const selectedRegion = stateSlug ? findRegionBySlug(stateSlug) : undefined;
 
-// Gradually preload all region cover images in the background.
-useEffect(() => {
-  // Don't compete with the selected region or images
-  // currently being displayed in the expanded grid.
-  if (selectedRegion || showAllRegions) return;
+  // Gradually preload all region cover images in the background.
+  useEffect(() => {
+    // Don't compete with the selected region or images
+    // currently being displayed in the expanded grid.
+    if (selectedRegion || showAllRegions) return;
 
-  const popularImageUrls = new Set(
-  POPULAR_REGIONS
-    .map((region) => region.coverImage)
-    .filter((url): url is string => Boolean(url))
-);
+    const popularImageUrls = new Set(
+      POPULAR_REGIONS
+        .map((region) => region.coverImage)
+        .filter((url): url is string => Boolean(url))
+    );
 
-const imageUrls = [
-  ...new Set(
-    INDIA_REGIONS
-      .map((region) => region.coverImage)
-      .filter(
-        (url): url is string =>
-          typeof url === "string" &&
-          url.length > 0 &&
-          !popularImageUrls.has(url)
-      )
-  ),
-];
+    const imageUrls = [
+      ...new Set(
+        INDIA_REGIONS
+          .map((region) => region.coverImage)
+          .filter(
+            (url): url is string =>
+              typeof url === "string" &&
+              url.length > 0 &&
+              !popularImageUrls.has(url)
+          )
+      ),
+    ];
 
-  let cancelled = false;
-  let nextIndex = 0;
-  let activeRequests = 0;
+    let cancelled = false;
+    let nextIndex = 0;
+    let activeRequests = 0;
 
-  const loadNext = () => {
-    if (cancelled) return;
+    const loadNext = () => {
+      if (cancelled) return;
 
-    while (activeRequests < 2 && nextIndex < imageUrls.length) {
-      const imageUrl = imageUrls[nextIndex++];
+      while (activeRequests < 2 && nextIndex < imageUrls.length) {
+        const imageUrl = imageUrls[nextIndex++];
 
-      // Skip images already being loaded or cached.
-      if (preloadedRegionImages.current.has(imageUrl)) {
-        continue;
-      }
-
-      const image = new window.Image();
-
-      image.decoding = "async";
-      image.setAttribute("fetchpriority", "low");
-
-      activeRequests++;
-
-      preloadedRegionImages.current.set(imageUrl, image);
-
-      const finish = () => {
-        activeRequests--;
-
-        if (!cancelled) {
-          loadNext();
+        // Skip images already being loaded or cached.
+        if (preloadedRegionImages.current.has(imageUrl)) {
+          continue;
         }
-      };
 
-      image.onload = finish;
+        const image = new window.Image();
 
-      image.onerror = () => {
-        preloadedRegionImages.current.delete(imageUrl);
-        finish();
-      };
+        image.decoding = "async";
+        image.setAttribute("fetchpriority", "low");
 
-      image.src = imageUrl;
-    }
-  };
+        activeRequests++;
 
-  // Give initially visible content time to load first.
-  const timer = window.setTimeout(loadNext, 1000);
+        preloadedRegionImages.current.set(imageUrl, image);
 
-  return () => {
-    cancelled = true;
-    window.clearTimeout(timer);
-  };
-}, [selectedRegion, showAllRegions]);
+        const finish = () => {
+          activeRequests--;
+
+          if (!cancelled) {
+            loadNext();
+          }
+        };
+
+        image.onload = finish;
+
+        image.onerror = () => {
+          preloadedRegionImages.current.delete(imageUrl);
+          finish();
+        };
+
+        image.src = imageUrl;
+      }
+    };
+
+    // Give initially visible content time to load first.
+    const timer = window.setTimeout(loadNext, 1000);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [selectedRegion, showAllRegions]);
 
   const dishes = useMemo(
     () => (selectedRegion ? getDishesByState(selectedRegion.name) : []),
     [selectedRegion]
   );
-  const visibleDishes = showAllDishes ? dishes : dishes.slice(0, DISHES_PREVIEW_COUNT);
-  const remainingCount = Math.max(dishes.length - DISHES_PREVIEW_COUNT, 0);
+  const previewDishes = dishes.slice(0, DISHES_PREVIEW_COUNT);
+  const extraDishes = dishes.slice(DISHES_PREVIEW_COUNT);
+  const remainingCount = extraDishes.length;
 
   useEffect(() => {
     setShowAllDishes(false);
   }, [selectedRegion]);
   const suggestions = useMemo(() => searchRegions(query), [query]);
 
-// Preload images for matching regions as the user searches.
-useEffect(() => {
-  const searchQuery = query.trim();
+  // Preload images for matching regions as the user searches.
+  useEffect(() => {
+    const searchQuery = query.trim();
 
-  // Wait until the user has typed at least 3 characters.
-  if (searchQuery.length < 3 || suggestions.length === 0) {
-    return;
-  }
+    // Wait until the user has typed at least 3 characters.
+    if (searchQuery.length < 3 || suggestions.length === 0) {
+      return;
+    }
 
-  // Small debounce to avoid unnecessary requests while typing.
-  const timeoutId = window.setTimeout(() => {
-    suggestions.slice(0, 3).forEach((region) => {
-      const imageUrl = region.coverImage;
+    // Small debounce to avoid unnecessary requests while typing.
+    const timeoutId = window.setTimeout(() => {
+      suggestions.slice(0, 3).forEach((region) => {
+        const imageUrl = region.coverImage;
 
-      if (!imageUrl) return;
+        if (!imageUrl) return;
 
-      const existingImage = preloadedRegionImages.current.get(imageUrl);
+        const existingImage = preloadedRegionImages.current.get(imageUrl);
 
-      if (existingImage) {
-        existingImage.fetchPriority = "high";
-        return;
-      }
+        if (existingImage) {
+          existingImage.fetchPriority = "high";
+          return;
+        }
 
-      const image = new window.Image();
-      image.decoding = "async";
-      image.fetchPriority = "high";
+        const image = new window.Image();
+        image.decoding = "async";
+        image.fetchPriority = "high";
 
-      image.onerror = () => {
-        preloadedRegionImages.current.delete(imageUrl);
-      };
+        image.onerror = () => {
+          preloadedRegionImages.current.delete(imageUrl);
+        };
 
-      image.src = imageUrl;
+        image.src = imageUrl;
 
-      preloadedRegionImages.current.set(imageUrl, image);
-    });
-  }, 120);
+        preloadedRegionImages.current.set(imageUrl, image);
+      });
+    }, 120);
 
-  return () => window.clearTimeout(timeoutId);
-}, [query, suggestions]);
+    return () => window.clearTimeout(timeoutId);
+  }, [query, suggestions]);
 
   useEffect(() => {
     document.title = selectedRegion
@@ -221,7 +281,7 @@ useEffect(() => {
 
   const goToRegion = (slug: string) => navigate(`/cook-like-a-local/${slug}`);
 
-    useEffect(() => {
+  useEffect(() => {
     if (dropUp && suggestionsListRef.current) {
       suggestionsListRef.current.scrollTop = suggestionsListRef.current.scrollHeight;
     }
@@ -257,11 +317,13 @@ useEffect(() => {
     };
   }, [suggestions.length]);
 
-  const handleUseMyLocation = () => {
+  const handleUseMyLocation = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!navigator.geolocation) {
       setLocationError("Location isn't available on this device.");
       return;
     }
+
+    const origin = originFromEvent(e);
 
     setLocating(true);
     setLocationError(null);
@@ -284,7 +346,7 @@ useEffect(() => {
             );
 
           if (match) {
-            goToRegion(match.slug);
+            zoomNavigate(() => goToRegion(match.slug), origin);
           } else {
             setLocationError("Couldn't match your location to a state. Try searching instead.");
           }
@@ -309,6 +371,14 @@ useEffect(() => {
   const handleSuggestionClick = (slug: string) => {
     setQuery("");
     goToRegion(slug);
+  };
+
+  const handleRegionTileClick = (e: React.MouseEvent<HTMLButtonElement>, slug: string) => {
+    zoomNavigate(() => goToRegion(slug), originFromEvent(e));
+  };
+
+  const handleBackToAll = (e: React.MouseEvent<HTMLButtonElement>) => {
+    zoomNavigate(() => navigate("/cook-like-a-local"), originFromEvent(e));
   };
 
   return (
@@ -341,10 +411,70 @@ useEffect(() => {
     }
   }
 
+  /* Zoom-through transition between the destination grid and a selected region */
+  .cook-zoom-content {
+    transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+    will-change: transform, opacity;
+  }
+  .cook-zoom-leave {
+    opacity: 0;
+    transform: scale(1.15);
+    transition: opacity 260ms cubic-bezier(0.4, 0, 1, 1),
+      transform 260ms cubic-bezier(0.4, 0, 1, 1);
+  }
+  .cook-zoom-enter {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+  .cook-zoom-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes cook-card-rise {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .cook-card-rise {
+    animation: cook-card-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes cook-region-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(252, 108, 38, 0.45); }
+    70% { box-shadow: 0 0 0 14px rgba(252, 108, 38, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(252, 108, 38, 0); }
+  }
+  .cook-region-pulse {
+    animation: cook-region-pulse 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    border-radius: 9999px;
+  }
+
+  .cook-chevron {
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cook-chevron-open {
+    transform: rotate(180deg);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cook-local-image-shimmer__glow {
       animation: none;
       opacity: 0.35;
+    }
+    .cook-zoom-leave,
+    .cook-zoom-enter,
+    .cook-zoom-enter-active {
+      transition: opacity 120ms linear !important;
+      transform: none !important;
+    }
+    .cook-card-rise,
+    .cook-region-pulse {
+      animation: none !important;
+    }
+    .cook-chevron {
+      transition: none !important;
     }
   }
 `}</style>
@@ -364,7 +494,10 @@ useEffect(() => {
             )}
           </header>
 
-          <div className="mx-auto max-w-3xl px-5 pb-8 pt-4 sm:px-12 sm:pb-10 sm:pt-6">
+          <div
+            ref={contentRef}
+            className={`mx-auto max-w-3xl px-5 pb-8 pt-4 sm:px-12 sm:pb-10 sm:pt-6 cook-zoom-content ${transitionClass}`}
+          >
             {!selectedRegion && (
               <form onSubmit={handleSearchSubmit} className="relative">
                 <div className="overflow-hidden rounded-xl border border-stone-700 bg-stone-950">
@@ -459,7 +592,7 @@ useEffect(() => {
                     <button
                       key={region.slug}
                       type="button"
-                      onClick={() => goToRegion(region.slug)}
+                      onClick={(e) => handleRegionTileClick(e, region.slug)}
                       className={`group text-left transition-transform duration-200 hover:-translate-y-0.5 ${
                         i % 2 === 0 ? "-rotate-1" : "rotate-1"
                       } hover:rotate-0`}
@@ -490,21 +623,23 @@ useEffect(() => {
               </>
             ) : (
               <>
-                
-              <div className="relative isolate grid min-h-[145px] grid-cols-[40%_minmax(0,1fr)] overflow-hidden rounded-2xl border border-[#F3EBDD] bg-[#fffaf4] shadow-[0_8px_30px_rgba(120,70,30,0.07)] sm:min-h-[175px] sm:grid-cols-[42%_minmax(0,1fr)]">
+                <div
+                  key={selectedRegion.slug}
+                  className="cook-card-rise relative isolate grid min-h-[145px] grid-cols-[40%_minmax(0,1fr)] overflow-hidden rounded-2xl border border-[#F3EBDD] bg-[#fffaf4] shadow-[0_8px_30px_rgba(120,70,30,0.07)] sm:min-h-[175px] sm:grid-cols-[42%_minmax(0,1fr)]"
+                >
 
-  {/* India map */}
-  <div className="relative z-10 flex items-start justify-center px-2 pt-2 sm:px-5 sm:pt-3">
-    <div className="w-full">
-      <IndiaMap
-        variant="compact"
-        selectedSlug={selectedRegion.slug}
-      />
-    </div>
-  </div>
+                  {/* India map */}
+                  <div className="relative z-10 flex items-start justify-center px-2 pt-2 sm:px-5 sm:pt-3">
+                    <div className="cook-region-pulse w-full">
+                      <IndiaMap
+                        variant="compact"
+                        selectedSlug={selectedRegion.slug}
+                      />
+                    </div>
+                  </div>
 
-  {/* Region information */}
-  <div className="relative flex min-w-0 flex-col justify-between overflow-hidden p-4 sm:p-7">
+                  {/* Region information */}
+                  <div className="relative flex min-w-0 flex-col justify-between overflow-hidden p-4 sm:p-7">
 
                     {/* Cover image */}
                     {selectedRegion.coverImage && (
@@ -536,39 +671,91 @@ useEffect(() => {
                 </div>
 
 
-                <h3 className="mt-8 font-serif text-xl font-bold text-orange-50">
+                <h3
+                  key={`dishes-heading-${selectedRegion.slug}`}
+                  className="cook-card-rise mt-8 font-serif text-xl font-bold text-orange-50"
+                  style={{ animationDelay: "80ms" }}
+                >
                   Popular dishes from {selectedRegion.name}
                 </h3>
-                {visibleDishes.length === 0 ? (
+                {dishes.length === 0 ? (
                   <p className="mt-4 text-sm text-stone-400">
                     We don't have dishes tagged for {selectedRegion.name} yet.
                   </p>
                 ) : (
-                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-7">
-                    {visibleDishes.map((dish, i) => (
-                      <Link
-                        key={dish.dishName}
-                        to={`/recipe/${toSlug(dish.dishName)}`}
-                        className={`block transition-transform duration-200 hover:-translate-y-0.5 ${
-                          i % 2 === 0 ? "rotate-1" : "-rotate-1"
-                        } hover:rotate-0`}
+                  <>
+                    <div
+                      key={`dishes-preview-${selectedRegion.slug}`}
+                      className="cook-card-rise mt-4 grid grid-cols-2 gap-x-4 gap-y-7"
+                      style={{ animationDelay: "120ms" }}
+                    >
+                      {previewDishes.map((dish, i) => (
+                        <Link
+                          key={dish.dishName}
+                          to={`/recipe/${toSlug(dish.dishName)}`}
+                          className={`block transition-transform duration-200 hover:-translate-y-0.5 ${
+                            i % 2 === 0 ? "rotate-1" : "-rotate-1"
+                          } hover:rotate-0`}
+                        >
+                          <div className="relative">
+                            <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
+                              {dish.image ? (
+                                <LocalLoadingImage src={dish.image} />
+                              ) : (
+                                <div className="h-28 w-full rounded-[2px] bg-orange-100/10 sm:h-32" />
+                              )}
+                            </div>
+                          </div>
+                          <div className="mt-2 px-1">
+                            <span className="block font-serif font-semibold text-stone-100">{dish.dishName}</span>
+                            <span className="block text-xs text-stone-400">{dish.description}</span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+
+                    {extraDishes.length > 0 && (
+                      <div
+                        className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        style={{ gridTemplateRows: showAllDishes ? "1fr" : "0fr" }}
                       >
-                        <div className="relative">
-                          <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
-                            {dish.image ? (
-                              <LocalLoadingImage src={dish.image} />
-                            ) : (
-                              <div className="h-28 w-full rounded-[2px] bg-orange-100/10 sm:h-32" />
-                            )}
+                        <div className="overflow-hidden">
+                          <div className="mt-7 grid grid-cols-2 gap-x-4 gap-y-7">
+                            {extraDishes.map((dish, i) => (
+                              <Link
+                                key={dish.dishName}
+                                to={`/recipe/${toSlug(dish.dishName)}`}
+                                className={`block transition-all duration-300 ease-out hover:-translate-y-0.5 hover:rotate-0 ${
+                                  (previewDishes.length + i) % 2 === 0 ? "rotate-1" : "-rotate-1"
+                                } ${
+                                  showAllDishes
+                                    ? "translate-y-0 opacity-100"
+                                    : "-translate-y-2 opacity-0"
+                                }`}
+                                style={{
+                                  transitionDelay: showAllDishes ? `${i * 45}ms` : "0ms",
+                                }}
+                              >
+                                <div className="relative">
+                                  <div className="overflow-hidden rounded-lg border border-stone-700/70 bg-stone-900 p-1.5 shadow-md">
+                                    {dish.image ? (
+                                      <LocalLoadingImage src={dish.image} />
+                                    ) : (
+                                      <div className="h-28 w-full rounded-[2px] bg-orange-100/10 sm:h-32" />
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="mt-2 px-1">
+                                  <span className="block font-serif font-semibold text-stone-100">{dish.dishName}</span>
+                                  <span className="block text-xs text-stone-400">{dish.description}</span>
+                                </div>
+                              </Link>
+                            ))}
                           </div>
                         </div>
-                        <div className="mt-2 px-1">
-                          <span className="block font-serif font-semibold text-stone-100">{dish.dishName}</span>
-                          <span className="block text-xs text-stone-400">{dish.description}</span>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
@@ -578,16 +765,27 @@ useEffect(() => {
                       onClick={() => setShowAllDishes((v) => !v)}
                       className={`${footerButton} w-full sm:w-auto`}
                     >
-                      {showAllDishes
-                        ? "Show less"
-                        : `More from ${selectedRegion.name} (${remainingCount}+)`}
+                      {showAllDishes ? "Show less" : `More from ${selectedRegion.name} (${remainingCount}+)`}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className={`cook-chevron h-4 w-4 ${showAllDishes ? "cook-chevron-open" : ""}`}
+                        aria-hidden="true"
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
                     </button>
                   ) : (
                     <span />
                   )}
                   <button
                     type="button"
-                    onClick={() => navigate("/cook-like-a-local")}
+                    onClick={handleBackToAll}
                     className={ghostButton}
                   >
                     <span aria-hidden="true">←</span> All destinations
