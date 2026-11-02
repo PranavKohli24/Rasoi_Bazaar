@@ -433,8 +433,7 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
   </div>
 </div>
 
-<Link
-  to="/cook-like-a-local"
+<div
   className="group relative mt-4 flex overflow-hidden rounded-2xl border border-stone-700/70 bg-stone-900"
 >
   {/* Image panel — left side, not a backdrop wash this time */}
@@ -458,11 +457,14 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
       Find regional dishes you can cook or explore to places you are visiting
     </p>
 
-    <span className="mt-5 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 group-hover:bg-orange-100 group-active:scale-95">
+    <Link
+      to="/cook-like-a-local"
+      className="mt-5 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+    >
       Explore by state
-    </span>
+    </Link>
   </div>
-</Link>
+</div>
                   </div>
                 </div>
               </div>
