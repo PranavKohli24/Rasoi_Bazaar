@@ -67,6 +67,7 @@ export const INDIA_REGIONS: IndiaRegion[] = [
     slug: "dadra-nagar-haveli-daman-diu",
     code: "DD",
     cities: ["Daman", "Diu", "Silvassa"],
+    coverImage: "/regions/damandiu.png",
   },
   {
     name: "Delhi",
@@ -143,6 +144,7 @@ export const INDIA_REGIONS: IndiaRegion[] = [
     slug: "lakshadweep",
     code: "LD",
     cities: ["Kavaratti"],
+    coverImage: "/regions/lakshadweep.png",
   },
   {
     name: "Maharashtra",
