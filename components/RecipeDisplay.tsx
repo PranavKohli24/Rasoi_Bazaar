@@ -208,6 +208,7 @@ const ZOOM_MIN = 1;
 const ZOOM_MAX = 3.5;
 const DOUBLE_TAP_MS = 280;
 const DOUBLE_TAP_SCALE = 2.2;
+const ZOOM_IDLE_TIMEOUT_MS = 10_000;
 
 const ZoomableDishImage: React.FC<{
   src: string;
@@ -237,8 +238,9 @@ const ZoomableDishImage: React.FC<{
 
   const lastTap = useRef(0);
   const moved = useRef(false);
-  const [settling, setSettling] = useState(false);
-  const tapTimer = useRef<number | null>(null);
+const [settling, setSettling] = useState(false);
+const tapTimer = useRef<number | null>(null);
+const [interactionTick, setInteractionTick] = useState(0);
 
   const clamp = (scale: number, x: number, y: number) => {
     const el = containerRef.current;
@@ -257,9 +259,22 @@ const ZoomableDishImage: React.FC<{
     setZoom({ scale: 1, x: 0, y: 0 });
   };
 
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    moved.current = false;
-    setSettling(false);
+  // Automatically zoom out after 10 seconds without interaction.
+useEffect(() => {
+  if (zoom.scale <= 1.02 || gesture.current !== null) return;
+
+  const timeoutId = window.setTimeout(() => {
+    setSettling(true);
+    setZoom({ scale: 1, x: 0, y: 0 });
+  }, ZOOM_IDLE_TIMEOUT_MS);
+
+  return () => window.clearTimeout(timeoutId);
+}, [zoom.scale, zoom.x, zoom.y, interactionTick]);
+
+ const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+  setInteractionTick((v) => v + 1);
+  moved.current = false;
+  setSettling(false);
 
     if (e.touches.length === 2) {
       const [a, b] = [e.touches[0], e.touches[1]];
@@ -345,6 +360,7 @@ const ZoomableDishImage: React.FC<{
     if (e.touches.length !== 0) return;
 
     gesture.current = null;
+    setInteractionTick((v) => v + 1);
 
     if (moved.current) return;
 
@@ -402,6 +418,7 @@ const ZoomableDishImage: React.FC<{
       onTouchEnd={handleTouchEnd}
       onTouchCancel={() => {
         gesture.current = null;
+        setInteractionTick((v) => v + 1);
         if (zoomRef.current.scale <= 1.02) resetZoom();
       }}
     >
