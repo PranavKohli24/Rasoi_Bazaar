@@ -51,6 +51,8 @@ const tileCard =
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         onLoad={() => setIsLoaded(true)}
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
           isLoaded ? "opacity-100" : "opacity-0"
@@ -70,8 +72,91 @@ const CookLikeLocalPage: React.FC = () => {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const suggestionsListRef = useRef<HTMLUListElement>(null);
+const suggestionsListRef = useRef<HTMLUListElement>(null);
+
+// Cache preloaded region images to avoid duplicate requests.
+const preloadedRegionImages = useRef(
+  new Map<string, HTMLImageElement>()
+);
   const selectedRegion = stateSlug ? findRegionBySlug(stateSlug) : undefined;
+
+// Gradually preload all region cover images in the background.
+useEffect(() => {
+  // Don't compete with the selected region or images
+  // currently being displayed in the expanded grid.
+  if (selectedRegion || showAllRegions) return;
+
+  const popularImageUrls = new Set(
+  POPULAR_REGIONS
+    .map((region) => region.coverImage)
+    .filter((url): url is string => Boolean(url))
+);
+
+const imageUrls = [
+  ...new Set(
+    INDIA_REGIONS
+      .map((region) => region.coverImage)
+      .filter(
+        (url): url is string =>
+          typeof url === "string" &&
+          url.length > 0 &&
+          !popularImageUrls.has(url)
+      )
+  ),
+];
+
+  let cancelled = false;
+  let nextIndex = 0;
+  let activeRequests = 0;
+
+  const loadNext = () => {
+    if (cancelled) return;
+
+    while (activeRequests < 2 && nextIndex < imageUrls.length) {
+      const imageUrl = imageUrls[nextIndex++];
+
+      // Skip images already being loaded or cached.
+      if (preloadedRegionImages.current.has(imageUrl)) {
+        continue;
+      }
+
+      const image = new window.Image();
+
+      image.decoding = "async";
+      image.setAttribute("fetchpriority", "low");
+
+      activeRequests++;
+
+      preloadedRegionImages.current.set(imageUrl, image);
+
+      const finish = () => {
+        activeRequests--;
+
+        if (!cancelled) {
+          loadNext();
+        }
+      };
+
+      image.onload = finish;
+
+      image.onerror = () => {
+        preloadedRegionImages.current.delete(imageUrl);
+        finish();
+      };
+
+      image.src = imageUrl;
+    }
+  };
+
+  // Give initially visible content time to load first.
+  const timer = window.setTimeout(loadNext, 1000);
+
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timer);
+  };
+}, [selectedRegion, showAllRegions]);
+
   const dishes = useMemo(
     () => (selectedRegion ? getDishesByState(selectedRegion.name) : []),
     [selectedRegion]
@@ -83,6 +168,46 @@ const CookLikeLocalPage: React.FC = () => {
     setShowAllDishes(false);
   }, [selectedRegion]);
   const suggestions = useMemo(() => searchRegions(query), [query]);
+
+// Preload images for matching regions as the user searches.
+useEffect(() => {
+  const searchQuery = query.trim();
+
+  // Wait until the user has typed at least 3 characters.
+  if (searchQuery.length < 3 || suggestions.length === 0) {
+    return;
+  }
+
+  // Small debounce to avoid unnecessary requests while typing.
+  const timeoutId = window.setTimeout(() => {
+    suggestions.slice(0, 3).forEach((region) => {
+      const imageUrl = region.coverImage;
+
+      if (!imageUrl) return;
+
+      const existingImage = preloadedRegionImages.current.get(imageUrl);
+
+      if (existingImage) {
+        existingImage.fetchPriority = "high";
+        return;
+      }
+
+      const image = new window.Image();
+      image.decoding = "async";
+      image.fetchPriority = "high";
+
+      image.onerror = () => {
+        preloadedRegionImages.current.delete(imageUrl);
+      };
+
+      image.src = imageUrl;
+
+      preloadedRegionImages.current.set(imageUrl, image);
+    });
+  }, 120);
+
+  return () => window.clearTimeout(timeoutId);
+}, [query, suggestions]);
 
   useEffect(() => {
     document.title = selectedRegion
