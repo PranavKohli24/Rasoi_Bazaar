@@ -435,21 +435,33 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
 
 <Link
   to="/cook-like-a-local"
-  className="mt-4 flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-900 px-5 py-4 hover:border-orange-400/60"
+  className="group relative mt-4 flex overflow-hidden rounded-2xl border border-stone-700/70 bg-stone-900"
 >
-  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100/15 text-orange-200">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5" aria-hidden="true">
-      <path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11Z" />
-      <circle cx="12" cy="10" r="2.5" />
-    </svg>
-  </span>
-  <span className="flex-1">
-    <span className="block font-serif text-base font-semibold text-stone-100">Cook like a local</span>
-    <span className="block text-sm text-stone-400">Discover regional dishes from places you're visiting</span>
-  </span>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0 text-stone-500" aria-hidden="true">
-    <path d="m9 18 6-6-6-6" />
-  </svg>
+  {/* Image panel — left side, not a backdrop wash this time */}
+  <div className="relative w-[38%] shrink-0 overflow-hidden sm:w-[34%]">
+    <img
+      src="/cooklikelocal_cover.png"
+      alt=""
+      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      draggable={false}
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-stone-900/40" />
+  </div>
+
+  {/* Content panel — right side */}
+  <div className="relative flex min-w-0 flex-1 flex-col justify-center px-5 py-6 sm:px-8 sm:py-7">
+    <h2 className="font-serif text-xl font-semibold leading-tight text-orange-50 sm:text-2xl">
+      Cook like a local
+    </h2>
+
+    <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
+      Find regional dishes you can cook or explore to places you are visiting
+    </p>
+
+    <span className="mt-5 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 group-hover:bg-orange-100 group-active:scale-95">
+      Explore by state
+    </span>
+  </div>
 </Link>
                   </div>
                 </div>
