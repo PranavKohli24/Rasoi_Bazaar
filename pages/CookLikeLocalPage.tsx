@@ -365,22 +365,59 @@ const CookLikeLocalPage: React.FC = () => {
               </>
             ) : (
               <>
-                <div className="flex items-stretch gap-4 rounded-2xl border border-stone-700 bg-stone-950 p-4 sm:p-5">
-                  <div className="w-24 shrink-0 sm:w-28">
-                    <IndiaMap variant="compact" selectedSlug={selectedRegion.slug} />
+                
+                <div className="relative isolate grid min-h-[210px] grid-cols-[36%_1px_minmax(0,1fr)] overflow-hidden rounded-2xl border border-orange-100 bg-[#fffaf4] shadow-[0_8px_30px_rgba(120,70,30,0.07)] sm:min-h-[250px] sm:grid-cols-[40%_1px_minmax(0,1fr)]">
+
+                  {/* India map */}
+                  <div className="relative z-10 flex items-center justify-center p-2 sm:p-5">
+                    <div className="w-full">
+                      <IndiaMap
+                        variant="compact"
+                        selectedSlug={selectedRegion.slug}
+                      />
+                    </div>
                   </div>
-                  <div className="flex-1 pt-1">
-                    <span className="inline-block rounded-full bg-orange-400/15 px-2.5 py-0.5 text-xs font-semibold text-orange-200">
-                      Selected region
-                    </span>
-                    <h3 className="mt-1.5 font-serif text-2xl font-black text-orange-50">
+
+                  {/* Vertical divider */}
+                  <div className="my-8 bg-orange-200/80" />
+
+                  {/* Region information */}
+                  <div className="relative flex min-w-0 flex-col justify-between overflow-hidden p-4 sm:p-7">
+
+                    {/* Cover image */}
+                    {selectedRegion.coverImage && (
+                      <div
+                        className="pointer-events-none absolute right-0 top-0 h-[78%] w-[90%]"
+                        style={{
+                          clipPath: "ellipse(88% 82% at 88% 12%)",
+                        }}
+                      >
+                        <img
+                          src={selectedRegion.coverImage}
+                          alt=""
+                          aria-hidden="true"
+                          className="h-full w-full object-cover"
+                        />
+
+                        {/* Soft image blending */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#fffaf4] via-[#fffaf4]/35 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#fffaf4] via-transparent to-transparent" />
+                      </div>
+                    )}
+
+                    {/* Region name */}
+                    <h3 className="relative z-10 mt-8 font-serif text-2xl font-black tracking-tight text-stone-950 sm:mt-12 sm:text-4xl">
                       {selectedRegion.name}
                     </h3>
-                    <p className="mt-1.5 text-sm text-stone-400">
+
+                    {/* Cities */}
+                    <p className="relative z-10 mt-auto pt-6 text-xs leading-relaxed text-stone-700 sm:text-base">
                       {selectedRegion.cities.join(" · ")}
                     </p>
+
                   </div>
                 </div>
+
 
                 <h3 className="mt-8 font-serif text-xl font-bold text-orange-50">
                   Popular dishes from {selectedRegion.name}
