@@ -366,10 +366,10 @@ const CookLikeLocalPage: React.FC = () => {
             ) : (
               <>
                 
-                <div className="relative isolate grid min-h-[210px] grid-cols-[40%_minmax(0,1fr)] overflow-hidden rounded-2xl border border-orange-100 bg-[#fffaf4] shadow-[0_8px_30px_rgba(120,70,30,0.07)] sm:min-h-[250px] sm:grid-cols-[42%_minmax(0,1fr)]">
+              <div className="relative isolate grid min-h-[145px] grid-cols-[40%_minmax(0,1fr)] overflow-hidden rounded-2xl border border-[#F3EBDD] bg-[#fffaf4] shadow-[0_8px_30px_rgba(120,70,30,0.07)] sm:min-h-[175px] sm:grid-cols-[42%_minmax(0,1fr)]">
 
   {/* India map */}
-  <div className="relative z-10 flex items-center justify-center p-2 sm:p-5">
+  <div className="relative z-10 flex items-start justify-center px-2 pt-2 sm:px-5 sm:pt-3">
     <div className="w-full">
       <IndiaMap
         variant="compact"
@@ -403,7 +403,7 @@ const CookLikeLocalPage: React.FC = () => {
                     )}
 
                     {/* Region name */}
-                    <h3 className="relative z-10 mt-8 font-serif text-2xl font-black tracking-tight text-black sm:mt-12 sm:text-4xl">
+                    <h3 className="relative z-10 mt-0 font-serif text-2xl font-black tracking-tight text-black sm:text-4xl">
                       {selectedRegion.name}
                     </h3>
 
