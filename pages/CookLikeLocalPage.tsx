@@ -403,7 +403,7 @@ const CookLikeLocalPage: React.FC = () => {
                     )}
 
                     {/* Region name */}
-                    <h3 className="relative z-10 mt-6 font-serif text-xl font-black tracking-tight text-black sm:mt-8 sm:text-3xl">
+                    <h3 className="relative z-10 mt-14 font-serif text-xl font-black tracking-tight text-black sm:mt-16 sm:text-3xl">
                       {selectedRegion.name}
                     </h3>
 
