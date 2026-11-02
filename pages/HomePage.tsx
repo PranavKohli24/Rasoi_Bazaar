@@ -433,38 +433,39 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
   </div>
 </div>
 
-<div
-  className="group relative mt-4 flex overflow-hidden rounded-2xl border border-stone-700/70 bg-stone-900"
->
-  {/* Image panel — left side, not a backdrop wash this time */}
-  <div className="relative w-[38%] shrink-0 overflow-hidden sm:w-[34%]">
-    <img
-      src="/cooklikelocal_cover.png"
-      alt=""
-      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      draggable={false}
-    />
-    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-stone-900/40" />
-  </div>
 
-  {/* Content panel — right side */}
-  <div className="relative flex min-w-0 flex-1 flex-col justify-center px-5 py-6 sm:px-8 sm:py-7">
-    <h2 className="font-serif text-xl font-semibold leading-tight text-orange-50 sm:text-2xl">
+<div className="group relative mt-4 overflow-hidden rounded-2xl border border-stone-700/70 bg-stone-900">
+  {/* Background image wash */}
+  <img
+    src="/cooklikelocal_cover.png"
+    alt=""
+    className="absolute inset-0 h-full w-full object-cover opacity-[0.35] transition-transform duration-700 ease-out group-hover:scale-105"
+    draggable={false}
+  />
+
+  {/* Blend image into the content */}
+  <div className="absolute inset-0 bg-gradient-to-r from-stone-900/35 via-stone-900/75 to-stone-900/95" />
+  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent" />
+
+  {/* Content */}
+  <div className="relative ml-auto w-full px-6 py-8 sm:max-w-md sm:px-9 sm:py-10">
+    <h2 className="font-serif text-2xl font-semibold leading-tight text-orange-50 sm:text-[1.7rem]">
       Cook like a local
     </h2>
 
-    <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
+    <p className="mt-2.5 text-sm leading-relaxed text-stone-300 sm:text-base">
       Find regional dishes you can cook or explore to places you are visiting
     </p>
 
     <Link
       to="/cook-like-a-local"
-      className="mt-5 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
+      className="mt-6 inline-flex w-fit select-none items-center justify-center rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-orange-100 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-900"
     >
       Explore by state
     </Link>
   </div>
 </div>
+
                   </div>
                 </div>
               </div>
