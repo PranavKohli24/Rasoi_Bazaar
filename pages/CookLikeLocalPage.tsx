@@ -397,13 +397,13 @@ const CookLikeLocalPage: React.FC = () => {
                         />
 
                         {/* Soft image blending */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#fffaf4] via-[#fffaf4]/35 to-transparent" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#fffaf4] via-transparent to-transparent" />
+                        {/* Subtle bottom fade only */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#fffaf4]/70 via-transparent to-transparent" />
                       </div>
                     )}
 
                     {/* Region name */}
-                    <h3 className="relative z-10 mt-0 font-serif text-2xl font-black tracking-tight text-black sm:text-4xl">
+                    <h3 className="relative z-10 mt-6 font-serif text-xl font-black tracking-tight text-black sm:mt-8 sm:text-3xl">
                       {selectedRegion.name}
                     </h3>
 
