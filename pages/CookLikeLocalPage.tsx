@@ -322,7 +322,7 @@ const CookLikeLocalPage: React.FC = () => {
       setLocationError("Location isn't available on this device.");
       return;
     }
-
+ 
     const origin = originFromEvent(e);
 
     setLocating(true);
