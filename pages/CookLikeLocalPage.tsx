@@ -499,6 +499,7 @@ const CookLikeLocalPage: React.FC = () => {
             className={`mx-auto max-w-3xl px-5 pb-8 pt-4 sm:px-12 sm:pb-10 sm:pt-6 cook-zoom-content ${transitionClass}`}
           >
             {!selectedRegion && (
+              <div className="sticky top-2 z-30 -mx-5 bg-stone-900/95 px-5 pb-3 pt-1 backdrop-blur-sm sm:-mx-12 sm:px-12">
               <form onSubmit={handleSearchSubmit} className="relative">
                 <div className="overflow-hidden rounded-xl border border-stone-700 bg-stone-950">
                   <div className="flex h-[52px] items-center gap-3 px-4">
@@ -542,7 +543,7 @@ const CookLikeLocalPage: React.FC = () => {
                 {suggestions.length > 0 && (
                   <ul
                     ref={suggestionsListRef}
-                    className={`absolute left-0 right-0 z-20 max-h-64 overflow-auto border-stone-700 bg-stone-900 shadow-lg ${
+                    className={`absolute left-0 right-0 z-40 max-h-64 overflow-auto border-stone-700 bg-stone-900 shadow-lg ${
                       dropUp
                         ? "bottom-full mb-1 rounded-xl border"
                         : "top-[53px] rounded-b-xl border-x border-b"
@@ -570,6 +571,7 @@ const CookLikeLocalPage: React.FC = () => {
                   </p>
                 )}
               </form>
+              </div>
             )}
 
             {!selectedRegion ? (
