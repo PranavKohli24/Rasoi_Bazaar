@@ -665,7 +665,7 @@ const CookLikeLocalPage: React.FC = () => {
                     )}
 
                     {/* Region name */}
-                    <h3 className="relative z-10 mt-auto font-serif text-lg font-black tracking-tight text-black sm:text-2xl">
+                    <h3 className="relative z-10 mt-auto font-serif text-lg font-black tracking-tight text-orange-500 sm:text-2xl">
                       {selectedRegion.name}
                     </h3>
 
@@ -678,7 +678,7 @@ const CookLikeLocalPage: React.FC = () => {
                   className="cook-card-rise mt-6 font-serif text-base font-semibold tracking-tight text-stone-300 sm:text-lg"
                   style={{ animationDelay: "80ms" }}
                 >
-                  Popular dishes from <span className="text-orange-100">{selectedRegion.name}</span>
+                  Popular dishes
                 </h3>
                 {dishes.length === 0 ? (
                   <p className="mt-4 text-sm text-stone-400">
