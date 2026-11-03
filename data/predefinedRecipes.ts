@@ -55945,6 +55945,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khichu": {
     dishName: "Khichu (Gujarati Steamed Rice Flour Dough)",
+    "image": "/dishes/khichu.webp",
     "state" : "Gujarat",
     description: "A soft, savoury Gujarati snack made by cooking rice flour with cumin, chilli and water.",
     prepTime: "Approx. 20 minutes",
@@ -56417,6 +56418,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sepu badi": {
   "dishName": "Sepu Badi (Himachali Lentil Dumpling Curry)",
+  "image": "/dishes/sepu-badi.webp",
    "state" : "Himachal Pradesh",
   "description": "Spiced sun-dried lentil dumplings cooked in a simple spinach-tomato gravy.",
   "prepTime": "Approx. 50 minutes",
@@ -56444,6 +56446,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "babru": {
   "dishName": "Babru (Himachali Stuffed Bread)",
+  "image": "/dishes/babru.webp",
    "state" : "Himachal Pradesh",
   "description": "A Himachali deep-fried bread stuffed with spiced black gram, similar to kachori.",
   "prepTime": "Approx. 1 hour (plus soaking)",
@@ -56469,6 +56472,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "khatta chana": {
   "dishName": "Khatta Chana (Himachali Tangy Chickpeas)",
+  "image": "/dishes/chana-masala.webp",
    "state" : "Himachal Pradesh",
   "description": "A tangy Himachali chickpea curry flavoured with amchur and simple spices.",
   "prepTime": "Approx. 40 minutes (using boiled chickpeas)",
@@ -56495,6 +56499,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "tudkiya bhath": {
   "dishName": "Tudkiya Bhath (Himachali Spiced Rice)",
+  "image": "/dishes/tudkiya-bath.webp",
   "state" : "Himachal Pradesh",
   "description": "A Himachali one-pot spiced rice with vegetables and lentils, similar to khichdi.",
   "prepTime": "Approx. 40 minutes",
@@ -56521,6 +56526,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "aloo palda": {
   "dishName": "Aloo Palda (Himachali Yogurt Potato Curry)",
+  "image": "/dishes/aloo-palda.webp",
   "state" : "Himachal Pradesh",
   "description": "A simple Himachali potato curry in a light yogurt and gram flour gravy.",
   "prepTime": "Approx. 30 minutes",
@@ -56569,6 +56575,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "patande": {
   "dishName": "Patande (Himachali Sweet Pancakes)",
+  "image": "/dishes/patande.webp",
   "state" : "Himachal Pradesh",
   "description": "Soft wheat flour pancakes sweetened lightly, a simple Himachali breakfast.",
   "prepTime": "Approx. 25 minutes",
@@ -56591,6 +56598,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "phaanu": {
   "dishName": "Phaanu (Himachali Mixed Lentils)",
+  "image": "/dishes/phaanu.webp",
   "state" : "Himachal Pradesh",
   "description": "A hearty Himachali dal made from a mix of soaked lentils cooked until soft.",
   "prepTime": "Approx. 45 minutes (plus soaking)",
@@ -59047,6 +59055,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muthiya": {
   "dishName": "Muthiya (Gujarati Steamed Dumplings)",
+  "image": "/dishes/muthiya.webp",
   "state" : "Gujarat",
   "description": "Steamed and pan-fried savoury dumplings made from wheat flour and bottle gourd.",
   "prepTime": "Approx. 40 minutes",
