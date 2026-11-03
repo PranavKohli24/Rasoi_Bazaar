@@ -309,10 +309,26 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
     </g>
 
     {/* Face */}
-    <circle cx="32" cy="38" r="19" fill="#F2A66B" />
+    <defs>
+      <radialGradient id="companionFaceGradient" cx="38%" cy="32%" r="75%">
+        <stop offset="0%" stopColor="#F6B57E" />
+        <stop offset="100%" stopColor="#EE9C5C" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="38" r="19" fill="url(#companionFaceGradient)" stroke="#D8824A" strokeWidth="0.75" />
+
+    {/* Blush, a little warmth on the cheeks */}
+    <ellipse cx="20.5" cy="42" rx="3.2" ry="2" fill="#E8704A" opacity="0.28" />
+    <ellipse cx="43.5" cy="42" rx="3.2" ry="2" fill="#E8704A" opacity="0.28" />
+
     <g className="companion-blink" style={{ transformOrigin: "32px 35px" }}>
-      <circle cx="25" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
-      <circle cx="39" cy="35" r={mood === "listening" ? 3 : 2.5} fill="#5C4A38" />
+      {[25, 39].map((cx) => (
+        <g key={cx}>
+          <circle cx={cx} cy="35" r={mood === "listening" ? 3.2 : 2.7} fill="#4A3524" />
+          <circle cx={cx} cy="35" r={mood === "listening" ? 3.2 : 2.7} fill="none" stroke="#2E2013" strokeWidth="0.4" />
+          <circle cx={cx - 0.8} cy={33.8} r="0.9" fill="#FFFFFF" opacity="0.9" />
+        </g>
+      ))}
     </g>
 
     {mood === "talking" && (
