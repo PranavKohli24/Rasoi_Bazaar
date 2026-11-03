@@ -227,7 +227,11 @@ const CookLikeLocalPage: React.FC = () => {
   const remainingCount = extraDishes.length;
 
   useEffect(() => {
-    setShowAllDishes(false);
+    if (!selectedRegion) return;
+    const key = `cookLocalExpanded:${selectedRegion.slug}`;
+    const shouldExpand = sessionStorage.getItem(key) === "1";
+    sessionStorage.removeItem(key); // one-shot: only applies right after a dish tap
+    setShowAllDishes(shouldExpand);
   }, [selectedRegion]);
   // Local matches are instant (hardcoded city lists). When those come up
   // short, we debounce a real geocoding lookup so typing any actual city or
@@ -743,6 +747,14 @@ const CookLikeLocalPage: React.FC = () => {
                         <Link
                           key={dish.dishName}
                           to={`/recipe/${toSlug(dish.dishName)}`}
+                          onClick={() => {
+                            if (showAllDishes && selectedRegion) {
+                              sessionStorage.setItem(
+                                `cookLocalExpanded:${selectedRegion.slug}`,
+                                "1"
+                              );
+                            }
+                          }}
                           className={`block transition-transform duration-200 hover:-translate-y-0.5 ${
                             i % 2 === 0 ? "rotate-1" : "-rotate-1"
                           } hover:rotate-0`}
@@ -775,6 +787,14 @@ const CookLikeLocalPage: React.FC = () => {
                               <Link
                                 key={dish.dishName}
                                 to={`/recipe/${toSlug(dish.dishName)}`}
+                                onClick={() => {
+                                  if (showAllDishes && selectedRegion) {
+                                    sessionStorage.setItem(
+                                      `cookLocalExpanded:${selectedRegion.slug}`,
+                                      "1"
+                                    );
+                                  }
+                                }}
                                 className={`block transition-all duration-300 ease-out hover:-translate-y-0.5 hover:rotate-0 ${
                                   (previewDishes.length + i) % 2 === 0 ? "rotate-1" : "-rotate-1"
                                 } ${
