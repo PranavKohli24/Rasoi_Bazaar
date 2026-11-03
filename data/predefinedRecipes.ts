@@ -5399,6 +5399,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "pav bhaji": {
     "dishName": "Pav Bhaji",
     "image": "/dishes/pav-bhaji.webp",
+    "state" : "Maharashtra",
     "description": "Buttery, spicy mashed vegetable curry served with toasted pav.",
     "prepTime": "Approx. 45 minutes",
     "equipment": [
