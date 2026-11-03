@@ -2369,6 +2369,14 @@ const handleCancelDish = (messageIndex: number) => {
 
       {isOpen && (
         <div
+          aria-hidden="true"
+          onClick={closeCompanion}
+          className="companion-backdrop fixed inset-0 z-[65] bg-black/25"
+        />
+      )}
+
+      {isOpen && (
+        <div
           ref={panelRef}
           role="dialog"
           aria-label="Cooking companion"
@@ -2828,6 +2836,14 @@ const handleCancelDish = (messageIndex: number) => {
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        .companion-backdrop {
+          animation: companion-backdrop-in 0.42s ease-out both;
+        }
+        @keyframes companion-backdrop-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
         .companion-blink {
           animation: companion-blink 4s ease-in-out infinite;
         }
@@ -2912,11 +2928,11 @@ const handleCancelDish = (messageIndex: number) => {
         }
 
         .companion-panel-enter {
-          animation: companion-panel-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+          animation: companion-panel-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         @keyframes companion-panel-in {
-          from { transform: translateY(16px); opacity: 0.6; }
-          to { transform: translateY(0); opacity: 1; }
+          from { transform: translateY(28px) scale(0.98); opacity: 0; }
+          to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
         /* Mic <-> Send crossfade, same technique as the digital-twin chat:
@@ -3001,6 +3017,7 @@ const handleCancelDish = (messageIndex: number) => {
         }
 
         @media (prefers-reduced-motion: reduce) {
+          .companion-backdrop,
           .companion-blink,
           .companion-spoon.is-stirring,
           .companion-talk,

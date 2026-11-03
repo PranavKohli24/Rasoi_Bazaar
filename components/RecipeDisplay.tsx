@@ -1482,13 +1482,13 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ recipe, onFinishCooking }
   // to a good start"), later indexes land every 5 minutes after (a steady
   // "still with you").
   const CHECK_IN_LINES_FIRST = [
-    "Off to a good start — I'll keep an eye on the time for you.",
+    "Off to a good start - I'll keep an eye on the time for you.",
     "Looking good so far. I've got the clock, I will remind you once its done",
   ];
   const CHECK_IN_LINES_LATER = [
-    "Still going strong in there — I'll let you know when it's ready.",
+    "Still going strong in there - I'll let you know when it's ready.",
     "Simmering away nicely. Hang tight, not long now.",
-    "No rush — good things take their time. I've got an eye on the clock.",
+    "No rush - good things take their time. I've got an eye on the clock.",
   ];
 
   // keeps the screen awake while actively cooking; browsers vary in support,
