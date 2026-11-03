@@ -654,22 +654,6 @@ const CookLikeLocalPage: React.FC = () => {
                       className="absolute -top-1.5 left-6 h-3 w-3 rotate-45 border-l border-t border-stone-700 bg-stone-800"
                     />
                     <div className="flex items-start gap-2.5">
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="h-3 w-3"
-                          aria-hidden="true"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <path d="M12 8v4M12 16h.01" />
-                        </svg>
-                      </span>
                       <p className="flex-1 text-xs leading-relaxed text-stone-200">
                         {locationError}
                       </p>
