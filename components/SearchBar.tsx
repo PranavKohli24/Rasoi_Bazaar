@@ -306,7 +306,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                 aria-hidden="true"
                 className={`pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre pl-11 text-sm text-stone-500 transition-opacity ease-out sm:pl-12 sm:text-lg ${
                   showCamera ? 'pr-12 sm:pr-14' : 'pr-3 sm:pr-4'
-                } ${searchTerm ? 'duration-300 opacity-0' : 'duration-700 opacity-100'}`}
+                } ${searchTerm ? 'duration-300 opacity-0' : 'duration-1000 opacity-100'}`}
               >
                 {placeholderText}
               </div>
