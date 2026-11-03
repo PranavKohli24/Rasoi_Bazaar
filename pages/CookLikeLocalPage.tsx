@@ -607,7 +607,7 @@ const CookLikeLocalPage: React.FC = () => {
                         </button>
                       </li>
                     ))}
-                    {isSearchingRemote && !dropUp && (
+                    {isSearchingRemote && (
                       <li className="px-4 py-2.5 text-xs text-stone-500">Searching...</li>
                     )}
                   </ul>
