@@ -2485,7 +2485,7 @@ const handleCancelDish = (messageIndex: number) => {
                   }`}
                   style={{
                     background:
-                      "linear-gradient(to right, #F8F3E8 0%, rgba(248,243,232,0.6) 55%, rgba(248,243,232,0) 100%)",
+                      "linear-gradient(to right, #F6D9A8 0%, rgba(246,217,168,0.6) 55%, rgba(246,217,168,0) 100%)",
                     maskImage: "linear-gradient(to right, black 0%, transparent 100%)",
                     WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 100%)",
                   }}
@@ -2497,7 +2497,7 @@ const handleCancelDish = (messageIndex: number) => {
                   }`}
                   style={{
                     background:
-                      "linear-gradient(to left, #F8F3E8 0%, rgba(248,243,232,0.6) 55%, rgba(248,243,232,0) 100%)",
+                      "linear-gradient(to left, #F6D9A8 0%, rgba(246,217,168,0.6) 55%, rgba(246,217,168,0) 100%)",
                     maskImage: "linear-gradient(to left, black 0%, transparent 100%)",
                     WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 100%)",
                   }}
