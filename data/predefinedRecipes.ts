@@ -55911,6 +55911,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kothimbir vadi": {
     dishName: "Kothimbir Vadi (Maharashtrian Coriander Cakes)",
+    "image": "/dishes/kothimbir-vadi.webp",
     "state" : "Maharashtra",
     description: "Coriander and gram flour cakes that are steamed, sliced and lightly fried until crisp.",
     prepTime: "Approx. 45 minutes",
@@ -56811,6 +56812,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "singri ki sabzi": {
   "dishName": "Singri Ki Sabzi (Rajasthani Dried Bean Curry)",
+   "image": "/dishes/singri-sabzi.webp",
   "state" : "Rajasthan",
   "description": "A Rajasthani dry sabzi made with dried sangri beans and simple spices.",
   "prepTime": "Approx. 40 minutes (plus soaking)",
@@ -56859,6 +56861,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "panchmel dal": {
   "dishName": "Panchmel Dal (Rajasthani Five Lentil Dal)",
+   "image": "/dishes/dal-tadka.webp",
   "state" : "Rajasthan",
   "description": "A Rajasthani dal cooked with five kinds of lentils, finished with a ghee tempering.",
   "prepTime": "Approx. 45 minutes (plus soaking)",
@@ -58218,6 +58221,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "vangyache bharit": {
   "dishName": "Vangyache Bharit (Maharashtrian Roasted Eggplant Mash)",
+  "image": "/dishes/vangyache-bharit.webp",
   "state" : "Maharashtra",
   "description": "A Maharashtrian-style roasted eggplant mash with onion, garlic and green chilli.",
   "prepTime": "Approx. 30 minutes",
@@ -58466,6 +58470,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "thalassery biryani": {
   "dishName": "Thalassery Biryani",
+  "image": "/dishes/thalassery-biryani.webp",
   "state" : "Kerala",
   "description": "A fragrant Malabar-style biryani made with short-grain Kaima rice and mild spices.",
   "prepTime": "Approx. 1 hour 15 minutes",
@@ -58494,6 +58499,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "beef fry": {
   "dishName": "Beef Fry (Kerala-style)",
+  "image": "/dishes/beef-fry.webp",
   "state" : "Kerala",
   "description": "A Kerala-style dry beef stir-fry with coconut slices, curry leaves and spices.",
   "prepTime": "Approx. 1 hour",
@@ -58520,6 +58526,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "karimeen pollichathu": {
   "dishName": "Karimeen Pollichathu (Kerala Fish Wrapped in Banana Leaf)",
+  "image": "/dishes/karimeen-pollichathu.webp",
   "state" : "Kerala",
   "description": "Pearl spot fish marinated in spices, wrapped in banana leaf and pan-cooked.",
   "prepTime": "Approx. 40 minutes",
@@ -58545,6 +58552,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "palada pradhaman": {
   "dishName": "Palada Pradhaman",
+  "image": "/dishes/palada-pradhaman.webp",
   "state" : "Kerala",
   "description": "A creamy Kerala rice flake pudding cooked slowly in sweetened milk.",
   "prepTime": "Approx. 1 hour",
@@ -58594,6 +58602,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "keerai masiyal": {
   "dishName": "Keerai Masiyal (Tamil Mashed Greens)",
+  "image": "/dishes/keerai-masiyal.webp",
   "state" : "Tamil Nadu",
   "description": "A simple Tamil dish of mashed boiled greens tempered with garlic and mustard seeds.",
   "prepTime": "Approx. 20 minutes",
@@ -58616,6 +58625,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kara kuzhambu": {
   "dishName": "Kara Kuzhambu (Tamil Tangy Vegetable Curry)",
+  "image": "/dishes/kara-kuzhambu.webp",
   "state" : "Tamil Nadu",
   "description": "A spicy, tangy Tamil curry made with tamarind and a roasted spice powder.",
   "prepTime": "Approx. 35 minutes",
@@ -58640,6 +58650,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "arisi paruppu sadam": {
   "dishName": "Arisi Paruppu Sadam (Rice and Lentil Mash)",
+  "image": "/dishes/arisi-paruppu.webp",
   "state" : "Tamil Nadu",
   "description": "A comforting Tamil one-pot rice and dal dish tempered with ghee.",
   "prepTime": "Approx. 30 minutes",
@@ -58662,6 +58673,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sakkarai pongal": {
   "dishName": "Sakkarai Pongal",
+  "image": "/dishes/sakkarai-pongal.webp",
   "state" : "Tamil Nadu",
   "description": "A sweet South Indian rice and lentil pudding made with jaggery and ghee.",
   "prepTime": "Approx. 35 minutes",
