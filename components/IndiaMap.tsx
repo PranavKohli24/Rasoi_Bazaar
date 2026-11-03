@@ -101,8 +101,6 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
             <path
               d="M12 2.2c-4.2 0-7.6 3.4-7.6 7.6 0 5.2 6.6 10.8 7.3 11.4a.5.5 0 0 0 .6 0c.7-.6 7.3-6.2 7.3-11.4 0-4.2-3.4-7.6-7.6-7.6z"
               fill={`url(#pinGradient-${selectedCode})`}
-              stroke="#FC6C26"
-              strokeWidth="0.9"
             />
             <circle cx="12" cy="9.8" r="3" fill="#FC6C26" />
             <circle cx="12" cy="9.8" r="1.35" fill="#fff" />
