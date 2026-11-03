@@ -2486,6 +2486,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "butter chicken (murgh makhani)": {
     "dishName": "Butter Chicken (Murgh Makhani)",
     "image": "/dishes/butter_chicken.webp",
+    "state" : "Delhi",
     "description": "Tender chicken in a velvety, buttery tomato-cashew gravy.",
     "prepTime": "Approx. 50 minutes (plus 30 min marination)",
     "equipment": [
@@ -4448,6 +4449,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chole bhature": {
     "dishName": "Chole Bhature",
     "image": "/dishes/chole-bathure.webp",
+    "state" : "Delhi",
     "description": "Tangy, spicy chickpea curry with puffy, golden fried bread.",
     "prepTime": "Approx. 1.5 hours (plus overnight soaking and 2 hours dough rest)",
     "equipment": [
@@ -4634,6 +4636,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chole kulche": {
     "dishName": "Chole Kulche",
     "image": "/dishes/chole-kulche.webp",
+    "state" : "Delhi",
     "description": "Spicy, tangy chickpea curry served with soft, tawa-cooked kulchas.",
     "prepTime": "Approx. 1.5 hours (plus overnight soaking and 1 hour dough rest)",
     "equipment": [
@@ -23360,6 +23363,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "khar": {
     dishName: "Assamese Khar",
     "image": "/dishes/khar.webp",
+    "state" : "Assam",
     description: "A gentle Assamese raw-papaya preparation flavored with alkaline khar water and mustard oil.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -32915,6 +32919,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "nihari": {
   "dishName": "Nihari",
   "image": "/dishes/nihari.webp",
+  "state" : "Delhi",
   "description": "Slow-cooked meat stew with a deeply spiced, silky gravy and warming ginger.",
   "prepTime": "Approx. 90 minutes",
   "equipment": [
@@ -39097,6 +39102,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "bedmi puri": {
       "dishName": "Bedmi Puri",
       "image": "/dishes/bedmi-puri.webp",
+      "state" : "Delhi",
       "description": "Crispy North Indian puris made with wheat flour and a spiced urad dal mixture, commonly served with aloo sabzi.",
       "prepTime": "Approx. 1 hour (plus 4 to 5 hours soaking)",
       "equipment": [
@@ -40834,6 +40840,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "masor tenga": {
       "dishName": "Masor Tenga",
       "image": "/dishes/masor-tenga.webp",
+      "state" : "Assam",
       "description": "An Assamese light and tangy fish curry made with tomato, lemon, green chilli and mustard oil.",
       "prepTime": "Approx. 30 minutes",
       "equipment": [
@@ -45519,6 +45526,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "matar kulcha": {
     "dishName": "Matar Kulcha",
     "image": "/dishes/matar-kulcha.webp",
+    "state" : "Delhi",
     "description": "A popular Delhi street food of spiced white peas curry served with soft kulchas, onion and chutney.",
     "prepTime": "Approx. 40 minutes (plus overnight soaking)",
     "equipment": [
@@ -55570,6 +55578,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo pitika": {
     dishName: "Aloo Pitika (Assamese Mashed Potato)",
+    "state" : "Assam",
     description: "A simple Assamese side dish of warm mashed potato, raw mustard oil, onion and green chilli.",
     prepTime: "Approx. 25 minutes",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -57303,6 +57312,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "haah mangxo": {
   "dishName": "Haah Mangxo (Assamese Duck Curry)",
+  "state" : "Assam",
   "description": "An Assamese-style poultry curry cooked with ginger, garlic and simple spices (using chicken as a practical home substitute).",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57326,6 +57336,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "xaak bhaji": {
   "dishName": "Xaak Bhaji (Assamese Greens Stir-fry)",
+  "state" : "Assam",
   "description": "A simple Assamese stir-fry of leafy greens with garlic and mustard oil.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57345,6 +57356,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "poita bhat": {
   "dishName": "Poita Bhat (Assamese Soaked Rice)",
+  "state" : "Assam",
   "description": "A simple refreshing Assamese dish of overnight-soaked cooked rice, eaten with mustard oil and chillies.",
   "prepTime": "Approx. 10 minutes, plus overnight soaking",
   "equipment": [],
@@ -57365,6 +57377,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "til pitha": {
   "dishName": "Til Pitha (Assamese Sesame Rice Rolls)",
+  "state" : "Assam",
   "description": "A traditional Assamese rice flour roll filled with sweet sesame and jaggery.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -57386,6 +57399,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "ghila pitha": {
   "dishName": "Ghila Pitha (Assamese Fried Rice Cakes)",
+  "state" : "Assam",
   "description": "Soft, lightly sweet fried rice flour fritters from Assam.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -59271,7 +59285,228 @@ export const predefinedRecipes: Record<string, Recipe> = {
   ]
 },
 
+"daulat ki chaat": {
+  "dishName": "Daulat Ki Chaat",
+  "image": "/dishes/daulat-ki-chaat.webp",
+  "state" : "Delhi",
+  "description": "A light and creamy Old Delhi sweet made with milk, cream, sugar and a little saffron. It is served cold with nuts.",
+  "prepTime": "Approx. 30 minutes (plus chilling time)",
+  "equipment": [
+    { "item": "gas_stove", "isSpecialized": false, "alternative": null },
+    { "item": "mixer", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "2 cups", "commonName": "Doodh", "englishName": "full-fat milk" },
+    { "amount": "1/2 cup", "commonName": "Malai", "englishName": "fresh cream" },
+    { "amount": "3 tbsp", "commonName": "Cheeni", "englishName": "sugar" },
+    { "amount": "1 pinch", "commonName": "Kesar", "englishName": "saffron" },
+    { "amount": "2 tbsp", "commonName": "Pista", "englishName": "chopped pistachios" },
+    { "amount": "1 tbsp", "commonName": "Badam", "englishName": "chopped almonds" }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Pour the milk into a kadai. Heat it on low flame until it becomes warm. Do not let it boil."
+    },
+    {
+      "step": 2,
+      "instruction": "Add the cream, sugar and saffron. Stir until the sugar dissolves."
+    },
+    {
+      "step": 3,
+      "instruction": "Let the milk mixture cool completely. Keep it in the fridge for at least 2 hours."
+    },
+    {
+      "step": 4,
+      "instruction": "Pour the cold mixture into a mixer jar. Blend in short bursts until a light, foamy layer forms."
+    },
+    {
+      "step": 5,
+      "instruction": "Gently scoop the foam into serving bowls."
+    },
+    {
+      "step": 6,
+      "instruction": "Top with chopped pistachios and almonds. Serve immediately while the foam is light."
+    }
+  ],
+  notes: [
+    "Keep the milk and cream well chilled. This helps create a light, fluffy texture."
+  ]
+},
 
+"ram ladoo": {
+  "dishName": "Ram Ladoo",
+  "image": "/dishes/ram-ladoo.webp",
+  "state" : "Delhi",
+  "description": "Crispy moong dal fritters served with grated radish and green chutney. A popular Delhi street snack.",
+  "prepTime": "Approx. 45 minutes (plus 4 hours soaking)",
+  "equipment": [
+    { "item": "mixer", "isSpecialized": false, "alternative": null },
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "gas_stove", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "1 cup", "commonName": "Moong Dal", "englishName": "yellow split moong dal" },
+    { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli" },
+    { "amount": "1/2 tsp", "commonName": "Adrak", "englishName": "grated ginger" },
+    { "amount": "1/2 tsp", "commonName": "Jeera", "englishName": "cumin seeds" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "1/4 tsp", "commonName": "Hing", "englishName": "asafoetida" },
+    { "amount": "as needed", "commonName": "Tel", "englishName": "oil for deep frying" },
+    { "amount": "1 cup", "commonName": "Mooli", "englishName": "grated radish" },
+    { "amount": "1/2 cup", "commonName": "Hara Dhaniya", "englishName": "green chutney" },
+    { "amount": "1 tbsp", "commonName": "Nimbu", "englishName": "lemon juice" }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Wash the moong dal and soak it in water for 4 hours. Drain the water."
+    },
+    {
+      "step": 2,
+      "instruction": "Add the soaked dal, green chilli and ginger to a mixer. Grind into a thick, slightly coarse batter. Add very little water if needed."
+    },
+    {
+      "step": 3,
+      "instruction": "Transfer the batter to a bowl. Add cumin, salt and hing. Mix well."
+    },
+    {
+      "step": 4,
+      "instruction": "Heat oil in a kadai on medium flame."
+    },
+    {
+      "step": 5,
+      "instruction": "Drop small portions of batter into the hot oil using a spoon. Fry in batches until the ladoos turn golden and crispy."
+    },
+    {
+      "step": 6,
+      "instruction": "Remove the ladoos and place them on a plate."
+    },
+    {
+      "step": 7,
+      "instruction": "Serve warm with grated radish, green chutney and lemon juice."
+    }
+  ],
+  notes:[
+    "Keep the batter thick. Fry on medium heat so the ladoos cook evenly inside."
+  ]
+},
+
+"nagori halwa": {
+  "dishName": "Nagori Halwa",
+  "image": "/dishes/nagori-halwa.webp",
+  "state" : "Delhi",
+  "description": "A traditional Old Delhi breakfast of small crispy semolina puris served with sweet halwa.",
+  "prepTime": "Approx. 45 minutes",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "gas_stove", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "1 cup", "commonName": "Suji", "englishName": "semolina" },
+    { "amount": "1/2 cup", "commonName": "Atta", "englishName": "whole wheat flour" },
+    { "amount": "2 tbsp", "commonName": "Ghee", "englishName": "ghee" },
+    { "amount": "1/2 cup", "commonName": "Cheeni", "englishName": "sugar" },
+    { "amount": "2 cups", "commonName": "Paani", "englishName": "water" },
+    { "amount": "1/4 tsp", "commonName": "Elaichi", "englishName": "cardamom powder" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "as needed", "commonName": "Tel", "englishName": "oil for frying puris" }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Mix semolina, wheat flour, salt and 1 tablespoon ghee in a bowl."
+    },
+    {
+      "step": 2,
+      "instruction": "Add water little by little and knead into a firm dough. Cover and rest for 15 minutes."
+    },
+    {
+      "step": 3,
+      "instruction": "Divide the dough into small balls. Roll each ball into a small, thick puri."
+    },
+    {
+      "step": 4,
+      "instruction": "Heat oil in a kadai. Fry the puris on medium flame until they puff up and turn golden. Keep aside."
+    },
+    {
+      "step": 5,
+      "instruction": "For the halwa, heat the remaining ghee in a kadai. Add semolina and roast on low flame until it smells nutty and turns lightly golden."
+    },
+    {
+      "step": 6,
+      "instruction": "Carefully add 2 cups water and stir well to avoid lumps."
+    },
+    {
+      "step": 7,
+      "instruction": "Add sugar and cardamom powder. Cook while stirring until the halwa becomes thick and soft."
+    },
+    {
+      "step": 8,
+      "instruction": "Serve the warm halwa with the crispy nagori puris."
+    }
+  ],
+  notes: [
+    "Stir the halwa continuously while cooking to prevent it from sticking to the pan."
+  ]
+},
+
+"aloo ke kulle": {
+  "dishName": "Aloo Ke Kulle",
+  "image": "/dishes/aloo-ke-kulle.webp",
+  "state" : "Delhi",
+  "description": "A traditional Old Delhi chaat made with hollow potato cups filled with chickpeas, pomegranate and tangy spices.",
+  "prepTime": "Approx. 35 minutes",
+  "equipment": [
+    { "item": "cooker", "isSpecialized": false, "alternative": null },
+    { "item": "gas_stove", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "4 medium", "commonName": "Aloo", "englishName": "potatoes" },
+    { "amount": "1/2 cup", "commonName": "Chana", "englishName": "boiled chickpeas" },
+    { "amount": "1/4 cup", "commonName": "Anar", "englishName": "pomegranate seeds" },
+    { "amount": "1 small", "commonName": "Pyaaz", "englishName": "finely chopped onion" },
+    { "amount": "1/2 tsp", "commonName": "Chaat Masala", "englishName": "chaat masala" },
+    { "amount": "1/2 tsp", "commonName": "Bhuna Jeera", "englishName": "roasted cumin powder" },
+    { "amount": "2 tbsp", "commonName": "Hara Dhaniya", "englishName": "chopped coriander leaves" },
+    { "amount": "2 tbsp", "commonName": "Nimbu", "englishName": "lemon juice" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "1/4 cup", "commonName": "Hari Chutney", "englishName": "green chutney" }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Wash the potatoes. Add them to a cooker with enough water and cook until they are just tender. Do not overcook."
+    },
+    {
+      "step": 2,
+      "instruction": "Allow the potatoes to cool. Peel them and cut them into thick round pieces."
+    },
+    {
+      "step": 3,
+      "instruction": "Carefully make a small hollow in the centre of each potato piece using a spoon. Keep the bottom intact to make a cup."
+    },
+    {
+      "step": 4,
+      "instruction": "In a bowl, mix boiled chickpeas, onion, pomegranate seeds, coriander, chaat masala, cumin powder, salt and lemon juice."
+    },
+    {
+      "step": 5,
+      "instruction": "Fill each potato cup with the chickpea mixture."
+    },
+    {
+      "step": 6,
+      "instruction": "Add a little green chutney on top."
+    },
+    {
+      "step": 7,
+      "instruction": "Serve immediately as a fresh chaat snack."
+    }
+  ],
+  notes:[
+    "Let the potatoes cool before scooping them. Add the filling just before serving so they do not become soggy."
+  ]
+}
 
 }
 
