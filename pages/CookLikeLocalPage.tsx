@@ -366,13 +366,30 @@ const CookLikeLocalPage: React.FC = () => {
     };
   }, [suggestions.length]);
 
-  const handleUseMyLocation = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUseMyLocation = async (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!navigator.geolocation) {
       setLocationError("Location isn't available on this device.");
       return;
     }
- 
+
     const origin = originFromEvent(e);
+
+    // If permission was already denied, getCurrentPosition fires its error
+    // callback almost instantly (no prompt), which flashes the "locating"
+    // state on and off. Check first so we can skip that flash entirely.
+    if (navigator.permissions?.query) {
+      try {
+        const status = await navigator.permissions.query({
+          name: "geolocation" as PermissionName,
+        });
+        if (status.state === "denied") {
+          setLocationError("Location permission was denied. Try searching instead.");
+          return;
+        }
+      } catch {
+        // Permissions API not supported for geolocation on this browser; fall through.
+      }
+    }
 
     setLocating(true);
     setLocationError(null);
@@ -490,6 +507,14 @@ const CookLikeLocalPage: React.FC = () => {
     animation: cook-card-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
+  @keyframes cook-tooltip-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .cook-tooltip-in {
+    animation: cook-tooltip-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
   @keyframes cook-region-pulse {
     0% { box-shadow: 0 0 0 0 rgba(252, 108, 38, 0.45); }
     70% { box-shadow: 0 0 0 14px rgba(252, 108, 38, 0); }
@@ -519,7 +544,8 @@ const CookLikeLocalPage: React.FC = () => {
       transform: none !important;
     }
     .cook-card-rise,
-    .cook-region-pulse {
+    .cook-region-pulse,
+    .cook-tooltip-in {
       animation: none !important;
     }
     .cook-chevron {
@@ -618,9 +644,57 @@ const CookLikeLocalPage: React.FC = () => {
                 )}
 
                 {locationError && (
-                  <p className="mt-2 px-1 text-sm text-orange-100" role="alert">
-                    {locationError}
-                  </p>
+                  <div
+                    role="alert"
+                    className="cook-tooltip-in relative ml-2 mt-3 max-w-xs rounded-xl border border-stone-700 bg-stone-800 p-3 shadow-xl"
+                  >
+                    {/* Arrow pointing up at the location icon */}
+                    <span
+                      aria-hidden="true"
+                      className="absolute -top-1.5 left-6 h-3 w-3 rotate-45 border-l border-t border-stone-700 bg-stone-800"
+                    />
+                    <div className="flex items-start gap-2.5">
+                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-400/15 text-orange-200">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-3 w-3"
+                          aria-hidden="true"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M12 8v4M12 16h.01" />
+                        </svg>
+                      </span>
+                      <p className="flex-1 text-xs leading-relaxed text-stone-200">
+                        {locationError}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setLocationError(null)}
+                        className="shrink-0 text-stone-500 transition-colors hover:text-stone-300"
+                        aria-label="Dismiss"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-3.5 w-3.5"
+                          aria-hidden="true"
+                        >
+                          <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 )}
               </form>
               </div>
