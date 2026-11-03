@@ -9,7 +9,9 @@ import {
   POPULAR_REGIONS,
   findRegionBySlug,
   searchRegions,
+  searchRegionsRemote,
   getDishesByState,
+  type IndiaRegion,
 } from "../utils/indiaRegions";
 
 const DISHES_PREVIEW_COUNT = 4;
@@ -227,7 +229,50 @@ const CookLikeLocalPage: React.FC = () => {
   useEffect(() => {
     setShowAllDishes(false);
   }, [selectedRegion]);
-  const suggestions = useMemo(() => searchRegions(query), [query]);
+  // Local matches are instant (hardcoded city lists). When those come up
+  // short, we debounce a real geocoding lookup so typing any actual city or
+  // town — not just the handful we've hardcoded — resolves to its state.
+  const localSuggestions = useMemo(() => searchRegions(query), [query]);
+  const [remoteSuggestions, setRemoteSuggestions] = useState<IndiaRegion[]>([]);
+  const [isSearchingRemote, setIsSearchingRemote] = useState(false);
+
+  useEffect(() => {
+    const trimmed = query.trim();
+    setRemoteSuggestions([]);
+
+    if (trimmed.length < 3 || localSuggestions.length >= 3) {
+      setIsSearchingRemote(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsSearchingRemote(true);
+
+    const timeoutId = window.setTimeout(async () => {
+      const results = await searchRegionsRemote(trimmed);
+      if (!cancelled) {
+        setRemoteSuggestions(results);
+        setIsSearchingRemote(false);
+      }
+    }, 350);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [query, localSuggestions.length]);
+
+  const suggestions = useMemo(() => {
+    const combined = [...localSuggestions];
+    const seenSlugs = new Set(combined.map((r) => r.slug));
+    for (const region of remoteSuggestions) {
+      if (!seenSlugs.has(region.slug)) {
+        seenSlugs.add(region.slug);
+        combined.push(region);
+      }
+    }
+    return combined.slice(0, 6);
+  }, [localSuggestions, remoteSuggestions]);
 
   // Preload images for matching regions as the user searches.
   useEffect(() => {
@@ -540,7 +585,7 @@ const CookLikeLocalPage: React.FC = () => {
                   </button>
                 </div>
 
-                {suggestions.length > 0 && (
+                {(suggestions.length > 0 || isSearchingRemote) && (
                   <ul
                     ref={suggestionsListRef}
                     className={`absolute left-0 right-0 z-40 max-h-64 overflow-auto border-stone-700 bg-stone-900 shadow-lg ${
@@ -562,6 +607,9 @@ const CookLikeLocalPage: React.FC = () => {
                         </button>
                       </li>
                     ))}
+                    {isSearchingRemote && !dropUp && (
+                      <li className="px-4 py-2.5 text-xs text-stone-500">Searching...</li>
+                    )}
                   </ul>
                 )}
 

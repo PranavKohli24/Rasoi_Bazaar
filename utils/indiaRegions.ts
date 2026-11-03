@@ -337,3 +337,69 @@ export function searchRegions(
       r.cities.some((city) => city.toLowerCase().includes(q))
   ).slice(0, limit);
 }
+
+// In-memory cache so repeated lookups for the same place don't re-hit the API.
+const geocodeCache = new Map<string, IndiaRegion[]>();
+
+function matchRegionByStateName(stateName: string): IndiaRegion | undefined {
+  const s = stateName.toLowerCase();
+  return INDIA_REGIONS.find(
+    (r) =>
+      r.name.toLowerCase() === s ||
+      s.includes(r.name.toLowerCase()) ||
+      r.name.toLowerCase().includes(s)
+  );
+}
+
+// Falls back to real geocoding for any place name not in our hardcoded
+// `cities` lists — covers the thousands of towns/cities we can't realistically
+// hardcode (e.g. searching "Mysuru road" or a small town still resolves to
+// its actual state).
+export async function searchRegionsRemote(
+  query: string,
+  limit = 6
+): Promise<IndiaRegion[]> {
+  const q = query.trim();
+  if (q.length < 3) return [];
+
+  const cacheKey = q.toLowerCase();
+  const cached = geocodeCache.get(cacheKey);
+  if (cached) return cached;
+
+  try {
+    const url = new URL("https://nominatim.openstreetmap.org/search");
+    url.searchParams.set("q", q);
+    url.searchParams.set("format", "jsonv2");
+    url.searchParams.set("addressdetails", "1");
+    url.searchParams.set("countrycodes", "in");
+    url.searchParams.set("limit", "5");
+
+    const res = await fetch(url.toString(), {
+      headers: { "Accept-Language": "en" },
+    });
+
+    if (!res.ok) return [];
+
+    const results: Array<{ address?: { state?: string } }> = await res.json();
+
+    const matchedRegions: IndiaRegion[] = [];
+    const seenSlugs = new Set<string>();
+
+    for (const result of results) {
+      const stateName = result.address?.state;
+      if (!stateName) continue;
+
+      const region = matchRegionByStateName(stateName);
+      if (region && !seenSlugs.has(region.slug)) {
+        seenSlugs.add(region.slug);
+        matchedRegions.push(region);
+      }
+    }
+
+    const limited = matchedRegions.slice(0, limit);
+    geocodeCache.set(cacheKey, limited);
+    return limited;
+  } catch {
+    return [];
+  }
+}
