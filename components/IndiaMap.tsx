@@ -93,9 +93,11 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
           >
             <defs>
               <linearGradient id={`pinGradient-${selectedCode}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#FFFDFB" />
+                <stop offset="0%" stopColor="#FC6C26" />
                 <stop offset="25%" stopColor="#FFC49A" />
-                <stop offset="100%" stopColor="#FC6C26" />
+                <stop offset="100%" stopColor="#FFFDFB" />
+                
+                
               </linearGradient>
             </defs>
             <ellipse cx="12" cy="21.5" rx="2.6" ry="0.9" fill="#7a2e0a" opacity="0.18" />
