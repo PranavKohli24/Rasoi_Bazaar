@@ -25,6 +25,11 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
   // Find the selected state's <path> inside the rendered SVG and work out
   // where to drop a pin — small states (Delhi, Goa) barely show the fill
   // color alone, so the pin makes the selection visible regardless of size.
+  //
+  // We use getBoundingClientRect (actual rendered position) rather than
+  // getBBox + viewBox math — react-svgmap-india may wrap paths in a
+  // transformed <g>, which getBBox ignores, pulling the computed center
+  // toward an edge. Client rects reflect the real on-screen geometry.
   useLayoutEffect(() => {
     if (!selectedCode || !wrapperRef.current) {
       setPinPos(null);
@@ -33,20 +38,26 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
 
     const svg = wrapperRef.current.querySelector("svg");
     const path = svg?.querySelector<SVGGraphicsElement>(`#${selectedCode}`);
-    const viewBox = svg?.viewBox?.baseVal;
 
-    if (!svg || !path || !viewBox || !viewBox.width || !viewBox.height) {
+    if (!svg || !path) {
       setPinPos(null);
       return;
     }
 
-    const bbox = path.getBBox();
-    const centerX = bbox.x + bbox.width / 2;
-    const centerY = bbox.y + bbox.height / 2;
+    const svgRect = svg.getBoundingClientRect();
+    const pathRect = path.getBoundingClientRect();
+
+    if (!svgRect.width || !svgRect.height) {
+      setPinPos(null);
+      return;
+    }
+
+    const centerX = pathRect.left + pathRect.width / 2;
+    const centerY = pathRect.top + pathRect.height / 2;
 
     setPinPos({
-      xPct: ((centerX - viewBox.x) / viewBox.width) * 100,
-      yPct: ((centerY - viewBox.y) / viewBox.height) * 100,
+      xPct: ((centerX - svgRect.left) / svgRect.width) * 100,
+      yPct: ((centerY - svgRect.top) / svgRect.height) * 100,
     });
   }, [selectedCode]);
 
@@ -62,7 +73,7 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
 
       <SvgIndiaMap
         onClick={handleClick}
-        size={isCompact ? "100%" : "340px"}
+        size={isCompact ? "100%" : "368px"}
         mapColor="#F5E9C6"
         strokeColor="#D9BE8E"
         strokeWidth="0.6"
@@ -77,12 +88,24 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
-            fill="#FC6C26"
-            stroke="#7a2e0a"
-            strokeWidth="1"
-            className={isCompact ? "h-4 w-4 drop-shadow-md" : "h-7 w-7 drop-shadow-md"}
+            className={isCompact ? "h-4 w-4" : "h-7 w-7"}
+            style={{ filter: "drop-shadow(0 3px 4px rgba(122,46,10,0.35))" }}
           >
-            <path d="M12 2C7.58 2 4 5.58 4 10c0 5.25 7.05 11.25 7.35 11.5a1 1 0 0 0 1.3 0C12.95 21.25 20 15.25 20 10c0-4.42-3.58-8-8-8zm0 10.5A2.5 2.5 0 1 1 12 7.5a2.5 2.5 0 0 1 0 5z" />
+            <defs>
+              <linearGradient id={`pinGradient-${selectedCode}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FF9A5A" />
+                <stop offset="100%" stopColor="#F2550F" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="12" cy="21.5" rx="2.6" ry="0.9" fill="#7a2e0a" opacity="0.22" />
+            <path
+              d="M12 2.2c-4.2 0-7.6 3.4-7.6 7.6 0 5.2 6.6 10.8 7.3 11.4a.5.5 0 0 0 .6 0c.7-.6 7.3-6.2 7.3-11.4 0-4.2-3.4-7.6-7.6-7.6z"
+              fill={`url(#pinGradient-${selectedCode})`}
+              stroke="#C23E0A"
+              strokeWidth="0.75"
+            />
+            <circle cx="12" cy="9.8" r="3" fill="#fff" />
+            <circle cx="12" cy="9.8" r="1.35" fill="#F2550F" />
           </svg>
         </div>
       )}
