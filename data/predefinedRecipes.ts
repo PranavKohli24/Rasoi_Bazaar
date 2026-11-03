@@ -22901,6 +22901,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "aloo ke gutke": {
     dishName: "Aloo Ke Gutke",
     "image": "/dishes/aloo-gutke.webp",
+    "state" : "Uttarakhand",
     description: "Chunky potatoes tossed in mustard oil, cumin, dried chillies and simple Pahadi spices.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -44653,6 +44654,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "galouti kebab": {
     "dishName": "Galouti Kebab",
     "image": "/dishes/galouti-kebab.webp",
+    "state" : "Uttar Pradesh",
     "description": "Exceptionally tender Awadhi minced-meat kebabs seasoned with aromatic spices and lightly browned in ghee.",
     "prepTime": "Approx. 45 minutes (plus marination)",
     "equipment": [
@@ -45911,6 +45913,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "sheermal": {
     "dishName": "Sheermal",
     "image": "/dishes/sheermal.webp",
+    "state" : "Uttar Pradesh",
     "description": "A soft, mildly sweet Awadhi flatbread flavoured with saffron and milk, traditionally served with rich kebabs or korma.",
     "prepTime": "Approx. 2 hours (mostly resting)",
     "equipment": [
@@ -54995,6 +54998,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "chainsoo": {
     dishName: "Chainsoo (Uttarakhand Roasted Black Gram Dal)",
     "image": "/dishes/chainsoo.webp",
+    "state" : "Uttarakhand",
     description: "A hearty Garhwali dal made with roasted black urad, garlic and a few spices.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55023,6 +55027,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "thechwani": {
     dishName: "Thechwani (Pahadi Crushed Potato and Radish Curry)",
     "image": "/dishes/thechwani.webp",
+    "state" : "Uttarakhand",
     description: "A simple Uttarakhand curry of crushed potato and radish cooked with ginger, garlic and spices.",
     prepTime: "Approx. 40 minutes",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -56116,6 +56121,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "nimona": {
     dishName: "Matar Nimona (UP Green Pea Curry)",
+    "state" : "Uttar Pradesh",
     description: "A comforting winter curry made with crushed green peas, potato and simple spices.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -56152,6 +56158,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kafuli": {
     dishName: "Kafuli (Uttarakhand Green Leaf Curry)",
+    "state" : "Uttarakhand",
     description: "A thick pahadi curry made with spinach, optional fenugreek leaves and a little rice flour.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -56609,6 +56616,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "bhatt ki churkani": {
   "dishName": "Bhatt Ki Churkani (Uttarakhand Black Soybean Curry)",
+  "state" : "Uttarakhand",
   "description": "A Kumaoni curry of black soybeans in a thick, roasted gram flour gravy.",
   "prepTime": "Approx. 1 hour (plus overnight soaking)",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56634,6 +56642,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dubuk": {
   "dishName": "Dubuk (Uttarakhand Lentil Curry)",
+  "state" : "Uttarakhand",
   "description": "A simple thick pahadi gram flour and lentil curry flavoured with ghee and cumin.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56657,6 +56666,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "jhangora ki kheer": {
   "dishName": "Jhangora Ki Kheer (Barnyard Millet Pudding)",
+  "state" : "Uttarakhand",
   "description": "A light Uttarakhand pudding made from barnyard millet cooked in milk.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56678,6 +56688,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gahat ki dal": {
   "dishName": "Gahat Ki Dal (Pahadi Horse Gram Dal)",
+  "state" : "Uttarakhand",
   "description": "A Kumaoni horse gram dal flavoured with roasted cumin and garlic.",
   "prepTime": "Approx. 50 minutes (plus soaking)",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56701,6 +56712,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sisunak saag": {
   "dishName": "Sisunak Saag (Pahadi Nettle Greens)",
+  "state" : "Uttarakhand",
   "description": "A simple spiced greens dish, home-style with spinach as a substitute for wild nettle leaves.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56722,6 +56734,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "singori": {
   "dishName": "Singori (Uttarakhand Khoya Sweet)",
+  "state" : "Uttarakhand",
   "description": "A simple sweet of khoya and sugar, traditionally wrapped in malu leaves.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56859,6 +56872,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "awadhi biryani": {
   "dishName": "Awadhi Biryani",
+  "state" : "Uttar Pradesh",
   "description": "A mild, fragrant Lucknow-style dum biryani with marinated meat and gently spiced rice.",
   "prepTime": "Approx. 1 hour 30 minutes (plus marination)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }, { "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -56885,6 +56899,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "banarasi tamatar chaat": {
   "dishName": "Banarasi Tamatar Chaat",
+  "state" : "Uttar Pradesh",
   "description": "Spiced stewed tomatoes with potatoes, a tangy Banarasi street-style chaat.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56909,6 +56924,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kakori kebab": {
   "dishName": "Kakori Kebab",
+  "state" : "Uttar Pradesh",
   "description": "Extremely soft minced mutton kebabs from Lucknow, shaped onto skewers and pan-cooked.",
   "prepTime": "Approx. 45 minutes (plus resting)",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }, { "item": "mixer", "isSpecialized": false, "alternative": null }],
@@ -56932,6 +56948,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mathura peda": {
   "dishName": "Mathura Peda",
+  "state" : "Uttar Pradesh",
   "description": "A classic milk-based sweet from Mathura, made with khoya and sugar.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56952,6 +56969,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "allahabadi tehri": {
   "dishName": "Allahabadi Tehri",
+  "state" : "Uttar Pradesh",
   "description": "A tangy vegetarian spiced rice from Allahabad, cooked with potatoes and vegetables.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -56977,6 +56995,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "malaiyyo": {
   "dishName": "Malaiyyo (Banarasi Milk Foam Dessert)",
+  "state" : "Uttar Pradesh",
   "description": "A light, airy winter dessert made by whipping sweetened milk foam, Banarasi style.",
   "prepTime": "Approx. 30 minutes (plus overnight chilling)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }, { "item": "mixer", "isSpecialized": false, "alternative": null }],
