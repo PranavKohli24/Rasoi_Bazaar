@@ -2485,7 +2485,7 @@ const handleCancelDish = (messageIndex: number) => {
                   }`}
                   style={{
                     background:
-                      "linear-gradient(to right, #F6D9A8 0%, rgba(246,217,168,0.6) 55%, rgba(246,217,168,0) 100%)",
+                      "linear-gradient(to right, rgba(246,217,168,0.65) 0%, rgba(246,217,168,0.35) 55%, rgba(246,217,168,0) 100%)",
                     maskImage: "linear-gradient(to right, black 0%, transparent 100%)",
                     WebkitMaskImage: "linear-gradient(to right, black 0%, transparent 100%)",
                   }}
