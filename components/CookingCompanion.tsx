@@ -2345,7 +2345,7 @@ const handleCancelDish = (messageIndex: number) => {
               </span>
             )
           )}
-          <span className="companion-orb flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
+          <span className="companion-orb backdrop-blur-md flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
             <CompanionCharacter mood={voiceMood} className="companion-bob h-10 w-10" />
           </span>
         </button>
@@ -2785,11 +2785,11 @@ const handleCancelDish = (messageIndex: number) => {
         /* The floating launcher circle: same off-white raised look as the
            companion's cards, with a slightly deeper lift since it floats. */
         .companion-orb {
-          background: linear-gradient(180deg, #FFFFFF 0%, #F8F3E7 100%);
-          border: 1px solid #E9DFC9;
+          background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(248,243,231,0.55) 100%);
+          border: 1px solid rgba(255,255,255,0.4);
           box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.95),
-            0 3px 0 #E7DCC4,
+            inset 0 1px 0 rgba(255, 255, 255, 0.6),
+            0 3px 0 rgba(231,220,196,0.5),
             0 10px 18px -6px rgba(90, 60, 20, 0.4);
         }
 
