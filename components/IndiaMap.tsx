@@ -94,7 +94,8 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
             <defs>
               <linearGradient id={`pinGradient-${selectedCode}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#FFFDFB" />
-                <stop offset="100%" stopColor="#FCD9C2" />
+                <stop offset="50%" stopColor="#FFC49A" />
+                <stop offset="100%" stopColor="#FC6C26" />
               </linearGradient>
             </defs>
             <ellipse cx="12" cy="21.5" rx="2.6" ry="0.9" fill="#7a2e0a" opacity="0.18" />
@@ -103,7 +104,7 @@ export const IndiaMap: React.FC<IndiaMapProps> = ({ selectedSlug, onSelect, vari
               fill={`url(#pinGradient-${selectedCode})`}
             />
             <circle cx="12" cy="9.8" r="3" fill="#FC6C26" />
-            <circle cx="12" cy="9.8" r="1.35" fill="#fff" />
+            <circle cx="12" cy="9.8" r="2.3" fill="#fff" />
           </svg>
         </div>
       )}
