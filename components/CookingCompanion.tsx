@@ -2342,7 +2342,7 @@ const handleCancelDish = (messageIndex: number) => {
                     {launcherNote ? (
             <span
               aria-hidden="true"
-              className="companion-nudge mb-3 max-w-[220px] break-words rounded-2xl rounded-br-sm bg-white/55 backdrop-blur-md px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-white/40"
+              className="companion-nudge mb-3 max-w-[220px] break-words rounded-2xl rounded-br-sm bg-white/55 backdrop-blur-sm px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-white/40"
             >
                           {hc.phase === "processing" ? (
                 <span className="companion-shimmer">{launcherNote}</span>
@@ -2355,13 +2355,13 @@ const handleCancelDish = (messageIndex: number) => {
             messages.length === 0 && (
               <span
                 aria-hidden="true"
-                className="companion-nudge mb-3 rounded-2xl rounded-br-sm bg-white/55 backdrop-blur-md px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-white/40"
+                className="companion-nudge mb-3 rounded-2xl rounded-br-sm bg-white/55 backdrop-blur-sm px-3.5 py-2 text-sm font-semibold text-[#2B1A0C] shadow-lg shadow-black/15 ring-1 ring-white/40"
               >
                 Stuck? Ask me.
               </span>
             )
           )}
-          <span className="companion-orb backdrop-blur-md flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
+          <span className="companion-orb backdrop-blur-sm flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
             <CompanionCharacter mood={voiceMood} className="companion-bob h-10 w-10" />
           </span>
         </button>
