@@ -56256,6 +56256,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kashmiri dum aloo": {
   "dishName": "Kashmiri Dum Aloo",
+  "image": "/dishes/kashmiri-dum-aloo.webp",
   "state" : "Jammu and Kashmir",
   "description": "Baby potatoes fried and simmered in a tangy yogurt gravy flavoured with fennel and dry ginger.",
   "prepTime": "Approx. 45 minutes",
@@ -56285,6 +56286,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chicken yakhni": {
   "dishName": "Chicken Yakhni",
+  "image": "/dishes/chicken-yakhni.webp",
   "state" : "Jammu and Kashmir",
   "description": "A mild Kashmiri yogurt chicken curry flavoured with fennel and whole spices.",
   "prepTime": "Approx. 45 minutes",
@@ -56313,6 +56315,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muj gaad": {
   "dishName": "Muj Gaad (Kashmiri Fish with Radish)",
+  "image": "/dishes/muj-gaad.webp",
   "state" : "Jammu and Kashmir",
   "description": "A Kashmiri fish curry cooked with radish in a mustard oil and chilli gravy.",
   "prepTime": "Approx. 40 minutes",
@@ -56338,6 +56341,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chaman kaliya": {
   "dishName": "Chaman Kaliya (Kashmiri Paneer Curry)",
+  "image": "/dishes/chaman-kaliya.webp",
   "state" : "Jammu and Kashmir",
   "description": "Fried paneer cubes simmered in a mild yellow yogurt gravy, a Kashmiri vegetarian classic.",
   "prepTime": "Approx. 35 minutes",
@@ -56365,6 +56369,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "modur pulao": {
   "dishName": "Modur Pulao (Kashmiri Sweet Rice)",
+  "image": "/dishes/modur-pulao.webp",
   "state" : "Jammu and Kashmir",
   "description": "A festive Kashmiri rice dish lightly sweetened with sugar, milk and dried fruits.",
   "prepTime": "Approx. 35 minutes",
@@ -56393,6 +56398,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "tabak maaz": {
   "dishName": "Tabak Maaz (Kashmiri Fried Ribs)",
+  "image": "/dishes/tabak-maaz.webp",
   "state" : "Jammu and Kashmir",
   "description": "Mutton ribs slow-boiled in milk and spices, then shallow-fried until crisp.",
   "prepTime": "Approx. 1 hour",
