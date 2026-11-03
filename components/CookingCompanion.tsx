@@ -2391,7 +2391,9 @@ const handleCancelDish = (messageIndex: number) => {
           {/* Companion header: the face is the focus. It changes with what the
               companion is doing, and the strip underneath shows where you are
               in the recipe so it feels like it's cooking alongside you. */}
-          <div className="rounded-t-3xl bg-[#F8F3E8]">
+          <div
+            className="companion-header-rich rounded-t-3xl"
+          >
             {/* Drag handle — starts a close-drag, like the header below.
                 Deliberately outside the scrollable message list. */}
             <div
@@ -2804,6 +2806,25 @@ const handleCancelDish = (messageIndex: number) => {
             inset 0 1px 0 rgba(255, 255, 255, 0.95),
             0 2px 0 #E7DCC4,
             0 8px 14px -8px rgba(90, 60, 20, 0.28);
+        }
+
+                /* Richer header: a warm gradient instead of a flat tint, with a
+           soft inner highlight at the top (like light catching a curved
+           surface) and a faint glow where it meets the step strip. */
+        .companion-header-rich {
+          background: linear-gradient(165deg, #FFF3DE 0%, #FAE4BE 55%, #F6D9A8 100%);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+          position: relative;
+        }
+        .companion-header-rich::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -1px;
+          height: 10px;
+          background: linear-gradient(to bottom, rgba(252, 108, 38, 0.1), transparent);
+          pointer-events: none;
         }
 
         /* The floating launcher circle: same off-white raised look as the
