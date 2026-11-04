@@ -834,17 +834,23 @@ const CookLikeLocalPage: React.FC = () => {
                 <div key={contentTab} className="cook-tab-fade">
                 {contentTab === "restaurants" ? (
                   <ExploreRestaurants region={selectedRegion} />
-                ) : dishes.length === 0 ? (
-                  <p className="mt-4 text-sm text-stone-400">
-                    We don't have dishes tagged for {selectedRegion.name} yet.
-                  </p>
                 ) : (
                   <>
-                    <div
-                      key={`dishes-preview-${selectedRegion.slug}`}
-                      className="cook-card-rise mt-4 grid grid-cols-2 gap-x-4 gap-y-7"
-                      style={{ animationDelay: "120ms" }}
-                    >
+                    <h3 className="mt-6 font-serif text-base font-semibold tracking-tight text-stone-300 sm:text-lg">
+                      Dishes to cook from {selectedRegion.name}
+                    </h3>
+
+                    {dishes.length === 0 ? (
+                      <p className="mt-4 text-sm text-stone-400">
+                        We don't have dishes tagged for {selectedRegion.name} yet.
+                      </p>
+                    ) : (
+                      <>
+                        <div
+                          key={`dishes-preview-${selectedRegion.slug}`}
+                          className="cook-card-rise mt-4 grid grid-cols-2 gap-x-4 gap-y-7"
+                          style={{ animationDelay: "120ms" }}
+                        >
                       {previewDishes.map((dish, i) => (
                         <Link
                           key={dish.dishName}
@@ -926,6 +932,8 @@ const CookLikeLocalPage: React.FC = () => {
                           </div>
                         </div>
                       </div>
+                    )}
+                      </>
                     )}
                   </>
                 )}
