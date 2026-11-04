@@ -511,6 +511,14 @@ const CookLikeLocalPage: React.FC = () => {
     animation: cook-card-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
+  @keyframes cook-tab-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .cook-tab-fade {
+    animation: cook-tab-fade-in 200ms ease both;
+  }
+
   @keyframes cook-tooltip-in {
     from { opacity: 0; transform: translateY(-6px) scale(0.96); }
     to { opacity: 1; transform: translateY(0) scale(1); }
@@ -549,7 +557,8 @@ const CookLikeLocalPage: React.FC = () => {
     }
     .cook-card-rise,
     .cook-region-pulse,
-    .cook-tooltip-in {
+    .cook-tooltip-in,
+    .cook-tab-fade {
       animation: none !important;
     }
     .cook-chevron {
@@ -822,6 +831,7 @@ const CookLikeLocalPage: React.FC = () => {
                   </button>
                 </div>
 
+                <div key={contentTab} className="cook-tab-fade">
                 {contentTab === "restaurants" ? (
                   <ExploreRestaurants region={selectedRegion} />
                 ) : dishes.length === 0 ? (
@@ -919,6 +929,7 @@ const CookLikeLocalPage: React.FC = () => {
                     )}
                   </>
                 )}
+                </div>
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
                   {contentTab === "dishes" && remainingCount > 0 ? (
