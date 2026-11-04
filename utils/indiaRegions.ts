@@ -403,3 +403,95 @@ export async function searchRegionsRemote(
     return [];
   }
 }
+
+// Add to the bottom of indiaRegions.ts, after getDishesByState / searchRegions
+
+/** Approximate coordinates of each region's primary city, for Dineout search. */
+export const REGION_COORDINATES: Record<string, { lat: number; lng: number }> = {
+  "andaman-and-nicobar-islands": { lat: 11.6234, lng: 92.7265 },
+  "andhra-pradesh": { lat: 17.6868, lng: 83.2185 },
+  "arunachal-pradesh": { lat: 27.0844, lng: 93.6053 },
+  assam: { lat: 26.1445, lng: 91.7362 },
+  bihar: { lat: 25.5941, lng: 85.1376 },
+  chandigarh: { lat: 30.7333, lng: 76.7794 },
+  chhattisgarh: { lat: 21.2514, lng: 81.6296 },
+  "dadra-nagar-haveli-daman-diu": { lat: 20.3974, lng: 72.8328 },
+  delhi: { lat: 28.6139, lng: 77.209 },
+  goa: { lat: 15.4909, lng: 73.8278 },
+  gujarat: { lat: 23.0225, lng: 72.5714 },
+  "himachal-pradesh": { lat: 31.1048, lng: 77.1734 },
+  haryana: { lat: 28.4595, lng: 77.0266 },
+  jharkhand: { lat: 23.3441, lng: 85.3096 },
+  "jammu-kashmir": { lat: 34.0837, lng: 74.7973 },
+  karnataka: { lat: 12.9716, lng: 77.5946 },
+  kerala: { lat: 9.9312, lng: 76.2673 },
+  ladakh: { lat: 34.1526, lng: 77.5771 },
+  lakshadweep: { lat: 10.5593, lng: 72.6358 },
+  maharashtra: { lat: 19.076, lng: 72.8777 },
+  meghalaya: { lat: 25.5788, lng: 91.8933 },
+  manipur: { lat: 24.817, lng: 93.9368 },
+  "madhya-pradesh": { lat: 23.2599, lng: 77.4126 },
+  mizoram: { lat: 23.7271, lng: 92.7176 },
+  nagaland: { lat: 25.6751, lng: 94.1086 },
+  odisha: { lat: 20.2961, lng: 85.8245 },
+  punjab: { lat: 31.634, lng: 74.8723 },
+  puducherry: { lat: 11.9416, lng: 79.8083 },
+  rajasthan: { lat: 26.9124, lng: 75.7873 },
+  sikkim: { lat: 27.3389, lng: 88.6065 },
+  telangana: { lat: 17.385, lng: 78.4867 },
+  "tamil-nadu": { lat: 13.0827, lng: 80.2707 },
+  tripura: { lat: 23.8315, lng: 91.2868 },
+  "uttar-pradesh": { lat: 26.8467, lng: 80.9462 },
+  uttarakhand: { lat: 30.3165, lng: 78.0322 },
+  "west-bengal": { lat: 22.5726, lng: 88.3639 },
+};
+
+/** Best-effort cuisine term to search Dineout with for each region.
+ *  search_restaurants_dineout resolves free text on its own, so these
+ *  don't need to be exact facet ids — just a reasonable starting query. */
+export const REGION_CUISINE_QUERY: Record<string, string> = {
+  "andaman-and-nicobar-islands": "Seafood",
+  "andhra-pradesh": "Andhra",
+  "arunachal-pradesh": "North Eastern",
+  assam: "Assamese",
+  bihar: "North Indian",
+  chandigarh: "North Indian",
+  chhattisgarh: "North Indian",
+  "dadra-nagar-haveli-daman-diu": "Seafood",
+  delhi: "North Indian",
+  goa: "Goan",
+  gujarat: "Gujarati",
+  "himachal-pradesh": "North Indian",
+  haryana: "North Indian",
+  jharkhand: "North Indian",
+  "jammu-kashmir": "Kashmiri",
+  karnataka: "South Indian",
+  kerala: "Kerala",
+  ladakh: "Tibetan",
+  lakshadweep: "Seafood",
+  maharashtra: "Maharashtrian",
+  meghalaya: "North Eastern",
+  manipur: "North Eastern",
+  "madhya-pradesh": "North Indian",
+  mizoram: "North Eastern",
+  nagaland: "North Eastern",
+  odisha: "North Indian",
+  punjab: "Punjabi",
+  puducherry: "South Indian",
+  rajasthan: "Rajasthani",
+  sikkim: "Tibetan",
+  telangana: "Hyderabadi",
+  "tamil-nadu": "South Indian",
+  tripura: "North Eastern",
+  "uttar-pradesh": "Mughlai",
+  uttarakhand: "North Indian",
+  "west-bengal": "Bengali",
+};
+
+export function getRegionCoordinates(region: IndiaRegion) {
+  return REGION_COORDINATES[region.slug] ?? REGION_COORDINATES["delhi"];
+}
+
+export function getRegionCuisineQuery(region: IndiaRegion) {
+  return REGION_CUISINE_QUERY[region.slug] ?? region.name;
+}

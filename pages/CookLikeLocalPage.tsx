@@ -14,6 +14,8 @@ import {
   type IndiaRegion,
 } from "../utils/indiaRegions";
 
+import ExploreRestaurants from "../components/ExploreRestaurants";
+
 const DISHES_PREVIEW_COUNT = 4;
 const MAP_TINT = "#FBE8D3";
 
@@ -70,6 +72,7 @@ const CookLikeLocalPage: React.FC = () => {
   const [query, setQuery] = useState("");
   const [showAllRegions, setShowAllRegions] = useState(false);
   const [showAllDishes, setShowAllDishes] = useState(false);
+  const [contentTab, setContentTab] = useState<"dishes" | "restaurants">("dishes");
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
@@ -232,6 +235,7 @@ const CookLikeLocalPage: React.FC = () => {
     const shouldExpand = sessionStorage.getItem(key) === "1";
     sessionStorage.removeItem(key); // one-shot: only applies right after a dish tap
     setShowAllDishes(shouldExpand);
+    setContentTab("dishes");
   }, [selectedRegion]);
   // Local matches are instant (hardcoded city lists). When those come up
   // short, we debounce a real geocoding lookup so typing any actual city or
@@ -783,14 +787,44 @@ const CookLikeLocalPage: React.FC = () => {
                 </div>
 
 
-                <h3
-                  key={`dishes-heading-${selectedRegion.slug}`}
-                  className="cook-card-rise mt-6 font-serif text-base font-semibold tracking-tight text-stone-300 sm:text-lg"
+                <div
+                  key={`content-tabs-${selectedRegion.slug}`}
+                  role="tablist"
+                  aria-label="View dishes or restaurants"
+                  className="cook-card-rise relative mt-6 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
                   style={{ animationDelay: "80ms" }}
                 >
-                  Popular dishes
-                </h3>
-                {dishes.length === 0 ? (
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={contentTab === "dishes"}
+                    onClick={() => setContentTab("dishes")}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                      contentTab === "dishes"
+                        ? "bg-orange-200 text-stone-900"
+                        : "text-stone-300 hover:text-stone-100"
+                    }`}
+                  >
+                    Popular dishes
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={contentTab === "restaurants"}
+                    onClick={() => setContentTab("restaurants")}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                      contentTab === "restaurants"
+                        ? "bg-orange-200 text-stone-900"
+                        : "text-stone-300 hover:text-stone-100"
+                    }`}
+                  >
+                    Explore restaurants
+                  </button>
+                </div>
+
+                {contentTab === "restaurants" ? (
+                  <ExploreRestaurants region={selectedRegion} />
+                ) : dishes.length === 0 ? (
                   <p className="mt-4 text-sm text-stone-400">
                     We don't have dishes tagged for {selectedRegion.name} yet.
                   </p>
@@ -887,7 +921,7 @@ const CookLikeLocalPage: React.FC = () => {
                 )}
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-                  {remainingCount > 0 ? (
+                  {contentTab === "dishes" && remainingCount > 0 ? (
                     <button
                       type="button"
                       onClick={() => setShowAllDishes((v) => !v)}
