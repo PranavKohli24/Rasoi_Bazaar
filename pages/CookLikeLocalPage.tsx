@@ -808,7 +808,7 @@ const CookLikeLocalPage: React.FC = () => {
                     role="tab"
                     aria-selected={contentTab === "dishes"}
                     onClick={() => setContentTab("dishes")}
-                    className={`flex-1 whitespace-nowrap rounded-full px-2 py-2 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${
+                    className={`flex-1 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-semibold transition-colors duration-300 sm:px-5 sm:py-3 sm:text-base ${
                       contentTab === "dishes"
                         ? "bg-orange-200 text-stone-900"
                         : "text-stone-300 hover:text-stone-100"
@@ -821,7 +821,7 @@ const CookLikeLocalPage: React.FC = () => {
                     role="tab"
                     aria-selected={contentTab === "restaurants"}
                     onClick={() => setContentTab("restaurants")}
-                    className={`flex-1 whitespace-nowrap rounded-full px-2 py-2 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${
+                    className={`flex-1 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-semibold transition-colors duration-300 sm:px-5 sm:py-3 sm:text-base ${
                       contentTab === "restaurants"
                         ? "bg-orange-200 text-stone-900"
                         : "text-stone-300 hover:text-stone-100"
