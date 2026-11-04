@@ -73,6 +73,7 @@ const CookLikeLocalPage: React.FC = () => {
   const [showAllRegions, setShowAllRegions] = useState(false);
   const [showAllDishes, setShowAllDishes] = useState(false);
   const [contentTab, setContentTab] = useState<"dishes" | "restaurants">("dishes");
+  const [hasOpenedRestaurantsTab, setHasOpenedRestaurantsTab] = useState(false);
   const [locating, setLocating] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [dropUp, setDropUp] = useState(false);
@@ -236,6 +237,7 @@ const CookLikeLocalPage: React.FC = () => {
     sessionStorage.removeItem(key); // one-shot: only applies right after a dish tap
     setShowAllDishes(shouldExpand);
     setContentTab("dishes");
+    setHasOpenedRestaurantsTab(false);
   }, [selectedRegion]);
   // Local matches are instant (hardcoded city lists). When those come up
   // short, we debounce a real geocoding lookup so typing any actual city or
@@ -820,7 +822,10 @@ const CookLikeLocalPage: React.FC = () => {
                     type="button"
                     role="tab"
                     aria-selected={contentTab === "restaurants"}
-                    onClick={() => setContentTab("restaurants")}
+                    onClick={() => {
+                      setContentTab("restaurants");
+                      setHasOpenedRestaurantsTab(true);
+                    }}
                     className={`flex-1 whitespace-nowrap rounded-full px-3 py-2.5 text-sm font-semibold transition-colors duration-300 sm:px-5 sm:py-3 sm:text-base ${
                       contentTab === "restaurants"
                         ? "bg-orange-200 text-stone-900"
@@ -831,11 +836,13 @@ const CookLikeLocalPage: React.FC = () => {
                   </button>
                 </div>
 
-                <div key={contentTab} className="cook-tab-fade">
-                {contentTab === "restaurants" ? (
-                  <ExploreRestaurants region={selectedRegion} />
-                ) : (
-                  <>
+                {hasOpenedRestaurantsTab && (
+                  <div className={`cook-tab-fade ${contentTab === "restaurants" ? "" : "hidden"}`}>
+                    <ExploreRestaurants region={selectedRegion} />
+                  </div>
+                )}
+                {contentTab === "dishes" && (
+                  <div className="cook-tab-fade">
                     <h3 className="mt-6 font-serif text-base font-semibold tracking-tight text-stone-300 sm:text-lg">
                       Dishes to cook from {selectedRegion.name}
                     </h3>
@@ -935,9 +942,8 @@ const CookLikeLocalPage: React.FC = () => {
                     )}
                       </>
                     )}
-                  </>
+                  </div>
                 )}
-                </div>
 
                 <div className="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
                   {contentTab === "dishes" && remainingCount > 0 ? (
