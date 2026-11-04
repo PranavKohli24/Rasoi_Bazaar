@@ -41405,6 +41405,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "gongura pachadi": {
       "dishName": "Gongura Pachadi",
       "image": "/dishes/gongura-pachadi.webp",
+      "state" : "Andhra Pradesh",
       "description": "A bold Andhra pachadi made from sour gongura leaves, dried red chillies, garlic and a simple tempering.",
       "prepTime": "Approx. 25 minutes",
       "equipment": [
@@ -55479,6 +55480,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "patoleo": {
     dishName: "Patoleo (Goan Coconut and Jaggery Leaf Cakes)",
     "image": "/dishes/patoleo.webp",
+    "state" : "Goa",
     description: "A Goan sweet made with rice batter and coconut-jaggery filling steamed in turmeric leaves.",
     prepTime: "Approx. 40 minutes (plus rice soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55562,6 +55564,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chousela": {
     dishName: "Chousela (Chhattisgarh Rice Puri)",
+    state: "Chhattisgarh",
     description: "A crisp Chhattisgarhi rice-flour puri made with hot water and salt.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55746,6 +55749,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "akki rotti": {
     dishName: "Akki Rotti (Rice Flour Flatbread)",
     "image": "/dishes/akki-rotti.webp",
+    "state" : "Karnataka",
     description: "A Karnataka flatbread made with rice flour, onion, chilli and fresh herbs.",
     prepTime: "Approx. 25 minutes",
     equipment: [
@@ -55777,6 +55781,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "goli baje": {
     dishName: "Goli Baje (Mangaluru Bonda)",
     "image": "/dishes/goli-baje.webp",
+    "state" : "Karnataka",
     description: "Soft, fluffy coastal Karnataka fritters made with flour, curd, ginger and green chilli.",
     prepTime: "Approx. 35 minutes (including resting time)",
     equipment: [
@@ -55808,6 +55813,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kori gassi": {
     dishName: "Kori Gassi (Mangalorean Chicken Curry)",
+    "state" : "Karnataka",
     description: "A coastal Karnataka chicken curry with roasted coconut, red chillies and warm spices.",
     prepTime: "Approx. 55 minutes",
     equipment: [
@@ -55846,6 +55852,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "punugulu": {
     dishName: "Punugulu (Andhra Batter Fritters)",
+    "image": "/dishes/punugulu.webp",
     "state" : "Andhra Pradesh",
     description: "Crispy outside and soft inside, these little fritters are an easy way to use leftover dosa batter.",
     prepTime: "Approx. 20 minutes",
@@ -55875,6 +55882,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chepala pulusu": {
     dishName: "Chepala Pulusu (Andhra Tamarind Fish Curry)",
+     "image": "/dishes/chepala-pulusu.webp",
     "state" : "Andhra Pradesh",
     description: "Fish simmered in a tangy tamarind gravy with chilli, tomato and everyday spices.",
     prepTime: "Approx. 40 minutes",
@@ -56016,6 +56024,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bebinca": {
     dishName: "Bebinca (Goan Layered Coconut Dessert)",
+     "image": "/dishes/bebinca.webp",
+     "state" : "Goa",
     description: "A rich Goan dessert made by baking thin layers of coconut milk batter with ghee.",
     prepTime: "Approx. 1 hour 30 minutes",
     equipment: [
@@ -58417,6 +58427,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "udupi sambar": {
   "dishName": "Udupi Sambar",
+  "image": "/dishes/udupi-sambar.webp",
   "state" : "Karnataka",
   "description": "A Karnataka-style sambar sweetened slightly with jaggery and flavoured with coconut.",
   "prepTime": "Approx. 40 minutes",
@@ -58445,6 +58456,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chow chow bath": {
   "dishName": "Chow Chow Bath",
+  "image": "/dishes/chow-chow-bath.webp",
   "state" : "Karnataka",
   "description": "A Karnataka breakfast combo of sweet kesari bath and savoury khara bath served together.",
   "prepTime": "Approx. 40 minutes",
@@ -58846,6 +58858,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gongura pappu": {
   "dishName": "Gongura Pappu",
+  "image": "/dishes/gongura-pappu.webp",
   "state" : "Andhra Pradesh",
   "description": "An Andhra dal cooked with sour gongura leaves.",
   "prepTime": "Approx. 35 minutes",
@@ -58871,6 +58884,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kodi kura (andhra chicken curry)": {
   "dishName": "Kodi Kura (Andhra Chicken Curry)",
+  "image": "/dishes/kodi-kura.webp",
   "state" : "Andhra Pradesh",
   "description": "A spicy, deep red Andhra-style chicken curry with onion and tomato.",
   "prepTime": "Approx. 45 minutes",
@@ -58896,6 +58910,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pulihora": {
   "dishName": "Pulihora (Tamarind Rice)",
+  "image": "/dishes/pulihora.webp",
   "state" : "Andhra Pradesh",
   "description": "A tangy South Indian rice dish seasoned with tamarind and a mustard-peanut tempering.",
   "prepTime": "Approx. 25 minutes (using cooked rice)",
@@ -58920,6 +58935,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gongura mutton": {
   "dishName": "Gongura Mutton",
+  "image": "/dishes/gongura-mutton.webp",
+  "state" : "Andhra Pradesh",
   "description": "A tangy Andhra mutton curry cooked with sour gongura leaves.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58944,6 +58961,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "royyala iguru": {
   "dishName": "Royyala Iguru (Andhra Prawn Curry)",
+  "image": "/dishes/royyala-iguru.webp",
   "state" : "Andhra Pradesh",
   "description": "A thick, spicy Andhra-style prawn curry with onion and tomato.",
   "prepTime": "Approx. 30 minutes",
@@ -58967,6 +58985,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "jonna rotte": {
   "dishName": "Jonna Rotte (Andhra Sorghum Roti)",
+  "image": "/dishes/jonna-rotte.webp",
   "state" : "Andhra Pradesh",
   "description": "A simple sorghum flour flatbread, patted thin and cooked on a tawa.",
   "prepTime": "Approx. 25 minutes",
@@ -58986,6 +59005,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pachi pulusu": {
   "dishName": "Pachi Pulusu (Raw Tamarind Soup)",
+  "image": "/dishes/pachi-pulusu.webp",
   "state" : "Andhra Pradesh",
   "description": "A simple, uncooked tangy Andhra tamarind-based drink eaten with rice.",
   "prepTime": "Approx. 15 minutes",
@@ -59009,6 +59029,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "garelu": {
   "dishName": "Garelu (Andhra Medu Vada)",
+  "image": "/dishes/medu-vada.webp",
   "state" : "Andhra Pradesh",
   "description": "Crisp lentil fritters, the Andhra version of medu vada.",
   "prepTime": "Approx. 35 minutes (plus soaking)",
@@ -59031,6 +59052,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "angakar roti": {
   "dishName": "Angakar Roti (Chhattisgarhi Ash-roasted Bread)",
+  "image": "/dishes/angakar-roti.webp",
+  "state" : "Chhattisgarh",
   "description": "A rustic whole wheat roti traditionally cooked on hot embers, made here on a tawa.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -59051,6 +59074,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dubki kadhi": {
   "dishName": "Dubki Kadhi (Chhattisgarhi Dumpling Kadhi)",
+  "image": "/dishes/kadhi.webp",
+  "state" : "Chhattisgarh",
   "description": "A simple yogurt-based kadhi with fried gram flour dumplings.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -59214,6 +59239,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mawa bati": {
   "dishName": "Mawa Bati",
+  "state" : "Madhya Pradesh",
   "description": "Deep-fried khoya dumplings dipped in sugar syrup, a Malwa-style sweet.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
