@@ -35097,6 +35097,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "sol kadhi": {
   "dishName": "Sol Kadhi",
   "image": "/dishes/sol-kadhi.webp",
+  "state" : "Maharashtra",
   "description": "Konkan-style cooling drink made from kokum and coconut milk with a little garlic and chilli.",
   "prepTime": "Approx. 15 minutes",
   "equipment": [
@@ -55175,6 +55176,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chitol macher muitha": {
     dishName: "Chitol Macher Muitha (Bengali Fish Dumplings)",
+    "image": "/dishes/chitol-macher-muitha.webp",
     description: "Bengali fish dumplings simmered in an onion, tomato and spice gravy.",
     prepTime: "Approx. 50 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55207,6 +55209,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chakuli pitha": {
     dishName: "Chakuli Pitha (Odia Rice and Lentil Pancake)",
+    "image": "/dishes/chakuli-pitha.webp",
+    state: "Odhisa",
     description: "Soft Odisha-style savoury pancakes made from rice and urad dal batter.",
     prepTime: "Approx. 25 minutes (plus soaking and resting)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "tawa", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55232,6 +55236,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "enduri pitha": {
     dishName: "Enduri Pitha (Odia Steamed Leaf Pitha)",
+    "image": "/dishes/enduri-pitha.webp",
+    "state" : "Odisha",
     description: "A steamed Odisha pitha with rice and urad batter and a coconut-jaggery filling.",
     prepTime: "Approx. 40 minutes (plus soaking and resting)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55259,6 +55265,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "besara": {
     dishName: "Besara (Odia Mustard Vegetable Curry)",
     "image": "/dishes/besara.webp",
+    state: "Odisha",
     description: "An Odisha vegetable curry with a sharp mustard, garlic and chilli paste.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55288,6 +55295,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "khubhi ka lai": {
     dishName: "Khubhi Ka Lai (Mushroom and Mustard Greens)",
+    "image": "/dishes/khubhi-ka-lai.webp",
     description: "A simple home-style mushroom curry with leafy greens, onion and mild spices.",
     prepTime: "Approx. 30 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55315,6 +55323,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "rugra": {
     dishName: "Rugra (Jharkhand Wild Mushroom Curry)",
+    "image": "/dishes/rugra.webp",
+    state: "Jharkhand",
     description: "A simple curry inspired by Jharkhand rugra mushrooms, cooked with potato and everyday spices.",
     prepTime: "Approx. 30 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55373,6 +55383,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "ringan no olo": {
     dishName: "Ringan No Olo (Gujarati Roasted Eggplant Mash)",
+    "image": "/dishes/ringan-no-olo.webp",
+    state : "Gujarat",
     description: "A Gujarati dish of roasted eggplant mashed with garlic, onion and simple spices.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "gas stove", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "oven", isSpecialized: false, alternative: null }],
@@ -55400,6 +55412,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "bajra raab": {
     dishName: "Bajra Raab (Gujarati Pearl Millet Drink)",
+    "image": "/dishes/bajra-raab.webp",
     description: "A warm Gujarati millet drink made by cooking bajra flour with water and a little jaggery.",
     prepTime: "Approx. 20 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55590,6 +55603,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "aloo pitika": {
     dishName: "Aloo Pitika (Assamese Mashed Potato)",
+    "image": "/dishes/aloo-pitika.webp",
     "state" : "Assam",
     description: "A simple Assamese side dish of warm mashed potato, raw mustard oil, onion and green chilli.",
     prepTime: "Approx. 25 minutes",
@@ -55613,6 +55627,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "galho": {
     dishName: "Galho (Naga Rice and Vegetable Stew)",
+    "image": "/dishes/galho.webp",
+    state : "Nagaland",
     description: "A comforting Nagaland one-pot meal of rice, vegetables and greens cooked until soft.",
     prepTime: "Approx. 35 minutes",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55639,6 +55655,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "anishi": {
     dishName: "Anishi (Naga Fermented Colocasia Leaf Curry)",
+    "image": "/dishes/anishi.webp",
+    state: "Nagaland",
     description: "A traditional Naga curry made with dried fermented colocasia leaves and pork.",
     prepTime: "Approx. 1 hour",
     equipment: [{ item: "cooker", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55663,6 +55681,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "singju": {
     dishName: "Singju (Manipuri Crunchy Vegetable Salad)",
+    "image": "/dishes/singju.webp",
     description: "A crunchy Manipuri salad mixed with roasted gram flour, chilli and herbs.",
     prepTime: "Approx. 20 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55687,6 +55706,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chhangban": {
     dishName: "Chhangban (Mizo Sticky Rice Cakes)",
+    "image": "/dishes/chhangban.webp",
     description: "Sticky rice cakes wrapped in leaves and cooked until firm, a traditional Mizo food.",
     prepTime: "Approx. 30 minutes",
     equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
