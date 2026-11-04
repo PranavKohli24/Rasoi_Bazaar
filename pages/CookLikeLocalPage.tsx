@@ -800,7 +800,7 @@ const CookLikeLocalPage: React.FC = () => {
                   key={`content-tabs-${selectedRegion.slug}`}
                   role="tablist"
                   aria-label="View dishes or restaurants"
-                  className="cook-card-rise relative mt-6 inline-flex rounded-full border border-stone-700 bg-stone-900/60 p-1"
+                  className="cook-card-rise relative mt-6 flex w-full rounded-full border border-stone-700 bg-stone-900/60 p-1"
                   style={{ animationDelay: "80ms" }}
                 >
                   <button
@@ -808,7 +808,7 @@ const CookLikeLocalPage: React.FC = () => {
                     role="tab"
                     aria-selected={contentTab === "dishes"}
                     onClick={() => setContentTab("dishes")}
-                    className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                    className={`flex-1 whitespace-nowrap rounded-full px-2 py-2 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${
                       contentTab === "dishes"
                         ? "bg-orange-200 text-stone-900"
                         : "text-stone-300 hover:text-stone-100"
@@ -821,7 +821,7 @@ const CookLikeLocalPage: React.FC = () => {
                     role="tab"
                     aria-selected={contentTab === "restaurants"}
                     onClick={() => setContentTab("restaurants")}
-                    className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+                    className={`flex-1 whitespace-nowrap rounded-full px-2 py-2 text-xs font-semibold transition-colors duration-300 sm:px-4 sm:text-sm ${
                       contentTab === "restaurants"
                         ? "bg-orange-200 text-stone-900"
                         : "text-stone-300 hover:text-stone-100"
