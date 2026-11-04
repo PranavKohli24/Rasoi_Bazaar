@@ -55423,6 +55423,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "mushroom tonak": {
     dishName: "Mushroom Tonak (Goan Mushroom Curry)",
+    "image": "/dishes/mushroom-xacuti.webp",
     "state" : "Goa",
     description: "A Goan curry of mushrooms in a roasted coconut and spice gravy.",
     prepTime: "Approx. 40 minutes",
@@ -58211,6 +58212,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kolhapuri tambda rassa": {
   "dishName": "Kolhapuri Tambda Rassa",
+   "image": "/dishes/tambda-rassa.webp",
+  "state" : "Maharashtra",
   "description": "A fiery red spiced Kolhapuri mutton curry with a simple roasted coconut-chilli masala.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58260,6 +58263,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "malvani fish curry": {
   "dishName": "Malvani Fish Curry",
+   "image": "/dishes/fish-curry.webp",
+  "state" : "Maharashtra",
   "description": "A tangy, spicy coastal Maharashtrian fish curry made with coconut and Malvani masala.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58285,6 +58290,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pork vindaloo": {
   "dishName": "Pork Vindaloo",
+   "image": "/dishes/pork-vindaloo.webp",
+  "state" : "Goa",
   "description": "A fiery, tangy Goan pork curry made with vinegar, chillies and warm spices.",
   "prepTime": "Approx. 1 hour (plus marination)",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58310,6 +58317,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chicken xacuti": {
   "dishName": "Chicken Xacuti",
+   "image": "/dishes/chicken-xacuti.webp",
+  "state" : "Goa",
   "description": "A Goan chicken curry with a deeply roasted coconut and poppy seed spice paste.",
   "prepTime": "Approx. 50 minutes",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58336,6 +58345,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pork sorpotel": {
   "dishName": "Pork Sorpotel",
+  "image": "/dishes/pork-sorpotel.webp",
   "state" : "Goa",
   "description": "A tangy, spicy Goan pork curry with vinegar and a deep red masala.",
   "prepTime": "Approx. 1 hour",
@@ -58361,6 +58371,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "prawn balchao": {
   "dishName": "Prawn Balchão",
+  "image": "/dishes/prawn-balchao.webp",
   state : "Goa",
   "description": "A tangy, spicy Goan pickle-style prawn curry with vinegar and onion.",
   "prepTime": "Approx. 35 minutes",
@@ -58384,6 +58395,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "goan chorizo pulao": {
   "dishName": "Goan Chorizo Pulao",
+  "image": "/dishes/goan-chorizo-pulao.webp",
   "state" : "Goa",
   "description": "A spiced Goan rice dish cooked with Goan chorizo sausage.",
   "prepTime": "Approx. 35 minutes",
@@ -58409,6 +58421,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mushroom xacuti": {
   "dishName": "Mushroom Xacuti",
+  "image": "/dishes/mushroom-xacuti.webp",
   "state" : "Goa",
   "description": "A vegetarian version of Goan xacuti with mushrooms in a roasted coconut spice gravy.",
   "prepTime": "Approx. 35 minutes",
@@ -59193,6 +59206,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dal bafla": {
   "dishName": "Dal Bafla (Malwa-style Baked Dumplings with Dal)",
+  "image": "/dishes/dal-bafla.webp",
    "state" : "Madhya Pradesh",
   "description": "A Madhya Pradesh dish of boiled-then-baked wheat dumplings served with dal, similar to dal baati.",
   "prepTime": "Approx. 1 hour",
@@ -59219,6 +59233,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chakki ki shaak": {
   "dishName": "Chakki Ki Shaak (Malwa-style Wheat Dumpling Curry)",
+  "image": "/dishes/chakki-shaak.webp",
    "state" : "Madhya Pradesh",
   "description": "A Malwa specialty of steamed wheat flour dumplings in a tangy yogurt curry.",
   "prepTime": "Approx. 50 minutes",
@@ -59246,6 +59261,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mawa bati": {
   "dishName": "Mawa Bati",
+  "image": "/dishes/mawa-bati.webp",
   "state" : "Madhya Pradesh",
   "description": "Deep-fried khoya dumplings dipped in sugar syrup, a Malwa-style sweet.",
   "prepTime": "Approx. 40 minutes",
@@ -59270,6 +59286,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mawa jalebi": {
   "dishName": "Mawa Jalebi",
+  "image": "/dishes/mawa-jalebi.webp",
    "state" : "Madhya Pradesh",
   "description": "A rich, chewy version of jalebi made with khoya, deep-fried and dipped in sugar syrup.",
   "prepTime": "Approx. 45 minutes",
