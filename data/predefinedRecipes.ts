@@ -55537,6 +55537,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bafauri": {
     dishName: "Bafauri (Chhattisgarh Steamed Chana Dal Balls)",
     "image": "/dishes/bafauri.webp",
+    state: "Chhattisgarh",
     description: "A Chhattisgarh snack of spiced chana dal balls cooked by steaming instead of frying.",
     prepTime: "Approx. 35 minutes (plus soaking)",
     equipment: [{ item: "mixer", isSpecialized: false, alternative: null }, { item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
@@ -55564,6 +55565,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "chousela": {
     dishName: "Chousela (Chhattisgarh Rice Puri)",
+    "image": "/dishes/chousela.webp",
     state: "Chhattisgarh",
     description: "A crisp Chhattisgarhi rice-flour puri made with hot water and salt.",
     prepTime: "Approx. 35 minutes",
@@ -55813,6 +55815,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kori gassi": {
     dishName: "Kori Gassi (Mangalorean Chicken Curry)",
+     "image": "/dishes/kori-gassi.webp",
     "state" : "Karnataka",
     description: "A coastal Karnataka chicken curry with roasted coconut, red chillies and warm spices.",
     prepTime: "Approx. 55 minutes",
@@ -57528,6 +57531,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gyapa khazi": {
   "dishName": "Gyapa Khazi (Arunachal Vegetable and Meat Stew)",
+  "image": "/dishes/gyapa-khazi.webp",
   "state" : "Arunachal Pradesh",
   "description": "A simple home-style Arunachal-inspired stew of chicken and seasonal vegetables.",
   "prepTime": "Approx. 40 minutes",
@@ -58332,6 +58336,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pork sorpotel": {
   "dishName": "Pork Sorpotel",
+  "state" : "Goa",
   "description": "A tangy, spicy Goan pork curry with vinegar and a deep red masala.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58356,6 +58361,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "prawn balchao": {
   "dishName": "Prawn Balchão",
+  state : "Goa",
   "description": "A tangy, spicy Goan pickle-style prawn curry with vinegar and onion.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58378,6 +58384,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "goan chorizo pulao": {
   "dishName": "Goan Chorizo Pulao",
+  "state" : "Goa",
   "description": "A spiced Goan rice dish cooked with Goan chorizo sausage.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
