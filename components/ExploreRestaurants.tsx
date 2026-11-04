@@ -166,6 +166,26 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
   );
 };
 
+const StarIconSm: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 20 20" fill="currentColor" className={className} aria-hidden="true">
+    <path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6L10 1.5Z" />
+  </svg>
+);
+
+const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3.5 2" />
+  </svg>
+);
+
+const PinIconSm: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+);
+
 const RestaurantDetailsPanel: React.FC<{
   restaurant: DineoutRestaurant;
   details: DineoutRestaurantDetails | null;
@@ -173,26 +193,61 @@ const RestaurantDetailsPanel: React.FC<{
   error: string | null;
   onBack: () => void;
 }> = ({ restaurant, details, isLoading, error, onBack }) => (
-  <div className={`${tileCard} mt-4 p-4 sm:p-6`}>
-    <button type="button" onClick={onBack} className={`${ghostButton} -ml-2 mb-3`}>
-      <span aria-hidden="true">←</span> Back to restaurants
-    </button>
+  <div className="mt-4 overflow-hidden rounded-2xl border border-stone-700 bg-stone-900">
+    <div className="p-4 sm:p-6">
+      <button type="button" onClick={onBack} className={`${ghostButton} -ml-2 mb-2`}>
+        <span aria-hidden="true">←</span> Back to restaurants
+      </button>
 
-    <h4 className="font-serif text-xl font-black text-orange-50">{restaurant.name}</h4>
+      <h4 className="font-serif text-2xl font-black leading-tight text-orange-50">
+        {details?.restaurant.name ?? restaurant.name}
+      </h4>
+
+      {!isLoading && !error && details && (
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+          {typeof details.restaurant.avgRating === "number" && (
+            <span className="flex items-center gap-1 font-semibold text-orange-200">
+              <StarIconSm className="h-3.5 w-3.5" />
+              {details.restaurant.avgRating}
+              {details.restaurant.totalRatings && (
+                <span className="font-normal text-stone-400">({details.restaurant.totalRatings})</span>
+              )}
+            </span>
+          )}
+          {details.restaurant.costForTwo && (
+            <span className="text-stone-400">{details.restaurant.costForTwo}</span>
+          )}
+        </div>
+      )}
+
+      {details?.restaurant.cuisines && details.restaurant.cuisines.length > 0 && !isLoading && !error && (
+        <p className="mt-1 text-sm text-stone-400">{details.restaurant.cuisines.join(", ")}</p>
+      )}
+    </div>
 
     {isLoading ? (
-      <div className="mt-4 space-y-2.5">
+      <div className="space-y-2.5 px-4 pb-5 sm:px-6">
         <Shimmer className="h-3.5 w-2/3" />
         <Shimmer className="h-3.5 w-1/2" />
         <Shimmer className="h-3.5 w-3/4" />
       </div>
     ) : error ? (
-      <p className="mt-3 text-sm text-stone-400">{error}</p>
+      <p className="px-4 pb-5 text-sm text-stone-400 sm:px-6">{error}</p>
     ) : details ? (
-      <div className="mt-3 space-y-3 text-sm text-stone-300">
-        <p>{details.restaurant.address}</p>
-        <p className="text-stone-400">{details.restaurant.timings}</p>
-        <p className="text-stone-400">{details.restaurant.costForTwo}</p>
+      <div className="space-y-4 border-t border-stone-800 px-4 py-4 sm:px-6">
+        {details.restaurant.address && (
+          <div className="flex items-start gap-2.5 text-sm text-stone-300">
+            <PinIconSm className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
+            <span>{details.restaurant.address}</span>
+          </div>
+        )}
+
+        {details.restaurant.timings && (
+          <div className="flex items-start gap-2.5 text-sm text-stone-300">
+            <ClockIcon className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
+            <span>{details.restaurant.timings}</span>
+          </div>
+        )}
 
         {details.amenities.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
@@ -207,16 +262,35 @@ const RestaurantDetailsPanel: React.FC<{
           </div>
         )}
 
-        {details.restaurant.deals.length > 0 && (
-          <div className="space-y-1.5">
-            {details.restaurant.deals.map((deal) => (
-              <div
-                key={deal.id}
-                className="rounded-lg bg-orange-900/30 px-3 py-2 text-xs font-medium text-orange-200"
-              >
-                {deal.title}
-              </div>
-            ))}
+        {details.restaurant.offers.length > 0 && (
+          <div>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-stone-500">Offers</p>
+            <div className="space-y-1.5">
+              {details.restaurant.offers.map((offer, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-orange-900/40 bg-stone-950 px-3 py-2 text-xs font-medium text-orange-200"
+                >
+                  {offer}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {details.restaurant.bankOffers.length > 0 && (
+          <div>
+            <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-stone-500">Bank offers</p>
+            <div className="space-y-1.5">
+              {details.restaurant.bankOffers.map((offer, i) => (
+                <div
+                  key={i}
+                  className="rounded-lg border border-stone-700 px-3 py-2 text-xs text-stone-300"
+                >
+                  {offer}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

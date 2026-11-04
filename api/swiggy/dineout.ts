@@ -117,6 +117,109 @@ export async function POST(request: Request): Promise<Response> {
   return json({ error: "Missing or unknown action. Use 'search' or 'details'." }, 400);
 }
 
+/**
+ * Parses get_restaurant_details' plain-text summary (same situation as
+ * search — no structuredContent in practice). Format is "Label: value"
+ * lines, e.g.:
+ *   Restaurant: Lazeez Affaire, Scindia House
+ *   Cuisines: North Indian, Mughlai
+ *   Address: 3.6 km •  Ground Floor, ...
+ *   Rating: 4.5 (293 Google ratings)
+ *   Cost for two: ₹3000 for two
+ *   Timings: Closed, Opens at 11AM
+ *   Offers: Flat 30% off on Total Bill; Flat 20% off on Total Bill
+ *   Bank offers: Flat 10% off* (use DINE150); Cashback ₹125 (use PAYTMNEW)
+ *   Amenities: ... (if present)
+ */
+function parseRestaurantDetailsFromSummaryText(text: string, restaurantId: string): any {
+  const lines = text.split(/\r?\n/);
+  const fields: Record<string, string> = {};
+
+  for (const line of lines) {
+    const match = line.match(/^([A-Za-z ]+):\s*(.*)$/);
+    if (!match) continue;
+    const [, label, value] = match;
+    fields[label.trim().toLowerCase()] = value.trim();
+  }
+
+  const splitList = (value: string | undefined) =>
+    value
+      ? value.split(";").map((v) => v.trim()).filter(Boolean)
+      : [];
+
+  const ratingMatch = fields["rating"]?.match(/([\d.]+)\s*(?:\((.+)\))?/);
+
+  return {
+    id: restaurantId,
+    name: fields["restaurant"] ?? "Restaurant",
+    cuisines: fields["cuisines"] ? fields["cuisines"].split(",").map((c) => c.trim()) : [],
+    address: fields["address"] ?? "",
+    avgRating: ratingMatch ? Number(ratingMatch[1]) : undefined,
+    totalRatings: ratingMatch?.[2],
+    costForTwo: fields["cost for two"] ?? "",
+    timings: fields["timings"] ?? "",
+    offers: splitList(fields["offers"]),
+    bankOffers: splitList(fields["bank offers"]),
+    amenities: splitList(fields["amenities"]),
+  };
+}
+
+
+/**
+ * Fallback for when Swiggy's Dineout search returns only a plain-text
+ * summary (result.content[0].text) with no structuredContent — which is
+ * what we're actually seeing in practice. Parses lines like:
+ *   "1. Farzi Cafe — North Indian | 4.0★ | ₹2000 for two | Connaught Place (ID: 302252)"
+ *   "7. Somewhere Restaurant & Bar — ₹2300 for two | 4.0★ | 4.1 km, Connaught Place | Connaught Place • ₹2300 for two • North Indian (ID: 600860)"
+ * Best-effort: Swiggy doesn't document this text format, so this is
+ * heuristic. Fields it can't confidently find are just left blank.
+ */
+function parseRestaurantsFromSummaryText(text: string): any[] {
+  const lines = text.split(/\r?\n/);
+  const restaurants: any[] = [];
+
+  const lineRegex = /^\d+\.\s*(.+?)\s*—\s*(.*?)\s*\(ID:\s*([\w-]+)\)\s*$/;
+
+  for (const line of lines) {
+    const match = line.match(lineRegex);
+    if (!match) continue;
+
+    const [, name, meta, id] = match;
+
+    const ratingMatch = meta.match(/(\d+(?:\.\d+)?)\s*★/);
+    const costMatch = meta.match(/₹[\d,]+\s*for two/i);
+    const distanceMatch = meta.match(/[\d.]+\s*km/);
+
+    const pipeParts = meta.split("|").map((p) => p.trim()).filter(Boolean);
+
+    let area = "";
+    let cuisine = "";
+
+    const comboPart = pipeParts.find((p) => p.includes("•"));
+    if (comboPart) {
+      const comboSplit = comboPart.split("•").map((p) => p.trim()).filter(Boolean);
+      area = comboSplit[0] ?? "";
+      cuisine = comboSplit[comboSplit.length - 1] ?? "";
+    } else {
+      area = pipeParts[pipeParts.length - 1] ?? "";
+      cuisine = pipeParts.find((p) => !/₹|★|km/i.test(p)) ?? "";
+    }
+
+    restaurants.push({
+      id,
+      name: name.trim(),
+      cuisine: cuisine ? [cuisine] : [],
+      locality: area,
+      area,
+      rating: ratingMatch ? { value: ratingMatch[1] } : undefined,
+      costForTwo: costMatch ? costMatch[0] : "",
+      distance: distanceMatch ? distanceMatch[0] : undefined,
+    });
+  }
+
+  return restaurants;
+}
+
 /* ---- search ---- */
 
 async function handleSearch(accessToken: string | null, body: any): Promise<Response> {
@@ -159,9 +262,17 @@ async function handleSearch(accessToken: string | null, body: any): Promise<Resp
       console.error("Dineout search: MCP tool error:", mcpErrorText);
       return json({ error: mcpErrorText }, 502);
     }
-
     const content = data?.result?.structuredContent ?? {};
-    const restaurants = content?.restaurants ?? content?.data?.restaurants ?? [];
+    let restaurants = content?.restaurants ?? content?.data?.restaurants ?? [];
+
+    // Swiggy sometimes returns only a plain-text summary with no
+    // structuredContent — parse that text instead of showing nothing.
+    if (restaurants.length === 0) {
+      const summaryText = data?.result?.content?.[0]?.text;
+      if (typeof summaryText === "string") {
+        restaurants = parseRestaurantsFromSummaryText(summaryText);
+      }
+    }
 
     return json({ success: true, result: { structuredContent: { restaurants } } });
   } catch (error) {
@@ -219,14 +330,28 @@ async function handleDetails(accessToken: string | null, body: any): Promise<Res
     const content = data?.result?.structuredContent ?? {};
     const payload = content?.data ?? content;
 
+    let restaurant = payload?.restaurant ?? null;
+    let amenities = payload?.amenities ?? [];
+
+    // Same situation as search — Swiggy often returns only a plain-text
+    // summary with no structuredContent. Parse that instead of showing nothing.
+    if (!restaurant) {
+      const summaryText = data?.result?.content?.[0]?.text;
+      if (typeof summaryText === "string") {
+        const parsed = parseRestaurantDetailsFromSummaryText(summaryText, restaurantId);
+        restaurant = parsed;
+        amenities = parsed.amenities;
+      }
+    }
+
     return json({
       success: true,
       result: {
         structuredContent: {
           data: {
-            restaurant: payload?.restaurant ?? null,
+            restaurant,
             menuImages: payload?.menuImages ?? [],
-            amenities: payload?.amenities ?? [],
+            amenities,
           },
         },
       },

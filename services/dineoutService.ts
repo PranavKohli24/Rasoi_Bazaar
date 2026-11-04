@@ -1,13 +1,6 @@
 /** Read-only Dineout discovery: search + details. No booking, no auth-gated
  *  cart flow — this is the "explore restaurants" browse feature only. */
 
-export interface DineoutDeal {
-  id: string | number;
-  title: string;
-  discountPercentage?: number;
-  offerCategory?: "prebooking" | "walkin";
-}
-
 export interface DineoutRestaurant {
   id: string;
   name: string;
@@ -28,19 +21,14 @@ export interface DineoutRestaurantDetails {
     id: string;
     name: string;
     cuisines: string[];
-    locality: string;
-    area: string;
     address: string;
-    avgRating: number;
+    avgRating?: number;
     totalRatings?: string;
     costForTwo: string;
-    imageUrl?: string;
-    mastheadImageUrls?: string[];
-    description?: string;
     timings: string;
-    deals: DineoutDeal[];
+    offers: string[];
+    bankOffers: string[];
   };
-  menuImages: { imageUrl: string; label?: string }[];
   amenities: string[];
 }
 
@@ -128,10 +116,22 @@ export const getDineoutRestaurantDetails = async (
     "Couldn't load restaurant details. Please try again."
   );
 
-  const payload = data?.result?.structuredContent?.data ?? data?.result?.structuredContent;
+  const payload = data?.result?.structuredContent?.data;
+  const raw = payload?.restaurant ?? {};
+
   return {
-    restaurant: payload?.restaurant,
-    menuImages: payload?.menuImages ?? [],
+    restaurant: {
+      id: String(raw.id ?? restaurantId),
+      name: raw.name ?? "Restaurant",
+      cuisines: raw.cuisines ?? [],
+      address: raw.address ?? "",
+      avgRating: typeof raw.avgRating === "number" ? raw.avgRating : undefined,
+      totalRatings: raw.totalRatings,
+      costForTwo: raw.costForTwo ?? "",
+      timings: raw.timings ?? "",
+      offers: raw.offers ?? [],
+      bankOffers: raw.bankOffers ?? [],
+    },
     amenities: payload?.amenities ?? [],
   };
 };
