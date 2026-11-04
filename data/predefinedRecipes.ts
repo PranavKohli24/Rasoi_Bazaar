@@ -56138,6 +56138,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "nimona": {
     dishName: "Matar Nimona (UP Green Pea Curry)",
+    "image": "/dishes/nimona.webp",
     "state" : "Uttar Pradesh",
     description: "A comforting winter curry made with crushed green peas, potato and simple spices.",
     prepTime: "Approx. 35 minutes",
@@ -56904,6 +56905,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "awadhi biryani": {
   "dishName": "Awadhi Biryani",
+  "image": "/dishes/awadhi-biryani.webp",
   "state" : "Uttar Pradesh",
   "description": "A mild, fragrant Lucknow-style dum biryani with marinated meat and gently spiced rice.",
   "prepTime": "Approx. 1 hour 30 minutes (plus marination)",
@@ -56931,6 +56933,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "banarasi tamatar chaat": {
   "dishName": "Banarasi Tamatar Chaat",
+  "image": "/dishes/banarasi-tamatar-chaat.webp",
   "state" : "Uttar Pradesh",
   "description": "Spiced stewed tomatoes with potatoes, a tangy Banarasi street-style chaat.",
   "prepTime": "Approx. 30 minutes",
@@ -56956,6 +56959,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kakori kebab": {
   "dishName": "Kakori Kebab",
+  "image": "/dishes/kakori-kebab.webp",
   "state" : "Uttar Pradesh",
   "description": "Extremely soft minced mutton kebabs from Lucknow, shaped onto skewers and pan-cooked.",
   "prepTime": "Approx. 45 minutes (plus resting)",
@@ -56980,6 +56984,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mathura peda": {
   "dishName": "Mathura Peda",
+  "image": "/dishes/peda.webp",
   "state" : "Uttar Pradesh",
   "description": "A classic milk-based sweet from Mathura, made with khoya and sugar.",
   "prepTime": "Approx. 25 minutes",
@@ -57001,6 +57006,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "allahabadi tehri": {
   "dishName": "Allahabadi Tehri",
+  "image": "/dishes/allahabadi-tehri.webp",
   "state" : "Uttar Pradesh",
   "description": "A tangy vegetarian spiced rice from Allahabad, cooked with potatoes and vegetables.",
   "prepTime": "Approx. 35 minutes",
@@ -57027,6 +57033,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "malaiyyo": {
   "dishName": "Malaiyyo (Banarasi Milk Foam Dessert)",
+  "image": "/dishes/malaiyyo.webp",
   "state" : "Uttar Pradesh",
   "description": "A light, airy winter dessert made by whipping sweetened milk foam, Banarasi style.",
   "prepTime": "Approx. 30 minutes (plus overnight chilling)",
@@ -57074,6 +57081,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "silao khaja": {
   "dishName": "Silao Khaja (Layered Fried Sweet)",
+  "state" : "Bihar",
   "description": "A crisp, flaky layered sweet from Bihar, deep-fried and dipped in sugar syrup.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57242,6 +57250,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "luchi alur dom": {
   "dishName": "Luchi Alur Dom",
+  "image": "/dishes/aloo-puri.webp",
   "state" : "West Bengal",
   "description": "Bengali deep-fried puris served with a simple potato curry, a classic breakfast pairing.",
   "prepTime": "Approx. 40 minutes",
@@ -57268,6 +57277,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dim kosha": {
   "dishName": "Dim Kosha (Bengali Spiced Egg Curry)",
+  "image": "/dishes/dim-kosha.webp",
   "state" : "West Bengal",
   "description": "Hard-boiled eggs simmered in a thick, spicy onion-tomato gravy, Bengali style.",
   "prepTime": "Approx. 35 minutes",
@@ -57293,6 +57303,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "machha besara": {
   "dishName": "Machha Besara (Odia Fish in Mustard Gravy)",
+  "image": "/dishes/machha-besara.webp",
+  "state" : "Odisha",
   "description": "An Odisha fish curry cooked in a sharp mustard-garlic paste gravy.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57317,6 +57329,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "santula": {
   "dishName": "Santula (Odia Mixed Vegetable Stew)",
+  "image": "/dishes/santula.webp",
+  "state" : "Odisha",
   "description": "A light, lightly spiced Odia mixed vegetable stew cooked in minimal oil.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57339,6 +57353,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mudhi mansa": {
   "dishName": "Mudhi Mansa (Mutton with Puffed Rice)",
+  "image": "/dishes/mudhi-mansa.webp",
+  "state" : "Odisha",
   "description": "A hearty Odisha-style spicy mutton curry traditionally served with crunchy puffed rice.",
   "prepTime": "Approx. 1 hour",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57471,6 +57487,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pika pila": {
   "dishName": "Pika Pila (Assamese Fermented Bamboo Shoot Curry)",
+  "state" : "Assam",
   "description": "A simple Assamese-style curry with bamboo shoot, potato and mild spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
