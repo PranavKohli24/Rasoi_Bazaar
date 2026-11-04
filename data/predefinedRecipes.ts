@@ -56176,6 +56176,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "kafuli": {
     dishName: "Kafuli (Uttarakhand Green Leaf Curry)",
+    "image": "/dishes/kafuli.webp",
     "state" : "Uttarakhand",
     description: "A thick pahadi curry made with spinach, optional fenugreek leaves and a little rice flour.",
     prepTime: "Approx. 35 minutes",
@@ -56212,6 +56213,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "skyu": {
     dishName: "Skyu (Ladakhi Dough and Vegetable Stew)",
+    state: "Ladakh",
     description: "A warming Ladakhi stew of small wheat dough pieces and vegetables cooked together in one pot.",
     prepTime: "Approx. 50 minutes",
     equipment: [
@@ -56576,6 +56578,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kullu trout": {
   "dishName": "Kullu Trout (Pan-fried Trout)",
+  "image": "/dishes/kullu-trout.webp",
+  "state" : "Himachal Pradesh",
   "description": "Simple pan-fried trout fish marinated with lemon and mild spices, inspired by Kullu valley cooking.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "tawa", "isSpecialized": false, "alternative": null }],
@@ -56647,6 +56651,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "bhatt ki churkani": {
   "dishName": "Bhatt Ki Churkani (Uttarakhand Black Soybean Curry)",
+  "image": "/dishes/bhatt-ki-churkani.webp",
   "state" : "Uttarakhand",
   "description": "A Kumaoni curry of black soybeans in a thick, roasted gram flour gravy.",
   "prepTime": "Approx. 1 hour (plus overnight soaking)",
@@ -56673,6 +56678,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dubuk": {
   "dishName": "Dubuk (Uttarakhand Lentil Curry)",
+  "image": "/dishes/dubuk.webp",
   "state" : "Uttarakhand",
   "description": "A simple thick pahadi gram flour and lentil curry flavoured with ghee and cumin.",
   "prepTime": "Approx. 35 minutes",
@@ -56697,6 +56703,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "jhangora ki kheer": {
   "dishName": "Jhangora Ki Kheer (Barnyard Millet Pudding)",
+  "image": "/dishes/jhangora-kheer.webp",
   "state" : "Uttarakhand",
   "description": "A light Uttarakhand pudding made from barnyard millet cooked in milk.",
   "prepTime": "Approx. 30 minutes",
@@ -56719,6 +56726,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gahat ki dal": {
   "dishName": "Gahat Ki Dal (Pahadi Horse Gram Dal)",
+  "image": "/dishes/gahat-dal.webp",
   "state" : "Uttarakhand",
   "description": "A Kumaoni horse gram dal flavoured with roasted cumin and garlic.",
   "prepTime": "Approx. 50 minutes (plus soaking)",
@@ -56743,6 +56751,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sisunak saag": {
   "dishName": "Sisunak Saag (Pahadi Nettle Greens)",
+  "image": "/dishes/sisunak-saag.webp",
   "state" : "Uttarakhand",
   "description": "A simple spiced greens dish, home-style with spinach as a substitute for wild nettle leaves.",
   "prepTime": "Approx. 25 minutes",
@@ -56765,6 +56774,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "singori": {
   "dishName": "Singori (Uttarakhand Khoya Sweet)",
+  "image": "/dishes/singori.webp",
   "state" : "Uttarakhand",
   "description": "A simple sweet of khoya and sugar, traditionally wrapped in malu leaves.",
   "prepTime": "Approx. 20 minutes",
@@ -57055,6 +57065,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kadhi bari": {
   "dishName": "Kadhi Bari (Bihari Besan Dumplings in Kadhi)",
+  "image": "/dishes/kadhi-bari.webp",
   "state" : "Bihar",
   "description": "Fried gram flour dumplings simmered in a tangy besan-yogurt gravy.",
   "prepTime": "Approx. 45 minutes",
@@ -57081,6 +57092,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "silao khaja": {
   "dishName": "Silao Khaja (Layered Fried Sweet)",
+  "image": "/dishes/silao-khaja.webp",
   "state" : "Bihar",
   "description": "A crisp, flaky layered sweet from Bihar, deep-fried and dipped in sugar syrup.",
   "prepTime": "Approx. 1 hour",
@@ -57105,6 +57117,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chilka roti": {
   "dishName": "Chilka Roti (Bihari Rice Flour Roti)",
+  "image": "/dishes/chilka-roti.webp",
   "state" : "Bihar",
   "description": "A simple rice flour flatbread, cooked soft on a tawa and served with chutney.",
   "prepTime": "Approx. 25 minutes",
@@ -59162,6 +59175,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kochai patta bhaji": {
   "dishName": "Kochai Patta Bhaji (Colocasia Leaf Stir-fry)",
+  "image": "/dishes/kochai-patta-bhaji.webp",
   "description": "A simple stir-fry of colocasia leaves cooked with garlic and mustard oil.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -59181,6 +59195,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dehrori": {
   "dishName": "Dehrori (Bihari Rice Fritters)",
+  "image": "/dishes/dehrori.webp",
   "state" : "Bihar",
   "description": "A simple sweet fritter made from soaked rice and jaggery, a Bihari festive snack.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
@@ -59201,6 +59216,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "khurmi": {
   "dishName": "Khurmi (Bihari Crisp Sweet)",
+  "image": "/dishes/khurmi.webp",
   "state" : "Bihar",
   "description": "A crisp, slightly sweet deep-fried flour snack, popular in Bihar.",
   "prepTime": "Approx. 35 minutes",
