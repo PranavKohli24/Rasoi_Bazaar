@@ -56213,6 +56213,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "skyu": {
     dishName: "Skyu (Ladakhi Dough and Vegetable Stew)",
+    "image": "/dishes/skyu.webp",
     state: "Ladakh",
     description: "A warming Ladakhi stew of small wheat dough pieces and vegetables cooked together in one pot.",
     prepTime: "Approx. 50 minutes",
@@ -56247,6 +56248,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "gudok": {
     dishName: "Gudok (Tripuri Fermented Fish and Vegetable Stew)",
+    "image": "/dishes/gudok.webp",
+    "state" : "Tripura",
     description: "A traditional Tripura stew of vegetables and berma, a pungent dried fermented fish.",
     prepTime: "Approx. 35 minutes",
     equipment: [
@@ -57392,6 +57395,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "haah mangxo": {
   "dishName": "Haah Mangxo (Assamese Duck Curry)",
+  "image": "/dishes/haah-mangxo.webp",
   "state" : "Assam",
   "description": "An Assamese-style poultry curry cooked with ginger, garlic and simple spices (using chicken as a practical home substitute).",
   "prepTime": "Approx. 45 minutes",
@@ -57416,6 +57420,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "xaak bhaji": {
   "dishName": "Xaak Bhaji (Assamese Greens Stir-fry)",
+  "image": "/dishes/xaak-bhaji.webp",
   "state" : "Assam",
   "description": "A simple Assamese stir-fry of leafy greens with garlic and mustard oil.",
   "prepTime": "Approx. 20 minutes",
@@ -57436,6 +57441,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "poita bhat": {
   "dishName": "Poita Bhat (Assamese Soaked Rice)",
+  "image": "/dishes/poita-bhat.webp",
   "state" : "Assam",
   "description": "A simple refreshing Assamese dish of overnight-soaked cooked rice, eaten with mustard oil and chillies.",
   "prepTime": "Approx. 10 minutes, plus overnight soaking",
@@ -57457,6 +57463,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "til pitha": {
   "dishName": "Til Pitha (Assamese Sesame Rice Rolls)",
+  "image": "/dishes/til-pitha.webp",
   "state" : "Assam",
   "description": "A traditional Assamese rice flour roll filled with sweet sesame and jaggery.",
   "prepTime": "Approx. 30 minutes",
@@ -57479,6 +57486,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "ghila pitha": {
   "dishName": "Ghila Pitha (Assamese Fried Rice Cakes)",
+  "image": "/dishes/ghila-pitha.webp",
   "state" : "Assam",
   "description": "Soft, lightly sweet fried rice flour fritters from Assam.",
   "prepTime": "Approx. 30 minutes (plus soaking)",
@@ -57500,6 +57508,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pika pila": {
   "dishName": "Pika Pila (Assamese Fermented Bamboo Shoot Curry)",
+  "image": "/dishes/pika-pila.webp",
   "state" : "Assam",
   "description": "A simple Assamese-style curry with bamboo shoot, potato and mild spices.",
   "prepTime": "Approx. 30 minutes",
@@ -57587,6 +57596,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "raja mircha chutney": {
   "dishName": "Raja Mircha Chutney (Ghost Pepper Chutney)",
+  "image": "/dishes/raja-mircha-chutney.webp",
   "description": "A fiery Northeast Indian chutney made with the extremely hot raja mircha (bhut jolokia) chilli.",
   "prepTime": "Approx. 15 minutes",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }],
@@ -57764,6 +57774,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "koat pitha": {
   "dishName": "Koat Pitha (Assamese Fried Rice Fritters)",
+  "image": "/dishes/koat-pitha.webp",
+  "state" : "Assam",
   "description": "Crisp deep-fried sweet rice flour fritters from Assam.",
   "prepTime": "Approx. 25 minutes (plus soaking)",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57783,6 +57795,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chakhwi": {
   "dishName": "Chakhwi (Assamese Dal with Vegetables)",
+  "image": "/dishes/chakhwi.webp",
+  state: "Assam",
   "description": "A simple Assamese-style dal cooked with vegetables and mild seasoning.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
