@@ -149,11 +149,17 @@ function parseRestaurantDetailsFromSummaryText(text: string, restaurantId: strin
 
   const ratingMatch = fields["rating"]?.match(/([\d.]+)\s*(?:\((.+)\))?/);
 
+  // Address often arrives as "7.5 km • 15A/56, West Extension..." — split
+  // the leading distance off so it can be shown as its own badge.
+  const rawAddress = fields["address"] ?? "";
+  const addressMatch = rawAddress.match(/^([\d.]+\s*km)\s*•\s*(.+)$/i);
+
   return {
     id: restaurantId,
     name: fields["restaurant"] ?? "Restaurant",
     cuisines: fields["cuisines"] ? fields["cuisines"].split(",").map((c) => c.trim()) : [],
-    address: fields["address"] ?? "",
+    address: addressMatch ? addressMatch[2].trim() : rawAddress,
+    distance: addressMatch ? addressMatch[1] : undefined,
     avgRating: ratingMatch ? Number(ratingMatch[1]) : undefined,
     totalRatings: ratingMatch?.[2],
     costForTwo: fields["cost for two"] ?? "",

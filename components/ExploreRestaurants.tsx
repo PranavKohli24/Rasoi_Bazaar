@@ -200,6 +200,7 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
                     </span>
                   )}
                   {restaurant.costForTwo && <span>{restaurant.costForTwo}</span>}
+                  {restaurant.distance && <span>{restaurant.distance} away</span>}
                 </div>
                 {restaurant.dealTitles && restaurant.dealTitles[0] && (
                   <span className="mt-1.5 inline-block truncate rounded-full bg-orange-900/40 px-2 py-0.5 text-[10px] font-semibold text-orange-200">
@@ -265,6 +266,9 @@ const RestaurantDetailsPanel: React.FC<{
           )}
           {details.restaurant.costForTwo && (
             <span className="text-stone-400">{details.restaurant.costForTwo}</span>
+          )}
+          {details.restaurant.distance && (
+            <span className="text-stone-400">{details.restaurant.distance} away</span>
           )}
         </div>
       )}

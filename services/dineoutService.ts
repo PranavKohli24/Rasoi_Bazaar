@@ -22,6 +22,7 @@ export interface DineoutRestaurantDetails {
     name: string;
     cuisines: string[];
     address: string;
+    distance?: string;
     avgRating?: number;
     totalRatings?: string;
     costForTwo: string;
@@ -125,6 +126,7 @@ export const getDineoutRestaurantDetails = async (
       name: raw.name ?? "Restaurant",
       cuisines: raw.cuisines ?? [],
       address: raw.address ?? "",
+      distance: raw.distance,
       avgRating: typeof raw.avgRating === "number" ? raw.avgRating : undefined,
       totalRatings: raw.totalRatings,
       costForTwo: raw.costForTwo ?? "",
