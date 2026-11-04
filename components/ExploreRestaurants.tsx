@@ -236,10 +236,19 @@ const RestaurantDetailsPanel: React.FC<{
     ) : details ? (
       <div className="space-y-4 border-t border-stone-800 px-4 py-4 sm:px-6">
         {details.restaurant.address && (
-          <div className="flex items-start gap-2.5 text-sm text-stone-300">
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              details.restaurant.address
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-2.5 text-sm text-stone-300 transition-colors hover:text-orange-200"
+          >
             <PinIconSm className="mt-0.5 h-4 w-4 shrink-0 text-stone-500" />
-            <span>{details.restaurant.address}</span>
-          </div>
+            <span className="underline decoration-stone-600 decoration-dotted underline-offset-2">
+              {details.restaurant.address}
+            </span>
+          </a>
         )}
 
         {details.restaurant.timings && (
