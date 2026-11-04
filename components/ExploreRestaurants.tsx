@@ -49,6 +49,16 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
   const [details, setDetails] = useState<DineoutRestaurantDetails | null>(null);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState<string | null>(null);
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locationDenied, setLocationDenied] = useState(false);
+
+  // Reset to the region's default coordinates whenever the region changes —
+  // a location grant for one state shouldn't silently apply to another.
+  useEffect(() => {
+    setUserCoords(null);
+    setLocationDenied(false);
+  }, [region]);
 
   useEffect(() => {
     let cancelled = false;
@@ -58,7 +68,7 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
     setSelected(null);
     setDetails(null);
 
-    const { lat, lng } = getRegionCoordinates(region);
+    const { lat, lng } = userCoords ?? getRegionCoordinates(region);
     const query = getRegionCuisineQuery(region);
 
     searchDineoutRestaurants(query, lat, lng)
@@ -75,7 +85,7 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
     return () => {
       cancelled = true;
     };
-  }, [region]);
+  }, [region, userCoords]);
 
   const openDetails = (restaurant: DineoutRestaurant) => {
     setSelected(restaurant);
@@ -83,7 +93,7 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
     setDetailsError(null);
     setIsLoadingDetails(true);
 
-    const { lat, lng } = getRegionCoordinates(region);
+    const { lat, lng } = userCoords ?? getRegionCoordinates(region);
 
     getDineoutRestaurantDetails(restaurant.id, lat, lng)
       .then(setDetails)
@@ -91,11 +101,50 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
       .finally(() => setIsLoadingDetails(false));
   };
 
+    const handleUseMyLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationDenied(true);
+      return;
+    }
+
+    setLocating(true);
+    setLocationDenied(false);
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        setUserCoords({ lat: coords.latitude, lng: coords.longitude });
+        setLocating(false);
+      },
+      () => {
+        setLocationDenied(true);
+        setLocating(false);
+      }
+    );
+  };
+
   return (
     <div className="mt-8">
       <h3 className="font-serif text-base font-semibold tracking-tight text-stone-300 sm:text-lg">
         Explore restaurants in {region.name}
       </h3>
+
+      <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <button
+          type="button"
+          onClick={handleUseMyLocation}
+          disabled={locating || !!userCoords}
+          className="text-xs font-medium text-orange-200 transition-colors hover:text-orange-100 disabled:cursor-default disabled:text-stone-500"
+        >
+          {locating
+            ? "Finding your location..."
+            : userCoords
+            ? "Showing results near you"
+            : "Use my location for nearby results"}
+        </button>
+        {locationDenied && (
+          <span className="text-xs text-stone-500">Couldn't get your location — showing {region.name}'s main city instead.</span>
+        )}
+      </div>
 
       {isLoading ? (
         <RestaurantSkeletonGrid />
