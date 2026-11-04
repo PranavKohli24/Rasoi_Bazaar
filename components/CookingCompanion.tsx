@@ -2480,7 +2480,7 @@ const handleCancelDish = (messageIndex: number) => {
                 </div>
                 <div
                   aria-hidden="true"
-                  className={`pointer-events-none absolute inset-y-0 left-0 w-12 backdrop-blur-[2px] transition-opacity duration-200 ${
+                  className={`pointer-events-none absolute inset-y-0 left-0 w-12 backdrop-blur-[1px] transition-opacity duration-200 ${
                     stepCanScrollLeft ? "opacity-100" : "opacity-0"
                   }`}
                   style={{
@@ -2492,7 +2492,7 @@ const handleCancelDish = (messageIndex: number) => {
                 />
                 <div
                   aria-hidden="true"
-                  className={`pointer-events-none absolute inset-y-0 right-0 w-12 backdrop-blur-[2px] transition-opacity duration-200 ${
+                  className={`pointer-events-none absolute inset-y-0 right-0 w-12 backdrop-blur-[1px] transition-opacity duration-200 ${
                     stepCanScrollRight ? "opacity-100" : "opacity-0"
                   }`}
                   style={{
