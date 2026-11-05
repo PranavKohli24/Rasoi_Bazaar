@@ -301,6 +301,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const dialogRef = useRef<HTMLDivElement>(null);
   const avatarButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [popoverPos, setPopoverPos] = useState<PopoverPos | null>(null);
+  const placementRef = useRef<"below" | "above" | null>(null);
 
   useLockBodyScroll(isOpen);
   const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(onClose);
@@ -315,6 +316,9 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   // flips above the avatar when there isn't enough room below, so the
   // card — and its Save button — never gets cut off by the screen edge.
   useLayoutEffect(() => {
+    // Fresh decision for whichever person is now active (or none).
+    placementRef.current = null;
+
     if (!activePerson) {
       setPopoverPos(null);
       return;
@@ -328,25 +332,37 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
       const dialogRect = dialogEl.getBoundingClientRect();
       const avatarRect = avatarEl.getBoundingClientRect();
 
+      // visualViewport reflects the area actually visible once the keyboard
+      // is open; window.innerHeight does not shrink on most mobile browsers,
+      // which is what let the card compute space it no longer had.
+      const viewport = window.visualViewport;
+      const viewportTop = viewport?.offsetTop ?? 0;
+      const viewportBottom = viewportTop + (viewport?.height ?? window.innerHeight);
+
       const width = Math.min(POPOVER_WIDTH, dialogRect.width - POPOVER_MARGIN * 2);
 
-      // Expand rightward from the avatar's left edge, clamped inside the dialog.
       let left = avatarRect.left - dialogRect.left;
       left = Math.max(POPOVER_MARGIN, Math.min(left, dialogRect.width - width - POPOVER_MARGIN));
 
       const avatarCenterX = avatarRect.left - dialogRect.left + avatarRect.width / 2;
       const tailLeft = Math.max(20, Math.min(avatarCenterX - left, width - 20));
 
-      const spaceBelow = window.innerHeight - avatarRect.bottom - POPOVER_GAP - POPOVER_MARGIN;
-      const spaceAbove = avatarRect.top - POPOVER_GAP - POPOVER_MARGIN;
+      const spaceBelow = viewportBottom - avatarRect.bottom - POPOVER_GAP - POPOVER_MARGIN;
+      const spaceAbove = avatarRect.top - viewportTop - POPOVER_GAP - POPOVER_MARGIN;
 
-      if (spaceBelow < POPOVER_MIN_HEIGHT && spaceAbove > spaceBelow) {
+      // Decide above/below once, before any keyboard is up. A keyboard
+      // appearing afterwards should shrink the card, never flip it.
+      if (placementRef.current === null) {
+        placementRef.current = spaceBelow < POPOVER_MIN_HEIGHT && spaceAbove > spaceBelow ? "above" : "below";
+      }
+
+      if (placementRef.current === "above") {
         setPopoverPos({
           left,
           width,
           tailLeft,
           placement: "above",
-          maxHeight: Math.min(POPOVER_MAX_HEIGHT, Math.max(POPOVER_MIN_HEIGHT, spaceAbove)),
+          maxHeight: Math.max(120, Math.min(POPOVER_MAX_HEIGHT, spaceAbove)),
           bottom: dialogRect.bottom - avatarRect.top + POPOVER_GAP,
         });
       } else {
@@ -355,7 +371,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
           width,
           tailLeft,
           placement: "below",
-          maxHeight: Math.min(POPOVER_MAX_HEIGHT, Math.max(POPOVER_MIN_HEIGHT, spaceBelow)),
+          maxHeight: Math.max(120, Math.min(POPOVER_MAX_HEIGHT, spaceBelow)),
           top: avatarRect.bottom - dialogRect.top + POPOVER_GAP,
         });
       }
@@ -363,7 +379,13 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
 
     recompute();
     window.addEventListener("resize", recompute);
-    return () => window.removeEventListener("resize", recompute);
+    window.visualViewport?.addEventListener("resize", recompute);
+    window.visualViewport?.addEventListener("scroll", recompute);
+    return () => {
+      window.removeEventListener("resize", recompute);
+      window.visualViewport?.removeEventListener("resize", recompute);
+      window.visualViewport?.removeEventListener("scroll", recompute);
+    };
   }, [activePerson]);
 
   if (!isOpen) return null;
@@ -825,7 +847,13 @@ const PersonBubble: React.FC<{
 
       <div
         ref={cardRef}
-        onFocusCapture={handleFocusCapture}
+        onFocusCapture={(e) => {
+          handleFocusCapture(e);
+          const el = e.target as HTMLElement;
+          // Give the keyboard time to finish animating in before scrolling,
+          // so the field doesn't get nudged to a now-stale position.
+          window.setTimeout(() => el.scrollIntoView({ block: "nearest", behavior: "smooth" }), 300);
+        }}
         onInputCapture={handleInputCapture}
         onPointerDownCapture={(e) => {
           if (avatarButtonRef.current?.contains(e.target as Node)) return;
