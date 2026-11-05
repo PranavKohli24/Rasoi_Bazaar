@@ -7,6 +7,8 @@ import {
 } from "../services/dineoutService";
 import { IndiaRegion, getRegionCoordinates, getRegionCuisineQuery } from "../utils/indiaRegions";
 
+import DinnerNegotiator from "./DinnerNegotiator";
+
 const tileCard =
   "rounded-2xl border border-stone-700 border-b-stone-950 bg-gradient-to-b from-stone-800 to-stone-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.07),0_1px_0_rgba(0,0,0,0.5),0_10px_24px_-8px_rgba(0,0,0,0.7)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-400/60";
 
@@ -52,6 +54,7 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
   const [locationDenied, setLocationDenied] = useState(false);
+    const [negotiatorOpen, setNegotiatorOpen] = useState(false);
 
   // Reset to the region's default coordinates whenever the region changes —
   // a location grant for one state shouldn't silently apply to another.
@@ -146,6 +149,14 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
         )}
       </div>
 
+      <button
+        type="button"
+        onClick={() => setNegotiatorOpen(true)}
+        className="mt-3 rounded-full border border-orange-400/50 bg-stone-900 px-3.5 py-2 text-xs font-semibold text-orange-200 hover:bg-stone-800"
+      >
+        Can't decide together? Let's negotiate 🤝
+      </button>
+
       {isLoading ? (
         <RestaurantSkeletonGrid />
       ) : error ? (
@@ -212,6 +223,15 @@ const ExploreRestaurants: React.FC<ExploreRestaurantsProps> = ({ region }) => {
           ))}
         </div>
       )}
+      <DinnerNegotiator
+        region={region}
+        isOpen={negotiatorOpen}
+        onClose={() => setNegotiatorOpen(false)}
+        onViewRestaurant={(restaurant) => {
+          setNegotiatorOpen(false);
+          openDetails(restaurant);
+        }}
+      />
     </div>
   );
 };
