@@ -19,11 +19,11 @@ const MAX_PEOPLE = 8;
 const AVATAR_COLORS = [
   "#F1C27D",
   "#E88D67",
-  "#78C6A3",
-  "#F2A0B7", 
-  "#7DC8E8", 
-  "#8E4585", 
+  "#7DC8E8",
+  "#F2A0B7",
   "#9CA3AF",
+  "#78C6A3",  
+  "#8E4585", 
   "#A78BFA", 
 ]
 const DRAG_DISMISS_THRESHOLD = 90;
@@ -474,6 +474,14 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
     setActiveIndex(null);
   };
 
+  // Drops back to the preference-editing screen without touching anyone's
+  // answers, so people can tweak a pick and re-run rather than starting over.
+  const editPreferences = () => {
+    setPhase("collecting");
+    setSearchError(null);
+    setActiveIndex(null);
+  };
+
   const topPick = matches[0];
   const otherPicks = matches.slice(1, 6);
 
@@ -616,12 +624,16 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     {topPick.restaurant.costForTwo && <span>{topPick.restaurant.costForTwo}</span>}
                     {topPick.restaurant.area && <span>{topPick.restaurant.area}</span>}
                   </div>
-                  <div className="mt-3 flex -space-x-2">
+                  <div className="mt-3 flex flex-wrap items-center gap-0.5">
                     {topPick.matchedNames.map((name) => {
                       const person = people.find((p) => p.name === name);
                       return person ? (
-                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]} answered={person.answered}
-                          className="h-7 w-7 border-2 border-stone-950" />
+                        <AvatarFace
+                          key={person.id}
+                          color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]}
+                          answered={person.answered}
+                          className="h-7 w-7 shrink-0 rounded-full"
+                        />
                       ) : null;
                     })}
                   </div>
@@ -686,8 +698,19 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
         )}
 
         {phase === "results" && (
-          <div className="shrink-0 border-t border-stone-800 px-5 py-4 sm:px-6">
-            <button type="button" onClick={resetAll} className="w-full rounded-xl border border-stone-700 px-5 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200">
+          <div className="shrink-0 flex gap-2 border-t border-stone-800 px-5 py-4 sm:px-6">
+            <button
+              type="button"
+              onClick={editPreferences}
+              className="flex-1 rounded-xl bg-orange-200 px-5 py-2.5 text-sm font-semibold text-stone-900"
+            >
+              Edit preferences
+            </button>
+            <button
+              type="button"
+              onClick={resetAll}
+              className="rounded-xl border border-stone-700 px-4 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200"
+            >
               Start over
             </button>
           </div>
