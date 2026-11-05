@@ -65,7 +65,8 @@ const AvatarFace: React.FC<{
   style?: React.CSSProperties;
   blinkKey?: number;
   answered?: boolean;
-}> = ({ color, className, style, blinkKey = 0, answered = false }) => {
+  look?: { x: number; y: number };
+}> = ({ color, className, style, blinkKey = 0, answered = false, look }) => {
   const rawId = useId();
   const id = rawId.replace(/:/g, "");
 
@@ -76,11 +77,20 @@ const AvatarFace: React.FC<{
   const shadowFilter = `${id}-shadow`;
   const blurFilter = `${id}-blur`;
 
+  const svgStyle: React.CSSProperties = look
+  ? {
+      ...style,
+      transform: `translate(${look.x * 1.6}px, ${look.y * 1.3}px) rotate(${look.x * 2.5}deg)`,
+      transition: "transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+    }
+  : style ?? {};
+
+  const eyesTransform = `translate(${(look?.x ?? 0) * 3.2}, ${(look?.y ?? 0) * 2.4})`;
   return (
     <svg
       viewBox="0 0 100 100"
       className={className}
-      style={style}
+      style={svgStyle}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -180,6 +190,8 @@ const AvatarFace: React.FC<{
       <g
         key={blinkKey}
         className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
+        transform={eyesTransform}
+        style={{ transition: "transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}
       >
         <g fill="#29252B">
           <ellipse cx="36" cy="43" rx="3.7" ry="4.5" />
@@ -655,6 +667,51 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
     document.body
   );
 };
+interface LookVector {
+  x: number;
+  y: number;
+}
+
+function useAvatarLook(containerRef: React.RefObject<HTMLElement | null>) {
+  const [look, setLook] = useState<LookVector>({ x: 0, y: 0 });
+  const idleTimeoutRef = useRef<number | null>(null);
+  const isPointerInsideRef = useRef(false);
+
+  useEffect(() => {
+    const scheduleIdle = () => {
+      const delay = 1800 + Math.random() * 2400;
+      idleTimeoutRef.current = window.setTimeout(() => {
+        if (isPointerInsideRef.current) return scheduleIdle();
+        const resting = Math.random() < 0.35;
+        setLook(resting ? { x: 0, y: 0 } : { x: Math.random() * 2 - 1, y: (Math.random() * 2 - 1) * 0.7 });
+        scheduleIdle();
+      }, delay);
+    };
+    scheduleIdle();
+    return () => {
+      if (idleTimeoutRef.current) window.clearTimeout(idleTimeoutRef.current);
+    };
+  }, []);
+
+  const handlePointerMove = (event: React.PointerEvent) => {
+    const el = containerRef.current;
+    if (!el) return;
+    isPointerInsideRef.current = true;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const x = Math.max(-1, Math.min(1, ((event.clientX - cx) / (rect.width / 2)) * 2.2));
+    const y = Math.max(-1, Math.min(1, ((event.clientY - cy) / (rect.height / 2)) * 2.2));
+    setLook({ x, y });
+  };
+
+  const handlePointerLeave = () => {
+    isPointerInsideRef.current = false;
+    setLook({ x: 0, y: 0 });
+  };
+
+  return { look, handlePointerMove, handlePointerLeave };
+}
 
 /** Floating preference card, absolutely positioned near whichever avatar was
  *  tapped, with a tail pointing up at it. */
@@ -669,6 +726,9 @@ const PersonBubble: React.FC<{
   const [cuisine, setCuisine] = useState<CuisineChoice>(person.cuisine);
   const [budget, setBudget] = useState<BudgetChoice>(person.budget);
   const [note, setNote] = useState(person.note);
+
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { look, handlePointerMove, handlePointerLeave } = useAvatarLook(cardRef);
 
   return (
     <div
@@ -690,12 +750,15 @@ const PersonBubble: React.FC<{
       />
 
       <div
+        ref={cardRef}
+        onPointerMove={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
         className="relative overflow-y-auto overscroll-contain rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-5 [&::-webkit-scrollbar]:hidden"
         style={{ maxHeight: pos.maxHeight }}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <AvatarFace color={color} answered={person.answered} className="h-10 w-10 shrink-0" />
+            <AvatarFace color={color} answered={person.answered} look={look} className="h-10 w-10 shrink-0" />
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
