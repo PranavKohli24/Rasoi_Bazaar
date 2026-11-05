@@ -913,9 +913,10 @@ const PersonBubble: React.FC<{
           <button
             type="button"
             onClick={onCancel}
-            className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
+            aria-label="Close"
+            className="-m-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-base text-stone-500 hover:text-stone-300"
           >
-            Close ✕
+            ✕
           </button>
         </div>
 
@@ -936,13 +937,13 @@ const PersonBubble: React.FC<{
         </div>
 
         <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-stone-500">Budget per person</p>
-        <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {BUDGET_OPTIONS.map((option) => (
             <button
               key={option}
               type="button"
               onClick={() => setBudget(option)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+              className={`whitespace-nowrap rounded-full border px-2.5 py-1.5 text-xs font-medium ${
                 budget === option ? "border-orange-400 bg-orange-200 text-stone-900" : "border-stone-700 text-stone-300"
               }`}
             >
