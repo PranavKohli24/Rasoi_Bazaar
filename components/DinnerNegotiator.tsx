@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { searchDineoutRestaurants, DineoutRestaurant } from "../services/dineoutService";
 import { IndiaRegion, getRegionCoordinates, getRegionCuisineQuery } from "../utils/indiaRegions";
@@ -23,6 +23,18 @@ const POPOVER_MARGIN = 16;
 const POPOVER_GAP = 10;
 const POPOVER_MIN_HEIGHT = 220;
 const POPOVER_MAX_HEIGHT = 440;
+
+const personLabel = (index: number) => {
+  let value = index;
+  let label = "";
+
+  do {
+    label = String.fromCharCode(65 + (value % 26)) + label;
+    value = Math.floor(value / 26) - 1;
+  } while (value >= 0);
+
+  return label;
+};
 
 const makeInitialPeople = (): NegotiatorPerson[] =>
   Array.from({ length: INITIAL_PEOPLE_COUNT }, (_, i) => ({
@@ -53,30 +65,151 @@ const AvatarFace: React.FC<{
   style?: React.CSSProperties;
   blinkKey?: number;
   answered?: boolean;
-}> = ({ color, className, style, blinkKey = 0, answered = false }) => (
-  <svg viewBox="0 0 40 40" className={className} style={style} aria-hidden="true">
-    <circle cx="20" cy="20" r="20" fill={color} />
+}> = ({ color, className, style, blinkKey = 0, answered = false }) => {
+  const rawId = useId();
+  const id = rawId.replace(/:/g, "");
 
-    {/* Eyes */}
-    <g
-      key={blinkKey}
-      className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
-      style={{ transformOrigin: "20px 17px" }}
+  const sphereGradient = `${id}-sphere`;
+  const edgeShade = `${id}-edge`;
+  const topLight = `${id}-top-light`;
+  const bottomLight = `${id}-bottom-light`;
+  const shadowFilter = `${id}-shadow`;
+  const blurFilter = `${id}-blur`;
+
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      className={className}
+      style={style}
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <circle cx="14" cy="17" r="2.2" fill="#1C1917" />
-      <circle cx="26" cy="17" r="2.2" fill="#1C1917" />
-    </g>
+      <defs>
+        {/* Main sphere: bright at the upper-left, naturally darker at the edge. */}
+        <radialGradient id={sphereGradient} cx="30%" cy="22%" r="82%">
+          <stop offset="0%" stopColor={color} />
+          <stop offset="55%" stopColor={color} />
+          <stop offset="100%" stopColor="#171923" stopOpacity="0.48" />
+        </radialGradient>
 
-    {/* Smile */}
-    <path
-      d={answered ? "M11 23c3.5 9 14.5 9 18 0" : "M13 25c2 2.5 12 2.5 14 0"}
-      stroke="#1C1917"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  </svg>
-);
+        {/* Adds the rounded falloff that makes the face read as a sphere. */}
+        <radialGradient id={edgeShade} cx="35%" cy="28%" r="78%">
+          <stop offset="42%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="75%" stopColor="#15151D" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#101019" stopOpacity="0.52" />
+        </radialGradient>
+
+        {/* Broad, soft studio reflection. */}
+        <radialGradient id={topLight} cx="30%" cy="19%" r="72%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.48" />
+          <stop offset="38%" stopColor="#FFFFFF" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+
+        {/* A little reflected light keeps the lower edge from looking cut out. */}
+        <radialGradient id={bottomLight} cx="22%" cy="90%" r="58%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.20" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+        </radialGradient>
+
+        <filter id={shadowFilter} x="-50%" y="-100%" width="200%" height="300%">
+          <feGaussianBlur stdDeviation="3" />
+        </filter>
+
+        <filter id={blurFilter}>
+          <feGaussianBlur stdDeviation="2.5" />
+        </filter>
+      </defs>
+
+      {/* Soft contact shadow beneath the sphere. */}
+      <ellipse
+        cx="50"
+        cy="93"
+        rx="29"
+        ry="3.5"
+        fill="#18202B"
+        opacity="0.23"
+        filter={`url(#${shadowFilter})`}
+      />
+
+      {/* Sphere body and layered lighting. */}
+      <circle cx="50" cy="47" r="44" fill={`url(#${sphereGradient})`} />
+      <circle cx="50" cy="47" r="44" fill={`url(#${edgeShade})`} />
+      <circle cx="50" cy="47" r="44" fill={`url(#${topLight})`} />
+      <circle cx="50" cy="47" r="44" fill={`url(#${bottomLight})`} />
+
+      {/* Glossy reflection and small specular highlight. */}
+      <ellipse
+        cx="34"
+        cy="19"
+        rx="16"
+        ry="7"
+        transform="rotate(-28 34 19)"
+        fill="#FFFFFF"
+        opacity="0.23"
+        filter={`url(#${blurFilter})`}
+      />
+      <ellipse
+        cx="34"
+        cy="17"
+        rx="5.5"
+        ry="2.6"
+        transform="rotate(-28 34 17)"
+        fill="#FFFFFF"
+        opacity="0.48"
+      />
+
+      {/* Fine rim light along the silhouette. */}
+      <circle
+        cx="50"
+        cy="47"
+        r="43.3"
+        fill="none"
+        stroke="#FFFFFF"
+        strokeOpacity="0.23"
+        strokeWidth="1"
+      />
+
+      {/* Very subtle cheek warmth. */}
+      <g filter={`url(#${blurFilter})`}>
+        <ellipse cx="27" cy="55" rx="7" ry="4" fill="#F18B89" opacity="0.22" />
+        <ellipse cx="73" cy="55" rx="7" ry="4" fill="#F18B89" opacity="0.22" />
+      </g>
+
+      {/* Eyes blink together when this avatar is tapped. */}
+      <g
+        key={blinkKey}
+        className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
+      >
+        <g fill="#29252B">
+          <ellipse cx="36" cy="43" rx="3.7" ry="4.5" />
+          <ellipse cx="64" cy="43" rx="3.7" ry="4.5" />
+        </g>
+        <g fill="#FFFFFF" opacity="0.8">
+          <circle cx="35" cy="41.5" r="1.1" />
+          <circle cx="63" cy="41.5" r="1.1" />
+        </g>
+      </g>
+
+      {/* Slightly wider smile once this person has answered. */}
+      <path
+        d={answered ? "M32 60.5 Q50 78 68 60.5" : "M36 60.5 Q50 71.5 64 60.5"}
+        fill="none"
+        stroke="#17131A"
+        strokeWidth="4"
+        strokeLinecap="round"
+        opacity="0.16"
+      />
+      <path
+        d={answered ? "M32 59 Q50 76 68 59" : "M36 59 Q50 70 64 59"}
+        fill="none"
+        stroke="#30262B"
+        strokeWidth={answered ? "3.2" : "2.8"}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
 
 const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 20 20" fill="currentColor" className={className} aria-hidden="true">
@@ -151,6 +284,9 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const [phase, setPhase] = useState<Phase>("collecting");
   const [matches, setMatches] = useState<RestaurantMatch[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
+
+  // Monotonic counter prevents ID and avatar-color reuse after someone is removed.
+  const nextPersonIndexRef = useRef(INITIAL_PEOPLE_COUNT);
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const avatarButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
@@ -237,12 +373,27 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
     setActiveIndex((current) => (current === i ? null : i));
   };
 
+  const removePerson = (personId: string) => {
+    const removedIndex = people.findIndex((person) => person.id === personId);
+    if (removedIndex === -1) return;
+
+    setPeople((prev) => prev.filter((person) => person.id !== personId));
+    setActiveIndex((current) => {
+      if (current === null || current === removedIndex) return null;
+      return current > removedIndex ? current - 1 : current;
+    });
+    setAvatarBlink((current) =>
+      current.personId === personId ? { personId: "", key: current.key } : current
+    );
+  };
+
   const addPerson = () => {
     if (people.length >= MAX_PEOPLE) return;
-    const nextIndex = people.length;
+
+    const nextIndex = nextPersonIndexRef.current++;
     const newPerson: NegotiatorPerson = {
       id: `person-${nextIndex}`,
-      name: `Person ${String.fromCharCode(65 + nextIndex)}`,
+      name: `Person ${personLabel(nextIndex)}`,
       avatarIndex: nextIndex,
       cuisine: "Any",
       budget: "any",
@@ -250,7 +401,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
       answered: false,
     };
     setPeople((prev) => [...prev, newPerson]);
-    setActiveIndex(nextIndex);
+    setActiveIndex(people.length);
   };
 
   const savePerson = (updated: NegotiatorPerson) => {
@@ -331,37 +482,49 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                 {people.map((person, i) => {
                   const isActive = activeIndex === i;
                   return (
-                    <button
-                      key={person.id}
-                      ref={(el) => {
-                        if (el) avatarButtonRefs.current.set(person.id, el);
-                        else avatarButtonRefs.current.delete(person.id);
-                      }}
-                      type="button"
-                      onClick={() => toggleAvatar(i)}
-                      className="flex w-14 flex-col items-center gap-1.5"
-                    >
-                      <div className="relative">
-                        <AvatarFace
-                          color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]}
-                          blinkKey={avatarBlink.personId === person.id ? avatarBlink.key : 0}
-                          answered={person.answered}
-                          className={`h-14 w-14 rounded-full ring-2 transition-all duration-200 ${
-                            isActive
-                              ? "scale-110 ring-4 ring-orange-400"
-                              : person.answered
-                              ? "ring-orange-300"
-                              : "opacity-50 ring-stone-700"
-                          }`}
-                        />
-                        {person.answered && (
-                          <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-200 text-stone-900">
-                            <CheckIcon className="h-3 w-3" />
-                          </span>
-                        )}
-                      </div>
-                      <span className="max-w-[60px] truncate text-center text-xs text-stone-300">{person.name}</span>
-                    </button>
+                    <div key={person.id} className="relative flex w-14 flex-col items-center gap-1.5">
+                      <button
+                        ref={(el) => {
+                          if (el) avatarButtonRefs.current.set(person.id, el);
+                          else avatarButtonRefs.current.delete(person.id);
+                        }}
+                        type="button"
+                        onClick={() => toggleAvatar(i)}
+                        aria-label={`Edit ${person.name}'s preferences`}
+                        className="flex w-14 flex-col items-center"
+                      >
+                        <div className="relative">
+                          <AvatarFace
+                            color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]}
+                            blinkKey={avatarBlink.personId === person.id ? avatarBlink.key : 0}
+                            answered={person.answered}
+                            className={`h-14 w-14 rounded-full transition-all duration-200 ${
+                              isActive
+                                ? "scale-110 ring-4 ring-orange-400"
+                                : person.answered
+                                ? "ring-2 ring-orange-300"
+                                : "opacity-60 ring-2 ring-stone-700"
+                            }`}
+                          />
+                          {person.answered && (
+                            <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-200 text-stone-900">
+                              <CheckIcon className="h-3 w-3" />
+                            </span>
+                          )}
+                        </div>
+                        <span className="mt-1.5 max-w-[60px] truncate text-center text-xs text-stone-300">{person.name}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => removePerson(person.id)}
+                        aria-label={`Remove ${person.name}`}
+                        title="Remove person"
+                        className="absolute -right-1 -top-1 z-10 flex h-5 w-5 items-center justify-center rounded-full border border-stone-900 bg-stone-700 text-[13px] leading-none text-stone-200 shadow-sm transition-colors hover:bg-red-500 hover:text-white"
+                      >
+                        ×
+                      </button>
+                    </div>
                   );
                 })}
 
@@ -390,6 +553,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
             pos={popoverPos}
             onSave={savePerson}
             onCancel={() => setActiveIndex(null)}
+            onRemove={() => removePerson(activePerson.id)}
           />
         )}
 
@@ -404,7 +568,8 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                   <AvatarFace
                     key={p.id}
                     color={AVATAR_COLORS[p.avatarIndex % AVATAR_COLORS.length]}
-                    className="h-9 w-9 animate-bounce rounded-full"
+                    answered={p.answered}
+                    className="h-9 w-9 animate-bounce"
                     style={{ animationDelay: `${i * 120}ms` }}
                   />
                 ))}
@@ -436,7 +601,8 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     {topPick.matchedNames.map((name) => {
                       const person = people.find((p) => p.name === name);
                       return person ? (
-                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]} className="h-7 w-7 rounded-full border-2 border-stone-950" />
+                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]} answered={person.answered}
+                          className="h-7 w-7 border-2 border-stone-950" />
                       ) : null;
                     })}
                   </div>
@@ -521,7 +687,8 @@ const PersonBubble: React.FC<{
   pos: PopoverPos;
   onSave: (person: NegotiatorPerson) => void;
   onCancel: () => void;
-}> = ({ person, color, pos, onSave, onCancel }) => {
+  onRemove: () => void;
+}> = ({ person, color, pos, onSave, onCancel, onRemove }) => {
   const [name, setName] = useState(person.name);
   const [cuisine, setCuisine] = useState<CuisineChoice>(person.cuisine);
   const [budget, setBudget] = useState<BudgetChoice>(person.budget);
@@ -552,20 +719,29 @@ const PersonBubble: React.FC<{
       >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <AvatarFace color={color} className="h-10 w-10 shrink-0 rounded-full" />
+            <AvatarFace color={color} answered={person.answered} className="h-10 w-10 shrink-0" />
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-32 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
             />
           </div>
-          <button
-            type="button"
-            onClick={onCancel}
-            className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
-          >
-            Close ✕
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onRemove}
+              className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-red-400/80 hover:text-red-300"
+            >
+              Remove person
+            </button>
+            <button
+              type="button"
+              onClick={onCancel}
+              className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
+            >
+              Close ✕
+            </button>
+          </div>
         </div>
 
         <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-stone-500">Cuisine</p>

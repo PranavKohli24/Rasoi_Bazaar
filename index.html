@@ -228,26 +228,28 @@
       }
 
       /* Dinner Negotiator: quick, subtle blink when an avatar is tapped. */
-      .negotiator-avatar-blink {
-        animation: negotiator-avatar-blink 180ms ease-in-out;
-      }
+      /* Dinner Negotiator: subtle blink when an avatar is tapped. */
+.negotiator-avatar-blink {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: negotiator-avatar-blink 300ms ease-in-out;
+}
 
-      @keyframes negotiator-avatar-blink {
-        0%, 35%, 100% {
-          transform: scaleY(1);
-        }
+@keyframes negotiator-avatar-blink {
+  0%, 35%, 100% {
+    transform: scaleY(1);
+  }
 
-        45%, 60% {
-          transform: scaleY(0.08);
-        }
-      }
+  45%, 60% {
+    transform: scaleY(0.08);
+  }
+}
 
-      @media (prefers-reduced-motion: reduce) {
-        .negotiator-avatar-blink {
-          animation: none;
-        }
-      }
-
+@media (prefers-reduced-motion: reduce) {
+  .negotiator-avatar-blink {
+    animation: none;
+  }
+}
     </style>
 
     <script type="importmap">
