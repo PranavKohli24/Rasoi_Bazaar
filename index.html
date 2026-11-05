@@ -245,8 +245,29 @@
   }
 }
 
+/* A deliberate, held eye-close used when the avatar itself is tapped —
+   slower than a blink, with a brief pause at fully closed before reopening. */
+.negotiator-avatar-poke-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: negotiator-avatar-poke-eyes 650ms ease-in-out;
+}
+
+@keyframes negotiator-avatar-poke-eyes {
+  0% {
+    transform: scaleY(1);
+  }
+  30%, 65% {
+    transform: scaleY(0.08);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .negotiator-avatar-blink {
+  .negotiator-avatar-blink,
+  .negotiator-avatar-poke-eyes {
     animation: none;
   }
 }

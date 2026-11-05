@@ -66,7 +66,8 @@ const AvatarFace: React.FC<{
   blinkKey?: number;
   answered?: boolean;
   look?: NaturalLookRender;
-}> = ({ color, className, style, blinkKey = 0, answered = false, look }) => {
+  poking?: boolean;
+}> = ({ color, className, style, blinkKey = 0, answered = false, look, poking = false }) => {
   const rawId = useId();
   const id = rawId.replace(/:/g, "");
 
@@ -187,7 +188,7 @@ const AvatarFace: React.FC<{
       <g transform={eyesPositionTransform}>
         <g
           key={blinkKey}
-          className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
+          className={poking ? "negotiator-avatar-poke-eyes" : blinkKey > 0 ? "negotiator-avatar-blink" : ""}
           style={{ transform: `scaleY(${eyesSquintScale})`, transformBox: "fill-box", transformOrigin: "center" }}
         >
           <g fill="#29252B">
@@ -817,18 +818,36 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
 // Tapping the avatar itself: blink, smile briefly, revert — fully self-contained.
 function useAvatarPoke() {
   const [blinkKey, setBlinkKey] = useState(0);
+  const [poking, setPoking] = useState(false);
   const [smiling, setSmiling] = useState(false);
-  const timeoutRef = useRef<number | null>(null);
+  const smileInTimeoutRef = useRef<number | null>(null);
+  const smileOutTimeoutRef = useRef<number | null>(null);
+
+  const EYES_CLOSE_HOLD_MS = 650; // matches negotiator-avatar-poke-eyes duration
+  const SMILE_HOLD_MS = 700;
 
   const poke = () => {
+    if (smileInTimeoutRef.current) window.clearTimeout(smileInTimeoutRef.current);
+    if (smileOutTimeoutRef.current) window.clearTimeout(smileOutTimeoutRef.current);
+
     setBlinkKey((k) => k + 1);
-    setSmiling(true);
-    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => setSmiling(false), 550);
+    setPoking(true);
+    setSmiling(false);
+
+    // Smile lands as the eyes finish reopening, not at the same instant they close.
+    smileInTimeoutRef.current = window.setTimeout(() => {
+      setPoking(false);
+      setSmiling(true);
+      smileOutTimeoutRef.current = window.setTimeout(() => setSmiling(false), SMILE_HOLD_MS);
+    }, EYES_CLOSE_HOLD_MS);
   };
 
-  useEffect(() => () => { if (timeoutRef.current) window.clearTimeout(timeoutRef.current); }, []);
-  return { blinkKey, smiling, poke };
+  useEffect(() => () => {
+    if (smileInTimeoutRef.current) window.clearTimeout(smileInTimeoutRef.current);
+    if (smileOutTimeoutRef.current) window.clearTimeout(smileOutTimeoutRef.current);
+  }, []);
+
+  return { blinkKey, poking, smiling, poke };
 }
 
 /** Floating preference card, absolutely positioned near whichever avatar was
@@ -848,7 +867,7 @@ const PersonBubble: React.FC<{
   const cardRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
   const { render: look, handleFocusCapture, handleInputCapture, handleTap } = useFocusLook(avatarButtonRef);
-  const { blinkKey: pokeBlinkKey, smiling, poke } = useAvatarPoke();
+  const { blinkKey: pokeBlinkKey, poking, smiling, poke } = useAvatarPoke();
 
   return (
     <div
@@ -901,6 +920,7 @@ const PersonBubble: React.FC<{
                 answered={person.answered || smiling}
                 look={look}
                 blinkKey={pokeBlinkKey}
+                poking={poking}
                 className="h-10 w-10"
               />
             </button>
