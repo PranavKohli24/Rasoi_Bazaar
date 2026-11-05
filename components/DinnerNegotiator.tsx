@@ -667,6 +667,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
     document.body
   );
 };
+
 interface LookVector {
   x: number;
   y: number;
