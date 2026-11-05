@@ -18,9 +18,11 @@ const INITIAL_PEOPLE_COUNT = 2;
 const MAX_PEOPLE = 8;
 const AVATAR_COLORS = ["#FC6C26", "#6366F1", "#10B981", "#F472B6", "#38BDF8", "#FBBF24"];
 const DRAG_DISMISS_THRESHOLD = 90;
-const POPOVER_WIDTH = 300;
+const POPOVER_WIDTH = 340;
 const POPOVER_MARGIN = 16;
 const POPOVER_GAP = 10;
+const POPOVER_MIN_HEIGHT = 220;
+const POPOVER_MAX_HEIGHT = 440;
 
 const makeInitialPeople = (): NegotiatorPerson[] =>
   Array.from({ length: INITIAL_PEOPLE_COUNT }, (_, i) => ({
@@ -111,10 +113,13 @@ interface DinnerNegotiatorProps {
 type Phase = "collecting" | "negotiating" | "results";
 
 interface PopoverPos {
-  top: number;
   left: number;
   width: number;
   tailLeft: number;
+  maxHeight: number;
+  placement: "below" | "above";
+  top?: number;
+  bottom?: number;
 }
 
 const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onClose, onViewRestaurant }) => {
@@ -136,6 +141,10 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   // Anchor the popover to whichever avatar was tapped: find its position
   // relative to the dialog panel, then clamp the card so it stays inside
   // the panel's padding even when the avatar is near an edge.
+    // Anchor the popover to whichever avatar was tapped. Width grows to the
+  // right of the avatar's left edge (clamped to the dialog). Placement
+  // flips above the avatar when there isn't enough room below, so the
+  // card — and its Save button — never gets cut off by the screen edge.
   useLayoutEffect(() => {
     if (!activePerson) {
       setPopoverPos(null);
@@ -150,16 +159,37 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
       const dialogRect = dialogEl.getBoundingClientRect();
       const avatarRect = avatarEl.getBoundingClientRect();
 
-      const avatarCenterX = avatarRect.left - dialogRect.left + avatarRect.width / 2;
       const width = Math.min(POPOVER_WIDTH, dialogRect.width - POPOVER_MARGIN * 2);
 
-      let left = avatarCenterX - width / 2;
+      // Expand rightward from the avatar's left edge, clamped inside the dialog.
+      let left = avatarRect.left - dialogRect.left;
       left = Math.max(POPOVER_MARGIN, Math.min(left, dialogRect.width - width - POPOVER_MARGIN));
 
+      const avatarCenterX = avatarRect.left - dialogRect.left + avatarRect.width / 2;
       const tailLeft = Math.max(20, Math.min(avatarCenterX - left, width - 20));
-      const top = avatarRect.bottom - dialogRect.top + POPOVER_GAP;
 
-      setPopoverPos({ top, left, width, tailLeft });
+      const spaceBelow = window.innerHeight - avatarRect.bottom - POPOVER_GAP - POPOVER_MARGIN;
+      const spaceAbove = avatarRect.top - POPOVER_GAP - POPOVER_MARGIN;
+
+      if (spaceBelow < POPOVER_MIN_HEIGHT && spaceAbove > spaceBelow) {
+        setPopoverPos({
+          left,
+          width,
+          tailLeft,
+          placement: "above",
+          maxHeight: Math.min(POPOVER_MAX_HEIGHT, Math.max(POPOVER_MIN_HEIGHT, spaceAbove)),
+          bottom: dialogRect.bottom - avatarRect.top + POPOVER_GAP,
+        });
+      } else {
+        setPopoverPos({
+          left,
+          width,
+          tailLeft,
+          placement: "below",
+          maxHeight: Math.min(POPOVER_MAX_HEIGHT, Math.max(POPOVER_MIN_HEIGHT, spaceBelow)),
+          top: avatarRect.bottom - dialogRect.top + POPOVER_GAP,
+        });
+      }
     };
 
     recompute();
@@ -466,22 +496,33 @@ const PersonBubble: React.FC<{
   return (
     <div
       className="absolute z-20 animate-fade-in-up"
-      style={{ top: pos.top, left: pos.left, width: pos.width, animationDuration: "0.2s" }}
+      style={{
+        left: pos.left,
+        width: pos.width,
+        top: pos.placement === "below" ? pos.top : undefined,
+        bottom: pos.placement === "above" ? pos.bottom : undefined,
+        animationDuration: "0.2s",
+      }}
     >
       <span
         aria-hidden="true"
-        className="absolute -top-2 h-4 w-4 -translate-x-1/2 rotate-45 rounded-sm border-l border-t border-orange-400/50 bg-stone-950"
+        className={`absolute h-4 w-4 -translate-x-1/2 rotate-45 border-orange-400/50 bg-stone-950 ${
+          pos.placement === "below" ? "-top-2 border-l border-t" : "-bottom-2 border-r border-b"
+        }`}
         style={{ left: pos.tailLeft }}
       />
 
-      <div className="relative max-h-[60vh] overflow-y-auto rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 sm:p-5">
+      <div
+        className="relative overflow-y-auto overscroll-contain rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-5 [&::-webkit-scrollbar]:hidden"
+        style={{ maxHeight: pos.maxHeight }}
+      >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <AvatarFace color={color} className="h-10 w-10 shrink-0 rounded-full" />
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-28 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
+              className="w-32 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
             />
           </div>
           <button
