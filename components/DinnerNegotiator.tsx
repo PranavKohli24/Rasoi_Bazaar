@@ -17,14 +17,14 @@ import {
 const INITIAL_PEOPLE_COUNT = 2;
 const MAX_PEOPLE = 8;
 const AVATAR_COLORS = [
-  "#F1C27D", // Warm skin
-  "#7C83FD", // Periwinkle
-  "#78C6A3", // Soft mint green
-  "#F2A0B7", // Candy pink
-  "#7DC8E8", // Sky blue
-  "#E8C76A", // Butter yellow
-  "#9CA3AF", // Cool grey
-  "#A78BFA", // Soft lavender
+  "#F1C27D",
+  "#E88D67",
+  "#78C6A3",
+  "#F2A0B7", 
+  "#7DC8E8", 
+  "#4F9D9A", 
+  "#9CA3AF",
+  "#A78BFA", 
 ]
 const DRAG_DISMISS_THRESHOLD = 90;
 const POPOVER_WIDTH = 340;
