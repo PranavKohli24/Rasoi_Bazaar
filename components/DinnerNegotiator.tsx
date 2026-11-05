@@ -50,7 +50,6 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-/** Shared drag-to-dismiss handle + logic, matching SwiggyActionModal's pattern. */
 function useDragToDismiss(onDismiss: () => void) {
   const dragStartYRef = useRef<number | null>(null);
   const [dragY, setDragY] = useState(0);
@@ -172,6 +171,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header — fixed */}
         <div
           className="shrink-0 cursor-grab touch-none rounded-t-3xl border-b border-stone-800 px-5 pb-4 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
           onPointerDown={handleDragStart}
@@ -186,12 +186,13 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
           </h3>
         </div>
 
+        {/* Content — scrolls */}
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
           {phase === "collecting" && (
             <>
               <p className="text-sm text-stone-400">Tap to choose preferences.</p>
 
-              <div className="mt-5 grid grid-cols-3 gap-y-5 sm:grid-cols-6">
+              <div className="mt-5 grid grid-cols-2 gap-y-5 sm:grid-cols-6">
                 {people.map((person, i) => (
                   <button key={person.id} type="button" onClick={() => setActiveIndex(i)} className="flex flex-col items-center gap-1.5">
                     <div className="relative">
@@ -211,17 +212,6 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
               </div>
 
               {searchError && <p className="mt-4 text-sm text-stone-400">{searchError}</p>}
-
-              <button
-                type="button"
-                onClick={runNegotiation}
-                disabled={answeredPeople.length < 2}
-                className="mt-6 w-full rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-stone-900 transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                {answeredPeople.length < 2
-                  ? `Need ${2 - answeredPeople.length} more ${answeredPeople.length === 1 ? "answer" : "answers"}`
-                  : "Find our table"}
-              </button>
             </>
           )}
 
@@ -308,13 +298,33 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                   </div>
                 </div>
               )}
-
-              <button type="button" onClick={resetAll} className="mt-6 w-full rounded-xl border border-stone-700 px-5 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200">
-                Start over
-              </button>
             </>
           )}
         </div>
+
+        {/* Footer — fixed, holds the phase's main action */}
+        {phase === "collecting" && (
+          <div className="shrink-0 border-t border-stone-800 px-5 py-4 sm:px-6">
+            <button
+              type="button"
+              onClick={runNegotiation}
+              disabled={answeredPeople.length < 2}
+              className="w-full rounded-xl bg-orange-200 px-5 py-3 text-sm font-semibold text-stone-900 transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {answeredPeople.length < 2
+                ? `Need ${2 - answeredPeople.length} more ${answeredPeople.length === 1 ? "answer" : "answers"}`
+                : "Find our table"}
+            </button>
+          </div>
+        )}
+
+        {phase === "results" && (
+          <div className="shrink-0 border-t border-stone-800 px-5 py-4 sm:px-6">
+            <button type="button" onClick={resetAll} className="w-full rounded-xl border border-stone-700 px-5 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200">
+              Start over
+            </button>
+          </div>
+        )}
       </div>
 
       {activePerson && <PersonForm person={activePerson} color={AVATAR_COLORS[activePerson.avatarIndex]} onSave={savePerson} onCancel={() => setActiveIndex(null)} />}
@@ -339,15 +349,16 @@ const PersonForm: React.FC<{
   return (
     <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={onCancel}>
       <div
-        className="w-full max-w-sm rounded-t-3xl border border-stone-700 bg-stone-900 sm:rounded-3xl"
+        className="flex max-h-[82vh] w-full max-w-sm flex-col rounded-t-3xl border border-stone-700 bg-stone-900 sm:max-h-[85vh] sm:rounded-3xl"
         style={{
           transform: `translateY(${dragY}px)`,
           transition: isDragging ? "none" : "transform 0.2s ease",
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Header — fixed */}
         <div
-          className="cursor-grab touch-none px-5 pb-1 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
+          className="shrink-0 cursor-grab touch-none px-5 pb-1 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
           onPointerDown={handleDragStart}
           onPointerMove={handleDragMove}
           onPointerUp={handleDragEnd}
@@ -363,11 +374,12 @@ const PersonForm: React.FC<{
                 className="w-32 rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
               />
             </div>
-            <span className="pt-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Preferences</span>
+            <span className="pt-2.5 text-[10px] font-medium uppercase tracking-wide text-stone-500">Preferences</span>
           </div>
         </div>
 
-        <div className="px-5 pb-5 pt-4 sm:px-6">
+        {/* Content — scrolls */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5 pt-4 sm:px-6">
           <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Cuisine</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {CUISINE_OPTIONS.map((option) => (
@@ -408,11 +420,14 @@ const PersonForm: React.FC<{
             rows={2}
             className="mt-2 w-full resize-none rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100 outline-none placeholder:text-stone-600 focus:border-orange-400"
           />
+        </div>
 
+        {/* Footer — fixed, Save always reachable */}
+        <div className="shrink-0 border-t border-stone-800 px-5 py-4 sm:px-6">
           <button
             type="button"
             onClick={() => onSave({ ...person, name: name.trim() || person.name, cuisine, budget, note, answered: true })}
-            className="mt-6 w-full rounded-xl bg-orange-200 px-4 py-2.5 text-sm font-semibold text-stone-900"
+            className="w-full rounded-xl bg-orange-200 px-4 py-2.5 text-sm font-semibold text-stone-900"
           >
             Save
           </button>
