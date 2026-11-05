@@ -65,7 +65,7 @@ const AvatarFace: React.FC<{
   style?: React.CSSProperties;
   blinkKey?: number;
   answered?: boolean;
-  look?: { x: number; y: number };
+  look?: NaturalLookRender;
 }> = ({ color, className, style, blinkKey = 0, answered = false, look }) => {
   const rawId = useId();
   const id = rawId.replace(/:/g, "");
@@ -77,15 +77,12 @@ const AvatarFace: React.FC<{
   const shadowFilter = `${id}-shadow`;
   const blurFilter = `${id}-blur`;
 
-  const svgStyle: React.CSSProperties = look
-  ? {
-      ...style,
-      transform: `translate(${look.x * 1.6}px, ${look.y * 1.3}px) rotate(${look.x * 2.5}deg)`,
-      transition: "transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-    }
-  : style ?? {};
+    const svgStyle: React.CSSProperties = look
+    ? { ...style, transform: `translate(${look.headX * 2.2}px, ${look.headY * 1.8}px) rotate(${look.headRot}deg)` }
+    : style ?? {};
 
-  const eyesTransform = `translate(${(look?.x ?? 0) * 3.2}, ${(look?.y ?? 0) * 2.4})`;
+  const eyesPositionTransform = `translate(${(look?.eyeX ?? 0) * 4}, ${(look?.eyeY ?? 0) * 3})`;
+  const eyesSquintScale = 1 - (look?.squint ?? 0) * 0.3;
   return (
     <svg
       viewBox="0 0 100 100"
@@ -187,19 +184,20 @@ const AvatarFace: React.FC<{
       </g>
 
       {/* Eyes blink together when this avatar is tapped. */}
-      <g
-        key={blinkKey}
-        className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
-        transform={eyesTransform}
-        style={{ transition: "transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1)" }}
-      >
-        <g fill="#29252B">
-          <ellipse cx="36" cy="43" rx="3.7" ry="4.5" />
-          <ellipse cx="64" cy="43" rx="3.7" ry="4.5" />
-        </g>
-        <g fill="#FFFFFF" opacity="0.8">
-          <circle cx="35" cy="41.5" r="1.1" />
-          <circle cx="63" cy="41.5" r="1.1" />
+      <g transform={eyesPositionTransform}>
+        <g
+          key={blinkKey}
+          className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
+          style={{ transform: `scaleY(${eyesSquintScale})`, transformBox: "fill-box", transformOrigin: "center" }}
+        >
+          <g fill="#29252B">
+            <ellipse cx="36" cy="43" rx="3.7" ry="4.5" />
+            <ellipse cx="64" cy="43" rx="3.7" ry="4.5" />
+          </g>
+          <g fill="#FFFFFF" opacity="0.8">
+            <circle cx="35" cy="41.5" r="1.1" />
+            <circle cx="63" cy="41.5" r="1.1" />
+          </g>
         </g>
       </g>
 
@@ -673,26 +671,73 @@ interface LookVector {
   y: number;
 }
 
+interface NaturalLookRender {
+  headX: number;
+  headY: number;
+  headRot: number;
+  eyeX: number;
+  eyeY: number;
+  squint: number;
+}
 
-function useAvatarLook(containerRef: React.RefObject<HTMLElement | null>) {
-  const [look, setLook] = useState<LookVector>({ x: 0, y: 0 });
-  const idleTimeoutRef = useRef<number | null>(null);
+function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
+  const [render, setRender] = useState<NaturalLookRender>({
+    headX: 0, headY: 0, headRot: 0, eyeX: 0, eyeY: 0, squint: 0,
+  });
+
+  const targetRef = useRef({ x: 0, y: 0 });
   const isPointerInsideRef = useRef(false);
+  const idleTimeoutRef = useRef<number | null>(null);
+  const rafRef = useRef<number | undefined>(undefined);
+  const startRef = useRef(performance.now());
+  const stateRef = useRef({ headX: 0, headY: 0, headVX: 0, headVY: 0, eyeX: 0, eyeY: 0, eyeVX: 0, eyeVY: 0 });
 
+  // Idle target changes — infrequent, irregular, sometimes just resting.
   useEffect(() => {
     const scheduleIdle = () => {
-      const delay = 1800 + Math.random() * 2400;
+      const delay = 1400 + Math.random() * 2600;
       idleTimeoutRef.current = window.setTimeout(() => {
-        if (isPointerInsideRef.current) return scheduleIdle();
-        const resting = Math.random() < 0.35;
-        setLook(resting ? { x: 0, y: 0 } : { x: Math.random() * 2 - 1, y: (Math.random() * 2 - 1) * 0.7 });
+        if (!isPointerInsideRef.current) {
+          const resting = Math.random() < 0.3;
+          targetRef.current = resting ? { x: 0, y: 0 } : { x: Math.random() * 2 - 1, y: (Math.random() * 2 - 1) * 0.6 };
+        }
         scheduleIdle();
       }, delay);
     };
     scheduleIdle();
-    return () => {
-      if (idleTimeoutRef.current) window.clearTimeout(idleTimeoutRef.current);
+    return () => { if (idleTimeoutRef.current) window.clearTimeout(idleTimeoutRef.current); };
+  }, []);
+
+  // Per-frame spring: eyes are fast and lead, head is heavier and lags/overshoots slightly.
+  // A small layered sine "wander" is added continuously so it's never perfectly frozen.
+  useEffect(() => {
+    const tick = (now: number) => {
+      const t = (now - startRef.current) / 1000;
+      const noiseX = Math.sin(t * 0.9) * 0.05 + Math.sin(t * 2.3 + 1) * 0.025;
+      const noiseY = Math.sin(t * 0.7 + 2) * 0.035 + Math.sin(t * 1.9 + 0.5) * 0.02;
+
+      const tx = Math.max(-1, Math.min(1, targetRef.current.x + noiseX));
+      const ty = Math.max(-1, Math.min(1, targetRef.current.y + noiseY));
+
+      const s = stateRef.current;
+      s.eyeVX += (tx - s.eyeX) * 0.3; s.eyeVX *= 0.65; s.eyeX += s.eyeVX;
+      s.eyeVY += (ty - s.eyeY) * 0.3; s.eyeVY *= 0.65; s.eyeY += s.eyeVY;
+
+      s.headVX += (tx - s.headX) * 0.065; s.headVX *= 0.82; s.headX += s.headVX;
+      s.headVY += (ty - s.headY) * 0.065; s.headVY *= 0.82; s.headY += s.headVY;
+
+      setRender({
+        headX: s.headX,
+        headY: s.headY,
+        headRot: s.headX * 3.2,
+        eyeX: s.eyeX,
+        eyeY: s.eyeY,
+        squint: Math.min(1, Math.abs(s.eyeX) * 0.7 + Math.abs(s.eyeY) * 0.4),
+      });
+      rafRef.current = requestAnimationFrame(tick);
     };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
   const handlePointerMove = (event: React.PointerEvent) => {
@@ -702,17 +747,37 @@ function useAvatarLook(containerRef: React.RefObject<HTMLElement | null>) {
     const rect = el.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const x = Math.max(-1, Math.min(1, ((event.clientX - cx) / (rect.width / 2)) * 2.2));
-    const y = Math.max(-1, Math.min(1, ((event.clientY - cy) / (rect.height / 2)) * 2.2));
-    setLook({ x, y });
+    targetRef.current = {
+      x: Math.max(-1, Math.min(1, ((event.clientX - cx) / (rect.width / 2)) * 2.2)),
+      y: Math.max(-1, Math.min(1, ((event.clientY - cy) / (rect.height / 2)) * 2.2)),
+    };
   };
 
   const handlePointerLeave = () => {
     isPointerInsideRef.current = false;
-    setLook({ x: 0, y: 0 });
+    targetRef.current = { x: 0, y: 0 };
   };
 
-  return { look, handlePointerMove, handlePointerLeave };
+  return { render, handlePointerMove, handlePointerLeave };
+}
+
+// Blinks on its own, occasionally twice in a row — not just when tapped.
+function useAutoBlink() {
+  const [blinkKey, setBlinkKey] = useState(0);
+  useEffect(() => {
+    let timeout: number;
+    const schedule = () => {
+      const delay = 2000 + Math.random() * 4000;
+      timeout = window.setTimeout(() => {
+        setBlinkKey((k) => k + 1);
+        if (Math.random() < 0.2) window.setTimeout(() => setBlinkKey((k) => k + 1), 220);
+        schedule();
+      }, delay);
+    };
+    schedule();
+    return () => window.clearTimeout(timeout);
+  }, []);
+  return blinkKey;
 }
 
 /** Floating preference card, absolutely positioned near whichever avatar was
@@ -730,7 +795,8 @@ const PersonBubble: React.FC<{
   const [note, setNote] = useState(person.note);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const { look, handlePointerMove, handlePointerLeave } = useAvatarLook(cardRef);
+  const { render: look, handlePointerMove, handlePointerLeave } = useNaturalLook(cardRef);
+  const autoBlinkKey = useAutoBlink();
 
   return (
     <div
@@ -760,7 +826,7 @@ const PersonBubble: React.FC<{
       >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <AvatarFace color={color} answered={person.answered} look={look} className="h-10 w-10 shrink-0" />
+            <AvatarFace color={color} answered={person.answered} look={look} blinkKey={autoBlinkKey} className="h-10 w-10 shrink-0" />
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
