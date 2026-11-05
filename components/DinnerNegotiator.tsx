@@ -689,7 +689,19 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
   const stateRef = useRef({ headX: 0, headY: 0, headVX: 0, headVY: 0, eyeX: 0, eyeY: 0, eyeVX: 0, eyeVY: 0 });
   const rafRef = useRef<number | undefined>(undefined);
   const startRef = useRef(performance.now());
-  const blurTimeoutRef = useRef<number | null>(null);
+  const idleRecenterTimeoutRef = useRef<number | null>(null);
+
+  const IDLE_RECENTER_MS = 4000;
+  const scheduleIdleRecenter = () => {
+    if (idleRecenterTimeoutRef.current) window.clearTimeout(idleRecenterTimeoutRef.current);
+    idleRecenterTimeoutRef.current = window.setTimeout(() => {
+      targetRef.current = { x: 0, y: 0 };
+    }, IDLE_RECENTER_MS);
+  };
+
+  useEffect(() => () => {
+    if (idleRecenterTimeoutRef.current) window.clearTimeout(idleRecenterTimeoutRef.current);
+  }, []);
 
   useEffect(() => {
     const tick = (now: number) => {
@@ -729,11 +741,11 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
       x: Math.max(-1, Math.min(1, (clientX - ax) / GAZE_RADIUS_PX)),
       y: Math.max(-1, Math.min(1, (clientY - ay) / GAZE_RADIUS_PX)),
     };
+    scheduleIdleRecenter();
   };
 
   // Settle on whatever field gets focus.
   const handleFocusCapture = (event: React.FocusEvent) => {
-    if (blurTimeoutRef.current) window.clearTimeout(blurTimeoutRef.current);
     const el = event.target as HTMLElement;
     if (typeof el.getBoundingClientRect !== "function") return;
     const rect = el.getBoundingClientRect();
@@ -752,16 +764,8 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
   // A tap on a chip/button aims there directly.
   const handleTap = (clientX: number, clientY: number) => aimAt(clientX, clientY);
 
-  // Only recenter once focus has actually left the whole card.
-  const handleBlurCapture = () => {
-    blurTimeoutRef.current = window.setTimeout(() => {
-      const el = anchorRef.current;
-      if (el && el.contains(document.activeElement)) return;
-      targetRef.current = { x: 0, y: 0 };
-    }, 80);
-  };
 
-  return { render, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap };
+  return { render, handleFocusCapture, handleInputCapture, handleTap };
 }
 
 // Tapping the avatar itself: blink, smile briefly, revert — fully self-contained.
@@ -797,7 +801,7 @@ const PersonBubble: React.FC<{
 
   const cardRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
-  const { render: look, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap } = useFocusLook(avatarButtonRef);
+  const { render: look, handleFocusCapture, handleInputCapture, handleTap } = useFocusLook(avatarButtonRef);
   const { blinkKey: pokeBlinkKey, smiling, poke } = useAvatarPoke();
 
   return (
@@ -823,7 +827,6 @@ const PersonBubble: React.FC<{
         ref={cardRef}
         onFocusCapture={handleFocusCapture}
         onInputCapture={handleInputCapture}
-        onBlurCapture={handleBlurCapture}
         onPointerDownCapture={(e) => {
           if (avatarButtonRef.current?.contains(e.target as Node)) return;
           handleTap(e.clientX, e.clientY);
