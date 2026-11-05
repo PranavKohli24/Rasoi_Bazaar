@@ -680,7 +680,7 @@ interface NaturalLookRender {
   squint: number;
 }
 
-function useFocusLook(containerRef: React.RefObject<HTMLElement | null>) {
+function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
   const [render, setRender] = useState<NaturalLookRender>({
     headX: 0, headY: 0, headRot: 0, eyeX: 0, eyeY: 0, squint: 0,
   });
@@ -717,15 +717,17 @@ function useFocusLook(containerRef: React.RefObject<HTMLElement | null>) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
+  const GAZE_RADIUS_PX = 220;
+
   const aimAt = (clientX: number, clientY: number) => {
-    const el = containerRef.current;
+    const el = anchorRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
+    const ax = rect.left + rect.width / 2;
+    const ay = rect.top + rect.height / 2;
     targetRef.current = {
-      x: Math.max(-1, Math.min(1, ((clientX - cx) / (rect.width / 2)) * 2.2)),
-      y: Math.max(-1, Math.min(1, ((clientY - cy) / (rect.height / 2)) * 2.2)),
+      x: Math.max(-1, Math.min(1, (clientX - ax) / GAZE_RADIUS_PX)),
+      y: Math.max(-1, Math.min(1, (clientY - ay) / GAZE_RADIUS_PX)),
     };
   };
 
@@ -753,7 +755,7 @@ function useFocusLook(containerRef: React.RefObject<HTMLElement | null>) {
   // Only recenter once focus has actually left the whole card.
   const handleBlurCapture = () => {
     blurTimeoutRef.current = window.setTimeout(() => {
-      const el = containerRef.current;
+      const el = anchorRef.current;
       if (el && el.contains(document.activeElement)) return;
       targetRef.current = { x: 0, y: 0 };
     }, 80);
@@ -795,7 +797,7 @@ const PersonBubble: React.FC<{
 
   const cardRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
-  const { render: look, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap } = useFocusLook(cardRef);
+  const { render: look, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap } = useFocusLook(avatarButtonRef);
   const { blinkKey: pokeBlinkKey, smiling, poke } = useAvatarPoke();
 
   return (
