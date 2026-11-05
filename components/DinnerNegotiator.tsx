@@ -373,19 +373,6 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
     setActiveIndex((current) => (current === i ? null : i));
   };
 
-  const removePerson = (personId: string) => {
-    const removedIndex = people.findIndex((person) => person.id === personId);
-    if (removedIndex === -1) return;
-
-    setPeople((prev) => prev.filter((person) => person.id !== personId));
-    setActiveIndex((current) => {
-      if (current === null || current === removedIndex) return null;
-      return current > removedIndex ? current - 1 : current;
-    });
-    setAvatarBlink((current) =>
-      current.personId === personId ? { personId: "", key: current.key } : current
-    );
-  };
 
   const addPerson = () => {
     if (people.length >= MAX_PEOPLE) return;
@@ -515,15 +502,6 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                         <span className="mt-1.5 max-w-[60px] truncate text-center text-xs text-stone-300">{person.name}</span>
                       </button>
 
-                      <button
-                        type="button"
-                        onClick={() => removePerson(person.id)}
-                        aria-label={`Remove ${person.name}`}
-                        title="Remove person"
-                        className="absolute -right-1 -top-1 z-10 flex h-5 w-5 items-center justify-center rounded-full border border-stone-900 bg-stone-700 text-[13px] leading-none text-stone-200 shadow-sm transition-colors hover:bg-red-500 hover:text-white"
-                      >
-                        ×
-                      </button>
                     </div>
                   );
                 })}
@@ -553,7 +531,6 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
             pos={popoverPos}
             onSave={savePerson}
             onCancel={() => setActiveIndex(null)}
-            onRemove={() => removePerson(activePerson.id)}
           />
         )}
 
@@ -687,8 +664,7 @@ const PersonBubble: React.FC<{
   pos: PopoverPos;
   onSave: (person: NegotiatorPerson) => void;
   onCancel: () => void;
-  onRemove: () => void;
-}> = ({ person, color, pos, onSave, onCancel, onRemove }) => {
+}> = ({ person, color, pos, onSave, onCancel }) => {
   const [name, setName] = useState(person.name);
   const [cuisine, setCuisine] = useState<CuisineChoice>(person.cuisine);
   const [budget, setBudget] = useState<BudgetChoice>(person.budget);
@@ -726,22 +702,13 @@ const PersonBubble: React.FC<{
               className="w-32 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
             />
           </div>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={onRemove}
-              className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-red-400/80 hover:text-red-300"
-            >
-              Remove person
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
-            >
-              Close ✕
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
+          >
+            Close ✕
+          </button>
         </div>
 
         <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-stone-500">Cuisine</p>
