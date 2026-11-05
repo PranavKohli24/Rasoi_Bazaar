@@ -508,9 +508,9 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
           onPointerCancel={handleDragEnd}
         >
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-stone-700 sm:hidden" aria-hidden="true" />
-          <p className="text-xs font-semibold text-orange-200">Dinner Negotiator</p>
+          <p className="text-xs font-semibold text-orange-200">Lets choose</p>
           <h3 className="font-serif text-xl font-black text-orange-50">
-            {phase === "results" ? "Here's your table" : `Where should we eat in ${region.name}?`}
+            {phase === "results" ? "Here's your table" : `Where should we eat?`}
           </h3>
 
           {phase === "collecting" && (
