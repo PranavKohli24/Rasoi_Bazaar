@@ -707,7 +707,11 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
     headX: 0, headY: 0, headRot: 0, eyeX: 0, eyeY: 0, squint: 0,
   });
 
-  const targetRef = useRef({ x: 0, y: 0 });
+  // Eyes and head now get independent targets — eyes saturate quickly for
+  // nearby points (they alone can cover a small glance), while the head's
+  // share of the motion grows the farther away the target is, same as real
+  // eye-head coordination.
+  const targetRef = useRef({ eyeX: 0, eyeY: 0, headX: 0, headY: 0 });
   const stateRef = useRef({ headX: 0, headY: 0, headVX: 0, headVY: 0, eyeX: 0, eyeY: 0, eyeVX: 0, eyeVY: 0 });
   const rafRef = useRef<number | undefined>(undefined);
   const startRef = useRef(performance.now());
@@ -717,7 +721,7 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
   const scheduleIdleRecenter = () => {
     if (idleRecenterTimeoutRef.current) window.clearTimeout(idleRecenterTimeoutRef.current);
     idleRecenterTimeoutRef.current = window.setTimeout(() => {
-      targetRef.current = { x: 0, y: 0 };
+      targetRef.current = { eyeX: 0, eyeY: 0, headX: 0, headY: 0 };
     }, IDLE_RECENTER_MS);
   };
 
@@ -731,14 +735,18 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
       // Tiny continuous breathing so it's not frozen — not a retarget, just texture.
       const breatheX = Math.sin(t * 0.8) * 0.015;
       const breatheY = Math.sin(t * 0.6 + 1) * 0.012;
-      const tx = Math.max(-1, Math.min(1, targetRef.current.x + breatheX));
-      const ty = Math.max(-1, Math.min(1, targetRef.current.y + breatheY));
+
+      const target = targetRef.current;
+      const tEyeX = Math.max(-1, Math.min(1, target.eyeX + breatheX));
+      const tEyeY = Math.max(-1, Math.min(1, target.eyeY + breatheY));
+      const tHeadX = Math.max(-1, Math.min(1, target.headX + breatheX * 0.6));
+      const tHeadY = Math.max(-1, Math.min(1, target.headY + breatheY * 0.6));
 
       const s = stateRef.current;
-      s.eyeVX += (tx - s.eyeX) * 0.28; s.eyeVX *= 0.62; s.eyeX += s.eyeVX;
-      s.eyeVY += (ty - s.eyeY) * 0.28; s.eyeVY *= 0.62; s.eyeY += s.eyeVY;
-      s.headVX += (tx - s.headX) * 0.05; s.headVX *= 0.80; s.headX += s.headVX;
-      s.headVY += (ty - s.headY) * 0.05; s.headVY *= 0.80; s.headY += s.headVY;
+      s.eyeVX += (tEyeX - s.eyeX) * 0.32; s.eyeVX *= 0.6; s.eyeX += s.eyeVX;
+      s.eyeVY += (tEyeY - s.eyeY) * 0.32; s.eyeVY *= 0.6; s.eyeY += s.eyeVY;
+      s.headVX += (tHeadX - s.headX) * 0.05; s.headVX *= 0.80; s.headX += s.headVX;
+      s.headVY += (tHeadY - s.headY) * 0.05; s.headVY *= 0.80; s.headY += s.headVY;
 
       setRender({
         headX: s.headX, headY: s.headY, headRot: s.headX * 6,
@@ -751,7 +759,10 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  const GAZE_RADIUS_PX = 220;
+  // Within this radius the eyes alone comfortably cover the glance.
+  const EYE_SATURATION_PX = 75;
+  // Beyond this the head is fully turned toward the target.
+  const HEAD_FULL_TURN_PX = 260;
 
   const aimAt = (clientX: number, clientY: number) => {
     const el = anchorRef.current;
@@ -759,9 +770,23 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
     const rect = el.getBoundingClientRect();
     const ax = rect.left + rect.width / 2;
     const ay = rect.top + rect.height / 2;
+
+    const dx = clientX - ax;
+    const dy = clientY - ay;
+    const dist = Math.hypot(dx, dy) || 1;
+    const dirX = dx / dist;
+    const dirY = dy / dist;
+
+    const headMagnitude = Math.min(1, dist / HEAD_FULL_TURN_PX);
+    // Eyes reach near-full engagement quickly for close targets, then ease
+    // off as the head takes over more of a far-away glance.
+    const eyeMagnitude = Math.min(1, dist / EYE_SATURATION_PX) * (1 - headMagnitude * 0.55);
+
     targetRef.current = {
-      x: Math.max(-1, Math.min(1, (clientX - ax) / GAZE_RADIUS_PX)),
-      y: Math.max(-1, Math.min(1, (clientY - ay) / GAZE_RADIUS_PX)),
+      eyeX: dirX * eyeMagnitude,
+      eyeY: dirY * eyeMagnitude,
+      headX: dirX * headMagnitude,
+      headY: dirY * headMagnitude,
     };
     scheduleIdleRecenter();
   };
@@ -785,7 +810,6 @@ function useFocusLook(anchorRef: React.RefObject<HTMLElement | null>) {
 
   // A tap on a chip/button aims there directly.
   const handleTap = (clientX: number, clientY: number) => aimAt(clientX, clientY);
-
 
   return { render, handleFocusCapture, handleInputCapture, handleTap };
 }
