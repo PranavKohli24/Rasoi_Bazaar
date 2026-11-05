@@ -206,7 +206,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                         </span>
                       )}
                     </div>
-                    <span className="max-w-[64px] truncate text-xs text-stone-300">{person.name}</span>
+                    <span className="max-w-[100px] text-center text-xs text-stone-300">{person.name}</span>
                   </button>
                 ))}
               </div>
