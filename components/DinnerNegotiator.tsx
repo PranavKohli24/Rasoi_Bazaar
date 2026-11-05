@@ -52,11 +52,12 @@ const AvatarFace: React.FC<{
   className?: string;
   style?: React.CSSProperties;
   blinkKey?: number;
-}> = ({ color, className, style, blinkKey = 0 }) => (
+  answered?: boolean;
+}> = ({ color, className, style, blinkKey = 0, answered = false }) => (
   <svg viewBox="0 0 40 40" className={className} style={style} aria-hidden="true">
     <circle cx="20" cy="20" r="20" fill={color} />
 
-    {/* Eyes blink together when this avatar is tapped. */}
+    {/* Eyes */}
     <g
       key={blinkKey}
       className={blinkKey > 0 ? "negotiator-avatar-blink" : ""}
@@ -66,7 +67,14 @@ const AvatarFace: React.FC<{
       <circle cx="26" cy="17" r="2.2" fill="#1C1917" />
     </g>
 
-    <path d="M13 25c2 2.5 12 2.5 14 0" stroke="#1C1917" strokeWidth="2" strokeLinecap="round" fill="none" />
+    {/* Smile */}
+    <path
+      d={answered ? "M11 23c3.5 9 14.5 9 18 0" : "M13 25c2 2.5 12 2.5 14 0"}
+      stroke="#1C1917"
+      strokeWidth="2"
+      strokeLinecap="round"
+      fill="none"
+    />
   </svg>
 );
 
@@ -337,6 +345,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                         <AvatarFace
                           color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]}
                           blinkKey={avatarBlink.personId === person.id ? avatarBlink.key : 0}
+                          answered={person.answered}
                           className={`h-14 w-14 rounded-full ring-2 transition-all duration-200 ${
                             isActive
                               ? "scale-110 ring-4 ring-orange-400"
