@@ -794,6 +794,7 @@ const PersonBubble: React.FC<{
   const [note, setNote] = useState(person.note);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const avatarButtonRef = useRef<HTMLButtonElement>(null);
   const { render: look, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap } = useFocusLook(cardRef);
   const { blinkKey: pokeBlinkKey, smiling, poke } = useAvatarPoke();
 
@@ -821,13 +822,17 @@ const PersonBubble: React.FC<{
         onFocusCapture={handleFocusCapture}
         onInputCapture={handleInputCapture}
         onBlurCapture={handleBlurCapture}
-        onPointerDownCapture={(e) => handleTap(e.clientX, e.clientY)}
+        onPointerDownCapture={(e) => {
+          if (avatarButtonRef.current?.contains(e.target as Node)) return;
+          handleTap(e.clientX, e.clientY);
+        }}
         className="relative overflow-y-auto overscroll-contain rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-5 [&::-webkit-scrollbar]:hidden"
         style={{ maxHeight: pos.maxHeight }}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <button
+              ref={avatarButtonRef}
               type="button"
               onPointerDown={(e) => e.stopPropagation()}
               onClick={poke}
