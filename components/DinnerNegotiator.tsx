@@ -14,12 +14,13 @@ import {
   distinctCuisinePicks,
 } from "../utils/dinnerNegotiatorMatch";
 
-const AVATAR_COUNT = 6;
+const INITIAL_PEOPLE_COUNT = 2;
+const MAX_PEOPLE = 8;
 const AVATAR_COLORS = ["#FC6C26", "#6366F1", "#10B981", "#F472B6", "#38BDF8", "#FBBF24"];
 const DRAG_DISMISS_THRESHOLD = 90;
 
 const makeInitialPeople = (): NegotiatorPerson[] =>
-  Array.from({ length: AVATAR_COUNT }, (_, i) => ({
+  Array.from({ length: INITIAL_PEOPLE_COUNT }, (_, i) => ({
     id: `person-${i}`,
     name: `Person ${String.fromCharCode(65 + i)}`,
     avatarIndex: i,
@@ -32,6 +33,12 @@ const makeInitialPeople = (): NegotiatorPerson[] =>
 const CheckIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
     <path d="M4 10l4 4 8-8" />
+  </svg>
+);
+
+const PlusIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <path d="M10 4v12M4 10h12" />
   </svg>
 );
 
@@ -107,7 +114,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const [matches, setMatches] = useState<RestaurantMatch[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
 
-  const avatarGridRef = useRef<HTMLDivElement>(null);
+  const avatarRowRef = useRef<HTMLDivElement>(null);
   const avatarButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const [tailLeft, setTailLeft] = useState(0);
 
@@ -117,18 +124,18 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const activePerson = activeIndex !== null ? people[activeIndex] : null;
 
   // Keep the speech-bubble tail pointing at whichever avatar is open,
-  // recomputing on open/switch and on resize (grid is 2-col on mobile,
-  // 6-col from sm: up, so an avatar's x position shifts a lot).
+  // recomputing on open/switch and on resize (the header row can wrap
+  // onto a second line as people are added).
   useLayoutEffect(() => {
     if (!activePerson) return;
 
     const recompute = () => {
-      const gridEl = avatarGridRef.current;
+      const rowEl = avatarRowRef.current;
       const avatarEl = avatarButtonRefs.current.get(activePerson.id);
-      if (!gridEl || !avatarEl) return;
-      const gridRect = gridEl.getBoundingClientRect();
+      if (!rowEl || !avatarEl) return;
+      const rowRect = rowEl.getBoundingClientRect();
       const avatarRect = avatarEl.getBoundingClientRect();
-      setTailLeft(avatarRect.left - gridRect.left + avatarRect.width / 2);
+      setTailLeft(avatarRect.left - rowRect.left + avatarRect.width / 2);
     };
 
     recompute();
@@ -142,6 +149,22 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
 
   const toggleAvatar = (i: number) => {
     setActiveIndex((current) => (current === i ? null : i));
+  };
+
+  const addPerson = () => {
+    if (people.length >= MAX_PEOPLE) return;
+    const nextIndex = people.length;
+    const newPerson: NegotiatorPerson = {
+      id: `person-${nextIndex}`,
+      name: `Person ${String.fromCharCode(65 + nextIndex)}`,
+      avatarIndex: nextIndex,
+      cuisine: "Any",
+      budget: "any",
+      note: "",
+      answered: false,
+    };
+    setPeople((prev) => [...prev, newPerson]);
+    setActiveIndex(nextIndex);
   };
 
   const savePerson = (updated: NegotiatorPerson) => {
@@ -214,15 +237,10 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
           <h3 className="font-serif text-xl font-black text-orange-50">
             {phase === "results" ? "Here's your table" : `Where should we eat in ${region.name}?`}
           </h3>
-        </div>
 
-        {/* Content — scrolls */}
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
           {phase === "collecting" && (
             <>
-              <p className="text-sm text-stone-400">Tap to choose preferences.</p>
-
-              <div ref={avatarGridRef} className="relative mt-5 grid grid-cols-2 gap-y-5 sm:grid-cols-6">
+              <div ref={avatarRowRef} className="mt-4 flex flex-wrap items-start gap-4">
                 {people.map((person, i) => {
                   const isActive = activeIndex === i;
                   return (
@@ -234,11 +252,11 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                       }}
                       type="button"
                       onClick={() => toggleAvatar(i)}
-                      className="flex flex-col items-center gap-1.5"
+                      className="flex w-14 flex-col items-center gap-1.5"
                     >
                       <div className="relative">
                         <AvatarFace
-                          color={AVATAR_COLORS[i]}
+                          color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]}
                           className={`h-14 w-14 rounded-full ring-2 transition-all duration-200 ${
                             isActive
                               ? "scale-110 ring-4 ring-orange-400"
@@ -253,14 +271,36 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                           </span>
                         )}
                       </div>
-                      <span className="max-w-[100px] text-center text-xs text-stone-300">{person.name}</span>
+                      <span className="max-w-[60px] truncate text-center text-xs text-stone-300">{person.name}</span>
                     </button>
                   );
                 })}
+
+                {people.length < MAX_PEOPLE && (
+                  <button
+                    type="button"
+                    onClick={addPerson}
+                    className="flex w-14 flex-col items-center gap-1.5"
+                  >
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-stone-700 text-stone-400 transition-colors hover:border-orange-400 hover:text-orange-200">
+                      <PlusIcon className="h-5 w-5" />
+                    </span>
+                    <span className="text-xs text-stone-500">Add</span>
+                  </button>
+                )}
               </div>
 
-              {/* Speech-bubble preference panel — expands below the grid,
-                  tail tracks whichever avatar was tapped. */}
+              <p className="mt-3 text-xs text-stone-500">Tap an avatar to set their picks.</p>
+            </>
+          )}
+        </div>
+
+        {/* Content — scrolls */}
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
+          {phase === "collecting" && (
+            <>
+              {/* Expanding speech-bubble preference panel — tail tracks
+                  whichever avatar was tapped in the header above. */}
               <div
                 className="grid overflow-hidden transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 style={{ gridTemplateRows: activePerson ? "1fr" : "0fr" }}
@@ -270,7 +310,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     <PersonBubble
                       key={activePerson.id}
                       person={activePerson}
-                      color={AVATAR_COLORS[activePerson.avatarIndex]}
+                      color={AVATAR_COLORS[activePerson.avatarIndex % AVATAR_COLORS.length]}
                       tailLeft={tailLeft}
                       onSave={savePerson}
                       onCancel={() => setActiveIndex(null)}
@@ -289,7 +329,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                 {answeredPeople.map((p, i) => (
                   <AvatarFace
                     key={p.id}
-                    color={AVATAR_COLORS[p.avatarIndex]}
+                    color={AVATAR_COLORS[p.avatarIndex % AVATAR_COLORS.length]}
                     className="h-9 w-9 animate-bounce rounded-full"
                     style={{ animationDelay: `${i * 120}ms` }}
                   />
@@ -322,7 +362,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     {topPick.matchedNames.map((name) => {
                       const person = people.find((p) => p.name === name);
                       return person ? (
-                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex]} className="h-7 w-7 rounded-full border-2 border-stone-950" />
+                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex % AVATAR_COLORS.length]} className="h-7 w-7 rounded-full border-2 border-stone-950" />
                       ) : null;
                     })}
                   </div>
@@ -399,7 +439,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   );
 };
 
-/** The expanding speech bubble that appears below the avatar grid, with a
+/** The expanding speech bubble that appears below the header's avatar row, with a
  *  tail pointing up at whichever avatar triggered it. */
 const PersonBubble: React.FC<{
   person: NegotiatorPerson;
@@ -414,7 +454,7 @@ const PersonBubble: React.FC<{
   const [note, setNote] = useState(person.note);
 
   return (
-    <div className="relative mt-7 animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+    <div className="relative mt-4 animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
       <span
         aria-hidden="true"
         className="absolute -top-2 h-4 w-4 -translate-x-1/2 rotate-45 rounded-sm border-l border-t border-orange-400/50 bg-stone-950"
