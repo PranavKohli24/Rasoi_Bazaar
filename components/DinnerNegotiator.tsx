@@ -680,59 +680,36 @@ interface NaturalLookRender {
   squint: number;
 }
 
-function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
+function useFocusLook(containerRef: React.RefObject<HTMLElement | null>) {
   const [render, setRender] = useState<NaturalLookRender>({
     headX: 0, headY: 0, headRot: 0, eyeX: 0, eyeY: 0, squint: 0,
   });
 
   const targetRef = useRef({ x: 0, y: 0 });
-  const isPointerInsideRef = useRef(false);
-  const idleTimeoutRef = useRef<number | null>(null);
+  const stateRef = useRef({ headX: 0, headY: 0, headVX: 0, headVY: 0, eyeX: 0, eyeY: 0, eyeVX: 0, eyeVY: 0 });
   const rafRef = useRef<number | undefined>(undefined);
   const startRef = useRef(performance.now());
-  const stateRef = useRef({ headX: 0, headY: 0, headVX: 0, headVY: 0, eyeX: 0, eyeY: 0, eyeVX: 0, eyeVY: 0 });
+  const blurTimeoutRef = useRef<number | null>(null);
 
-  // Idle target changes — infrequent, irregular, sometimes just resting.
-  useEffect(() => {
-    const scheduleIdle = () => {
-      const delay = 1400 + Math.random() * 2600;
-      idleTimeoutRef.current = window.setTimeout(() => {
-        if (!isPointerInsideRef.current && performance.now() > lockUntilRef.current) {
-          const resting = Math.random() < 0.3;
-          targetRef.current = resting ? { x: 0, y: 0 } : { x: Math.random() * 2 - 1, y: (Math.random() * 2 - 1) * 0.6 };
-        }
-        scheduleIdle();
-      }, delay);
-    };
-    scheduleIdle();
-    return () => { if (idleTimeoutRef.current) window.clearTimeout(idleTimeoutRef.current); };
-  }, []);
-
-  // Per-frame spring: eyes are fast and lead, head is heavier and lags/overshoots slightly.
-  // A small layered sine "wander" is added continuously so it's never perfectly frozen.
   useEffect(() => {
     const tick = (now: number) => {
       const t = (now - startRef.current) / 1000;
-      const noiseX = Math.sin(t * 0.9) * 0.05 + Math.sin(t * 2.3 + 1) * 0.025;
-      const noiseY = Math.sin(t * 0.7 + 2) * 0.035 + Math.sin(t * 1.9 + 0.5) * 0.02;
-
-      const tx = Math.max(-1, Math.min(1, targetRef.current.x + noiseX));
-      const ty = Math.max(-1, Math.min(1, targetRef.current.y + noiseY));
+      // Tiny continuous breathing so it's not frozen — not a retarget, just texture.
+      const breatheX = Math.sin(t * 0.8) * 0.015;
+      const breatheY = Math.sin(t * 0.6 + 1) * 0.012;
+      const tx = Math.max(-1, Math.min(1, targetRef.current.x + breatheX));
+      const ty = Math.max(-1, Math.min(1, targetRef.current.y + breatheY));
 
       const s = stateRef.current;
-      s.eyeVX += (tx - s.eyeX) * 0.3; s.eyeVX *= 0.65; s.eyeX += s.eyeVX;
-      s.eyeVY += (ty - s.eyeY) * 0.3; s.eyeVY *= 0.65; s.eyeY += s.eyeVY;
-
-      s.headVX += (tx - s.headX) * 0.065; s.headVX *= 0.82; s.headX += s.headVX;
-      s.headVY += (ty - s.headY) * 0.065; s.headVY *= 0.82; s.headY += s.headVY;
+      s.eyeVX += (tx - s.eyeX) * 0.28; s.eyeVX *= 0.62; s.eyeX += s.eyeVX;
+      s.eyeVY += (ty - s.eyeY) * 0.28; s.eyeVY *= 0.62; s.eyeY += s.eyeVY;
+      s.headVX += (tx - s.headX) * 0.05; s.headVX *= 0.80; s.headX += s.headVX;
+      s.headVY += (ty - s.headY) * 0.05; s.headVY *= 0.80; s.headY += s.headVY;
 
       setRender({
-        headX: s.headX,
-        headY: s.headY,
-        headRot: s.headX * 6,
-        eyeX: s.eyeX,
-        eyeY: s.eyeY,
-        squint: Math.min(1, Math.abs(s.eyeX) * 0.7 + Math.abs(s.eyeY) * 0.4),
+        headX: s.headX, headY: s.headY, headRot: s.headX * 6,
+        eyeX: s.eyeX, eyeY: s.eyeY,
+        squint: Math.min(1, Math.abs(s.eyeX) * 0.6 + Math.abs(s.eyeY) * 0.35),
       });
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -740,60 +717,66 @@ function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  const lockUntilRef = useRef(0);
-
-  const computeTarget = (event: React.PointerEvent) => {
+  const aimAt = (clientX: number, clientY: number) => {
     const el = containerRef.current;
-    if (!el) return null;
+    if (!el) return;
     const rect = el.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    return {
-      x: Math.max(-1, Math.min(1, ((event.clientX - cx) / (rect.width / 2)) * 2.2)),
-      y: Math.max(-1, Math.min(1, ((event.clientY - cy) / (rect.height / 2)) * 2.2)),
+    targetRef.current = {
+      x: Math.max(-1, Math.min(1, ((clientX - cx) / (rect.width / 2)) * 2.2)),
+      y: Math.max(-1, Math.min(1, ((clientY - cy) / (rect.height / 2)) * 2.2)),
     };
   };
 
-  const handlePointerMove = (event: React.PointerEvent) => {
-    isPointerInsideRef.current = true;
-    const next = computeTarget(event);
-    if (next) targetRef.current = next;
+  // Settle on whatever field gets focus.
+  const handleFocusCapture = (event: React.FocusEvent) => {
+    if (blurTimeoutRef.current) window.clearTimeout(blurTimeoutRef.current);
+    const el = event.target as HTMLElement;
+    if (typeof el.getBoundingClientRect !== "function") return;
+    const rect = el.getBoundingClientRect();
+    aimAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
   };
 
-  const handlePointerDown = (event: React.PointerEvent) => {
-    isPointerInsideRef.current = true;
-    const next = computeTarget(event);
-    if (next) {
-      targetRef.current = next;
-      lockUntilRef.current = performance.now() + 900; // hold the glance on what was just tapped
-    }
+  // While typing, nudge horizontally toward the caret's rough position in the field.
+  const handleInputCapture = (event: React.FormEvent) => {
+    const el = event.target as HTMLInputElement | HTMLTextAreaElement;
+    if (typeof el.selectionStart !== "number" || !el.value) return;
+    const rect = el.getBoundingClientRect();
+    const fraction = Math.min(1, el.selectionStart / Math.max(el.value.length, 1));
+    aimAt(rect.left + rect.width * fraction, rect.top + rect.height / 2);
   };
 
-  const handlePointerLeave = () => {
-    isPointerInsideRef.current = false;
-    if (performance.now() > lockUntilRef.current) targetRef.current = { x: 0, y: 0 };
+  // A tap on a chip/button aims there directly.
+  const handleTap = (clientX: number, clientY: number) => aimAt(clientX, clientY);
+
+  // Only recenter once focus has actually left the whole card.
+  const handleBlurCapture = () => {
+    blurTimeoutRef.current = window.setTimeout(() => {
+      const el = containerRef.current;
+      if (el && el.contains(document.activeElement)) return;
+      targetRef.current = { x: 0, y: 0 };
+    }, 80);
   };
 
-  return { render, handlePointerMove, handlePointerDown, handlePointerLeave };
+  return { render, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap };
 }
 
-// Blinks on its own, occasionally twice in a row — not just when tapped.
-function useAutoBlink() {
+// Tapping the avatar itself: blink, smile briefly, revert — fully self-contained.
+function useAvatarPoke() {
   const [blinkKey, setBlinkKey] = useState(0);
-  useEffect(() => {
-    let timeout: number;
-    const schedule = () => {
-      const delay = 2000 + Math.random() * 4000;
-      timeout = window.setTimeout(() => {
-        setBlinkKey((k) => k + 1);
-        if (Math.random() < 0.2) window.setTimeout(() => setBlinkKey((k) => k + 1), 220);
-        schedule();
-      }, delay);
-    };
-    schedule();
-    return () => window.clearTimeout(timeout);
-  }, []);
-  return blinkKey;
+  const [smiling, setSmiling] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  const poke = () => {
+    setBlinkKey((k) => k + 1);
+    setSmiling(true);
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => setSmiling(false), 550);
+  };
+
+  useEffect(() => () => { if (timeoutRef.current) window.clearTimeout(timeoutRef.current); }, []);
+  return { blinkKey, smiling, poke };
 }
 
 /** Floating preference card, absolutely positioned near whichever avatar was
@@ -811,8 +794,8 @@ const PersonBubble: React.FC<{
   const [note, setNote] = useState(person.note);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const { render: look, handlePointerMove, handlePointerDown, handlePointerLeave } = useNaturalLook(cardRef);
-  const autoBlinkKey = useAutoBlink();
+  const { render: look, handleFocusCapture, handleInputCapture, handleBlurCapture, handleTap } = useFocusLook(cardRef);
+  const { blinkKey: pokeBlinkKey, smiling, poke } = useAvatarPoke();
 
   return (
     <div
@@ -835,15 +818,30 @@ const PersonBubble: React.FC<{
 
       <div
         ref={cardRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerLeave={handlePointerLeave}
+        onFocusCapture={handleFocusCapture}
+        onInputCapture={handleInputCapture}
+        onBlurCapture={handleBlurCapture}
+        onPointerDownCapture={(e) => handleTap(e.clientX, e.clientY)}
         className="relative overflow-y-auto overscroll-contain rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-5 [&::-webkit-scrollbar]:hidden"
         style={{ maxHeight: pos.maxHeight }}
       >
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
-            <AvatarFace color={color} answered={person.answered} look={look} blinkKey={autoBlinkKey} className="h-10 w-10 shrink-0" />
+            <button
+              type="button"
+              onPointerDown={(e) => e.stopPropagation()}
+              onClick={poke}
+              aria-label={`${person.name}'s avatar`}
+              className="shrink-0"
+            >
+              <AvatarFace
+                color={color}
+                answered={person.answered || smiling}
+                look={look}
+                blinkKey={pokeBlinkKey}
+                className="h-10 w-10"
+              />
+            </button>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
