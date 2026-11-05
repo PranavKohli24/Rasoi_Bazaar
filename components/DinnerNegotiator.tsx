@@ -18,6 +18,9 @@ const INITIAL_PEOPLE_COUNT = 2;
 const MAX_PEOPLE = 8;
 const AVATAR_COLORS = ["#FC6C26", "#6366F1", "#10B981", "#F472B6", "#38BDF8", "#FBBF24"];
 const DRAG_DISMISS_THRESHOLD = 90;
+const POPOVER_WIDTH = 300;
+const POPOVER_MARGIN = 16;
+const POPOVER_GAP = 10;
 
 const makeInitialPeople = (): NegotiatorPerson[] =>
   Array.from({ length: INITIAL_PEOPLE_COUNT }, (_, i) => ({
@@ -107,6 +110,13 @@ interface DinnerNegotiatorProps {
 
 type Phase = "collecting" | "negotiating" | "results";
 
+interface PopoverPos {
+  top: number;
+  left: number;
+  width: number;
+  tailLeft: number;
+}
+
 const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onClose, onViewRestaurant }) => {
   const [people, setPeople] = useState<NegotiatorPerson[]>(makeInitialPeople);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -114,28 +124,42 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const [matches, setMatches] = useState<RestaurantMatch[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
 
-  const avatarRowRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const avatarButtonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-  const [tailLeft, setTailLeft] = useState(0);
+  const [popoverPos, setPopoverPos] = useState<PopoverPos | null>(null);
 
   useLockBodyScroll(isOpen);
   const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(onClose);
 
   const activePerson = activeIndex !== null ? people[activeIndex] : null;
 
-  // Keep the speech-bubble tail pointing at whichever avatar is open,
-  // recomputing on open/switch and on resize (the header row can wrap
-  // onto a second line as people are added).
+  // Anchor the popover to whichever avatar was tapped: find its position
+  // relative to the dialog panel, then clamp the card so it stays inside
+  // the panel's padding even when the avatar is near an edge.
   useLayoutEffect(() => {
-    if (!activePerson) return;
+    if (!activePerson) {
+      setPopoverPos(null);
+      return;
+    }
 
     const recompute = () => {
-      const rowEl = avatarRowRef.current;
+      const dialogEl = dialogRef.current;
       const avatarEl = avatarButtonRefs.current.get(activePerson.id);
-      if (!rowEl || !avatarEl) return;
-      const rowRect = rowEl.getBoundingClientRect();
+      if (!dialogEl || !avatarEl) return;
+
+      const dialogRect = dialogEl.getBoundingClientRect();
       const avatarRect = avatarEl.getBoundingClientRect();
-      setTailLeft(avatarRect.left - rowRect.left + avatarRect.width / 2);
+
+      const avatarCenterX = avatarRect.left - dialogRect.left + avatarRect.width / 2;
+      const width = Math.min(POPOVER_WIDTH, dialogRect.width - POPOVER_MARGIN * 2);
+
+      let left = avatarCenterX - width / 2;
+      left = Math.max(POPOVER_MARGIN, Math.min(left, dialogRect.width - width - POPOVER_MARGIN));
+
+      const tailLeft = Math.max(20, Math.min(avatarCenterX - left, width - 20));
+      const top = avatarRect.bottom - dialogRect.top + POPOVER_GAP;
+
+      setPopoverPos({ top, left, width, tailLeft });
     };
 
     recompute();
@@ -214,9 +238,10 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        className="flex h-[78vh] w-full max-w-lg flex-col rounded-t-3xl border border-stone-700 bg-stone-900 sm:h-auto sm:max-h-[80vh] sm:rounded-3xl"
+        className="relative flex h-[78vh] w-full max-w-lg flex-col rounded-t-3xl border border-stone-700 bg-stone-900 sm:h-auto sm:max-h-[80vh] sm:rounded-3xl"
         style={{
           transform: `translateY(${dragY}px)`,
           transition: isDragging ? "none" : "transform 0.2s ease",
@@ -240,7 +265,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
 
           {phase === "collecting" && (
             <>
-              <div ref={avatarRowRef} className="mt-4 flex flex-wrap items-start gap-4">
+              <div className="mt-4 flex flex-wrap items-start gap-4">
                 {people.map((person, i) => {
                   const isActive = activeIndex === i;
                   return (
@@ -277,11 +302,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                 })}
 
                 {people.length < MAX_PEOPLE && (
-                  <button
-                    type="button"
-                    onClick={addPerson}
-                    className="flex w-14 flex-col items-center gap-1.5"
-                  >
+                  <button type="button" onClick={addPerson} className="flex w-14 flex-col items-center gap-1.5">
                     <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-stone-700 text-stone-400 transition-colors hover:border-orange-400 hover:text-orange-200">
                       <PlusIcon className="h-5 w-5" />
                     </span>
@@ -295,33 +316,22 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
           )}
         </div>
 
+        {/* Floating preference popover — anchored to the tapped avatar's
+            position, independent of header/content scroll. */}
+        {phase === "collecting" && activePerson && popoverPos && (
+          <PersonBubble
+            key={activePerson.id}
+            person={activePerson}
+            color={AVATAR_COLORS[activePerson.avatarIndex % AVATAR_COLORS.length]}
+            pos={popoverPos}
+            onSave={savePerson}
+            onCancel={() => setActiveIndex(null)}
+          />
+        )}
+
         {/* Content — scrolls */}
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
-          {phase === "collecting" && (
-            <>
-              {/* Expanding speech-bubble preference panel — tail tracks
-                  whichever avatar was tapped in the header above. */}
-              <div
-                className="grid overflow-hidden transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                style={{ gridTemplateRows: activePerson ? "1fr" : "0fr" }}
-              >
-                <div className="overflow-hidden">
-                  {activePerson && (
-                    <PersonBubble
-                      key={activePerson.id}
-                      person={activePerson}
-                      color={AVATAR_COLORS[activePerson.avatarIndex % AVATAR_COLORS.length]}
-                      tailLeft={tailLeft}
-                      onSave={savePerson}
-                      onCancel={() => setActiveIndex(null)}
-                    />
-                  )}
-                </div>
-              </div>
-
-              {searchError && <p className="mt-4 text-sm text-stone-400">{searchError}</p>}
-            </>
-          )}
+          {phase === "collecting" && searchError && <p className="text-sm text-stone-400">{searchError}</p>}
 
           {phase === "negotiating" && (
             <div className="flex flex-col items-center justify-center py-14 text-center">
@@ -439,36 +449,39 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   );
 };
 
-/** The expanding speech bubble that appears below the header's avatar row, with a
- *  tail pointing up at whichever avatar triggered it. */
+/** Floating preference card, absolutely positioned near whichever avatar was
+ *  tapped, with a tail pointing up at it. */
 const PersonBubble: React.FC<{
   person: NegotiatorPerson;
   color: string;
-  tailLeft: number;
+  pos: PopoverPos;
   onSave: (person: NegotiatorPerson) => void;
   onCancel: () => void;
-}> = ({ person, color, tailLeft, onSave, onCancel }) => {
+}> = ({ person, color, pos, onSave, onCancel }) => {
   const [name, setName] = useState(person.name);
   const [cuisine, setCuisine] = useState<CuisineChoice>(person.cuisine);
   const [budget, setBudget] = useState<BudgetChoice>(person.budget);
   const [note, setNote] = useState(person.note);
 
   return (
-    <div className="relative mt-4 animate-fade-in-up" style={{ animationDuration: "0.25s" }}>
+    <div
+      className="absolute z-20 animate-fade-in-up"
+      style={{ top: pos.top, left: pos.left, width: pos.width, animationDuration: "0.2s" }}
+    >
       <span
         aria-hidden="true"
         className="absolute -top-2 h-4 w-4 -translate-x-1/2 rotate-45 rounded-sm border-l border-t border-orange-400/50 bg-stone-950"
-        style={{ left: tailLeft }}
+        style={{ left: pos.tailLeft }}
       />
 
-      <div className="relative rounded-2xl border border-orange-400/40 bg-stone-950 p-4 sm:p-5">
+      <div className="relative max-h-[60vh] overflow-y-auto rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 sm:p-5">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <AvatarFace color={color} className="h-10 w-10 shrink-0 rounded-full" />
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-32 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
+              className="w-28 rounded-lg border border-stone-700 bg-stone-900 px-3 py-1.5 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
             />
           </div>
           <button
@@ -476,7 +489,7 @@ const PersonBubble: React.FC<{
             onClick={onCancel}
             className="pt-1.5 text-[10px] font-medium uppercase tracking-wide text-stone-500 hover:text-stone-300"
           >
-            Preferences ✕
+            Close ✕
           </button>
         </div>
 
