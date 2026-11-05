@@ -673,6 +673,7 @@ interface LookVector {
   y: number;
 }
 
+
 function useAvatarLook(containerRef: React.RefObject<HTMLElement | null>) {
   const [look, setLook] = useState<LookVector>({ x: 0, y: 0 });
   const idleTimeoutRef = useRef<number | null>(null);
