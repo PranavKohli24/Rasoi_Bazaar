@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { searchDineoutRestaurants, DineoutRestaurant } from "../services/dineoutService";
 import { IndiaRegion, getRegionCoordinates, getRegionCuisineQuery } from "../utils/indiaRegions";
@@ -16,6 +16,7 @@ import {
 
 const AVATAR_COUNT = 6;
 const AVATAR_COLORS = ["#FC6C26", "#6366F1", "#10B981", "#F472B6", "#38BDF8", "#FBBF24"];
+const DRAG_DISMISS_THRESHOLD = 90;
 
 const makeInitialPeople = (): NegotiatorPerson[] =>
   Array.from({ length: AVATAR_COUNT }, (_, i) => ({
@@ -49,6 +50,48 @@ const StarIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+/** Shared drag-to-dismiss handle + logic, matching SwiggyActionModal's pattern. */
+function useDragToDismiss(onDismiss: () => void) {
+  const dragStartYRef = useRef<number | null>(null);
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.target instanceof Element && event.target.closest("button, input, textarea")) return;
+    dragStartYRef.current = event.clientY;
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handleDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragStartYRef.current === null) return;
+    setDragY(Math.max(0, event.clientY - dragStartYRef.current));
+  };
+
+  const handleDragEnd = () => {
+    if (dragStartYRef.current === null) return;
+    dragStartYRef.current = null;
+    setIsDragging(false);
+    if (dragY > DRAG_DISMISS_THRESHOLD) {
+      onDismiss();
+    }
+    setDragY(0);
+  };
+
+  return { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd };
+}
+
+function useLockBodyScroll(locked: boolean) {
+  useEffect(() => {
+    if (!locked) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [locked]);
+}
+
 interface DinnerNegotiatorProps {
   region: IndiaRegion;
   isOpen: boolean;
@@ -64,6 +107,9 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const [phase, setPhase] = useState<Phase>("collecting");
   const [matches, setMatches] = useState<RestaurantMatch[]>([]);
   const [searchError, setSearchError] = useState<string | null>(null);
+
+  useLockBodyScroll(isOpen);
+  const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(onClose);
 
   if (!isOpen) return null;
 
@@ -114,52 +160,44 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const otherPicks = matches.slice(1, 6);
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
-        className="flex max-h-[85vh] w-full max-w-lg flex-col overflow-y-auto rounded-t-3xl border border-stone-700 bg-stone-900 sm:max-h-[80vh] sm:rounded-3xl"
+        className="flex h-[78vh] w-full max-w-lg flex-col rounded-t-3xl border border-stone-700 bg-stone-900 sm:h-auto sm:max-h-[80vh] sm:rounded-3xl"
+        style={{
+          transform: `translateY(${dragY}px)`,
+          transition: isDragging ? "none" : "transform 0.2s ease",
+          opacity: 1 - Math.min(dragY / 400, 0.4),
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between border-b border-stone-800 px-5 py-4 sm:px-6">
-          <div>
-            <p className="text-xs font-semibold text-orange-200">Dinner Negotiator</p>
-            <h3 className="font-serif text-xl font-black text-orange-50">
-              {phase === "results" ? "Here's your table" : `Where should we eat in ${region.name}?`}
-            </h3>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-700 text-stone-400 hover:text-orange-200"
-          >
-            ✕
-          </button>
+        <div
+          className="shrink-0 cursor-grab touch-none rounded-t-3xl border-b border-stone-800 px-5 pb-4 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
+          onPointerDown={handleDragStart}
+          onPointerMove={handleDragMove}
+          onPointerUp={handleDragEnd}
+          onPointerCancel={handleDragEnd}
+        >
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-stone-700 sm:hidden" aria-hidden="true" />
+          <p className="text-xs font-semibold text-orange-200">Dinner Negotiator</p>
+          <h3 className="font-serif text-xl font-black text-orange-50">
+            {phase === "results" ? "Here's your table" : `Where should we eat in ${region.name}?`}
+          </h3>
         </div>
 
-        <div className="flex-1 px-5 py-5 sm:px-6">
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
           {phase === "collecting" && (
             <>
-              <p className="text-sm text-stone-400">
-                Tap each person's avatar and tell us what they're in the mood for. Need at least 2 answers to find a table.
-              </p>
+              <p className="text-sm text-stone-400">Tap to choose preferences.</p>
 
-              <div className="mt-5 flex flex-wrap gap-4">
+              <div className="mt-5 grid grid-cols-3 gap-y-5 sm:grid-cols-6">
                 {people.map((person, i) => (
-                  <button
-                    key={person.id}
-                    type="button"
-                    onClick={() => setActiveIndex(i)}
-                    className="flex flex-col items-center gap-1.5"
-                  >
+                  <button key={person.id} type="button" onClick={() => setActiveIndex(i)} className="flex flex-col items-center gap-1.5">
                     <div className="relative">
                       <AvatarFace
                         color={AVATAR_COLORS[i]}
-                        className={`h-14 w-14 rounded-full ${person.answered ? "" : "opacity-40 grayscale"}`}
+                        className={`h-14 w-14 rounded-full ring-2 ${person.answered ? "ring-orange-300" : "opacity-50 ring-stone-700"}`}
                       />
                       {person.answered && (
                         <span className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-orange-200 text-stone-900">
@@ -195,12 +233,12 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     key={p.id}
                     color={AVATAR_COLORS[p.avatarIndex]}
                     className="h-9 w-9 animate-bounce rounded-full"
-                    style={{ animationDelay: `${i * 120}ms` } as React.CSSProperties}
+                    style={{ animationDelay: `${i * 120}ms` }}
                   />
                 ))}
               </div>
-              <p className="mt-5 font-serif text-lg font-black text-orange-50">Negotiating...</p>
-              <p className="mt-1 text-sm text-stone-400">Finding what works for everyone</p>
+              <p className="mt-5 font-serif text-lg font-black text-orange-50">Finding your table</p>
+              <p className="mt-1 text-sm text-stone-400">Matching everyone's picks</p>
             </div>
           )}
 
@@ -209,7 +247,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
               {topPick ? (
                 <div className="rounded-2xl border border-orange-400/50 bg-stone-950 p-4 sm:p-5">
                   <span className="inline-block rounded-full bg-orange-200 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-stone-900">
-                    {topPick.matchCount === topPick.totalPeople ? "Perfect for everyone" : `Best match · ${topPick.matchCount}/${topPick.totalPeople}`}
+                    {topPick.matchCount === topPick.totalPeople ? "Matches everyone" : `${topPick.matchCount}/${topPick.totalPeople} matched`}
                   </span>
                   <h4 className="mt-2 font-serif text-xl font-black text-orange-50">{topPick.restaurant.name}</h4>
                   <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-400">
@@ -226,11 +264,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                     {topPick.matchedNames.map((name) => {
                       const person = people.find((p) => p.name === name);
                       return person ? (
-                        <AvatarFace
-                          key={person.id}
-                          color={AVATAR_COLORS[person.avatarIndex]}
-                          className="h-7 w-7 rounded-full border-2 border-stone-950"
-                        />
+                        <AvatarFace key={person.id} color={AVATAR_COLORS[person.avatarIndex]} className="h-7 w-7 rounded-full border-2 border-stone-950" />
                       ) : null;
                     })}
                   </div>
@@ -248,7 +282,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
 
               {otherPicks.length > 0 && (
                 <div className="mt-6">
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">You could also explore</p>
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Also worth a look</p>
                   <div className="space-y-2">
                     {otherPicks.map((m) => (
                       <button
@@ -275,11 +309,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
                 </div>
               )}
 
-              <button
-                type="button"
-                onClick={resetAll}
-                className="mt-6 w-full rounded-xl border border-stone-700 px-5 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200"
-              >
+              <button type="button" onClick={resetAll} className="mt-6 w-full rounded-xl border border-stone-700 px-5 py-2.5 text-sm font-medium text-stone-300 hover:text-orange-200">
                 Start over
               </button>
             </>
@@ -287,14 +317,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
         </div>
       </div>
 
-      {activePerson && (
-        <PersonForm
-          person={activePerson}
-          color={AVATAR_COLORS[activePerson.avatarIndex]}
-          onSave={savePerson}
-          onCancel={() => setActiveIndex(null)}
-        />
-      )}
+      {activePerson && <PersonForm person={activePerson} color={AVATAR_COLORS[activePerson.avatarIndex]} onSave={savePerson} onCancel={() => setActiveIndex(null)} />}
     </div>,
     document.body
   );
@@ -311,81 +334,85 @@ const PersonForm: React.FC<{
   const [budget, setBudget] = useState<BudgetChoice>(person.budget);
   const [note, setNote] = useState(person.note);
 
+  const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(onCancel);
+
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4"
-      onClick={onCancel}
-    >
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4" onClick={onCancel}>
       <div
-        className="w-full max-w-sm rounded-t-3xl border border-stone-700 bg-stone-900 p-5 sm:rounded-3xl sm:p-6"
+        className="w-full max-w-sm rounded-t-3xl border border-stone-700 bg-stone-900 sm:rounded-3xl"
+        style={{
+          transform: `translateY(${dragY}px)`,
+          transition: isDragging ? "none" : "transform 0.2s ease",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center gap-3">
-          <AvatarFace color={color} className="h-11 w-11 rounded-full" />
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="flex-1 rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
+        <div
+          className="cursor-grab touch-none px-5 pb-1 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
+          onPointerDown={handleDragStart}
+          onPointerMove={handleDragMove}
+          onPointerUp={handleDragEnd}
+          onPointerCancel={handleDragEnd}
+        >
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-stone-700 sm:hidden" aria-hidden="true" />
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <AvatarFace color={color} className="h-11 w-11 shrink-0 rounded-full" />
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-32 rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm font-semibold text-stone-100 outline-none focus:border-orange-400"
+              />
+            </div>
+            <span className="pt-2 text-xs font-semibold uppercase tracking-wide text-stone-500">Preferences</span>
+          </div>
+        </div>
+
+        <div className="px-5 pb-5 pt-4 sm:px-6">
+          <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">Cuisine</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {CUISINE_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setCuisine(option)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+                  cuisine === option ? "border-orange-400 bg-orange-200 text-stone-900" : "border-stone-700 text-stone-300"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">Budget per person</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {BUDGET_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setBudget(option)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
+                  budget === option ? "border-orange-400 bg-orange-200 text-stone-900" : "border-stone-700 text-stone-300"
+                }`}
+              >
+                {BUDGET_LABELS[option]}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">Anything else?</p>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="No seafood, kid-friendly, quiet..."
+            rows={2}
+            className="mt-2 w-full resize-none rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100 outline-none placeholder:text-stone-600 focus:border-orange-400"
           />
-        </div>
 
-        <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">Cuisine</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {CUISINE_OPTIONS.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setCuisine(option)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
-                cuisine === option
-                  ? "border-orange-400 bg-orange-200 text-stone-900"
-                  : "border-stone-700 text-stone-300"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-
-        <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">Budget per person</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {BUDGET_OPTIONS.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => setBudget(option)}
-              className={`rounded-full border px-3 py-1.5 text-xs font-medium ${
-                budget === option
-                  ? "border-orange-400 bg-orange-200 text-stone-900"
-                  : "border-stone-700 text-stone-300"
-              }`}
-            >
-              {BUDGET_LABELS[option]}
-            </button>
-          ))}
-        </div>
-
-        <p className="mt-5 text-xs font-semibold uppercase tracking-wide text-stone-500">Anything else?</p>
-        <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="e.g. no seafood, kid-friendly, somewhere quiet..."
-          rows={2}
-          className="mt-2 w-full resize-none rounded-lg border border-stone-700 bg-stone-950 px-3 py-2 text-sm text-stone-100 outline-none placeholder:text-stone-600 focus:border-orange-400"
-        />
-
-        <div className="mt-6 flex gap-2.5">
-          <button
-            type="button"
-            onClick={onCancel}
-            className="flex-1 rounded-xl border border-stone-700 px-4 py-2.5 text-sm font-medium text-stone-300"
-          >
-            Cancel
-          </button>
           <button
             type="button"
             onClick={() => onSave({ ...person, name: name.trim() || person.name, cuisine, budget, note, answered: true })}
-            className="flex-1 rounded-xl bg-orange-200 px-4 py-2.5 text-sm font-semibold text-stone-900"
+            className="mt-6 w-full rounded-xl bg-orange-200 px-4 py-2.5 text-sm font-semibold text-stone-900"
           >
             Save
           </button>
