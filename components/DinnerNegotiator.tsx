@@ -78,10 +78,10 @@ const AvatarFace: React.FC<{
   const blurFilter = `${id}-blur`;
 
     const svgStyle: React.CSSProperties = look
-    ? { ...style, transform: `translate(${look.headX * 2.2}px, ${look.headY * 1.8}px) rotate(${look.headRot}deg)` }
+    ? { ...style, transform: `translate(${look.headX * 4}px, ${look.headY * 3.2}px) rotate(${look.headRot}deg)` }
     : style ?? {};
 
-  const eyesPositionTransform = `translate(${(look?.eyeX ?? 0) * 4}, ${(look?.eyeY ?? 0) * 3})`;
+  const eyesPositionTransform = `translate(${(look?.eyeX ?? 0) * 7.5}, ${(look?.eyeY ?? 0) * 5.5})`;
   const eyesSquintScale = 1 - (look?.squint ?? 0) * 0.3;
   return (
     <svg
@@ -697,7 +697,7 @@ function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
     const scheduleIdle = () => {
       const delay = 1400 + Math.random() * 2600;
       idleTimeoutRef.current = window.setTimeout(() => {
-        if (!isPointerInsideRef.current) {
+        if (!isPointerInsideRef.current && performance.now() > lockUntilRef.current) {
           const resting = Math.random() < 0.3;
           targetRef.current = resting ? { x: 0, y: 0 } : { x: Math.random() * 2 - 1, y: (Math.random() * 2 - 1) * 0.6 };
         }
@@ -729,7 +729,7 @@ function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
       setRender({
         headX: s.headX,
         headY: s.headY,
-        headRot: s.headX * 3.2,
+        headRot: s.headX * 6,
         eyeX: s.eyeX,
         eyeY: s.eyeY,
         squint: Math.min(1, Math.abs(s.eyeX) * 0.7 + Math.abs(s.eyeY) * 0.4),
@@ -740,25 +740,41 @@ function useNaturalLook(containerRef: React.RefObject<HTMLElement | null>) {
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, []);
 
-  const handlePointerMove = (event: React.PointerEvent) => {
+  const lockUntilRef = useRef(0);
+
+  const computeTarget = (event: React.PointerEvent) => {
     const el = containerRef.current;
-    if (!el) return;
-    isPointerInsideRef.current = true;
+    if (!el) return null;
     const rect = el.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    targetRef.current = {
+    return {
       x: Math.max(-1, Math.min(1, ((event.clientX - cx) / (rect.width / 2)) * 2.2)),
       y: Math.max(-1, Math.min(1, ((event.clientY - cy) / (rect.height / 2)) * 2.2)),
     };
   };
 
-  const handlePointerLeave = () => {
-    isPointerInsideRef.current = false;
-    targetRef.current = { x: 0, y: 0 };
+  const handlePointerMove = (event: React.PointerEvent) => {
+    isPointerInsideRef.current = true;
+    const next = computeTarget(event);
+    if (next) targetRef.current = next;
   };
 
-  return { render, handlePointerMove, handlePointerLeave };
+  const handlePointerDown = (event: React.PointerEvent) => {
+    isPointerInsideRef.current = true;
+    const next = computeTarget(event);
+    if (next) {
+      targetRef.current = next;
+      lockUntilRef.current = performance.now() + 900; // hold the glance on what was just tapped
+    }
+  };
+
+  const handlePointerLeave = () => {
+    isPointerInsideRef.current = false;
+    if (performance.now() > lockUntilRef.current) targetRef.current = { x: 0, y: 0 };
+  };
+
+  return { render, handlePointerMove, handlePointerDown, handlePointerLeave };
 }
 
 // Blinks on its own, occasionally twice in a row — not just when tapped.
@@ -795,7 +811,7 @@ const PersonBubble: React.FC<{
   const [note, setNote] = useState(person.note);
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const { render: look, handlePointerMove, handlePointerLeave } = useNaturalLook(cardRef);
+  const { render: look, handlePointerMove, handlePointerDown, handlePointerLeave } = useNaturalLook(cardRef);
   const autoBlinkKey = useAutoBlink();
 
   return (
@@ -819,6 +835,7 @@ const PersonBubble: React.FC<{
 
       <div
         ref={cardRef}
+        onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerLeave={handlePointerLeave}
         className="relative overflow-y-auto overscroll-contain rounded-2xl border border-orange-400/40 bg-stone-950 p-4 shadow-xl shadow-black/40 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-5 [&::-webkit-scrollbar]:hidden"
