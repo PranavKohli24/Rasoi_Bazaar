@@ -23431,6 +23431,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dohneiihong": {
     dishName: "Dohneiihong",
     "image": "/dishes/dohneiihong.webp",
+    "state" : "Meghalaya",
     description: "Khasi pork slow-cooked with roasted black sesame, onions, ginger and garlic for a dark nutty gravy.",
     prepTime: "Approx. 1 hour",
     equipment: [
@@ -44728,6 +44729,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "jadoh": {
     "dishName": "Jadoh",
     "image": "/dishes/jadoh.webp",
+    "state" : "Meghalaya",
     "description": "A traditional Khasi rice dish from Meghalaya cooked with pork, ginger, black pepper and aromatic spices.",
     "prepTime": "Approx. 70 minutes",
     "equipment": [
@@ -57922,6 +57924,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "wahan mosdeng": {
   "dishName": "Wahan Mosdeng (Khasi Pork Salad)",
+  "image": "/dishes/wahan-mosdeng.webp",
+  "state" : "Meghalaya",
   "description": "A simple Khasi-style boiled pork salad tossed with onion, chilli and coriander.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57943,6 +57947,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "mosdeng serma": {
   "dishName": "Mosdeng Serma (Khasi Fish Salad)",
+  "image": "/dishes/mosdeng-serma.webp",
+  "state" : "Meghalaya",
   "description": "A fresh Khasi-style boiled fish salad with onion, chilli and coriander.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57964,6 +57970,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "bangui rice": {
   "dishName": "Bangui Rice (Khasi Fried Rice Snack)",
+  "image": "/dishes/bangui-rice.webp",
+  "state" : "Meghalaya",
   "description": "A simple home-style savoury fried rice snack inspired by Khasi roadside rice-ball snacks.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57983,6 +57991,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muya awandru": {
   "dishName": "Muya Awandru (Khasi Bamboo Shoot Pickle)",
+  "image": "/dishes/muya-awandru.webp",
+  "state" : "Meghalaya",
   "description": "A simple tangy Khasi-style pickle made with bamboo shoot and chilli.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58002,6 +58012,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "muya bai": {
   "dishName": "Muya Bai (Khasi Bamboo Shoot and Rice)",
+  "image": "/dishes/muya-bai.webp",
+  "state" : "Meghalaya",
   "description": "A simple one-pot Khasi rice dish cooked with bamboo shoot and mild seasoning.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
@@ -58064,6 +58076,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "doh khleh": {
   "dishName": "Doh Khleh (Khasi Pork Salad)",
+  "image": "/dishes/doh-khleh.webp",
+  "state" : "Meghalaya",
   "description": "A Khasi minced pork salad tossed with onion, ginger and chilli.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58085,6 +58099,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "tungrymbai": {
   "dishName": "Tungrymbai (Khasi Fermented Soybean Curry)",
+  "image": "/dishes/tungrymbai.webp",
+  "state" : "Meghalaya",
   "description": "A Khasi curry made with fermented soybean paste, pork and simple seasoning.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58107,6 +58123,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "nakham bitchi": {
   "dishName": "Nakham Bitchi (Khasi Fish Soup)",
+  "image": "/dishes/nakham-bitchi.webp",
+  "state" : "Meghalaya",
   "description": "A light, simple Khasi fish broth with tomato and chilli.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58128,6 +58146,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "putharo": {
   "dishName": "Putharo (Khasi Steamed Rice Cake)",
+  "image": "/dishes/putharo.webp",
+  "state" : "Meghalaya",
   "description": "A soft, slightly sweet Khasi steamed rice flour cake.",
   "prepTime": "Approx. 30 minutes (plus fermentation)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58149,6 +58169,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "wak pura": {
   "dishName": "Wak Pura (Khasi Dry Pork Stir-fry)",
+  "image": "/dishes/wak-pura.webp",
+  "state" : "Meghalaya",
   "description": "A simple dry Khasi-style pork stir-fry with ginger and garlic.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58169,6 +58191,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "minil songa": {
   "dishName": "Minil Songa (Garo Bamboo Rice)",
+  "image": "/dishes/minil-songa.webp",
+  "state" : "Meghalaya",
   "description": "A simple home-style rice dish cooked with mild seasoning, inspired by Garo bamboo-cooked rice.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
