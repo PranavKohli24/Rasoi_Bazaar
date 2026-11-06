@@ -57179,6 +57179,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "rugra curry": {
   "dishName": "Rugra Curry",
+  "image": "/dishes/rugra-curry.webp",
   "description": "A simple curry inspired by Jharkhand's rugra mushrooms, cooked with potato and spices.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57202,6 +57203,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "putkal saag": {
   "dishName": "Putkal Saag (Mustard Greens Stir-fry)",
+  "image": "/dishes/putkal-saag.webp",
   "description": "A simple home-style stir-fry of mustard greens with garlic and mustard oil, inspired by tribal Jharkhand cooking.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57221,6 +57223,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "bamboo shoot curry": {
   "dishName": "Bamboo Shoot Curry",
+  "image": "/dishes/bamboo-shoot-curry.webp",
   "description": "A simple curry using fermented or fresh bamboo shoots with onion and chilli, popular in Northeast India.",
   "prepTime": "Approx. 35 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57244,6 +57247,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "handia": {
   "dishName": "Handia-style Rice (Simple Fermented-Style Rice Bowl)",
+  "image": "/dishes/handia.webp",
   "description": "A simple home-style version of a soft, slightly tangy rice preparation inspired by tribal fermented rice dishes.",
   "prepTime": "Approx. 25 minutes, plus overnight resting",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57263,6 +57267,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "arsa roti": {
   "dishName": "Arsa Roti (Jharkhand Sweet Rice Bread)",
+  "image": "/dishes/arsa-roti.webp",
   "description": "A sweet, slightly chewy fried rice flour bread made with jaggery, a festive Jharkhand treat.",
   "prepTime": "Approx. 40 minutes (plus rice soaking)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }, { "item": "mixer", "isSpecialized": false, "alternative": null }],
@@ -57283,6 +57288,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "pittha": {
   "dishName": "Pittha (Steamed Rice Dumplings)",
+  "image": "/dishes/pittha.webp",
   "description": "Soft steamed rice flour dumplings filled with a simple sweet coconut filling.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58036,6 +58042,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "berma curry": {
   "dishName": "Berma Curry (Tripura Vegetable Stew)",
+  "image": "/dishes/berma-curry.webp",
+  "state" : "Tripura",
   "description": "A simple Tripura-style vegetable curry with mild, pungent seasoning.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58212,6 +58220,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sakin gata": {
   "dishName": "Sakin Gata (Sesame Rice Spiral Fritters)",
+  "image": "/dishes/sha-phaley.webp",
+  "state" : "Telangana",
   "description": "Crunchy Telangana rice snacks shaped into rings, flavoured with sesame.",
   "prepTime": "Approx. 45 minutes (plus drying)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58232,6 +58242,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "gundruk ko jhol": {
   "dishName": "Gundruk Ko Jhol (Fermented Greens Soup)",
+  "image": "/dishes/gundruk-jhol.webp",
   "description": "A tangy Nepali-style soup made with fermented leafy greens and potato.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58372,6 +58383,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "dal bhat tarkari": {
   "dishName": "Dal Bhat Tarkari",
+  "image": "/dishes/dal-bhat-tarkari.webp",
+  "state" : "Sikkim",
   "description": "A simple Nepali-Sikkimese everyday meal of lentils, rice and a mixed vegetable side.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
