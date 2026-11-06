@@ -55727,47 +55727,61 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
 
   "zan": {
-    dishName: "Zan (Mizo Millet Porridge)",
-    "image": "/dishes/zan.webp",
-    description: "A warm Mizo staple made by cooking millet flour into a thick, simple porridge.",
-    prepTime: "Approx. 20 minutes",
-    equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
-    ingredients: [
-      { amount: "1/2 cup", commonName: "Bajra Atta", englishName: "millet flour, such as pearl millet" },
-      { amount: "3 cups", commonName: "Paani", englishName: "water" },
-      { amount: "1 cup", commonName: "Saag", englishName: "leafy greens, finely chopped, optional" },
-      { amount: "to taste", commonName: "Namak", englishName: "salt" },
-    ],
-    method: [
-      { step: 1, instruction: "Mix millet flour with 1 cup cool water until smooth." },
-      { step: 2, instruction: "Bring the remaining water to a boil in a kadai. Add the greens if using and cook for 3 minutes." },
-      { step: 3, instruction: "Pour in the millet mixture slowly while stirring." },
-      { step: 4, instruction: "Cook on low heat for 8 to 10 minutes, stirring often, until thick and fully cooked. Add salt and serve hot." },
-    ],
-    notes: ["Zan is usually a simple thick porridge. The flour and greens can vary by household."],
-  },
+  "dishName": "Zan (Monpa Millet Porridge)",
+  "image": "/dishes/zan.webp",
+  "state": "Arunachal Pradesh",
+  "description": "A staple Monpa porridge from the Tawang region, traditionally made by stirring millet flour into boiling water until thick. It is eaten with vegetables or meat and may be accompanied by fermented cheese or soybeans.",
+  "prepTime": "Approx. 20 minutes",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "1/2 cup", "commonName": "Ragi Atta", "englishName": "finger millet flour" },
+    { "amount": "3 cups", "commonName": "Paani", "englishName": "water" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+  ],
+  "method": [
+    { "step": 1, "instruction": "Whisk the finger millet flour with 1 cup of cool water until smooth and lump-free." },
+    { "step": 2, "instruction": "Bring the remaining 2 cups of water to a boil in a kadai." },
+    { "step": 3, "instruction": "Lower the heat and slowly pour in the millet mixture while stirring continuously." },
+    { "step": 4, "instruction": "Cook on low heat for 8 to 10 minutes, stirring often, until the porridge is thick and the flour is fully cooked. Add salt to taste." },
+    { "step": 5, "instruction": "Serve hot with vegetables or meat. Fermented cheese or soybeans can be served alongside as a traditional accompaniment." }
+  ],
+  "notes": [
+    "Monpa household versions may use millet or another locally available grain flour. Finger millet is used here for a practical millet-based version."
+  ]
+},
 
   "pehak": {
-    dishName: "Pehak (Manipuri Fermented Fish Chutney)",
-    "image": "/dishes/pehak.webp",
-    description: "A small, bold Manipuri-style chutney made with fermented fish and roasted chilli.",
-    prepTime: "Approx. 15 minutes",
-    equipment: [{ item: "kadai", isSpecialized: false, alternative: null }, { item: "gas stove", isSpecialized: false, alternative: null }],
-    ingredients: [
-      { amount: "1 to 2 pieces", commonName: "Ngari", englishName: "fermented fish, ready to eat or cook" },
-      { amount: "2", commonName: "Sukhi Lal Mirch", englishName: "dried red chillies" },
-      { amount: "1 small", commonName: "Tamatar", englishName: "tomato, optional" },
-      { amount: "1 small", commonName: "Pyaaz", englishName: "shallot or onion, finely chopped, optional" },
-      { amount: "1 tsp", commonName: "Nimbu Ras", englishName: "lemon juice, optional" },
-    ],
-    method: [
-      { step: 1, instruction: "Roast the dried chillies in a dry kadai for a few seconds, taking care not to burn them." },
-      { step: 2, instruction: "If the fermented fish needs cooking, warm it in the kadai with a spoon of water until heated through. Let it cool slightly." },
-      { step: 3, instruction: "Crush the chilli and fish together into a rough paste." },
-      { step: 4, instruction: "Mix in tomato, onion or lemon juice if using. Serve a small amount alongside rice and vegetables." },
-    ],
-    notes: ["Fermented fish has a strong flavour, so begin with a small amount. Use a commercially prepared food-safe product."],
-  },
+  "dishName": "Pehak (Fermented Soybean and King Chilli Chutney)",
+  "image": "/dishes/pehak.webp",
+  "state": "Arunachal Pradesh",
+  "description": "A spicy Arunachali side chutney made with fermented soybeans and king chilli. It is served in small amounts alongside rice and a meal.",
+  "prepTime": "Approx. 15 minutes",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "grinder", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
+  "ingredients": [
+    { "amount": "1/2 cup", "commonName": "Fermented Soybeans", "englishName": "ready-prepared fermented soybeans" },
+    { "amount": "1/2 to 1", "commonName": "Raja Mircha", "englishName": "king chilli, according to heat preference" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "1 to 2 tbsp", "commonName": "Paani", "englishName": "water, as needed to loosen the chutney" }
+  ],
+  "method": [
+    { "step": 1, "instruction": "Warm the fermented soybeans in a dry kadai for 1 to 2 minutes, just until aromatic. Do not let them burn." },
+    { "step": 2, "instruction": "Lightly roast the king chilli in the same kadai. Handle it carefully because it is very hot." },
+    { "step": 3, "instruction": "Grind or pound the fermented soybeans, chilli and salt into a coarse paste." },
+    { "step": 4, "instruction": "Add water a little at a time until the chutney reaches a thick, spoonable consistency." },
+    { "step": 5, "instruction": "Serve a small amount alongside steamed rice." }
+  ],
+  "notes": [
+    "The defining ingredients are fermented soybean and king chilli. This is a practical home method; the exact texture and preparation vary by household.",
+    "Use a commercially prepared food-safe fermented soybean product. Start with very little king chilli and add more only if needed. This dish does not use fermented fish."
+  ]
+},
 
   "akki rotti": {
     dishName: "Akki Rotti (Rice Flour Flatbread)",
@@ -57527,91 +57541,126 @@ export const predefinedRecipes: Record<string, Recipe> = {
 },
 
 "pika pila": {
-  "dishName": "Pika Pila (Assamese Fermented Bamboo Shoot Curry)",
+  "dishName": "Pikey Pila (Pika Pila)",
   "image": "/dishes/pika-pila.webp",
-  "state" : "Assam",
-  "description": "A simple Assamese-style curry with bamboo shoot, potato and mild spices.",
-  "prepTime": "Approx. 30 minutes",
-  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "state": "Arunachal Pradesh",
+  "description": "A traditional Apatani preparation from Lower Subansiri made with fermented bamboo shoot, fermented pork fat, meat and beans. Traditional versions use an indigenous alkaline liquid called pila and are cooked by boiling.",
+  "prepTime": "Approx. 45 minutes (using prepared fermented ingredients)",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
   "ingredients": [
-    { "amount": "1 cup", "commonName": "Bamboo Shoot", "englishName": "bamboo shoots, sliced and rinsed" },
-    { "amount": "1", "commonName": "Aloo", "englishName": "potato, cubed" },
-    { "amount": "1/2 tsp", "commonName": "Haldi", "englishName": "turmeric" },
-    { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies" },
-    { "amount": "2 tbsp", "commonName": "Sarson Tel", "englishName": "mustard oil" },
-    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
-    { "amount": "1 cup", "commonName": "Paani", "englishName": "water" }
+    { "amount": "200 g", "commonName": "Fermented Bamboo Shoot", "englishName": "fermented bamboo shoots, rinsed and sliced" },
+    { "amount": "150 g", "commonName": "Suar ka Gosht", "englishName": "pork pieces, fresh or dried" },
+    { "amount": "1 tbsp", "commonName": "Hulyi", "englishName": "traditional fermented pork fat" },
+    { "amount": "1/2 cup", "commonName": "Phali", "englishName": "green beans, cut into short pieces" },
+    { "amount": "1 tbsp", "commonName": "Pila", "englishName": "prepared food-safe Apatani alkaline ash-water extract; optional if unavailable" },
+    { "amount": "1/2", "commonName": "Raja Mircha", "englishName": "king chilli, finely chopped; adjust carefully" },
+    { "amount": "3 cups", "commonName": "Paani", "englishName": "water" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
   ],
   "method": [
-    { "step": 1, "instruction": "Heat oil in a kadai, add green chillies and potato." },
-    { "step": 2, "instruction": "Add bamboo shoot, turmeric, salt and water." },
-    { "step": 3, "instruction": "Cover and simmer 15 minutes until soft. Serve with rice." }
+    { "step": 1, "instruction": "Rinse the fermented bamboo shoot briefly and drain. If using dried pork, cut it into small pieces so it softens evenly." },
+    { "step": 2, "instruction": "Bring the water to a boil in a kadai. Stir in the prepared pila, if available, then add the pork and hulyi." },
+    { "step": 3, "instruction": "Simmer until the pork is nearly tender, adding a little hot water if needed." },
+    { "step": 4, "instruction": "Add the fermented bamboo shoot, beans, king chilli and salt. Continue simmering until the meat and beans are fully cooked and the flavours come together." },
+    { "step": 5, "instruction": "Serve warm with plain rice." }
   ],
-  "notes": []
+  "notes": [
+    "This entry follows the Apatani preparation documented with fermented bamboo shoot, hulyi, pila, beans and fresh or dried meat. Pila is a traditional alkaline ash-water extract; use only a properly prepared food-safe product and do not improvise it from household ash.",
+    "Hulyi is a specialised fermented pork-fat ingredient. Ordinary pork fat is not an exact substitute, so omitting it makes this a home adaptation rather than a fully traditional version. Cook pork thoroughly."
+  ]
 },
 
 "ngatok": {
-  "dishName": "Ngatok (Manipuri Mashed Vegetable Chutney)",
-  "description": "A simple Manipuri-style mashed potato and chilli dish mixed with fermented soybean flavour.",
-  "prepTime": "Approx. 25 minutes",
-  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "dishName": "Ngatok (Arunachali Herb-Wrapped Fish)",
+  "state": "Arunachal Pradesh",
+  "description": "A traditional Arunachali fish preparation seasoned with local herbs, wrapped in banana leaves and slow-cooked to keep the fish moist and aromatic.",
+  "prepTime": "Approx. 35 minutes",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
   "ingredients": [
-    { "amount": "3", "commonName": "Aloo", "englishName": "potatoes, boiled" },
-    { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies" },
-    { "amount": "1 tsp", "commonName": "Hawaijar", "englishName": "fermented soybean (optional)" },
-    { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
-    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    { "amount": "400 g", "commonName": "Taaza Machhli", "englishName": "fresh freshwater fish, cleaned and cut into portions" },
+    { "amount": "1 large", "commonName": "Kele ka Patta", "englishName": "banana leaf, softened briefly over a flame" },
+    { "amount": "1/2 cup", "commonName": "Sthaniya Jadi-bootiyan", "englishName": "fresh local edible herbs, such as coriander and other available aromatic greens" },
+    { "amount": "1 tbsp", "commonName": "Adrak", "englishName": "ginger, finely chopped or crushed" },
+    { "amount": "2 cloves", "commonName": "Lehsun", "englishName": "garlic, crushed" },
+    { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, crushed; adjust to taste" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "1 cup", "commonName": "Paani", "englishName": "water, for steaming" }
   ],
   "method": [
-    { "step": 1, "instruction": "Mash the boiled potatoes well." },
-    { "step": 2, "instruction": "Heat oil in a kadai, add green chillies and cook briefly." },
-    { "step": 3, "instruction": "Mix in mashed potato, fermented soybean if using, and salt. Cook 3 minutes and serve with rice." }
+    { "step": 1, "instruction": "Wash and drain the fish. Soften the banana leaf briefly over a low flame so it bends without tearing." },
+    { "step": 2, "instruction": "Crush the herbs, ginger, garlic, green chilli and salt into a coarse, fragrant mixture." },
+    { "step": 3, "instruction": "Rub the herb mixture over the fish and place the portions in the centre of the banana leaf." },
+    { "step": 4, "instruction": "Fold the leaf into a secure parcel. Add the water to a kadai and place the parcel on a small heatproof stand or plate above the water." },
+    { "step": 5, "instruction": "Cover and steam over low to medium heat for 15 to 20 minutes, or until the fish is opaque and flakes easily. Check that the thickest piece is fully cooked." },
+    { "step": 6, "instruction": "Carefully open the parcel and serve hot with rice." }
   ],
-  "notes": ["Fermented soybean has a strong smell and taste; use sparingly or skip if unavailable."]
+  "notes": [
+    "NITI Aayog describes Ngatok as fish with local herbs, wrapped in banana leaves and slow-cooked. The exact local herb mix and household technique can vary; this is a practical covered-steaming adaptation."
+  ]
 },
 
 "lukter": {
-  "dishName": "Lukter (Naga Dry Mixed Meat and Vegetable)",
-  "description": "A simple Naga-style home dish of boiled potato and greens cooked with chilli.",
-  "prepTime": "Approx. 25 minutes",
-  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "dishName": "Lukter (Smoked Meat with King Chilli Flakes)",
+  "state": "Arunachal Pradesh",
+  "description": "A traditional Arunachali side dish of shredded or pounded cooked dried or smoked meat mixed with roasted chilli flakes and salt. It is commonly eaten with rice.",
+  "prepTime": "Approx. 15 minutes (using ready-smoked meat)",
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
   "ingredients": [
-    { "amount": "2", "commonName": "Aloo", "englishName": "potatoes, boiled and cubed" },
-    { "amount": "1 cup", "commonName": "Saag", "englishName": "leafy greens, chopped" },
-    { "amount": "1", "commonName": "Naga Mirch", "englishName": "green or king chilli, chopped" },
-    { "amount": "2 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
+    { "amount": "200 g", "commonName": "Smoked Gosht", "englishName": "cooked dried or smoked meat, such as pork, beef, chicken or mithun" },
+    { "amount": "2", "commonName": "Sukhi Lal Mirch", "englishName": "dried red chillies or dried king chilli, adjusted to taste" },
     { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
   ],
   "method": [
-    { "step": 1, "instruction": "Heat oil in a kadai, add chilli and cook briefly." },
-    { "step": 2, "instruction": "Add potato and greens, stir-fry for 8 minutes with salt. Serve with rice." }
+    { "step": 1, "instruction": "Dry-roast the dried chillies in a kadai until fragrant. Let them cool, then crush them into coarse flakes." },
+    { "step": 2, "instruction": "Shred or pound the cooked dried or smoked meat into small strands. If it is too hard to shred, simmer it in water until pliable, then drain well." },
+    { "step": 3, "instruction": "Mix the meat with the chilli flakes and salt." },
+    { "step": 4, "instruction": "Serve as a side with steamed rice." }
   ],
-  "notes": []
+  "notes": [
+    "Also documented as Yamter or Dakter in some Arunachali food references. A simple documented version uses smoked meat, dried red chilli and salt; other regional versions may include fermented soybean."
+  ]
 },
 
 "gyapa khazi": {
-  "dishName": "Gyapa Khazi (Arunachal Vegetable and Meat Stew)",
+  "dishName": "Gyapa Khazi (Monpa Fish and Fermented Cheese Pulao)",
   "image": "/dishes/gyapa-khazi.webp",
-  "state" : "Arunachal Pradesh",
-  "description": "A simple home-style Arunachal-inspired stew of chicken and seasonal vegetables.",
+  "state": "Arunachal Pradesh",
+  "description": "A traditional Monpa rice dish from the Tawang region, similar to pulao, prepared with fermented cheese, small dried fish, ginger, chilli and butter.",
   "prepTime": "Approx. 40 minutes",
-  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "equipment": [
+    { "item": "kadai", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
   "ingredients": [
-    { "amount": "400 g", "commonName": "Chicken", "englishName": "chicken, bone-in pieces" },
-    { "amount": "1 cup", "commonName": "Mishrit Sabzi", "englishName": "chopped pumpkin, beans, greens" },
-    { "amount": "1", "commonName": "Adrak", "englishName": "ginger, sliced" },
-    { "amount": "2 cloves", "commonName": "Lehsun", "englishName": "garlic, crushed" },
-    { "amount": "1 tbsp", "commonName": "Tel", "englishName": "cooking oil" },
-    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
-    { "amount": "3 cups", "commonName": "Paani", "englishName": "water" }
+    { "amount": "1 cup", "commonName": "Chawal", "englishName": "rice, rinsed and soaked for 15 minutes" },
+    { "amount": "25 g", "commonName": "Sukhi Chhoti Machhli", "englishName": "small dried fish, cleaned and rinsed" },
+    { "amount": "2 tbsp", "commonName": "Chhurpi", "englishName": "crumbled fermented cheese, traditionally made from yak or cow milk" },
+    { "amount": "1 tsp", "commonName": "Adrak", "englishName": "ginger, finely chopped" },
+    { "amount": "1", "commonName": "Hari Mirch", "englishName": "green chilli, slit" },
+    { "amount": "1 tbsp", "commonName": "Makhan", "englishName": "butter" },
+    { "amount": "1 1/2 cups", "commonName": "Paani", "englishName": "water" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt, added carefully because dried fish may be salty" }
   ],
   "method": [
-    { "step": 1, "instruction": "Heat oil in a kadai, add ginger and garlic." },
-    { "step": 2, "instruction": "Add chicken and cook 5 minutes." },
-    { "step": 3, "instruction": "Add water and salt, simmer 20 minutes." },
-    { "step": 4, "instruction": "Add vegetables and simmer 10 more minutes until everything is cooked through. Serve hot." }
+    { "step": 1, "instruction": "Drain the soaked rice. Rinse the dried fish briefly and drain well." },
+    { "step": 2, "instruction": "Melt the butter in a kadai. Add ginger and green chilli and cook briefly until fragrant." },
+    { "step": 3, "instruction": "Add the dried fish and stir for 1 to 2 minutes." },
+    { "step": 4, "instruction": "Add the rice and stir gently so the grains are coated with the butter and aromatics." },
+    { "step": 5, "instruction": "Pour in the water, cover and cook on low heat until the rice is tender and the water is absorbed, about 12 to 15 minutes." },
+    { "step": 6, "instruction": "Fold in the crumbled chhurpi. Cover and rest for 3 minutes, then fluff gently and serve hot." }
   ],
-  "notes": []
+  "notes": [
+    "Gyapa Khazi is a Monpa-style pulao, not a chicken and vegetable stew. Traditional descriptions identify fermented cheese and small dried fish as defining ingredients. Add salt only after tasting."
+  ]
 },
 
 "raja mircha chutney": {
