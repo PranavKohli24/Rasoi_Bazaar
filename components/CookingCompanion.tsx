@@ -296,19 +296,6 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
         <path d="M77 51h9c4 0 6 2.8 6 6.5v8c0 3.7-2 6-6 6H77" fill="#E78A43" />
       </g>
 
-      {/* Raised wooden spoon and the little arm holding it. */}
-      <g
-        className={`companion-spoon${mood === "thinking" ? " is-stirring" : ""}`}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M76 66q7-3 9-11" fill="none" stroke="#F3B27A" strokeWidth="6" />
-        <path d="M83 54 89 25" fill="none" stroke="#86502D" strokeWidth="4.5" />
-        <path d="M89 27c-4-1-6-5-5-9 1-5 5-8 8-7 4 1 5 6 4 10-1 5-4 7-7 6Z" fill="#C9894C" stroke="#86502D" strokeWidth="2" />
-        <path d="M88 16q2-2 4-1" fill="none" stroke="#EFC18D" strokeWidth="1.5" />
-        <path d="M78 63q4 2 7-2" fill="none" stroke="#FFF0D9" strokeWidth="2.2" />
-      </g>
-
       {/* Chef hat: soft puffy crown, stitched folds and warm orange band. */}
       <path
         d="M23 39c-7 0-12-5-12-12 0-7 6-12 13-12 2-8 9-12 16-9 5-7 16-7 21 0 8-3 16 2 17 10 7 1 11 6 10 13-1 6-6 10-13 10H23Z"
@@ -337,6 +324,20 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
         <path d="m42 19 12 10" />
         <ellipse cx="40.5" cy="17.5" rx="2.8" ry="3.8" fill="#F4A04F" stroke="#E8792F" />
         <path d="m55 18-11 12m8-12 5-2 2 2-2 5" />
+      </g>
+
+      {/* Draw the held spoon after the hat so it sits clearly in front. */}
+      {/* Raised wooden spoon and the little arm holding it. */}
+      <g
+        className={`companion-spoon${mood === "thinking" ? " is-stirring" : ""}`}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M76 66q7-3 9-11" fill="none" stroke="#F3B27A" strokeWidth="6" />
+        <path d="M83 54 89 25" fill="none" stroke="#86502D" strokeWidth="4.5" />
+        <path d="M89 27c-4-1-6-5-5-9 1-5 5-8 8-7 4 1 5 6 4 10-1 5-4 7-7 6Z" fill="#C9894C" stroke="#86502D" strokeWidth="2" />
+        <path d="M88 16q2-2 4-1" fill="none" stroke="#EFC18D" strokeWidth="1.5" />
+        <path d="M78 63q4 2 7-2" fill="none" stroke="#FFF0D9" strokeWidth="2.2" />
       </g>
 
       {/* Rounded copper pot body. */}
@@ -377,7 +378,7 @@ const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
 
       {/* Sound waves appear only when the companion is listening. */}
       {mood === "listening" && (
-        <g fill="none" stroke="#D1560F" strokeWidth="2.4" strokeLinecap="round">
+        <g transform="translate(-8 0)" fill="none" stroke="#D1560F" strokeWidth="2.4" strokeLinecap="round">
           <path className="companion-hear-1" d="M10 46q-4 7 0 14" />
           <path className="companion-hear-2" d="M5 41q-7 12 0 24" />
         </g>
