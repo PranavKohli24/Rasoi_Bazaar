@@ -23504,6 +23504,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bai": {
     dishName: "Bai",
     "image": "/dishes/bai.webp",
+    "state" : "Mizoram",
     description: "A light Mizo vegetable stew of seasonal produce, green chilli and a little fermented flavor.",
     prepTime: "Approx. 30 minutes",
     equipment: [
@@ -57689,6 +57690,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kangshoi (chamthong)": {
   "dishName": "Kangshoi (Chamthong)",
+  "image": "/dishes/kangshoi.webp",
+  "state" : "Manipur",
   "description": "A simple light Manipuri vegetable stew, lightly seasoned and comforting.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57708,26 +57711,48 @@ export const predefinedRecipes: Record<string, Recipe> = {
 },
 
 "paknam": {
-  "dishName": "Paknam (Manipuri Fermented Soybean Chutney)",
-  "description": "A simple Manipuri chutney made using fermented soybean, chilli and tomato.",
-  "prepTime": "Approx. 15 minutes",
-  "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
+  "dishName": "Paknam (Manipuri Savoury Leaf-Wrapped Cake)",
+  "image": "/dishes/paknam.webp",
+  "state" : "Manipur",
+  "description": "A traditional Manipuri savoury cake made with gram flour, local herbs, young banana flower and fermented fish (ngari). The mixture is wrapped in turmeric and banana leaves, then slowly cooked until firm and fragrant.",
+  "prepTime": "Approx. 45 minutes",
+  "equipment": [
+    { "item": "tawa", "isSpecialized": false, "alternative": null },
+    { "item": "stove", "isSpecialized": false, "alternative": null }
+  ],
   "ingredients": [
-    { "amount": "1 tbsp", "commonName": "Hawaijar", "englishName": "fermented soybean" },
-    { "amount": "1", "commonName": "Tamatar", "englishName": "tomato, chopped" },
-    { "amount": "2", "commonName": "Hari Mirch", "englishName": "green chillies" },
-    { "amount": "1 tsp", "commonName": "Tel", "englishName": "cooking oil" },
-    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" }
+    { "amount": "1 cup", "commonName": "Besan", "englishName": "gram flour" },
+    { "amount": "1/2 cup", "commonName": "Maroi Napakpi", "englishName": "hooker chives, finely chopped" },
+    { "amount": "1/2 cup", "commonName": "Laphu Tharo", "englishName": "young banana flower, finely chopped" },
+    { "amount": "2 tbsp", "commonName": "Awa Phadigom", "englishName": "wild coriander, chopped" },
+    { "amount": "1 tbsp", "commonName": "Ngari", "englishName": "fermented fish, mashed" },
+    { "amount": "2", "commonName": "Sukhi Lal Mirch", "englishName": "dried red chillies, crushed" },
+    { "amount": "1/4 tsp", "commonName": "Haldi", "englishName": "turmeric powder" },
+    { "amount": "to taste", "commonName": "Namak", "englishName": "salt" },
+    { "amount": "as needed", "commonName": "Paani", "englishName": "water, to make a thick mixture" },
+    { "amount": "2", "commonName": "Haldi ke Patte", "englishName": "turmeric leaves, for inner wrapping" },
+    { "amount": "1 large", "commonName": "Kele ka Patta", "englishName": "banana leaf, for outer wrapping" }
   ],
   "method": [
-    { "step": 1, "instruction": "Heat oil in a kadai, add chilli and tomato. Cook until soft." },
-    { "step": 2, "instruction": "Add fermented soybean and salt, mash together and cook 2 minutes. Serve as a side." }
+    { "step": 1, "instruction": "Finely chop the banana flower, hooker chives and wild coriander. Crush the dried red chillies and mash the fermented fish." },
+    { "step": 2, "instruction": "Combine the herbs, banana flower, mashed ngari, crushed chillies, turmeric and salt in a bowl." },
+    { "step": 3, "instruction": "Add the gram flour and enough water to form a thick, well-combined mixture." },
+    { "step": 4, "instruction": "Place the mixture over turmeric leaves and fold them around it. Wrap the parcel again with the banana leaf and secure it." },
+    { "step": 5, "instruction": "Place the parcel on a preheated tawa over very low heat. Press it gently with a heatproof weight and cook slowly for about 30 to 45 minutes, turning carefully halfway through." },
+    { "step": 6, "instruction": "Once the mixture is firm and cooked through, remove it from the heat. Allow it to cool slightly, unwrap and cut into pieces." },
+    { "step": 7, "instruction": "Serve warm as a savoury snack or side dish." }
   ],
-  "notes": ["Use fermented soybean sparingly; it has a strong taste and smell."]
+  "notes": [
+    "Paknam is a traditional Manipuri savoury cake or pancake, not a fermented soybean chutney.",
+    "The gram-flour version commonly includes hooker chives, banana flower and ngari. Some regional variations use mushrooms or small fish.",
+    "It can also be prepared by steaming the wrapped mixture instead of cooking it on a tawa."
+  ]
 },
 
 "morok metpa": {
   "dishName": "Morok Metpa (Manipuri Chilli Chutney)",
+  "image": "/dishes/morak-metpa.webp",
+  "state" : "Manipur",
   "description": "A simple roasted chilli and tomato chutney popular in Manipuri cuisine.",
   "prepTime": "Approx. 15 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57747,6 +57772,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "yongchak bora": {
   "dishName": "Yongchak Bora (Stink Bean Fritters)",
+  "image": "/dishes/yongchak-bora.webp",
   "description": "Crisp fritters made with stink bean (tree bean) slices in a spiced gram flour batter.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57769,6 +57795,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "soibum": {
   "dishName": "Soibum (Fermented Bamboo Shoot Curry)",
+  "image": "/dishes/soibum.webp",
+  "state" : "Manipur",
   "description": "A tangy Manipuri curry using fermented bamboo shoot with simple seasoning.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57789,6 +57817,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sawhchiar": {
   "dishName": "Sawhchiar (Mizo Rice and Meat Porridge)",
+  "image": "/dishes/sawhchiar.webp",
+  "state" : "Mizoram",
   "description": "A comforting Mizo one-pot rice porridge cooked with chicken and vegetables.",
   "prepTime": "Approx. 45 minutes",
   "equipment": [{ "item": "cooker", "isSpecialized": false, "alternative": null }],
@@ -57810,6 +57840,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "chhum han": {
   "dishName": "Chhum Han (Mizo Boiled Vegetable Mash)",
+  "image": "/dishes/chhum-han.webp",
+  "state" : "Mizoram",
   "description": "A simple Mizo dish of boiled vegetables mashed together with minimal seasoning.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57828,6 +57860,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "hmarchha rawt": {
   "dishName": "Hmarchha Rawt (Mizo Chilli Chutney)",
+  "image": "/dishes/hmarchha-rawt.webp",
+  "state" : "Mizoram",
   "description": "A simple roasted chilli and garlic chutney from Mizoram.",
   "prepTime": "Approx. 15 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
