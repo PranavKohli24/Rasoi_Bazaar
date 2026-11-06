@@ -319,6 +319,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "dohneiiong": "dohneiihong",
   "doh neiihong": "dohneiihong",
   "doh neiiong": "dohneiihong",
+  "akhuni" : "axone pork",
   "axone pork": "axone pork",
   "akhuni pork": "axone pork",
   "pork with axone": "axone pork",
@@ -1525,6 +1526,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "honey chili potato": "honey chilli potato",
   "honey chilly potato": "honey chilli potato",
 
+  "veg rice" : "veg fried rice",
   "fried rice" : "veg fried rice",
   "egg fried rice recipe": "egg fried rice",
   "anda fried rice": "egg fried rice",

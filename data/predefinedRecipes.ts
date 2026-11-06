@@ -23469,6 +23469,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "axone pork": {
     dishName: "Axone Pork",
     "image": "/dishes/axone-park.webp",
+    "state" : "Nagaland",
     description: "Naga pork cooked with fermented soybean axone, ginger, garlic, chillies and optional bamboo shoot.",
     prepTime: "Approx. 1 hour 25 minutes",
     equipment: [
@@ -58253,6 +58254,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "phagshapa": {
   "dishName": "Phagshapa-style Dry Pork and Radish",
+  "image": "/dishes/phagshapa.webp",
+  "state" : "Sikkim",
   "description": "A simple Sikkim/Bhutan-inspired dish of pork cooked with radish and dried chilli.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58273,6 +58276,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "kinema curry": {
   "dishName": "Kinema Curry (Fermented Soybean Curry)",
+  "image": "/dishes/kinema-curry.webp",
+  "state" : "Sikkim",
   "description": "A Sikkimese-Nepali curry made with fermented soybean, onion and tomato.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58294,6 +58299,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sel roti": {
   "dishName": "Sel Roti (Nepali Sweet Rice Ring Bread)",
+  "image": "/dishes/sel-roti.webp",
+  "state" : "Sikkim",
   "description": "A crisp, ring-shaped sweet rice bread, popular in Sikkim and Nepali households.",
   "prepTime": "Approx. 35 minutes (plus soaking)",
   "equipment": [{ "item": "mixer", "isSpecialized": false, "alternative": null }, { "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58315,6 +58322,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sha phaley": {
   "dishName": "Sha Phaley (Tibetan Meat Bread)",
+  "image": "/dishes/sha-phaley.webp",
+  "state" : "Sikkim",
   "description": "A pan-fried Tibetan bread stuffed with spiced minced meat, popular in Sikkim.",
   "prepTime": "Approx. 50 minutes (plus resting)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -58340,6 +58349,8 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "sinki soup": {
   "dishName": "Sinki Soup (Fermented Radish Soup)",
+  "image": "/dishes/sinki-soup.webp",
+  "state" : "Sikkim",
   "description": "A tangy Sikkimese soup made with fermented radish root.",
   "prepTime": "Approx. 25 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
