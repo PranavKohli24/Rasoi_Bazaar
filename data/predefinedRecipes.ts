@@ -57575,6 +57575,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "ngatok": {
   "dishName": "Ngatok (Arunachali Herb-Wrapped Fish)",
+  "image": "/dishes/ngatok.webp",
   "state": "Arunachal Pradesh",
   "description": "A traditional Arunachali fish preparation seasoned with local herbs, wrapped in banana leaves and slow-cooked to keep the fish moist and aromatic.",
   "prepTime": "Approx. 35 minutes",
@@ -57607,6 +57608,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
 "lukter": {
   "dishName": "Lukter (Smoked Meat with King Chilli Flakes)",
+  "image": "/dishes/lukter.webp",
   "state": "Arunachal Pradesh",
   "description": "A traditional Arunachali side dish of shredded or pounded cooked dried or smoked meat mixed with roasted chilli flakes and salt. It is commonly eaten with rice.",
   "prepTime": "Approx. 15 minutes (using ready-smoked meat)",
