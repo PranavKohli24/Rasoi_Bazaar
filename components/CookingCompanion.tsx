@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Recipe } from "../types";
 
@@ -141,9 +141,6 @@ const buildSpokenText = (message: CompanionMessage): string => {
 type Mood = "idle" | "thinking" | "listening" | "talking";
 
 
-const HAT = "hsl(32, 55%, 80%)";
-const HAT_BAND = "hsl(32, 40%, 72%)";
-const HAT_EDGE = "hsl(32, 35%, 62%)";
 /* ---------------------------------------------------------------- icons */
 
 const ChatIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -257,95 +254,137 @@ const SpeakerIcon: React.FC<{ className?: string; on?: boolean }> = ({
 //   thinking  – flat mouth, spoon stirring
 //   listening – wide eyes, open mouth, little sound arcs beside the head
 //   talking   – mouth opens and closes
-// Flat solid fills only — no gradients — so it stays simple at every size it
-// appears (launcher, header).
+// The companion mascot: a warm little chef-pot rather than a floating face.
+// The same SVG is used in the launcher and sheet header, so its expressions
+// stay consistent across the UI. Mood changes reuse the existing animation
+// hooks: blink, stir, listening waves and talking mouth.
 const CompanionCharacter: React.FC<{ mood?: Mood; className?: string }> = ({
   mood = "idle",
   className,
-}) => (
-  <svg viewBox="0 0 64 64" overflow="visible" className={className} aria-hidden="true">
-    {/* Chef's hat */}
-    {/* Outline pass first, then the fills on top, so only the hat's outer
-        edge shows (no lines between the overlapping puffs). */}
-<g fill={HAT_EDGE} stroke={HAT_EDGE} strokeWidth="2" strokeLinejoin="round">
-      <circle cx="18.5" cy="13" r="5.8" />
-      <circle cx="27" cy="7.5" r="7" />
-      <circle cx="37" cy="7.5" r="7" />
-      <circle cx="45.5" cy="13" r="5.8" />
-      <rect x="17" y="12" width="30" height="12" rx="3" />
-    </g>
-    <circle cx="18.5" cy="13" r="5.8" fill={HAT} />
-    <circle cx="27" cy="7.5" r="7" fill={HAT} />
-    <circle cx="37" cy="7.5" r="7" fill={HAT} />
-    <circle cx="45.5" cy="13" r="5.8" fill={HAT} />
-    <rect x="17" y="12" width="30" height="12" rx="3" fill={HAT} />
+}) => {
+  const gradientId = useId().replace(/:/g, "");
+  const potGradient = `${gradientId}-pot`;
+  const hatGradient = `${gradientId}-hat`;
+  const rimGradient = `${gradientId}-rim`;
 
-    {/* Faint pleat lines on the puff, the gathered-fabric detail of a toque */}
-    <g stroke={HAT_BAND} strokeWidth="1.2" strokeLinecap="round" opacity="0.8">
-      <path d="M22 6q0 5 -1 10" fill="none" />
-      <path d="M32 3.5v11" fill="none" />
-      <path d="M42 6q0 5 1 10" fill="none" />
-    </g>
-
-    <rect x="17" y="20" width="30" height="5.5" rx="1.5" fill={HAT_BAND} />
-
-    {/* Sound arcs, only while listening */}
-    {mood === "listening" && (
-      <g stroke="#D1560F" strokeWidth="2" fill="none" strokeLinecap="round">
-        <path className="companion-hear-1" d="M9 32q-3 6 0 12" />
-        <path className="companion-hear-2" d="M4 28q-6 10 0 20" />
-      </g>
-    )}
-
-    {/* Spoon, animated only while thinking */}
-    <g
-      className={`companion-spoon${mood === "thinking" ? " is-stirring" : ""}`}
-      stroke="#5C4A38"
-      strokeWidth="2"
-      strokeLinecap="round"
+  return (
+    <svg
+      viewBox="0 0 96 96"
+      overflow="visible"
+      className={`companion-mascot ${className ?? ""}`}
+      aria-hidden="true"
     >
-      <line x1="49" y1="38" x2="57" y2="27" />
-      <ellipse cx="58.5" cy="24" rx="3.2" ry="4.4" transform="rotate(28 58.5 24)" fill="#FFF7EC" />
-    </g>
+      <defs>
+        <linearGradient id={potGradient} x1="18%" y1="8%" x2="82%" y2="100%">
+          <stop offset="0%" stopColor="#FFC17D" />
+          <stop offset="52%" stopColor="#F59B4E" />
+          <stop offset="100%" stopColor="#E8782E" />
+        </linearGradient>
+        <linearGradient id={hatGradient} x1="20%" y1="0%" x2="78%" y2="100%">
+          <stop offset="0%" stopColor="#FFFEF8" />
+          <stop offset="100%" stopColor="#F1E5D2" />
+        </linearGradient>
+        <linearGradient id={rimGradient} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#F9B66D" />
+          <stop offset="100%" stopColor="#C95D20" />
+        </linearGradient>
+      </defs>
 
-    {/* Face */}
-    <defs>
-      <radialGradient id="companionFaceGradient" cx="38%" cy="32%" r="75%">
-        <stop offset="0%" stopColor="#F6B57E" />
-        <stop offset="100%" stopColor="#EE9C5C" />
-      </radialGradient>
-    </defs>
-    <circle cx="32" cy="38" r="19" fill="url(#companionFaceGradient)" stroke="#D8824A" strokeWidth="0.75" />
+      {/* Pot handles sit behind the body. */}
+      <g stroke="#9C4C20" strokeWidth="2.5" strokeLinejoin="round">
+        <path d="M19 51H10c-4 0-6 2.8-6 6.5v8c0 3.7 2 6 6 6h10" fill="#E78A43" />
+        <path d="M77 51h9c4 0 6 2.8 6 6.5v8c0 3.7-2 6-6 6H77" fill="#E78A43" />
+      </g>
 
-    {/* Blush, a little warmth on the cheeks */}
-    <ellipse cx="20.5" cy="42" rx="3.2" ry="2" fill="#E8704A" opacity="0.28" />
-    <ellipse cx="43.5" cy="42" rx="3.2" ry="2" fill="#E8704A" opacity="0.28" />
-
-    <g className="companion-blink" style={{ transformOrigin: "32px 35px" }}>
-      {[25, 39].map((cx) => (
-        <g key={cx}>
-          <circle cx={cx} cy="35" r={mood === "listening" ? 3.2 : 2.7} fill="#4A3524" />
-          <circle cx={cx} cy="35" r={mood === "listening" ? 3.2 : 2.7} fill="none" stroke="#2E2013" strokeWidth="0.4" />
-          <circle cx={cx - 0.8} cy={33.8} r="0.9" fill="#FFFFFF" opacity="0.9" />
-        </g>
-      ))}
-    </g>
-
-    {mood === "talking" && (
-      <ellipse className="companion-talk" cx="32" cy="45.5" rx="4.5" ry="3.5" fill="#5C4A38" />
-    )}
-    {mood === "listening" && <ellipse cx="32" cy="46" rx="2.6" ry="3" fill="#5C4A38" />}
-    {(mood === "idle" || mood === "thinking") && (
-      <path
-        d={mood === "thinking" ? "M25 45q7 3 14 0" : "M24 44q8 6 16 0"}
-        stroke="#5C4A38"
-        strokeWidth="2"
-        fill="none"
+      {/* Raised wooden spoon and the little arm holding it. */}
+      <g
+        className={`companion-spoon${mood === "thinking" ? " is-stirring" : ""}`}
         strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M76 66q7-3 9-11" fill="none" stroke="#F3B27A" strokeWidth="6" />
+        <path d="M83 54 89 25" fill="none" stroke="#86502D" strokeWidth="4.5" />
+        <path d="M89 27c-4-1-6-5-5-9 1-5 5-8 8-7 4 1 5 6 4 10-1 5-4 7-7 6Z" fill="#C9894C" stroke="#86502D" strokeWidth="2" />
+        <path d="M88 16q2-2 4-1" fill="none" stroke="#EFC18D" strokeWidth="1.5" />
+        <path d="M78 63q4 2 7-2" fill="none" stroke="#FFF0D9" strokeWidth="2.2" />
+      </g>
+
+      {/* Chef hat: soft puffy crown, stitched folds and warm orange band. */}
+      <path
+        d="M23 39c-7 0-12-5-12-12 0-7 6-12 13-12 2-8 9-12 16-9 5-7 16-7 21 0 8-3 16 2 17 10 7 1 11 6 10 13-1 6-6 10-13 10H23Z"
+        fill="#9C562C"
+        opacity="0.22"
+        transform="translate(0 2)"
       />
-    )}
-  </svg>
-);
+      <path
+        d="M23 38c-7 0-12-5-12-12 0-7 6-12 13-12 2-8 9-12 16-9 5-7 16-7 21 0 8-3 16 2 17 10 7 1 11 6 10 13-1 6-6 10-13 10H23Z"
+        fill={`url(#${hatGradient})`}
+        stroke="#8E512D"
+        strokeWidth="2.5"
+        strokeLinejoin="round"
+      />
+      <g fill="none" stroke="#D8C8B2" strokeWidth="1.5" strokeLinecap="round" opacity="0.9">
+        <path d="M28 13q-3 8-1 16" />
+        <path d="M43 7q-2 9 0 18" />
+        <path d="M57 8q4 8 2 17" />
+        <path d="M72 17q3 6 0 12" />
+      </g>
+      <path d="M19 31q29 8 58 0l4 8q-31 11-66 0Z" fill={`url(#${rimGradient})`} stroke="#9C562C" strokeWidth="2.2" strokeLinejoin="round" />
+      <path d="M29 34q18 5 38 1" fill="none" stroke="#FFD39B" strokeWidth="2" strokeLinecap="round" opacity="0.9" />
+
+      {/* Tiny crossed spoon and spatula mark on the chef hat. */}
+      <g stroke="#E8792F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        <path d="m42 19 12 10" />
+        <ellipse cx="40.5" cy="17.5" rx="2.8" ry="3.8" fill="#F4A04F" stroke="#E8792F" />
+        <path d="m55 18-11 12m8-12 5-2 2 2-2 5" />
+      </g>
+
+      {/* Rounded copper pot body. */}
+      <path
+        d="M18 46q0-5 7-6h46q7 1 7 8v24q0 15-15 16H33Q18 87 18 72V46Z"
+        fill={`url(#${potGradient})`}
+        stroke="#8E481F"
+        strokeWidth="2.8"
+        strokeLinejoin="round"
+      />
+      <path d="M19 47q29-8 58 0" fill="none" stroke="#FFD092" strokeWidth="3" strokeLinecap="round" />
+      <path d="M20 75q28 8 56 0v5q-2 7-14 8H34q-12-1-14-8Z" fill="#D96625" opacity="0.78" />
+      <path d="M25 51q-3 12-1 20" fill="none" stroke="#FFE0B5" strokeWidth="2.5" strokeLinecap="round" opacity="0.65" />
+
+      {/* Face. Eyes blink together; their scale is anchored to the eye group. */}
+      <ellipse cx="30" cy="67" rx="6" ry="3.8" fill="#E96F56" opacity="0.28" />
+      <ellipse cx="66" cy="67" rx="6" ry="3.8" fill="#E96F56" opacity="0.28" />
+      <g className="companion-blink">
+        <ellipse cx="37" cy="59" rx={mood === "listening" ? 4.2 : 3.5} ry={mood === "listening" ? 4.6 : 4.1} fill="#3E2A20" />
+        <ellipse cx="60" cy="59" rx={mood === "listening" ? 4.2 : 3.5} ry={mood === "listening" ? 4.6 : 4.1} fill="#3E2A20" />
+        <circle cx="35.8" cy="57.5" r="1.2" fill="#FFFFFF" />
+        <circle cx="58.8" cy="57.5" r="1.2" fill="#FFFFFF" />
+      </g>
+
+      {mood === "talking" ? (
+        <ellipse className="companion-talk" cx="48.5" cy="71" rx="5.2" ry="4.5" fill="#563022" />
+      ) : mood === "listening" ? (
+        <ellipse cx="48.5" cy="71" rx="3.2" ry="4" fill="#563022" />
+      ) : (
+        <path
+          d={mood === "thinking" ? "M41 70q7 2 14 0" : "M39.5 68q9 8 18 0"}
+          fill="none"
+          stroke="#563022"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
+      )}
+
+      {/* Sound waves appear only when the companion is listening. */}
+      {mood === "listening" && (
+        <g fill="none" stroke="#D1560F" strokeWidth="2.4" strokeLinecap="round">
+          <path className="companion-hear-1" d="M10 46q-4 7 0 14" />
+          <path className="companion-hear-2" d="M5 41q-7 12 0 24" />
+        </g>
+      )}
+    </svg>
+  );
+};
 
 /* ------------------------------------------------------------- helpers */
 
@@ -2362,7 +2401,7 @@ const handleCancelDish = (messageIndex: number) => {
             )
           )}
           <span className="companion-orb backdrop-blur-sm flex h-14 w-14 items-center justify-center rounded-full transition-transform group-hover:-translate-y-0.5 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-offset-2 group-focus-visible:outline-[#FC6C26]">
-            <CompanionCharacter mood={voiceMood} className="companion-bob h-10 w-10" />
+            <CompanionCharacter mood={voiceMood} className="companion-bob h-12 w-12" />
           </span>
         </button>
       )}
@@ -2415,7 +2454,7 @@ const handleCancelDish = (messageIndex: number) => {
             >
               <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-0.5">
                 <div className="flex min-w-0 items-center gap-2.5">
-                  <CompanionCharacter mood={headerMood} className="h-10 w-10 shrink-0" />
+                  <CompanionCharacter mood={headerMood} className="h-12 w-12 shrink-0" />
                   <p className="truncate text-[15px] font-bold leading-tight text-[#2B1A0C]">
                     Cooking Companion
                   </p>
@@ -2865,7 +2904,13 @@ const handleCancelDish = (messageIndex: number) => {
           to { opacity: 1; }
         }
 
+        .companion-mascot {
+          overflow: visible;
+          filter: drop-shadow(0 1.5px 1.5px rgb(111 63 29 / 0.14));
+        }
         .companion-blink {
+          transform-box: fill-box;
+          transform-origin: center;
           animation: companion-blink 4s ease-in-out infinite;
         }
         @keyframes companion-blink {
