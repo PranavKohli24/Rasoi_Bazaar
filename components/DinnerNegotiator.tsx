@@ -313,8 +313,60 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const [popoverPos, setPopoverPos] = useState<PopoverPos | null>(null);
   const placementRef = useRef<"below" | "above" | null>(null);
 
+  // Back-button trap: pressing back while open should close the negotiator,
+  // not navigate the page away.
+  const pushedHistoryStateRef = useRef(false);
+  const suppressNextPopRef = useRef(false);
+
   useLockBodyScroll(isOpen);
-  const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(onClose);
+
+  useEffect(() => {
+    if (isOpen && !pushedHistoryStateRef.current) {
+      window.history.pushState({ __dinnerNegotiator: true }, "");
+      pushedHistoryStateRef.current = true;
+    }
+  }, [isOpen]);
+
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (suppressNextPopRef.current) {
+        suppressNextPopRef.current = false;
+        pushedHistoryStateRef.current = false;
+        return;
+      }
+      if (!pushedHistoryStateRef.current) return;
+      pushedHistoryStateRef.current = false;
+      onCloseRef.current();
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []); // mounted once, never torn down by parent re-renders
+
+  // Covers closes that don't go through triggerClose (e.g. onViewRestaurant
+  // setting isOpen=false directly) — clean up the pushed entry either way.
+  useEffect(() => {
+    if (!isOpen && pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+  }, [isOpen]);
+
+  const triggerClose = () => {
+    if (pushedHistoryStateRef.current) {
+      suppressNextPopRef.current = true;
+      pushedHistoryStateRef.current = false;
+      window.history.back();
+    }
+    onClose();
+  };
+
+  const { dragY, isDragging, handleDragStart, handleDragMove, handleDragEnd } = useDragToDismiss(triggerClose);
 
   const activePerson = activeIndex !== null ? people[activeIndex] : null;
 
@@ -486,7 +538,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
   const otherPicks = matches.slice(1, 6);
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={triggerClose}>
       <div
         ref={dialogRef}
         role="dialog"
