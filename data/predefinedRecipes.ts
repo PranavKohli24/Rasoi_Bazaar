@@ -59670,7 +59670,714 @@ export const predefinedRecipes: Record<string, Recipe> = {
   notes:[
     "Let the potatoes cool before scooping them. Add the filling just before serving so they do not become soggy."
   ]
-}
+},
+
+
+// ===== ANDAMAN & NICOBAR ISLANDS SPECIAL RECIPES =====
+// Simple home-cooking versions based on regional seafood, coconut-based curries,
+// lobster masala, banana-leaf fish preparations and island-style biryani.
+// Nutrition values are approximate per serving.
+
+
+"andaman coconut fish curry": {
+  "dishName": "Andaman Coconut Fish Curry",
+  "image": "/dishes/andaman-fish-curry.webp",
+  "state": "Andaman and Nicobar Islands",
+  "description": "Fresh fish gently cooked in a creamy coconut milk curry with simple spices, curry leaves and a little tangy tamarind.",
+  "prepTime": "Approx. 35 minutes",
+  "equipment": [
+    {
+      "item": "kadai",
+      "isSpecialized": false,
+      "alternative": null
+    },
+    {
+      "item": "stove",
+      "isSpecialized": false,
+      "alternative": null
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": "500 g",
+      "commonName": "Machhli",
+      "englishName": "fish pieces, preferably firm white fish"
+    },
+    {
+      "amount": "1 medium",
+      "commonName": "Pyaaz",
+      "englishName": "onion, finely chopped"
+    },
+    {
+      "amount": "1 medium",
+      "commonName": "Tamatar",
+      "englishName": "tomato, chopped"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Adrak-Lehsun Paste",
+      "englishName": "ginger-garlic paste"
+    },
+    {
+      "amount": "1 cup",
+      "commonName": "Nariyal Doodh",
+      "englishName": "coconut milk"
+    },
+    {
+      "amount": "1/2 cup",
+      "commonName": "Paani",
+      "englishName": "water"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Haldi",
+      "englishName": "turmeric"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Lal Mirch Powder",
+      "englishName": "red chilli powder"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Rai",
+      "englishName": "mustard seeds"
+    },
+    {
+      "amount": "8-10",
+      "commonName": "Kadi Patta",
+      "englishName": "curry leaves"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Imli",
+      "englishName": "tamarind pulp"
+    },
+    {
+      "amount": "2 tbsp",
+      "commonName": "Tel",
+      "englishName": "cooking oil"
+    },
+    {
+      "amount": "to taste",
+      "commonName": "Namak",
+      "englishName": "salt"
+    },
+    {
+      "amount": "as needed",
+      "commonName": "Hara Dhaniya",
+      "englishName": "coriander leaves, for garnish"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Wash the fish pieces and rub them with a little salt and turmeric. Keep aside for 10 minutes."
+    },
+    {
+      "step": 2,
+      "instruction": "Heat oil in a kadai. Add mustard seeds and curry leaves. Let them sizzle for a few seconds."
+    },
+    {
+      "step": 3,
+      "instruction": "Add chopped onion and cook for 3 to 4 minutes until soft. Add ginger-garlic paste and cook for another 30 seconds."
+    },
+    {
+      "step": 4,
+      "instruction": "Add chopped tomato and red chilli powder. Cook for 4 to 5 minutes until the tomato becomes soft and mixes into the masala."
+    },
+    {
+      "step": 5,
+      "instruction": "Add tamarind pulp, water and coconut milk. Mix gently and bring to a light simmer."
+    },
+    {
+      "step": 6,
+      "instruction": "Carefully add the fish pieces. Cover and cook on low heat for 6 to 8 minutes, until the fish is fully cooked and flakes easily.",
+      "tip": {
+        "title": "Cook the fish gently",
+        "content": "Avoid stirring too much after adding the fish. This keeps the pieces whole instead of breaking them."
+      }
+    },
+    {
+      "step": 7,
+      "instruction": "Taste the curry and adjust salt if needed. Garnish with coriander leaves and serve hot with steamed rice."
+    }
+  ],
+  "notes": [
+    "Use firm fish such as kingfish, snapper or any fresh local white fish.",
+    "Do not boil the coconut milk aggressively. A gentle simmer keeps the curry smooth.",
+    "Add a little extra water if you prefer a thinner curry."
+  ],
+  "nutrition": {
+    "calories": 270,
+    "protein": 27,
+    "carbs": 10,
+    "fat": 14
+  }
+},
+
+
+"grilled fish in banana leaf": {
+  "dishName": "Grilled Fish in Banana Leaf",
+  "image": "/dishes/grilled-fish-andaman.webp",
+  "state": "Andaman and Nicobar Islands",
+  "description": "Fresh fish coated in a simple chilli, lemon and ginger-garlic marinade, wrapped in banana leaves and cooked until tender.",
+  "prepTime": "Approx. 35 minutes",
+  "equipment": [
+    {
+      "item": "tawa",
+      "isSpecialized": false,
+      "alternative": null
+    },
+    {
+      "item": "stove",
+      "isSpecialized": false,
+      "alternative": null
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": "500 g",
+      "commonName": "Machhli",
+      "englishName": "fish fillets or fish steaks"
+    },
+    {
+      "amount": "2 large",
+      "commonName": "Kele Ka Patta",
+      "englishName": "banana leaves, washed"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Adrak-Lehsun Paste",
+      "englishName": "ginger-garlic paste"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Nimbu Ras",
+      "englishName": "lemon juice"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Haldi",
+      "englishName": "turmeric"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Lal Mirch Powder",
+      "englishName": "red chilli powder"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Kali Mirch Powder",
+      "englishName": "black pepper powder"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Tel",
+      "englishName": "cooking oil"
+    },
+    {
+      "amount": "to taste",
+      "commonName": "Namak",
+      "englishName": "salt"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "In a bowl, mix ginger-garlic paste, lemon juice, turmeric, red chilli powder, black pepper, oil and salt."
+    },
+    {
+      "step": 2,
+      "instruction": "Rub this mixture all over the fish pieces. Keep them aside for 15 minutes so they absorb the flavour."
+    },
+    {
+      "step": 3,
+      "instruction": "Wash the banana leaves and wipe them dry. Warm them briefly over low heat or dip them in hot water until they become soft and easy to fold."
+    },
+    {
+      "step": 4,
+      "instruction": "Place one fish piece in the centre of each banana leaf section. Fold the sides over the fish and close the ends to make a neat parcel. Use a toothpick if needed."
+    },
+    {
+      "step": 5,
+      "instruction": "Heat a tawa on low to medium heat. Place the banana leaf parcels on it and cover with a lid."
+    },
+    {
+      "step": 6,
+      "instruction": "Cook for 5 to 6 minutes. Turn the parcels carefully and cook the other side for another 5 to 6 minutes."
+    },
+    {
+      "step": 7,
+      "instruction": "Open one parcel and check the thickest part of the fish. It should be opaque and flake easily. Cook for another 2 minutes if needed.",
+      "tip": {
+        "title": "Keep the fish moist",
+        "content": "The banana leaf protects the fish from direct heat and keeps it soft. Cook on medium-low heat so the leaf does not burn too quickly."
+      }
+    },
+    {
+      "step": 8,
+      "instruction": "Remove the banana leaves and serve the fish hot with lemon."
+    }
+  ],
+  "notes": [
+    "Banana leaves add a light natural aroma and help keep the fish juicy.",
+    "Use fresh fish fillets or steaks without too many bones.",
+    "You can use a little extra chilli powder if you prefer a spicier fish."
+  ],
+  "nutrition": {
+    "calories": 190,
+    "protein": 26,
+    "carbs": 3,
+    "fat": 8
+  }
+},
+
+
+"andaman lobster masala": {
+  "dishName": "Andaman Lobster Masala",
+  "image": "/dishes/andaman-lobster-masala.webp",
+  "state": "Andaman and Nicobar Islands",
+  "description": "Fresh lobster pieces cooked in a spicy onion-tomato masala with ginger, garlic and simple Indian spices.",
+  "prepTime": "Approx. 35 minutes",
+  "equipment": [
+    {
+      "item": "kadai",
+      "isSpecialized": false,
+      "alternative": null
+    },
+    {
+      "item": "stove",
+      "isSpecialized": false,
+      "alternative": null
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": "500 g",
+      "commonName": "Lobster",
+      "englishName": "cleaned lobster, cut into pieces"
+    },
+    {
+      "amount": "2 medium",
+      "commonName": "Pyaaz",
+      "englishName": "onions, finely chopped"
+    },
+    {
+      "amount": "2 medium",
+      "commonName": "Tamatar",
+      "englishName": "tomatoes, chopped"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Adrak-Lehsun Paste",
+      "englishName": "ginger-garlic paste"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Haldi",
+      "englishName": "turmeric"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Lal Mirch Powder",
+      "englishName": "red chilli powder"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Dhaniya Powder",
+      "englishName": "coriander powder"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Kali Mirch Powder",
+      "englishName": "black pepper powder"
+    },
+    {
+      "amount": "2 tbsp",
+      "commonName": "Tel",
+      "englishName": "cooking oil"
+    },
+    {
+      "amount": "1/3 cup",
+      "commonName": "Paani",
+      "englishName": "water"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Nimbu Ras",
+      "englishName": "lemon juice"
+    },
+    {
+      "amount": "to taste",
+      "commonName": "Namak",
+      "englishName": "salt"
+    },
+    {
+      "amount": "as needed",
+      "commonName": "Hara Dhaniya",
+      "englishName": "coriander leaves, chopped"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Wash the lobster pieces. Add a little salt, turmeric and red chilli powder. Mix well and keep aside for 10 minutes."
+    },
+    {
+      "step": 2,
+      "instruction": "Heat oil in a kadai. Add chopped onions and cook for 4 to 5 minutes until they turn light golden."
+    },
+    {
+      "step": 3,
+      "instruction": "Add ginger-garlic paste and cook for about 30 seconds."
+    },
+    {
+      "step": 4,
+      "instruction": "Add chopped tomatoes, coriander powder and black pepper. Cook for 5 to 6 minutes until the tomatoes become soft and the masala thickens."
+    },
+    {
+      "step": 5,
+      "instruction": "Add the lobster pieces and mix gently until they are coated with the masala."
+    },
+    {
+      "step": 6,
+      "instruction": "Add water, cover the kadai and cook on low to medium heat for 6 to 8 minutes, or until the lobster meat turns completely opaque and firm.",
+      "tip": {
+        "title": "Do not overcook lobster",
+        "content": "Lobster cooks quickly. Check the thickest piece and stop cooking once the meat is opaque. Overcooking can make it tough."
+      }
+    },
+    {
+      "step": 7,
+      "instruction": "Open the lid and mix gently. If the gravy is too thin, cook uncovered for another 1 to 2 minutes."
+    },
+    {
+      "step": 8,
+      "instruction": "Add lemon juice and chopped coriander. Serve hot with steamed rice or roti."
+    }
+  ],
+  "notes": [
+    "Ask the fish seller to clean and cut the lobster if you are not familiar with preparing it.",
+    "You can keep the lobster shell on while cooking for extra flavour.",
+    "Adjust the chilli powder according to your taste."
+  ],
+  "nutrition": {
+    "calories": 190,
+    "protein": 24,
+    "carbs": 8,
+    "fat": 7
+  }
+},
+
+
+"andaman coconut prawn curry": {
+  "dishName": "Andaman Coconut Prawn Curry",
+  "image": "/dishes/prawn-curry.webp",
+  "state": "Andaman and Nicobar Islands",
+  "description": "Juicy prawns cooked in a mild coconut milk gravy with curry leaves, garlic and a little lemon for a fresh island-style flavour.",
+  "prepTime": "Approx. 30 minutes",
+  "equipment": [
+    {
+      "item": "kadai",
+      "isSpecialized": false,
+      "alternative": null
+    },
+    {
+      "item": "stove",
+      "isSpecialized": false,
+      "alternative": null
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": "400 g",
+      "commonName": "Jhinga",
+      "englishName": "cleaned and deveined prawns"
+    },
+    {
+      "amount": "1 medium",
+      "commonName": "Pyaaz",
+      "englishName": "onion, finely chopped"
+    },
+    {
+      "amount": "1 medium",
+      "commonName": "Tamatar",
+      "englishName": "tomato, chopped"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Adrak-Lehsun Paste",
+      "englishName": "ginger-garlic paste"
+    },
+    {
+      "amount": "1 cup",
+      "commonName": "Nariyal Doodh",
+      "englishName": "coconut milk"
+    },
+    {
+      "amount": "1/4 cup",
+      "commonName": "Paani",
+      "englishName": "water"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Haldi",
+      "englishName": "turmeric"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Lal Mirch Powder",
+      "englishName": "red chilli powder"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Rai",
+      "englishName": "mustard seeds"
+    },
+    {
+      "amount": "8-10",
+      "commonName": "Kadi Patta",
+      "englishName": "curry leaves"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Nimbu Ras",
+      "englishName": "lemon juice"
+    },
+    {
+      "amount": "2 tbsp",
+      "commonName": "Tel",
+      "englishName": "cooking oil"
+    },
+    {
+      "amount": "to taste",
+      "commonName": "Namak",
+      "englishName": "salt"
+    },
+    {
+      "amount": "as needed",
+      "commonName": "Hara Dhaniya",
+      "englishName": "coriander leaves, chopped"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "Wash the prawns and drain the water. Add a little salt and turmeric, mix and keep aside for 10 minutes."
+    },
+    {
+      "step": 2,
+      "instruction": "Heat oil in a kadai. Add mustard seeds and curry leaves. Let them sizzle."
+    },
+    {
+      "step": 3,
+      "instruction": "Add chopped onion and cook for 3 to 4 minutes until soft. Add ginger-garlic paste and cook for another 30 seconds."
+    },
+    {
+      "step": 4,
+      "instruction": "Add chopped tomato and red chilli powder. Cook until the tomato becomes soft and forms a thick masala."
+    },
+    {
+      "step": 5,
+      "instruction": "Pour in coconut milk and water. Mix gently and bring to a light simmer."
+    },
+    {
+      "step": 6,
+      "instruction": "Add the prawns and cook on low to medium heat for 3 to 4 minutes, until they turn pink and are fully cooked.",
+      "tip": {
+        "title": "Add prawns at the end",
+        "content": "Prawns cook very quickly. Cooking them for too long makes them hard and rubbery."
+      }
+    },
+    {
+      "step": 7,
+      "instruction": "Turn off the heat. Add lemon juice and coriander leaves. Mix gently and serve hot with steamed rice."
+    }
+  ],
+  "notes": [
+    "Use fresh or properly thawed prawns.",
+    "Coconut milk gives the curry its creamy texture. Do not let it boil heavily.",
+    "Add a little water if you prefer a thinner gravy."
+  ],
+  "nutrition": {
+    "calories": 275,
+    "protein": 23,
+    "carbs": 10,
+    "fat": 17
+  }
+},
+
+
+"island seafood biryani": {
+  "dishName": "Island Seafood Biryani",
+  "image": "/dishes/island-seafood-biryani.webp",
+  "state": "Andaman and Nicobar Islands",
+  "description": "A fragrant island-style biryani made with fish, prawns, basmati rice and a little coconut milk, cooked together with simple spices.",
+  "prepTime": "Approx. 55 minutes",
+  "equipment": [
+    {
+      "item": "kadai",
+      "isSpecialized": false,
+      "alternative": null
+    },
+    {
+      "item": "stove",
+      "isSpecialized": false,
+      "alternative": null
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": "250 g",
+      "commonName": "Machhli",
+      "englishName": "firm fish, cut into medium pieces"
+    },
+    {
+      "amount": "200 g",
+      "commonName": "Jhinga",
+      "englishName": "cleaned and deveined prawns"
+    },
+    {
+      "amount": "1.5 cups",
+      "commonName": "Basmati Chawal",
+      "englishName": "basmati rice, washed and soaked for 20 minutes"
+    },
+    {
+      "amount": "1 large",
+      "commonName": "Pyaaz",
+      "englishName": "onion, thinly sliced"
+    },
+    {
+      "amount": "1 medium",
+      "commonName": "Tamatar",
+      "englishName": "tomato, chopped"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Adrak-Lehsun Paste",
+      "englishName": "ginger-garlic paste"
+    },
+    {
+      "amount": "1/2 cup",
+      "commonName": "Nariyal Doodh",
+      "englishName": "coconut milk"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Haldi",
+      "englishName": "turmeric"
+    },
+    {
+      "amount": "1 tsp",
+      "commonName": "Lal Mirch Powder",
+      "englishName": "red chilli powder"
+    },
+    {
+      "amount": "1/2 tsp",
+      "commonName": "Garam Masala",
+      "englishName": "garam masala"
+    },
+    {
+      "amount": "1",
+      "commonName": "Tej Patta",
+      "englishName": "bay leaf"
+    },
+    {
+      "amount": "1 inch",
+      "commonName": "Dalchini",
+      "englishName": "cinnamon stick"
+    },
+    {
+      "amount": "3",
+      "commonName": "Laung",
+      "englishName": "cloves"
+    },
+    {
+      "amount": "2 tbsp",
+      "commonName": "Tel",
+      "englishName": "cooking oil"
+    },
+    {
+      "amount": "1 tbsp",
+      "commonName": "Nimbu Ras",
+      "englishName": "lemon juice"
+    },
+    {
+      "amount": "as needed",
+      "commonName": "Hara Dhaniya",
+      "englishName": "coriander leaves, chopped"
+    },
+    {
+      "amount": "5 cups",
+      "commonName": "Paani",
+      "englishName": "water, for boiling rice"
+    },
+    {
+      "amount": "to taste",
+      "commonName": "Namak",
+      "englishName": "salt"
+    }
+  ],
+  "method": [
+    {
+      "step": 1,
+      "instruction": "In a bowl, mix fish and prawns with turmeric, red chilli powder, lemon juice and salt. Keep aside for 15 minutes."
+    },
+    {
+      "step": 2,
+      "instruction": "Bring 5 cups of water to a boil in a kadai or pot. Add salt and the soaked rice. Cook until the rice is about 70% cooked, then drain the water."
+    },
+    {
+      "step": 3,
+      "instruction": "Heat oil in a kadai. Add bay leaf, cinnamon and cloves. Let them release their aroma for a few seconds."
+    },
+    {
+      "step": 4,
+      "instruction": "Add sliced onion and cook until light golden. Add ginger-garlic paste and chopped tomato. Cook until the tomato becomes soft."
+    },
+    {
+      "step": 5,
+      "instruction": "Add garam masala and mix well. Add the fish pieces and cook gently for 2 minutes. Add the prawns and mix carefully."
+    },
+    {
+      "step": 6,
+      "instruction": "Pour in coconut milk and mix gently. Cook for another 1 to 2 minutes. Do not fully cook the seafood at this stage."
+    },
+    {
+      "step": 7,
+      "instruction": "Spread the drained rice evenly over the seafood masala. Sprinkle chopped coriander leaves on top. Add 2 to 3 tablespoons of water around the sides if the masala looks dry."
+    },
+    {
+      "step": 8,
+      "instruction": "Cover the kadai tightly and cook on the lowest heat for 10 to 12 minutes, until the rice is fully cooked and the seafood is done.",
+      "tip": {
+        "title": "Keep the rice separate",
+        "content": "Once you spread the rice over the seafood, do not stir it. This helps keep the rice grains whole."
+      }
+    },
+    {
+      "step": 9,
+      "instruction": "Turn off the heat and let the biryani rest, covered, for 5 to 10 minutes."
+    },
+    {
+      "step": 10,
+      "instruction": "Gently mix from the sides and serve hot."
+    }
+  ],
+  "notes": [
+    "You can use any firm fresh fish available locally.",
+    "Cut the fish into medium-sized pieces so they do not break easily while cooking.",
+    "Do not overcook the seafood before layering the rice. It will finish cooking during the final steaming.",
+    "Serve with plain curd or cucumber raita."
+  ],
+  "nutrition": {
+    "calories": 475,
+    "protein": 28,
+    "carbs": 58,
+    "fat": 14
+  }
+},
 
 }
 
@@ -60123,4 +60830,10 @@ export const predefinedRecipeServings: Record<string, number> = {
 
 "pheni (milk feniya)": 4,
 "chicken lollipop": 4,
+
+"andaman coconut fish curry": 4,
+"grilled fish in banana leaf": 4,
+"andaman lobster masala": 4,
+"andaman coconut prawn curry": 4,
+"island seafood biryani": 4,
 };
