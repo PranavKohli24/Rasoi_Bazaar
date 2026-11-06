@@ -553,7 +553,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
       >
         {/* Header — fixed */}
         <div
-          className="shrink-0 cursor-grab touch-none rounded-t-3xl border-b border-stone-800 px-5 pb-4 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
+          className="shrink-0 cursor-grab touch-none rounded-t-3xl px-5 pb-4 pt-3 active:cursor-grabbing sm:cursor-auto sm:px-6"
           onPointerDown={handleDragStart}
           onPointerMove={handleDragMove}
           onPointerUp={handleDragEnd}
@@ -735,7 +735,7 @@ const DinnerNegotiator: React.FC<DinnerNegotiatorProps> = ({ region, isOpen, onC
 
         {/* Footer — fixed, holds the phase's main action */}
         {phase === "collecting" && (
-          <div className="shrink-0 border-t border-stone-800 px-5 py-4 sm:px-6">
+          <div className="shrink-0 px-5 py-4 sm:px-6">
             <button
               type="button"
               onClick={runNegotiation}
