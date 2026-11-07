@@ -23635,6 +23635,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "dhuska": {
     dishName: "Dhuska",
     "image": "/dishes/dhuska.webp",
+    "state" : "Jharkhand",
     description: "Jharkhandi rice-and-dal fritters with a crisp outside and soft centre, traditionally paired with aloo chana.",
     prepTime: "Approx. 7 hours (including soaking and fermentation)",
     equipment: [
@@ -57509,6 +57510,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "putkal saag": {
   "dishName": "Putkal Saag (Mustard Greens Stir-fry)",
   "image": "/dishes/putkal-saag.webp",
+  "state" : "Jharkhand",
   "description": "A simple home-style stir-fry of mustard greens with garlic and mustard oil, inspired by tribal Jharkhand cooking.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -57573,6 +57575,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "arsa roti": {
   "dishName": "Arsa Roti (Jharkhand Sweet Rice Bread)",
   "image": "/dishes/arsa-roti.webp",
+  "state" : "Jharkhand",
   "description": "A sweet, slightly chewy fried rice flour bread made with jaggery, a festive Jharkhand treat.",
   "prepTime": "Approx. 40 minutes (plus rice soaking)",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }, { "item": "mixer", "isSpecialized": false, "alternative": null }],
@@ -61419,6 +61422,551 @@ export const predefinedRecipes: Record<string, Recipe> = {
     }
   },
 
+
+
+  "khambir": {
+    "dishName": "Khambir (Traditional Ladakhi Bread)",
+    "image": "/dishes/khambir.webp",
+    "state": "Ladakh",
+    "description": "A traditional Ladakhi round bread made from fermented whole-wheat dough. It has a thick, soft centre, a browned crust and a slightly sour taste. Commonly served with butter, apricot jam, eggs or butter tea.",
+    "prepTime": "Approx. 9 hours (including overnight fermentation)",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Gehu ka Atta",
+        "englishName": "whole-wheat flour"
+      },
+      {
+        "amount": "7 g",
+        "commonName": "Instant Yeast",
+        "englishName": "instant dry yeast"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1.5 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "350 ml",
+        "commonName": "Gunguna Paani",
+        "englishName": "lukewarm water"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for greasing the tawa"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a large bowl, mix whole-wheat flour, instant yeast, sugar and salt."
+      },
+      {
+        "step": 2,
+        "instruction": "Add lukewarm water little by little and knead into a soft, smooth dough. Knead for about 8 to 10 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Cover the dough with a clean, damp cloth or lid. Leave it to ferment in a cool place overnight, or for at least 8 hours, until it rises and smells mildly sour.",
+        "tip": {
+          "title": "Don't rush fermentation",
+          "content": "The long resting time gives Khambir its characteristic slightly sour flavour."
+        }
+      },
+      {
+        "step": 4,
+        "instruction": "Gently press the dough to release excess air. Divide it into 4 equal portions."
+      },
+      {
+        "step": 5,
+        "instruction": "Flatten each portion between your palms into a thick round disc about 2 cm thick. Do not roll it too thin."
+      },
+      {
+        "step": 6,
+        "instruction": "Heat a tawa on medium-low heat and lightly grease it. Place one bread on the tawa and cover with a lid."
+      },
+      {
+        "step": 7,
+        "instruction": "Cook for about 7 to 8 minutes until the bottom becomes firm and golden-brown spots appear. Flip and cook the other side for another 6 to 8 minutes until the centre is fully cooked."
+      },
+      {
+        "step": 8,
+        "instruction": "For a traditional charred finish, briefly hold the cooked bread over a low open flame using tongs. Serve warm with butter or apricot jam."
+      }
+    ],
+    "notes": [
+      "Traditional Khambir uses naturally fermented dough, often with a local starter or buttermilk. Instant yeast is a practical home-kitchen alternative.",
+      "The bread should be thick and soft inside with a browned crust.",
+      "Cook on low to medium-low heat so the thick centre cooks before the outside burns.",
+      "Khambir tastes especially good with Ladakhi butter tea or Chulli apricot jam."
+    ],
+    "nutrition": {
+      "calories": 440,
+      "protein": 15,
+      "carbs": 88,
+      "fat": 6
+    }
+  },
+
+  "paba": {
+    "dishName": "Paba (Traditional Ladakhi Barley Staple)",
+    "image": "/dishes/paba.webp",
+    "state": "Ladakh",
+    "description": "A traditional Ladakhi staple made by roasting and cooking a mixture of barley, wheat, buckwheat and pulse flour in water until it forms a firm, dense dough. It is commonly eaten with Tangtur, a refreshing buttermilk and vegetable accompaniment.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "150 g",
+        "commonName": "Jau ka Atta",
+        "englishName": "barley flour"
+      },
+      {
+        "amount": "100 g",
+        "commonName": "Gehu ka Atta",
+        "englishName": "whole-wheat flour"
+      },
+      {
+        "amount": "50 g",
+        "commonName": "Kuttu ka Atta",
+        "englishName": "buckwheat flour"
+      },
+      {
+        "amount": "50 g",
+        "commonName": "Besan",
+        "englishName": "gram flour"
+      },
+      {
+        "amount": "500 ml",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Combine barley flour, wheat flour, buckwheat flour and gram flour in a bowl. Mix well."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat a dry kadai on medium heat. Add the flour mixture and roast for 6 to 8 minutes, stirring continuously until it smells nutty. Do not let it burn."
+      },
+      {
+        "step": 3,
+        "instruction": "Transfer the roasted flour to a bowl. In the same kadai, bring 500 ml water and salt to a boil."
+      },
+      {
+        "step": 4,
+        "instruction": "Lower the heat. Add the roasted flour to the boiling water in 3 batches, mixing firmly with a wooden spoon after each addition to prevent lumps."
+      },
+      {
+        "step": 5,
+        "instruction": "Continue mixing until no dry flour remains. Cover and cook on low heat for about 10 minutes, stirring once or twice."
+      },
+      {
+        "step": 6,
+        "instruction": "Cook until the mixture becomes a firm, thick dough that pulls away from the sides of the kadai."
+      },
+      {
+        "step": 7,
+        "instruction": "Transfer the Paba to a plate and shape it into a mound. Serve warm by breaking off small portions and eating with Tangtur or vegetable stew."
+      }
+    ],
+    "notes": [
+      "Traditional Paba uses roasted barley and local pulse flours, including peas and beans.",
+      "This home version uses gram flour as an easily available substitute for some of the local pulse flour.",
+      "Roasting the flour before boiling is important. It gives Paba its nutty flavour and prevents a raw flour taste.",
+      "Paba should be firm and dough-like, not runny like ordinary porridge.",
+      "Tangtur, made with buttermilk or yogurt and cooked leafy greens, is a traditional accompaniment."
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 11,
+      "carbs": 65,
+      "fat": 3
+    }
+  },
+
+  "tingmo": {
+    "dishName": "Tingmo (Timok - Ladakhi Steamed Bread)",
+    "image": "/dishes/tingmo.webp",
+    "state": "Ladakh",
+    "description": "Soft, fluffy and lightly layered steamed bread made from yeast-leavened white flour dough. Tingmo is traditionally shaped into twisted buns and served with lentils, vegetable curries or meat stews.",
+    "prepTime": "Approx. 2 hours",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Instant Yeast",
+        "englishName": "instant dry yeast"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "3/4 cup",
+        "commonName": "Gunguna Paani",
+        "englishName": "lukewarm water, add more if needed"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil or sesame oil, for layering"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix flour, instant yeast, sugar and salt in a large bowl."
+      },
+      {
+        "step": 2,
+        "instruction": "Add lukewarm water gradually and knead into a soft, smooth dough. Knead for about 8 to 10 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Cover the dough and leave it in a warm place for 1 to 1.5 hours until it doubles in size."
+      },
+      {
+        "step": 4,
+        "instruction": "Gently press the dough to remove excess air. Roll it into a large rectangle, about 1/2 cm thick."
+      },
+      {
+        "step": 5,
+        "instruction": "Brush the surface lightly with oil. Fold the dough into three layers and gently press it together."
+      },
+      {
+        "step": 6,
+        "instruction": "Cut the folded dough into 6 equal strips. Twist each strip loosely into a spiral and tuck the loose end underneath to make a bun."
+      },
+      {
+        "step": 7,
+        "instruction": "Add 2 to 3 cups water to a pressure cooker. Place a trivet or steaming rack above the water and lightly grease a steel plate."
+      },
+      {
+        "step": 8,
+        "instruction": "Arrange the Tingmo buns on the plate, leaving enough space for them to expand. Place the plate on the rack."
+      },
+      {
+        "step": 9,
+        "instruction": "Remove the pressure regulator and steam with the lid in its steaming position for 15 to 18 minutes. Do not pressure cook the buns."
+      },
+      {
+        "step": 10,
+        "instruction": "Turn off the heat and let the buns rest for 3 minutes before opening the lid. Serve warm with dal, vegetable curry or meat stew."
+      }
+    ],
+    "notes": [
+      "Tingmo should be light, fluffy and soft inside.",
+      "Do not place the buns too close together because they expand while steaming.",
+      "The cooker is used as a steamer, not as a pressure cooker.",
+      "Avoid opening the lid during steaming, as the buns may collapse."
+    ],
+    "nutrition": {
+      "calories": 205,
+      "protein": 6,
+      "carbs": 40,
+      "fat": 3
+    }
+  },
+
+  "chhutagi": {
+    "dishName": "Chhutagi (Ladakhi Bow-Tie Dough Stew)",
+    "image": "/dishes/chhutagi.webp",
+    "state": "Ladakh",
+    "description": "A traditional Ladakhi stew made with small bow-tie-shaped wheat dough pieces cooked in a thick, mildly flavoured vegetable broth with potatoes, carrots and leafy greens. It is a filling one-pot meal enjoyed especially during colder months.",
+    "prepTime": "Approx. 1 hour",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Gehu ka Atta",
+        "englishName": "whole-wheat flour, for dough"
+      },
+      {
+        "amount": "3/4 cup",
+        "commonName": "Paani",
+        "englishName": "water, for kneading"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt, for dough"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "potatoes, peeled and diced"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Gajar",
+        "englishName": "carrot, peeled and diced"
+      },
+      {
+        "amount": "1/2 small",
+        "commonName": "Shalgam",
+        "englishName": "turnip or kohlrabi, diced"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Palak",
+        "englishName": "spinach or local leafy greens, chopped"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "onion, chopped"
+      },
+      {
+        "amount": "3 cloves",
+        "commonName": "Lehsun",
+        "englishName": "garlic, chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped, optional"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "5 cups",
+        "commonName": "Paani",
+        "englishName": "water or vegetable stock"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt, for broth"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Mix whole-wheat flour and salt in a bowl. Add water gradually and knead into a firm, smooth dough."
+      },
+      {
+        "step": 2,
+        "instruction": "Cover the dough and rest for 15 minutes so it becomes easier to roll."
+      },
+      {
+        "step": 3,
+        "instruction": "Dust the work surface with flour. Roll the dough into a thin sheet, about 2 mm thick."
+      },
+      {
+        "step": 4,
+        "instruction": "Cut the dough into small squares of about 2 cm. Take each square and pinch two opposite corners together to make a bow-tie shape. Keep the shaped pieces covered."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat oil in a deep kadai. Add chopped onion and garlic and cook until the onion softens."
+      },
+      {
+        "step": 6,
+        "instruction": "Add potatoes, carrot and turnip or kohlrabi. Stir for 2 minutes."
+      },
+      {
+        "step": 7,
+        "instruction": "Add water or vegetable stock, salt and black pepper. Bring to a boil, then cover and simmer for 12 to 15 minutes until the vegetables are nearly tender."
+      },
+      {
+        "step": 8,
+        "instruction": "Add the chopped leafy greens and optional tomato. Mix gently."
+      },
+      {
+        "step": 9,
+        "instruction": "Drop the bow-tie dough pieces into the simmering broth one by one. Stir gently so they do not stick together."
+      },
+      {
+        "step": 10,
+        "instruction": "Cover and simmer for another 8 to 10 minutes until the dough is cooked through and the vegetables are completely tender."
+      },
+      {
+        "step": 11,
+        "instruction": "Check the salt and broth consistency. Serve hot in bowls with plenty of vegetables and bow-tie dough pieces."
+      }
+    ],
+    "notes": [
+      "The dough should be firm enough to hold its bow-tie shape while cooking.",
+      "Do not make the dough pieces too thick, or they may remain uncooked inside.",
+      "Chhutagi is traditionally a mildly spiced dish. Black pepper and simple aromatics are enough.",
+      "Some regional versions also use meat. This recipe is a vegetarian home version."
+    ],
+    "nutrition": {
+      "calories": 285,
+      "protein": 8,
+      "carbs": 52,
+      "fat": 5
+    }
+  },
+
+  "chulli apricot jam": {
+    "dishName": "Chulli (Traditional Ladakhi Apricot Jam)",
+    "image": "/dishes/chulli-apricot-jam.webp",
+    "state": "Ladakh",
+    "description": "A traditional Ladakhi fruit preserve made by slowly cooking ripe local apricots with sugar and lemon juice. It has a bright golden-orange colour, a naturally fruity taste and a slightly tangy finish. Commonly enjoyed with Khambir and other breads.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Chulli",
+        "englishName": "fresh ripe apricots, washed and pitted"
+      },
+      {
+        "amount": "150 g",
+        "commonName": "Cheeni",
+        "englishName": "granulated sugar"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nimbu Ras",
+        "englishName": "fresh lemon juice"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Paani",
+        "englishName": "water, if needed to prevent sticking at the beginning"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the apricots thoroughly. Cut them in half and remove all the stones. Keep the fruit skins on."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the apricots and 2 tablespoons water to a wide kadai. Cook on medium-low heat for about 8 to 10 minutes, stirring regularly until the fruit softens."
+      },
+      {
+        "step": 3,
+        "instruction": "Gently mash the softened apricots with a spoon. Leave some small fruit pieces if you prefer a chunky jam."
+      },
+      {
+        "step": 4,
+        "instruction": "Add sugar and lemon juice. Stir continuously until the sugar dissolves completely."
+      },
+      {
+        "step": 5,
+        "instruction": "Cook on low heat for another 20 to 30 minutes, stirring often so the jam does not stick or burn."
+      },
+      {
+        "step": 6,
+        "instruction": "To check if the jam is ready, put a small spoonful on a chilled plate. Let it cool briefly and push it gently with your finger. If it wrinkles and does not run back quickly, the jam is ready. Otherwise, cook for a few more minutes."
+      },
+      {
+        "step": 7,
+        "instruction": "Turn off the heat and allow the jam to cool slightly. Transfer it into clean, sterilized, completely dry glass jars."
+      },
+      {
+        "step": 8,
+        "instruction": "Let the jam cool completely, close the jars and store them in the refrigerator. Serve with Khambir, bread or toast."
+      }
+    ],
+    "notes": [
+      "Use ripe, sweet apricots for the best flavour. Ladakh is especially known for its apricots.",
+      "Keep the fruit skins on while cooking. They soften and add natural texture and colour.",
+      "Stir regularly during cooking, especially after adding sugar, to prevent burning.",
+      "The final jam should be thick and spreadable, not watery.",
+      "This is a small-batch refrigerator jam, not a shelf-stable canned preserve. Keep refrigerated and use a clean, dry spoon each time.",
+      "Adjust sugar slightly depending on the natural sweetness of the apricots."
+    ],
+    "nutrition": {
+      "calories": 25,
+      "protein": 0,
+      "carbs": 6,
+      "fat": 0
+    }
+  }
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -61876,4 +62424,16 @@ export const predefinedRecipeServings: Record<string, number> = {
 "andaman lobster masala": 4,
 "andaman coconut prawn curry": 4,
 "island seafood biryani": 4,
+
+"haryanvi bajra khichri": 4,
+"haryanvi churma": 4,
+"besan masala roti": 4,
+"haryanvi mixed dal": 4,
+"kachri ki chutney": 4,
+
+"khambir": 4,
+"paba": 4,
+"tingmo": 4,
+"chhutagi": 4,
+"chulli apricot jam": 25,
 };
