@@ -583,6 +583,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "dal khichdi": "khichdi (moong dal khichdi)",
   "sweet lassi": "lassi (sweet lassi)",
   "mithi lassi": "lassi (sweet lassi)",
+  "chaas" : "masala chaas",
 
   // focused aliases and routing requested for common searches
   "cheela": "besan chila",

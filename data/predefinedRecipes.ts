@@ -15041,6 +15041,309 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 10
     }
   },
+
+  "stuffed naan-chana": {
+    "dishName": "Stuffed Naan-Chana",
+    "image": "/dishes/stuffed-naan-chana.webp",
+    "state": "Punjab",
+    "description": "Crispy, golden potato-stuffed naan served with spicy Punjabi-style chickpea curry and refreshing mint-tamarind chutney, inspired by Chandigarh's street-side food.",
+    "prepTime": "Approx. 1 hour 30 minutes (plus overnight soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Maida",
+        "englishName": "all-purpose flour, for naan"
+      },
+      {
+        "amount": "1/3 cup",
+        "commonName": "Dahi",
+        "englishName": "plain yogurt"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Baking Powder",
+        "englishName": "baking powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Baking Soda",
+        "englishName": "baking soda"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Cheeni",
+        "englishName": "sugar"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Namak",
+        "englishName": "salt, for naan dough"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gunguna Paani",
+        "englishName": "warm water, as needed"
+      },
+      {
+        "amount": "3 medium",
+        "commonName": "Aloo",
+        "englishName": "boiled and mashed potatoes, for stuffing"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "finely chopped onion, for stuffing"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "finely chopped green chillies"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak",
+        "englishName": "grated ginger"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Ajwain",
+        "englishName": "carom seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Bhuna Jeera Powder",
+        "englishName": "roasted cumin powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Anardana Powder",
+        "englishName": "dried pomegranate seed powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Kabuli Chana",
+        "englishName": "dried white chickpeas, soaked overnight"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tej Patta",
+        "englishName": "bay leaf"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped, for chana"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomatoes, finely chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "2 tsp",
+        "commonName": "Chole Masala",
+        "englishName": "chole masala powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Amchur",
+        "englishName": "dry mango powder"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for chana"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Pudina",
+        "englishName": "fresh mint leaves"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Hara Dhaniya",
+        "englishName": "fresh coriander leaves, for chutney"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Imli Pulp",
+        "englishName": "tamarind pulp"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, for chutney"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Bhuna Jeera Powder",
+        "englishName": "roasted cumin powder, for chutney"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Gud",
+        "englishName": "jaggery, for chutney"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Makhan",
+        "englishName": "butter, for brushing naan"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Drain the soaked chickpeas. Add them to a pressure cooker with 3 cups water, bay leaf and salt. Cook for 5 to 6 whistles until tender. Reserve the cooking liquid."
+      },
+      {
+        "step": 2,
+        "instruction": "In a large bowl, mix maida, baking powder, baking soda, sugar and salt. Add yogurt and oil. Gradually add warm water and knead into a soft, smooth dough."
+      },
+      {
+        "step": 3,
+        "instruction": "Cover the dough with a damp cloth and let it rest in a warm place for about 1 hour."
+      },
+      {
+        "step": 4,
+        "instruction": "For the stuffing, combine mashed potatoes, chopped onion, green chillies, ginger, ajwain, roasted cumin powder, anardana powder, garam masala, coriander leaves and salt. Mix thoroughly."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat oil in a kadai. Add cumin seeds and let them sizzle. Add chopped onion and cook until golden."
+      },
+      {
+        "step": 6,
+        "instruction": "Add ginger-garlic paste and cook for a minute. Add tomatoes and cook until soft and mushy."
+      },
+      {
+        "step": 7,
+        "instruction": "Add chole masala, coriander powder, red chilli powder, turmeric and salt. Cook until the masala becomes thick and aromatic."
+      },
+      {
+        "step": 8,
+        "instruction": "Add the cooked chickpeas along with about 1 cup of their reserved cooking liquid. Mix well and simmer for 15 to 20 minutes. Lightly mash a few chickpeas to thicken the gravy."
+      },
+      {
+        "step": 9,
+        "instruction": "Add amchur powder, mix well and simmer for another 2 minutes. Adjust the consistency with a little water if needed."
+      },
+      {
+        "step": 10,
+        "instruction": "For the chutney, blend mint leaves, coriander leaves, tamarind pulp, green chilli, roasted cumin powder, jaggery, salt and a little water until smooth."
+      },
+      {
+        "step": 11,
+        "instruction": "Divide the rested dough into 4 equal balls. Flatten each ball, place a generous portion of potato stuffing in the centre and bring the edges together to seal it."
+      },
+      {
+        "step": 12,
+        "instruction": "Dust lightly with flour and gently roll each stuffed ball into a thick oval naan. Avoid pressing too hard, as the filling may come out."
+      },
+      {
+        "step": 13,
+        "instruction": "Heat a tawa over medium heat. Place the naan on it and cook until bubbles appear. Flip carefully and cook the other side until golden brown spots develop. Cook on medium-low heat if needed so the stuffing heats through."
+      },
+      {
+        "step": 14,
+        "instruction": "Brush the hot naan generously with melted butter. For a slightly charred tandoori-style finish, briefly hold it over an open flame using tongs."
+      },
+      {
+        "step": 15,
+        "instruction": "Serve the hot stuffed naan with spicy chana, mint-tamarind chutney and sliced onions."
+      }
+    ],
+    "notes": [
+      "Keep the potato stuffing completely cool before filling the naan. Warm stuffing can make the dough difficult to seal.",
+      "The stuffing should be fairly dry. Excess moisture can cause the naan to tear while rolling.",
+      "Cook the stuffed naan over medium or medium-low heat to ensure the inside cooks properly without burning the outside.",
+      "The chickpea gravy should be thick enough to coat the chickpeas but not completely dry.",
+      "For a more traditional tandoori flavour, finish the naan briefly over an open flame."
+    ],
+    "nutrition": {
+      "calories": 610,
+      "protein": 18,
+      "carbs": 91,
+      "fat": 17
+    }
+  },
+
   "sarson ka saag": {
     "dishName": "Sarson Ka Saag",
     "image": "/dishes/sarson-ka-saag.webp",
@@ -25398,6 +25701,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "bajra roti": {
   "dishName": "Bajra Roti",
   "image": "/dishes/roti.webp",
+  "state" : "Haryana",
   "description": "Traditional pearl-millet flatbread best served hot with ghee, curd or a vegetable curry.",
   "prepTime": "Approx. 30 minutes",
   "equipment": [
@@ -56859,6 +57163,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 "bathua raita": {
   "dishName": "Bathua Raita",
   "image": "/dishes/bathua-raita.webp",
+  "state" : "Haryana",
   "description": "A winter raita made with boiled bathua greens mixed into spiced yogurt.",
   "prepTime": "Approx. 20 minutes",
   "equipment": [{ "item": "kadai", "isSpecialized": false, "alternative": null }],
@@ -60511,6 +60816,608 @@ export const predefinedRecipes: Record<string, Recipe> = {
     "fat": 14
   }
 },
+
+
+
+
+  "haryanvi bajra khichri": {
+    "dishName": "Bajra Khichri (Haryanvi Style)",
+    "image": "/dishes/haryanvi-bajra-khichri.webp",
+    "state": "Haryana",
+    "description": "A traditional Haryanvi one-pot meal made with cracked pearl millet and yellow moong dal, cooked until soft and finished with a simple cumin and ghee tempering.",
+    "prepTime": "Approx. 45 minutes (plus soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Bajra",
+        "englishName": "cracked pearl millet (bajra dalia)"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Peeli Moong Dal",
+        "englishName": "split yellow moong dal"
+      },
+      {
+        "amount": "5 cups",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Hing",
+        "englishName": "asafoetida"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak",
+        "englishName": "grated ginger"
+      },
+      {
+        "amount": "1",
+        "commonName": "Sukhi Lal Mirch",
+        "englishName": "dried red chilli, optional"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Ghee",
+        "englishName": "pure ghee"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the cracked bajra and moong dal thoroughly. Soak them in separate bowls for about 2 hours. If using whole bajra instead of cracked bajra, soak it overnight.",
+        "tip": {
+          "title": "Soak the bajra",
+          "content": "Soaking softens the millet and helps it cook evenly."
+        }
+      },
+      {
+        "step": 2,
+        "instruction": "Drain the soaked bajra and dal. Add both to a pressure cooker with water, turmeric and salt."
+      },
+      {
+        "step": 3,
+        "instruction": "Close the cooker and cook on medium heat for 4 to 5 whistles. Turn off the heat and allow the pressure to release naturally."
+      },
+      {
+        "step": 4,
+        "instruction": "Open the cooker and check that the bajra and dal are completely soft. Stir gently. Add a little hot water if the mixture looks too thick."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat ghee in a kadai. Add cumin seeds and let them crackle. Add hing, grated ginger and dried red chilli. Fry for a few seconds."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour the tempering over the cooked bajra and dal. Mix well."
+      },
+      {
+        "step": 7,
+        "instruction": "Simmer for another 3 to 5 minutes, stirring occasionally, until the khichri becomes soft and creamy. Serve hot with curd or chaas."
+      }
+    ],
+    "notes": [
+      "Bajra khichri should be soft and slightly thick, not dry like pulao.",
+      "Add extra hot water while simmering if you prefer a softer consistency.",
+      "Serve with fresh curd, buttermilk or a little extra ghee.",
+      "This is a simple home version. Some households also add peas or other seasonal vegetables."
+    ],
+    "nutrition": {
+      "calories": 270,
+      "protein": 10,
+      "carbs": 43,
+      "fat": 7
+    }
+  },
+
+  "haryanvi churma": {
+    "dishName": "Haryanvi Churma (Gur Roti Churma)",
+    "image": "/dishes/haryanvi-churma.webp",
+    "state": "Haryana",
+    "description": "A traditional Haryanvi sweet made by crushing freshly cooked wheat rotis and mixing them with warm ghee, grated jaggery and chopped nuts. It can be served as a crumbly sweet or shaped into small oval portions.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "2 cups",
+        "commonName": "Gehu ka Atta",
+        "englishName": "whole wheat flour"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Suji",
+        "englishName": "semolina"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee for the dough"
+      },
+      {
+        "amount": "1/3 cup",
+        "commonName": "Ghee",
+        "englishName": "melted ghee for mixing"
+      },
+      {
+        "amount": "3/4 cup",
+        "commonName": "Gud",
+        "englishName": "grated or crushed jaggery"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Badam aur Kaju",
+        "englishName": "chopped almonds and cashews"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water for kneading"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a large bowl, mix wheat flour, semolina and salt. Add 2 tablespoons ghee and rub it into the flour with your fingers."
+      },
+      {
+        "step": 2,
+        "instruction": "Add water little by little and knead into a firm dough. Cover and rest for 15 to 20 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "Divide the dough into 6 equal portions. Roll each portion into a thick roti."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat a tawa on medium-low heat. Cook each roti on both sides until fully cooked and lightly golden. Use a little ghee while cooking if needed."
+      },
+      {
+        "step": 5,
+        "instruction": "Let the rotis cool until they are warm enough to handle. Break them into small pieces and crush them with your hands until you get a coarse, crumbly mixture."
+      },
+      {
+        "step": 6,
+        "instruction": "Heat the remaining ghee in a kadai on low heat. Turn off the heat once the ghee is warm."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the crushed roti mixture, grated jaggery, chopped nuts and cardamom powder. Mix well until the ghee and jaggery are evenly combined."
+      },
+      {
+        "step": 8,
+        "instruction": "Serve the churma as a warm, crumbly sweet. You can also press small portions between your palms to make oval-shaped churma balls."
+      }
+    ],
+    "notes": [
+      "Traditional Haryanvi churma is commonly prepared using wheat rotis, parathas or even pooris.",
+      "Crush the rotis while they are still slightly warm. They are easier to break into fine crumbs.",
+      "Use finely grated jaggery so it mixes easily with the crushed rotis.",
+      "Add a little more warm ghee if the churma feels too dry.",
+      "This recipe uses jaggery for the traditional gur-style version. Sugar or shakkar can also be used in other household versions."
+    ],
+    "nutrition": {
+      "calories": 530,
+      "protein": 9,
+      "carbs": 70,
+      "fat": 24
+    }
+  },
+
+  "besan masala roti": {
+    "dishName": "Besan Masala Roti",
+    "image": "/dishes/besan-masala-roti.webp",
+    "state": "Haryana",
+    "description": "A traditional Haryanvi flatbread made with gram flour and whole wheat flour, layered with a simple cumin, coriander and chilli masala mixed with ghee. Best served hot with homemade butter or curd.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1 cup",
+        "commonName": "Besan",
+        "englishName": "gram flour"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Gehu ka Atta",
+        "englishName": "whole wheat flour"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Ajwain",
+        "englishName": "carom seeds"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Dahi",
+        "englishName": "plain curd, optional"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "cumin powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee for masala filling"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Ghee",
+        "englishName": "ghee for cooking the rotis"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Paani",
+        "englishName": "water for kneading"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "In a large bowl, mix gram flour, wheat flour, turmeric, carom seeds and salt."
+      },
+      {
+        "step": 2,
+        "instruction": "Add curd if using. Add water little by little and knead into a firm but soft dough. Cover and rest for 20 minutes."
+      },
+      {
+        "step": 3,
+        "instruction": "In a small bowl, mix red chilli powder, cumin powder, coriander powder and 1 tablespoon ghee to make a spreadable masala."
+      },
+      {
+        "step": 4,
+        "instruction": "Divide the rested dough into 8 equal balls. Take one ball and roll it into a small round disc."
+      },
+      {
+        "step": 5,
+        "instruction": "Spread a little masala mixture over the disc. Fold it in half, then fold it once more to make a triangle."
+      },
+      {
+        "step": 6,
+        "instruction": "Dust lightly with dry flour and gently roll the triangle into a medium-thick roti. Repeat with the remaining dough."
+      },
+      {
+        "step": 7,
+        "instruction": "Heat a tawa on medium heat. Place one roti on it and cook for a few seconds. Flip it and spread a little ghee on the cooked side."
+      },
+      {
+        "step": 8,
+        "instruction": "Flip again, apply ghee to the other side and cook until both sides develop golden-brown spots. Repeat with the remaining rotis."
+      },
+      {
+        "step": 9,
+        "instruction": "Serve hot with fresh white butter, curd or a simple vegetable curry."
+      }
+    ],
+    "notes": [
+      "Do not make the dough too hard. A slightly soft dough makes the rotis easier to roll.",
+      "Use very little dry flour while rolling so the rotis do not become dry.",
+      "The curd is optional but helps keep the rotis softer.",
+      "Cook on medium heat so the gram flour inside gets properly cooked without burning the outside."
+    ],
+    "nutrition": {
+      "calories": 300,
+      "protein": 10,
+      "carbs": 39,
+      "fat": 12
+    }
+  },
+
+  "haryanvi mixed dal": {
+    "dishName": "Haryanvi Mixed Dal",
+    "image": "/dishes/haryanvi-mixed-dal.webp",
+    "state": "Haryana",
+    "description": "A hearty Haryanvi lentil dish made with a mix of chana dal, urad dal, moong dal and masoor dal. The cooked lentils are finished with a simple onion, tomato, garlic and cumin tempering in ghee.",
+    "prepTime": "Approx. 50 minutes (plus soaking)",
+    "equipment": [
+      {
+        "item": "cooker",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1/2 cup",
+        "commonName": "Chana Dal",
+        "englishName": "split Bengal gram"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Urad Dal",
+        "englishName": "split black gram"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Peeli Moong Dal",
+        "englishName": "split yellow moong dal"
+      },
+      {
+        "amount": "1/4 cup",
+        "commonName": "Masoor Dal",
+        "englishName": "split red lentils"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "5 cups",
+        "commonName": "Paani",
+        "englishName": "water, as needed"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "finely chopped onion"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "finely chopped tomato"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1",
+        "commonName": "Hari Mirch",
+        "englishName": "green chilli, chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1.5 tbsp",
+        "commonName": "Ghee",
+        "englishName": "pure ghee"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash all four dals together. Soak them in water for about 30 minutes, then drain."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the soaked dals to a pressure cooker with turmeric, salt and 4 cups water."
+      },
+      {
+        "step": 3,
+        "instruction": "Close the cooker and cook on medium heat for 4 to 5 whistles, until the lentils are soft. Let the pressure release naturally."
+      },
+      {
+        "step": 4,
+        "instruction": "Open the cooker and stir the dal. Mash a few lentils gently with the back of a spoon to make the mixture thicker."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat ghee in a kadai. Add cumin seeds and let them crackle."
+      },
+      {
+        "step": 6,
+        "instruction": "Add chopped onion and green chilli. Cook until the onion becomes soft and lightly golden."
+      },
+      {
+        "step": 7,
+        "instruction": "Add ginger-garlic paste and cook for about a minute. Add chopped tomato and red chilli powder. Cook until the tomato becomes soft."
+      },
+      {
+        "step": 8,
+        "instruction": "Add the cooked dal to the kadai and mix well. Add a little hot water if it is too thick."
+      },
+      {
+        "step": 9,
+        "instruction": "Simmer for 5 to 8 minutes so the dal absorbs the flavour of the tempering. Garnish with chopped coriander and serve hot with roti or jeera rice."
+      }
+    ],
+    "notes": [
+      "Haryanvi mixed dal can use different combinations of lentils. This home version uses four dals for a balanced texture.",
+      "Chana dal takes longer to cook, so make sure all the lentils are soft before serving.",
+      "For a richer taste, add a small spoon of butter or ghee on top before serving."
+    ],
+    "nutrition": {
+      "calories": 255,
+      "protein": 13,
+      "carbs": 36,
+      "fat": 8
+    }
+  },
+
+  "kachri ki chutney": {
+    "dishName": "Kachri Ki Chutney",
+    "image": "/dishes/kachri-chutney.webp",
+    "state": "Haryana",
+    "description": "A traditional Haryanvi fresh chutney made from small raw kachri, green chillies and buttermilk. It has a naturally tangy taste and is served fresh alongside rotis and everyday meals.",
+    "prepTime": "Approx. 10 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "100 g",
+        "commonName": "Kachri",
+        "englishName": "small, raw and tender kachri (wild cucumber)"
+      },
+      {
+        "amount": "3 to 4",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies"
+      },
+      {
+        "amount": "50 ml",
+        "commonName": "Chaas",
+        "englishName": "buttermilk"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the kachri and green chillies thoroughly under running water."
+      },
+      {
+        "step": 2,
+        "instruction": "Cut a very small piece from the kachri and taste it. If it tastes bitter, discard that kachri. Do not use bitter kachri."
+      },
+      {
+        "step": 3,
+        "instruction": "Cut the fresh kachri into small pieces and add them to a grinder with the green chillies."
+      },
+      {
+        "step": 4,
+        "instruction": "Grind into a coarse or smooth paste, depending on your preferred texture."
+      },
+      {
+        "step": 5,
+        "instruction": "Add salt and buttermilk. Mix well until the chutney reaches a thick, spoonable consistency."
+      },
+      {
+        "step": 6,
+        "instruction": "Transfer to a serving bowl and serve fresh with roti, paratha or a traditional Haryanvi meal."
+      }
+    ],
+    "notes": [
+      "Always discard kachri that tastes bitter. Use only fresh, tender and non-bitter kachri.",
+      "If buttermilk is unavailable, one medium tomato can be added while grinding as an alternative.",
+      "This is a no-cook chutney. It tastes best when freshly prepared."
+    ],
+    "nutrition": {
+      "calories": 20,
+      "protein": 1,
+      "carbs": 4,
+      "fat": 0
+    }
+  },
 
 }
 
