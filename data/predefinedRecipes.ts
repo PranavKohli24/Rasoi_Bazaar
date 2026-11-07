@@ -8931,6 +8931,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   "medu vada": {
     "dishName": "Medu Vada",
     "image": "/dishes/medu-vada.webp",
+    "state" : "Tamil Nadu",
     "description": "Crisp outside and soft inside South Indian lentil fritters made from urad dal,.",
     "prepTime": "Approx. 35 minutes (plus 4 hours soaking)",
     "equipment": [
@@ -61965,7 +61966,449 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "carbs": 6,
       "fat": 0
     }
-  }
+  },
+
+
+
+  "kadugu yerra": {
+    "dishName": "Kadugu Yerra (Puducherry Mustard Prawn Curry)",
+    "image": "/dishes/kadugu-yerra.webp",
+    "state": "Puducherry",
+    "description": "A distinctive Puducherry prawn curry made with mustard and fenugreek paste, coconut milk, potatoes and tomatoes. Finished with vinegar, it has a creamy, tangy gravy with a gentle mustard flavour, reflecting the French and Tamil influences of Puducherry cuisine.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Jhinga",
+        "englishName": "medium prawns, peeled and cleaned"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Aloo",
+        "englishName": "potato, peeled and cut into small cubes"
+      },
+      {
+        "amount": "3 cloves",
+        "commonName": "Lehsun",
+        "englishName": "garlic"
+      },
+      {
+        "amount": "3/4 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Rai",
+        "englishName": "mustard seeds"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Methi Dana",
+        "englishName": "fenugreek seeds"
+      },
+      {
+        "amount": "1.5 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "200 ml",
+        "commonName": "Nariyal Doodh",
+        "englishName": "coconut milk"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Nariyal Malai",
+        "englishName": "thick coconut cream"
+      },
+      {
+        "amount": "1/2 tbsp",
+        "commonName": "Malt Vinegar",
+        "englishName": "malt vinegar"
+      },
+      {
+        "amount": "8 to 10",
+        "commonName": "Kadi Patta",
+        "englishName": "fresh curry leaves"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Paani",
+        "englishName": "water, as needed for gravy"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the prawns thoroughly, remove any remaining shells and drain the excess water. Keep them aside."
+      },
+      {
+        "step": 2,
+        "instruction": "Peel the potato and cut it into small cubes. Finely chop the onion and tomato."
+      },
+      {
+        "step": 3,
+        "instruction": "Grind the garlic and cumin seeds together into a coarse paste. In a separate bowl, grind the mustard and fenugreek seeds into a fine powder. Mix this powder with the thick coconut cream to make a smooth paste."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat oil in a kadai. Add the chopped onion and cook for 2 to 3 minutes until soft and lightly golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add curry leaves and the garlic-cumin paste. Stir for a few seconds. Add red chilli powder and turmeric and mix well."
+      },
+      {
+        "step": 6,
+        "instruction": "Add the chopped tomato. Cook for 3 to 4 minutes until it becomes soft and starts forming a thick masala."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the potato cubes and about 1/4 cup water. Cover and cook for 6 to 8 minutes until the potatoes are almost tender."
+      },
+      {
+        "step": 8,
+        "instruction": "Pour in the coconut milk and mix gently. Bring to a gentle simmer."
+      },
+      {
+        "step": 9,
+        "instruction": "Add the prawns and salt. Cover and cook for about 3 to 4 minutes, turning the prawns once, until they turn opaque and are cooked through."
+      },
+      {
+        "step": 10,
+        "instruction": "Add the prepared mustard-fenugreek and coconut cream paste. Mix gently. Add a little water if the gravy is too thick."
+      },
+      {
+        "step": 11,
+        "instruction": "Simmer for another 2 to 3 minutes on low heat so the mustard and fenugreek flavours blend into the gravy."
+      },
+      {
+        "step": 12,
+        "instruction": "Add malt vinegar and cook gently for another 2 minutes. Taste and adjust the salt. Serve hot with steamed rice."
+      }
+    ],
+    "notes": [
+      "Mustard and fenugreek are the defining flavours of Kadugu Yerra. Do not skip the mustard paste.",
+      "The coconut cream gives the curry its rich, thick texture.",
+      "Add vinegar towards the end. It provides the characteristic tangy taste.",
+      "Do not cook the prawns for too long, as they can become rubbery.",
+      "The finished gravy should be creamy and slightly tangy, not watery like a regular fish curry."
+    ],
+    "nutrition": {
+      "calories": 320,
+      "protein": 25,
+      "carbs": 14,
+      "fat": 18
+    }
+  },
+
+  "french baguette": {
+    "dishName": "French Baguette (Puducherry Bakery Heritage)",
+    "image": "/dishes/french-baguette.webp",
+    "state": "Puducherry",
+    "description": "A traditional French-style long bread with a thin, crisp golden crust and a soft, airy centre. Inspired by the French bakery heritage of Puducherry, where baguettes and other French breads remain popular. Made using a simple dough of flour, water, yeast and salt.",
+    "prepTime": "Approx. 4 hours 30 minutes (including resting and proofing)",
+    "equipment": [
+      {
+        "item": "oven",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Maida",
+        "englishName": "strong white bread flour or all-purpose flour"
+      },
+      {
+        "amount": "350 ml",
+        "commonName": "Gunguna Paani",
+        "englishName": "lukewarm water"
+      },
+      {
+        "amount": "2 tsp",
+        "commonName": "Instant Yeast",
+        "englishName": "instant dry yeast"
+      },
+      {
+        "amount": "1.5 tsp",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "as needed",
+        "commonName": "Maida",
+        "englishName": "extra flour for dusting"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Add flour, instant yeast and salt to a large bowl. Mix well so the dry ingredients are evenly combined."
+      },
+      {
+        "step": 2,
+        "instruction": "Add lukewarm water little by little and mix until a soft, slightly sticky dough forms."
+      },
+      {
+        "step": 3,
+        "instruction": "Knead the dough on a lightly floured surface for about 8 to 10 minutes until it becomes smooth and stretchy."
+      },
+      {
+        "step": 4,
+        "instruction": "Place the dough in a covered bowl and leave it in a warm place for about 1 to 1.5 hours, until it doubles in size."
+      },
+      {
+        "step": 5,
+        "instruction": "Gently stretch and fold the dough over itself from all four sides. Turn it over, cover again and allow it to rest for another 45 to 60 minutes."
+      },
+      {
+        "step": 6,
+        "instruction": "Place the dough on a lightly floured surface and divide it into 3 equal portions."
+      },
+      {
+        "step": 7,
+        "instruction": "Flatten each portion gently into a rectangle. Fold the upper edge towards the centre and press to seal. Fold the lower edge over it and seal again. Roll gently with your hands into a long loaf with slightly tapered ends."
+      },
+      {
+        "step": 8,
+        "instruction": "Place the shaped loaves on a lightly floured baking tray, leaving enough space between them. Cover with a clean cloth and let them rise for another 35 to 45 minutes."
+      },
+      {
+        "step": 9,
+        "instruction": "Preheat the oven to 230°C. Make 3 or 4 diagonal cuts across the top of each loaf using a sharp knife."
+      },
+      {
+        "step": 10,
+        "instruction": "Place a small oven-safe metal tray with hot water on the lower rack to create steam. Put the bread tray inside the oven and bake for 20 to 25 minutes until the baguettes develop a deep golden-brown crust."
+      },
+      {
+        "step": 11,
+        "instruction": "Remove the baguettes from the oven and let them cool on a rack for at least 20 minutes before slicing. Serve with butter, cheese or soup."
+      }
+    ],
+    "notes": [
+      "A traditional baguette uses only four main ingredients: flour, water, yeast and salt.",
+      "The dough should feel slightly sticky. Adding too much extra flour can make the bread dense.",
+      "The folding and resting stages help build the airy texture inside.",
+      "Steam in the oven helps develop a crisp, golden crust.",
+      "Do not cut the bread immediately after baking. Cooling helps the inside finish setting.",
+      "Puducherry's French bakery heritage is the reason for including this recipe in its regional collection; baguette itself is a French-origin bread."
+    ],
+    "nutrition": {
+      "calories": 220,
+      "protein": 7,
+      "carbs": 44,
+      "fat": 1
+    }
+  },
+
+  "meen puyabaise": {
+    "dishName": "Meen Puyabaise (Puducherry-Style Fish Stew)",
+    "image": "/dishes/meen-puyabaise.webp",
+    "state": "Puducherry",
+    "description": "A traditional Franco-Tamil fish stew inspired by French bouillabaisse. Prepared with fish, ghee, green chillies, bay leaf, cinnamon, potatoes, carrots, green beans, turmeric and coconut milk. It combines French-style seafood cooking with the flavours of Puducherry.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "600 g",
+        "commonName": "Machhli",
+        "englishName": "firm white fish, cut into large pieces"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Ghee",
+        "englishName": "pure ghee"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "3 cloves",
+        "commonName": "Lehsun",
+        "englishName": "garlic, finely chopped"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies, slit"
+      },
+      {
+        "amount": "1",
+        "commonName": "Tej Patta",
+        "englishName": "bay leaf"
+      },
+      {
+        "amount": "1 inch",
+        "commonName": "Dalchini",
+        "englishName": "cinnamon stick"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Gajar",
+        "englishName": "carrot, cut into small pieces"
+      },
+      {
+        "amount": "100 g",
+        "commonName": "Beans",
+        "englishName": "green beans, cut into short pieces"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Aloo",
+        "englishName": "potatoes, peeled and cubed"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped, optional"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "200 ml",
+        "commonName": "Nariyal Doodh",
+        "englishName": "coconut milk"
+      },
+      {
+        "amount": "3 cups",
+        "commonName": "Paani ya Fish Stock",
+        "englishName": "water or light fish stock"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nimbu Ras",
+        "englishName": "fresh lime juice, optional"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the fish pieces and pat them dry. Cut into large chunks and season lightly with salt and black pepper. Keep aside."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat ghee in a kadai. Add the bay leaf and cinnamon stick. Let them release their aroma for a few seconds."
+      },
+      {
+        "step": 3,
+        "instruction": "Add chopped onion and garlic. Cook for 2 to 3 minutes until the onion becomes soft."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the slit green chillies, turmeric and black pepper. Stir for a few seconds. Add tomato if using and cook until it softens."
+      },
+      {
+        "step": 5,
+        "instruction": "Add potatoes, carrots and green beans. Stir gently so the vegetables are coated with the spices."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour in the water or fish stock. Add salt, cover and simmer for 10 to 12 minutes until the vegetables are almost tender."
+      },
+      {
+        "step": 7,
+        "instruction": "Add coconut milk and stir gently. Bring the stew to a gentle simmer for 2 minutes. Avoid boiling it vigorously."
+      },
+      {
+        "step": 8,
+        "instruction": "Carefully add the fish pieces to the stew. Cover and cook on low heat for 4 to 6 minutes, depending on the thickness of the fish, until it turns opaque and flakes easily."
+      },
+      {
+        "step": 9,
+        "instruction": "Taste the broth and adjust the salt and black pepper. Add lime juice if you prefer a slightly tangy finish."
+      },
+      {
+        "step": 10,
+        "instruction": "Remove the bay leaf and cinnamon stick. Serve the hot stew in deep bowls with crusty French bread or steamed rice."
+      }
+    ],
+    "notes": [
+      "Meen Puyabaise is the Puducherry fish-based adaptation of French bouillabaisse.",
+      "Ghee, green chillies, bay leaf, cinnamon, turmeric, coconut milk and vegetables give it its Franco-Tamil character.",
+      "Use firm fish such as seer fish, snapper or other firm white fish so the pieces hold their shape while simmering.",
+      "Add the fish towards the end. Long cooking can break it apart.",
+      "The broth should be flavourful and lightly creamy rather than thick like a regular Indian curry.",
+      "Traditional seafood versions can include other seafood such as prawns or crab. This version focuses on fish for an easy home preparation."
+    ],
+    "nutrition": {
+      "calories": 315,
+      "protein": 29,
+      "carbs": 20,
+      "fat": 14
+    }
+  },
 
 }
 
@@ -62436,4 +62879,9 @@ export const predefinedRecipeServings: Record<string, number> = {
 "tingmo": 4,
 "chhutagi": 4,
 "chulli apricot jam": 25,
+
+"kadugu yerra": 4,
+"french baguette": 8,
+"meen puyabaise": 4,
+
 };
