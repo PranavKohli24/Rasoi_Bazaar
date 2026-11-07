@@ -420,7 +420,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
       style={{ animationDuration: "0.3s" }}
     >
       {/* Confetti burst */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 z-20">
         {confetti.map((piece) => (
           <span
             key={piece.id}
@@ -443,7 +443,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
       </div>
 
       {/* Star sparkles, using the .sparkle system already in index.html */}
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0 z-20">
         {sparkles.map((s) => (
           <span
             key={s.id}
@@ -464,7 +464,7 @@ const CelebrationPopup: React.FC<CelebrationPopupProps> = ({
         role="dialog"
         aria-modal="true"
         aria-label="Recipe complete"
-        className="relative w-full max-w-sm rounded-3xl border border-stone-700 bg-stone-900 p-8 text-center shadow-2xl"
+        className="relative z-10 w-full max-w-sm rounded-3xl border border-stone-700 bg-stone-900 p-8 text-center shadow-2xl"
       >
         <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[#DDEBD3]">
           <svg
