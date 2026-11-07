@@ -450,9 +450,11 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
   disabled = false,
 }) => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
   const [maxDrag, setMaxDrag] = useState(0);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isNudging, setIsNudging] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const dragStartRef = useRef(0);
 
@@ -496,12 +498,30 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
     }
   };
 
+  const CHECKOUT_NUDGE_DURATION_MS = 520;
+
+  const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled || isConfirmed || isDragging || isNudging) return;
+    if (thumbRef.current?.contains(event.target as Node)) return;
+
+    const nudgeDistance = Math.min(20, maxDrag);
+    if (nudgeDistance <= 0) return;
+
+    setIsNudging(true);
+    setDragX(nudgeDistance);
+    window.setTimeout(() => {
+      setDragX(0);
+      window.setTimeout(() => setIsNudging(false), CHECKOUT_NUDGE_DURATION_MS);
+    }, CHECKOUT_NUDGE_DURATION_MS);
+  };
+
   const progress = maxDrag === 0 ? 0 : dragX / maxDrag;
   const nearThreshold = isConfirmed || progress >= CHECKOUT_SWIPE_THRESHOLD;
 
   return (
     <div
       ref={trackRef}
+      onClick={handleTrackClick}
       className="relative h-[58px] w-full select-none overflow-hidden rounded-full border sm:h-[64px]"
       style={{
         backgroundColor: COLOR.surfaceSunken,
@@ -516,7 +536,11 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
         style={{
           width: `${CHECKOUT_SWIPE_THUMB + CHECKOUT_SWIPE_PADDING + dragX}px`,
           backgroundColor: COLOR.saffron,
-          transition: isDragging ? "none" : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
+          transition: isDragging
+            ? "none"
+            : isNudging
+            ? "width 0.52s cubic-bezier(0.45, 0, 0.55, 1)"
+            : "width 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       />
 
@@ -533,6 +557,7 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
       </span>
 
       <div
+        ref={thumbRef}
         role="slider"
         tabIndex={disabled ? -1 : 0}
         aria-label={CHECKOUT_ACTION_LABEL}
@@ -567,6 +592,8 @@ const SwipeToConfirmCheckout: React.FC<SwipeToConfirmCheckoutProps> = ({
           transform: `translateX(${dragX}px) scale(${isDragging ? 1.04 : 1})`,
           transition: isDragging
             ? "box-shadow 0.15s ease"
+            : isNudging
+            ? "transform 0.52s cubic-bezier(0.45, 0, 0.55, 1), box-shadow 0.2s ease"
             : "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease",
           touchAction: "none",
           cursor: disabled ? "not-allowed" : isConfirmed ? "default" : isDragging ? "grabbing" : "grab",
