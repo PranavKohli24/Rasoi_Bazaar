@@ -454,7 +454,7 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
     </h2>
 
     <p className="mt-2.5 text-sm leading-relaxed text-stone-300 sm:text-base">
-      Find regional dishes you can cook or explore to places you are visiting
+      Travelling somewhere? Lets cook in their style or visit famous restaurants
     </p>
 
     <Link
