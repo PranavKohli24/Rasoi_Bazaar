@@ -24,7 +24,7 @@ const dishImage = (id: string) => `/wheels/${id}.png`;
 
 const COUNT = DISHES.length;
 const STEP = 360 / COUNT;
-const VISIBLE_COUNT = 5;
+
 const AUTO_SPEED_DEG_PER_SEC = 6;
 const DRAG_SENSITIVITY = 0.35;
 const TAP_MOVE_THRESHOLD = 6;
@@ -111,15 +111,13 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
   const handlePointerUp = () => setIsDragging(false);
 
-  // Always render the 5 items angularly closest to front.
+  // All 8 are always in the DOM; the ones outside the front ~5-wide window
+  // simply fade to opacity 0 as they rotate out, instead of being filtered
+  // out of the list (which caused the sudden pop).
   const withOffsets = DISHES.map((dish, i) => ({
     dish,
-    i,
     offset: normalize180(i * STEP + angle),
   }));
-  const visible = [...withOffsets]
-    .sort((a, b) => Math.abs(a.offset) - Math.abs(b.offset))
-    .slice(0, VISIBLE_COUNT);
 
   const activeDish = DISHES.find((d) => d.id === activeId) ?? null;
 
@@ -133,7 +131,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
       <div
         ref={sceneRef}
-        className="relative mt-5 h-32 w-full touch-pan-y select-none sm:h-40"
+        className="relative mt-3 h-32 w-full touch-pan-y select-none sm:h-40"
         style={{ perspective: "1000px" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -142,10 +140,10 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
       >
         {!activeDish && (
           <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
-            {visible.map(({ dish, offset }) => {
+            {withOffsets.map(({ dish, offset }) => {
               const absOffset = Math.abs(offset);
               const scale = 1 - Math.min(absOffset / 180, 1) * 0.42;
-              const opacity = 1 - Math.min(absOffset / 140, 1) * 0.6;
+              const opacity = Math.max(0, 1 - absOffset / 100);
               const zIndex = Math.round(100 - absOffset);
               const isFront = absOffset < STEP / 2;
               const itemRadius = baseRadius + extraReach * Math.pow(absOffset / 180, 1.6);
@@ -162,8 +160,9 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                   style={{
                     opacity,
                     zIndex,
+                    pointerEvents: opacity < 0.05 ? "none" : "auto",
                     transform: `translate(-50%, -50%) rotateY(${offset}deg) translateZ(${itemRadius}px) rotateY(${-offset}deg) scale(${scale})`,
-                    transition: isDragging ? "none" : "opacity 0.2s ease",
+                    transition: isDragging ? "none" : "opacity 0.35s ease",
                   }}
                 >
                   <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28">
