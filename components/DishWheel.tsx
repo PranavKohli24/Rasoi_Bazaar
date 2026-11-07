@@ -42,6 +42,21 @@ const WHEEL_ANIMATION_CSS = `
 }
 `;
 
+const FadeImage: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="eager"
+      decoding="async"
+      draggable={false}
+      onLoad={() => setLoaded(true)}
+      className={`${className ?? ""} transition-opacity duration-500 ease-out ${loaded ? "opacity-100" : "opacity-0"}`}
+    />
+  );
+};
+
 interface DishWheelProps {
   onSelect: (dish: string) => void;
 }
@@ -179,12 +194,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                   }}
                 >
                   <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28">
-                    <img
-                      src={dishImage(dish.id)}
-                      alt=""
-                      className="h-full w-full object-contain"
-                      draggable={false}
-                    />
+                    <FadeImage src={dishImage(dish.id)} alt="" className="h-full w-full object-contain" />
                   </span>
                   <span
                     className={`text-xs font-semibold sm:text-sm ${
@@ -225,7 +235,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                   >
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-stone-800">
                       {recipeImage && (
-                        <img src={recipeImage} alt="" className="h-full w-full object-contain" draggable={false} />
+                        <FadeImage src={recipeImage} alt="" className="h-full w-full object-contain" />
                       )}
                     </span>
                     {recipe}
