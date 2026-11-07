@@ -143,7 +143,11 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
             {withOffsets.map(({ dish, offset }) => {
               const absOffset = Math.abs(offset);
               const scale = 1 - Math.min(absOffset / 180, 1) * 0.42;
-              const opacity = Math.max(0, 1 - absOffset / 100);
+              const baseOpacity = 1 - Math.min(absOffset / 140, 1) * 0.6; // normal depth dimming, same as before
+              const FADE_START = 95; // just past the usual ~90° edge of the 5-item window
+              const FADE_END = 125; // fully gone by here
+              const fadeProgress = Math.min(1, Math.max(0, (absOffset - FADE_START) / (FADE_END - FADE_START)));
+              const opacity = baseOpacity * (1 - fadeProgress);
               const zIndex = Math.round(100 - absOffset);
               const isFront = absOffset < STEP / 2;
               const itemRadius = baseRadius + extraReach * Math.pow(absOffset / 180, 1.6);
