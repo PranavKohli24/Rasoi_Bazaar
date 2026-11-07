@@ -133,7 +133,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
       <div
         ref={sceneRef}
-        className="relative mt-5 h-28 w-full touch-pan-y select-none sm:h-40"
+        className="relative mt-5 h-32 w-full touch-pan-y select-none sm:h-40"
         style={{ perspective: "1000px" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -158,7 +158,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     if (dragInfo.current.moved) return;
                     setActiveId(dish.id);
                   }}
-                  className="absolute left-1/2 top-1/2 flex h-20 w-20 flex-col items-center justify-center gap-1 sm:h-32 sm:w-32 sm:gap-1.5"
+                  className="absolute left-1/2 top-1/2 flex h-24 w-24 flex-col items-center justify-center gap-1 sm:h-32 sm:w-32 sm:gap-1.5"
                   style={{
                     opacity,
                     zIndex,
@@ -166,7 +166,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     transition: isDragging ? "none" : "opacity 0.2s ease",
                   }}
                 >
-                  <span className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28">
+                  <span className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28">
                     <img
                       src={dishImage(dish.id)}
                       alt=""
@@ -175,7 +175,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     />
                   </span>
                   <span
-                    className={`text-[11px] font-semibold sm:text-sm ${
+                    className={`text-xs font-semibold sm:text-sm ${
                       isFront ? "text-orange-200" : "text-stone-400"
                     }`}
                   >
