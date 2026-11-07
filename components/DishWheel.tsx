@@ -61,6 +61,15 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const rafRef = useRef<number | undefined>(undefined);
 
+  // Only 8-10 small images — warm the browser cache once on mount so none
+  // of them pop in blank as the ring rotates to them or the panel opens.
+  useEffect(() => {
+    DISHES.forEach((dish) => {
+      const img = new Image();
+      img.src = dishImage(dish.id);
+    });
+  }, []);
+
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
