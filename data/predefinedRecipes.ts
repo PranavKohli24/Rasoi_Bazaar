@@ -62410,6 +62410,616 @@ export const predefinedRecipes: Record<string, Recipe> = {
     }
   },
 
+
+  "maas podichathu": {
+    "dishName": "Maas Podichathu (Lakshadweep Smoked Tuna Relish)",
+    "image": "/dishes/maas-podichathu.webp",
+    "state": "Lakshadweep",
+    "description": "A traditional Lakshadweep accompaniment made by pounding smoke-dried tuna with fresh grated coconut, onion, garlic, green chillies and turmeric. It has a strong smoky, savoury flavour and is commonly served alongside steamed rice.",
+    "prepTime": "Approx. 20 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "100 g",
+        "commonName": "Masmin (Maas)",
+        "englishName": "smoked and sun-dried tuna, finely flaked"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Nariyal",
+        "englishName": "freshly grated coconut"
+      },
+      {
+        "amount": "1 small",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "2 cloves",
+        "commonName": "Lehsun",
+        "englishName": "garlic"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nimbu Ras",
+        "englishName": "fresh lime juice"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt, only if needed"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Take the smoked and dried tuna. Remove any bones or hard unwanted pieces. Break it into small flakes using your fingers."
+      },
+      {
+        "step": 2,
+        "instruction": "If the tuna is very hard, crush it using a grinder in short pulses until it becomes finely flaked. Do not grind it into a smooth powder."
+      },
+      {
+        "step": 3,
+        "instruction": "Add grated coconut, garlic, green chillies and turmeric to a grinder. Pulse a few times to make a coarse mixture. Do not add too much water."
+      },
+      {
+        "step": 4,
+        "instruction": "Transfer the coconut mixture to a bowl. Add the finely chopped onion and mix well."
+      },
+      {
+        "step": 5,
+        "instruction": "Add the flaked smoked tuna and lime juice. Mix and gently press everything together so the tuna and coconut combine."
+      },
+      {
+        "step": 6,
+        "instruction": "Taste the mixture before adding salt, as the dried tuna may already be salty. Serve fresh alongside steamed rice."
+      }
+    ],
+    "notes": [
+      "Masmin is traditionally made from skipjack tuna that is cooked, smoked and sun-dried.",
+      "Smoked dried tuna is the defining ingredient of this preparation.",
+      "Do not grind the mixture too finely. It should have a coarse, crumbly texture.",
+      "Use only food-grade, ready-to-eat smoked tuna from a reliable source.",
+      "If masmin is unavailable, canned tuna can be used as a convenient substitute, but the smoky flavour will be different."
+    ],
+    "nutrition": {
+      "calories": 175,
+      "protein": 15,
+      "carbs": 5,
+      "fat": 10
+    }
+  },
+
+  "maas riha": {
+    "dishName": "Maas Riha (Lakshadweep Tuna Curry)",
+    "image": "/dishes/maas-riha.webp",
+    "state": "Lakshadweep",
+    "description": "A creamy Lakshadweep tuna curry made with fresh skipjack or yellowfin tuna, coconut milk, ginger, green chillies and mild island spices. The fish is gently cooked in thin coconut milk and finished with thick coconut milk for a smooth, rich gravy.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Tuna Machhli",
+        "englishName": "fresh skipjack or yellowfin tuna, cut into medium cubes"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, thinly sliced"
+      },
+      {
+        "amount": "3 cloves",
+        "commonName": "Lehsun",
+        "englishName": "garlic, finely chopped"
+      },
+      {
+        "amount": "1 inch",
+        "commonName": "Adrak",
+        "englishName": "fresh ginger, grated"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies, slit"
+      },
+      {
+        "amount": "10",
+        "commonName": "Kadi Patta",
+        "englishName": "fresh curry leaves"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kali Mirch",
+        "englishName": "black pepper powder"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Patla Nariyal Doodh",
+        "englishName": "thin coconut milk"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Gaadha Nariyal Doodh",
+        "englishName": "thick coconut milk"
+      },
+      {
+        "amount": "1 small piece",
+        "commonName": "Kodampuli",
+        "englishName": "dried Malabar tamarind, soaked in warm water, optional"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nariyal Tel",
+        "englishName": "coconut oil"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Paani",
+        "englishName": "water"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the tuna and cut it into medium-sized cubes. Pat dry and keep aside."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat coconut oil in a kadai. Add the curry leaves, chopped ginger, garlic and green chillies. Stir for about 30 seconds."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the sliced onion and cook until it becomes soft. Do not brown it too much."
+      },
+      {
+        "step": 4,
+        "instruction": "Add turmeric, black pepper and salt. Mix well."
+      },
+      {
+        "step": 5,
+        "instruction": "Pour in the thin coconut milk and water. Add the soaked kodampuli if using. Bring to a gentle simmer."
+      },
+      {
+        "step": 6,
+        "instruction": "Carefully add the tuna pieces. Cover and simmer on low heat for about 7 to 9 minutes, until the fish is cooked through."
+      },
+      {
+        "step": 7,
+        "instruction": "Lower the heat and add the thick coconut milk. Stir gently so the fish pieces do not break."
+      },
+      {
+        "step": 8,
+        "instruction": "Warm the curry for another 2 to 3 minutes without letting it boil vigorously."
+      },
+      {
+        "step": 9,
+        "instruction": "Taste and adjust the salt. Remove the kodampuli piece if used. Serve hot with steamed rice."
+      }
+    ],
+    "notes": [
+      "Fresh tuna is traditionally used for this curry. Skipjack and yellowfin are suitable choices.",
+      "Thin coconut milk is used to cook the fish, while thick coconut milk is added at the end.",
+      "Do not boil the curry aggressively after adding thick coconut milk, as it can split.",
+      "Keep the spices mild so the flavour of the tuna and coconut remains clear.",
+      "Kodampuli adds a gentle sour taste. A small amount of tamarind can be used if it is unavailable."
+    ],
+    "nutrition": {
+      "calories": 310,
+      "protein": 29,
+      "carbs": 8,
+      "fat": 18
+    }
+  },
+
+  "mus kavaab": {
+    "dishName": "Mus Kavaab (Lakshadweep Spiced Tuna Curry)",
+    "image": "/dishes/mus-kavaab.webp",
+    "state": "Lakshadweep",
+    "description": "A traditional Lakshadweep fish curry made with tuna pieces cooked in a thick coconut and spice paste. Coconut, coriander, red chilli, cardamom and cloves create a rich, aromatic gravy, finished with sautéed onions, tomato and curry leaves.",
+    "prepTime": "Approx. 45 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "500 g",
+        "commonName": "Tuna Machhli",
+        "englishName": "fresh tuna, cut into medium chunks"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Nariyal",
+        "englishName": "fresh grated coconut"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely sliced"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, chopped"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies, slit"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhaniya Seeds",
+        "englishName": "coriander seeds"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "2",
+        "commonName": "Laung",
+        "englishName": "cloves"
+      },
+      {
+        "amount": "2",
+        "commonName": "Elaichi",
+        "englishName": "green cardamom pods"
+      },
+      {
+        "amount": "8 to 10",
+        "commonName": "Kadi Patta",
+        "englishName": "fresh curry leaves"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Nariyal Tel",
+        "englishName": "coconut oil"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Paani",
+        "englishName": "water, as needed for gravy"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the tuna pieces and drain the excess water. Rub them with a little salt and turmeric. Keep aside for 10 minutes."
+      },
+      {
+        "step": 2,
+        "instruction": "Add grated coconut, coriander seeds, red chilli powder, coriander powder, cloves and cardamom to a grinder."
+      },
+      {
+        "step": 3,
+        "instruction": "Add a little water and grind into a smooth, thick coconut-spice paste."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat coconut oil in a kadai. Add curry leaves and sliced onion. Cook until the onion becomes soft and lightly golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic paste and green chillies. Cook for about a minute until the raw smell disappears."
+      },
+      {
+        "step": 6,
+        "instruction": "Add the chopped tomato and cook until soft and mushy."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the prepared coconut-spice paste. Stir and cook on low heat for 4 to 5 minutes until the paste becomes aromatic."
+      },
+      {
+        "step": 8,
+        "instruction": "Add water little by little and mix until you get a thick curry gravy. Bring it to a gentle simmer."
+      },
+      {
+        "step": 9,
+        "instruction": "Add the tuna pieces carefully. Cover and cook on low heat for about 6 to 8 minutes until the fish is cooked through."
+      },
+      {
+        "step": 10,
+        "instruction": "Taste and adjust salt. Turn off the heat and let the curry rest for 5 minutes before serving with steamed rice."
+      }
+    ],
+    "notes": [
+      "Use fresh tuna or another firm fish so the pieces hold their shape during cooking.",
+      "The ground coconut and spices give Mus Kavaab its thick, rich texture.",
+      "Cook the ground paste properly before adding the fish so it does not taste raw.",
+      "Do not stir the fish too much after adding it, as the pieces may break.",
+      "This is the curry-style preparation of Mus Kavaab. Some Lakshadweep food descriptions also use the name for island-spiced grilled fish."
+    ],
+    "nutrition": {
+      "calories": 345,
+      "protein": 29,
+      "carbs": 11,
+      "fat": 21
+    }
+  },
+
+  "mas huni": {
+    "dishName": "Mas Huni (Minicoy-Style Smoked Tuna and Coconut)",
+    "image": "/dishes/mas-huni.webp",
+    "state": "Lakshadweep",
+    "description": "A traditional Minicoy breakfast preparation made by mixing finely shredded smoked tuna with fresh grated coconut, onion, green chillies and lime juice. It is served fresh with warm roshi, a soft wheat flatbread, and tea.",
+    "prepTime": "Approx. 15 minutes",
+    "equipment": [],
+    "ingredients": [
+      {
+        "amount": "200 g",
+        "commonName": "Masmin",
+        "englishName": "ready-to-eat smoked tuna, finely shredded"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Nariyal",
+        "englishName": "freshly grated coconut"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "red onion, finely chopped"
+      },
+      {
+        "amount": "2",
+        "commonName": "Hari Mirch",
+        "englishName": "green chillies, finely chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Nimbu Ras",
+        "englishName": "fresh lime juice"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "fresh coriander leaves, optional"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Place the smoked tuna in a bowl. Remove any bones or hard pieces and shred the tuna finely using your fingers or a fork."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the chopped onion and green chillies to another bowl."
+      },
+      {
+        "step": 3,
+        "instruction": "Add lime juice and a little salt to the onion and chilli. Mix and gently press with your fingers to soften the onion and release its flavour."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the shredded tuna and freshly grated coconut. Mix gently until everything is evenly combined."
+      },
+      {
+        "step": 5,
+        "instruction": "Taste and adjust the lime juice and salt. Add chopped coriander if using."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve fresh with warm roshi or another soft wheat flatbread."
+      }
+    ],
+    "notes": [
+      "Mas Huni is especially associated with Minicoy and its Mahl-speaking food culture, which has close links with the Maldives.",
+      "The traditional preparation uses smoked tuna, fresh coconut, onion, chilli and lime.",
+      "This is a no-cook preparation when using ready-to-eat smoked tuna.",
+      "If smoked tuna is unavailable, well-drained canned tuna can be used. Fresh tuna must be cooked fully and cooled before mixing; never use raw fish.",
+      "Mas Huni is best eaten immediately after mixing so the coconut stays fresh."
+    ],
+    "nutrition": {
+      "calories": 235,
+      "protein": 20,
+      "carbs": 8,
+      "fat": 14
+    }
+  },
+
+  "kilanji": {
+    "dishName": "Kilanji (Lakshadweep Rice and Egg Crepes)",
+    "image": "/dishes/kilanji.webp",
+    "state": "Lakshadweep",
+    "description": "A traditional Lakshadweep sweet made with very thin crepes prepared from ground rice and eggs. The soft crepes are served with sliced bananas and sweet coconut milk, making a simple and delicate island dessert.",
+    "prepTime": "Approx. 45 minutes (plus rice soaking)",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "tawa",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "1.5 cups",
+        "commonName": "Chawal",
+        "englishName": "raw rice, soaked for 3 to 4 hours"
+      },
+      {
+        "amount": "3",
+        "commonName": "Anda",
+        "englishName": "eggs"
+      },
+      {
+        "amount": "3/4 cup",
+        "commonName": "Paani",
+        "englishName": "water, as needed for batter"
+      },
+      {
+        "amount": "1 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil, for greasing the tawa"
+      },
+      {
+        "amount": "1 cup",
+        "commonName": "Nariyal Doodh",
+        "englishName": "coconut milk"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Kela",
+        "englishName": "ripe bananas, sliced"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Gud",
+        "englishName": "grated jaggery or sugar"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Elaichi Powder",
+        "englishName": "cardamom powder, optional"
+      },
+      {
+        "amount": "1 pinch",
+        "commonName": "Namak",
+        "englishName": "salt"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Wash the rice thoroughly and soak it in water for 3 to 4 hours. Drain completely before grinding."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the soaked rice, eggs and about 1/2 cup water to a grinder. Grind until you get a very smooth batter."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the remaining water little by little until the batter becomes thin and pourable, similar to a thin crepe batter. Add a pinch of salt and mix well."
+      },
+      {
+        "step": 4,
+        "instruction": "Pour coconut milk into a bowl. Add sliced bananas, jaggery or sugar and cardamom powder if using. Stir until the sweetener dissolves. Keep aside."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat a tawa on low to medium-low heat. Lightly grease it with oil."
+      },
+      {
+        "step": 6,
+        "instruction": "Pour a small ladle of batter into the centre of the tawa. Quickly tilt the tawa in a circular motion so the batter spreads into a very thin layer."
+      },
+      {
+        "step": 7,
+        "instruction": "Cook on low heat for about 3 to 5 minutes until the top looks set and the edges begin to lift. Do not make the crepe thick."
+      },
+      {
+        "step": 8,
+        "instruction": "Carefully lift the thin crepe from the tawa and transfer it to a plate. Repeat with the remaining batter."
+      },
+      {
+        "step": 9,
+        "instruction": "Serve the warm Kilanji with the sweet banana and coconut milk mixture. The crepes can be folded or rolled before serving."
+      }
+    ],
+    "notes": [
+      "Kilanji should be very thin and soft, not thick like an ordinary pancake.",
+      "The rice must be soaked well before grinding so the batter becomes smooth.",
+      "Keep the tawa on low to medium-low heat. High heat can make the thin crepes dry or tear.",
+      "The traditional accompaniment is sweet coconut milk with banana.",
+      "Adjust the jaggery or sugar according to the sweetness of the bananas."
+    ],
+    "nutrition": {
+      "calories": 285,
+      "protein": 8,
+      "carbs": 43,
+      "fat": 9
+    }
+  },
+
 }
 
 /** Number of servings represented by each recipe batch, used as the basis for per-serving nutrition. */
@@ -62884,4 +63494,9 @@ export const predefinedRecipeServings: Record<string, number> = {
 "french baguette": 8,
 "meen puyabaise": 4,
 
+"maas podichathu": 4,
+"maas riha": 4,
+"mus kavaab": 4,
+"mas huni": 4,
+"kilanji": 4,
 };
