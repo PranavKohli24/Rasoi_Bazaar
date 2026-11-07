@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
+import SectionDivider from "./SectionDivider";
 
 interface WheelDish {
   id: string;
@@ -47,7 +48,9 @@ interface DishWheelProps {
 
 const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
   const sceneRef = useRef<HTMLDivElement>(null);
-  const BASE_RADIUS = 135; // keeps center + nearest-neighbor spacing fixed, regardless of container width
+
+  // Both scale down together on narrow screens, via the same container-width reading.
+  const [baseRadius, setBaseRadius] = useState(135);
   const [extraReach, setExtraReach] = useState(80);
 
   const angleRef = useRef(0);
@@ -61,7 +64,11 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
-    const update = () => setExtraReach(Math.max(60, Math.min(240, el.clientWidth * 0.32)));
+    const update = () => {
+      const w = el.clientWidth;
+      setBaseRadius(Math.max(78, Math.min(135, w * 0.22)));
+      setExtraReach(Math.max(40, Math.min(240, w * 0.32)));
+    };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
@@ -104,9 +111,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
   const handlePointerUp = () => setIsDragging(false);
 
-  // Always render the 5 items angularly closest to front — not a fixed
-  // threshold, which went in and out of sync with the continuous angle and
-  // flickered between 4 and 5 visible.
+  // Always render the 5 items angularly closest to front.
   const withOffsets = DISHES.map((dish, i) => ({
     dish,
     i,
@@ -123,14 +128,12 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
       <style>{WHEEL_ANIMATION_CSS}</style>
 
       {!activeDish && (
-        <p className="mb-0 text-center text-sm font-semibold uppercase tracking-wider text-stone-400">
-          What&apos;s on your mind?
-        </p>
+        <SectionDivider heading id="dish-wheel-heading" label="What's on your mind?" />
       )}
 
       <div
         ref={sceneRef}
-        className="relative h-36 w-full touch-pan-y select-none sm:h-40"
+        className="relative mt-5 h-28 w-full touch-pan-y select-none sm:h-40"
         style={{ perspective: "1000px" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -145,6 +148,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
               const opacity = 1 - Math.min(absOffset / 140, 1) * 0.6;
               const zIndex = Math.round(100 - absOffset);
               const isFront = absOffset < STEP / 2;
+              const itemRadius = baseRadius + extraReach * Math.pow(absOffset / 180, 1.6);
 
               return (
                 <button
@@ -154,19 +158,15 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     if (dragInfo.current.moved) return;
                     setActiveId(dish.id);
                   }}
-                  className="absolute left-1/2 top-1/2 flex flex-col items-center justify-center gap-1.5"
+                  className="absolute left-1/2 top-1/2 flex h-20 w-20 flex-col items-center justify-center gap-1 sm:h-32 sm:w-32 sm:gap-1.5"
                   style={{
-                    width: 128,
-                    height: 128,
-                    marginLeft: -64,
-                    marginTop: -64,
                     opacity,
                     zIndex,
-                    transform: `rotateY(${offset}deg) translateZ(${BASE_RADIUS + extraReach * Math.pow(absOffset / 180, 1.6)}px) rotateY(${-offset}deg) scale(${scale})`,
+                    transform: `translate(-50%, -50%) rotateY(${offset}deg) translateZ(${itemRadius}px) rotateY(${-offset}deg) scale(${scale})`,
                     transition: isDragging ? "none" : "opacity 0.2s ease",
                   }}
                 >
-                  <span className="flex h-28 w-28 items-center justify-center overflow-hidden rounded-xl">
+                  <span className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl sm:h-28 sm:w-28">
                     <img
                       src={dishImage(dish.id)}
                       alt=""
@@ -174,7 +174,11 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                       draggable={false}
                     />
                   </span>
-                  <span className={`text-sm font-semibold ${isFront ? "text-orange-200" : "text-stone-400"}`}>
+                  <span
+                    className={`text-[11px] font-semibold sm:text-sm ${
+                      isFront ? "text-orange-200" : "text-stone-400"
+                    }`}
+                  >
                     {dish.label}
                   </span>
                 </button>
@@ -207,9 +211,9 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     onClick={() => onSelect(recipe)}
                     className="flex items-center gap-3 rounded-xl border border-stone-700 bg-stone-950/40 px-3 py-2 text-left text-sm text-stone-200 transition-colors hover:border-orange-400/60 hover:text-orange-200"
                   >
-                    <span className="h-11 w-11 shrink-0 overflow-hidden rounded-lg bg-stone-800">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-stone-800">
                       {recipeImage && (
-                        <img src={recipeImage} alt="" className="h-full w-full object-cover" draggable={false} />
+                        <img src={recipeImage} alt="" className="h-full w-full object-contain" draggable={false} />
                       )}
                     </span>
                     {recipe}
