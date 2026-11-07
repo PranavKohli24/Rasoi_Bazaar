@@ -4,6 +4,7 @@ import CompactHeader from "../components/CompactHeader";
 import SearchBar from "../components/SearchBar";
 import CategoryBrowser from "../components/CategoryBrowser";
 import RecipeSuggestionChips from "../components/RecipeSuggestionChips";
+import DishWheel from "../components/DishWheel";
 import { useDishSearch } from "../utils/dishRoutes";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
 import { useIdentifyDish } from "../utils/useIdentifyDish";
@@ -378,6 +379,10 @@ const [pillRect, setPillRect] = useState({ left: 0, width: 0 });
                         </div>
                       </div>
                     )}
+
+                  <div className="mt-8">
+                    <DishWheel onSelect={goWithPreload} />
+                  </div>
 
                   <div className="mt-6">
                     <RecipeSuggestionChips onSelect={goWithPreload} />
