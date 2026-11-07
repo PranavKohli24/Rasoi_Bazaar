@@ -792,6 +792,7 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
   const [maxDrag, setMaxDrag] = useState(0);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isNudging, setIsNudging] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const dragStartRef = useRef(0);
 
@@ -843,15 +844,21 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
     }
   };
 
+  const NUDGE_DURATION_MS = 520;
+
   const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isConfirmed || isDragging) return;
+    if (isConfirmed || isDragging || isNudging) return;
     if (thumbRef.current?.contains(event.target as Node)) return;
 
-    const nudgeDistance = Math.min(24, maxDrag);
+    const nudgeDistance = Math.min(20, maxDrag);
     if (nudgeDistance <= 0) return;
 
+    setIsNudging(true);
     setDragX(nudgeDistance);
-    window.setTimeout(() => setDragX(0), 180);
+    window.setTimeout(() => {
+      setDragX(0);
+      window.setTimeout(() => setIsNudging(false), NUDGE_DURATION_MS);
+    }, NUDGE_DURATION_MS);
   };
 
   const progressPct = maxDrag === 0 ? 0 : (dragX / maxDrag) * 100;
@@ -931,6 +938,8 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
           transform: `translateX(${dragX}px) scale(${isDragging ? 1.05 : 1})`,
           transition: isDragging
             ? "box-shadow 0.15s ease"
+            : isNudging
+            ? "transform 0.52s cubic-bezier(0.45, 0, 0.55, 1), box-shadow 0.2s ease"
             : "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease",
           touchAction: "none",
           cursor: isConfirmed ? "default" : isDragging ? "grabbing" : "grab",
