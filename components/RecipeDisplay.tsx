@@ -788,6 +788,7 @@ const SWIPE_ICON_MORPH_THRESHOLD = 0.65;
 
 const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, onConfirm }) => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
   const [maxDrag, setMaxDrag] = useState(0);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -835,11 +836,22 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
     }
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent) => {
+    const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       confirm();
     }
+  };
+
+  const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (isConfirmed || isDragging) return;
+    if (thumbRef.current?.contains(event.target as Node)) return;
+
+    const nudgeDistance = Math.min(24, maxDrag);
+    if (nudgeDistance <= 0) return;
+
+    setDragX(nudgeDistance);
+    window.setTimeout(() => setDragX(0), 180);
   };
 
   const progressPct = maxDrag === 0 ? 0 : (dragX / maxDrag) * 100;
@@ -850,6 +862,7 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
   return (
     <div
       ref={trackRef}
+      onClick={handleTrackClick}
       className="relative h-[60px] w-full select-none overflow-hidden rounded-full border"
       style={{
         backgroundColor: COLOR.surface,
@@ -890,6 +903,7 @@ const SwipeToConfirm: React.FC<SwipeToConfirmProps> = ({ label, confirmedLabel, 
       )}
 
       <div
+        ref={thumbRef}
         role="slider"
         tabIndex={0}
         aria-label={label}
