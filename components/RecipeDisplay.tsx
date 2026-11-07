@@ -592,14 +592,15 @@ const STEP_ANIMATION_CSS = `
   pointer-events: none;
 }
 .glass-switch-track.is-off {
-  background: #E9E5DC;  
+  background: #E9E5DC; 
   border-color: rgba(43, 26, 12, 0.1);
   box-shadow: inset 0 1.5px 3px rgba(43, 26, 12, 0.18);
 }
 .glass-switch-track.is-on {
-  background: linear-gradient(115deg, #FFB34D 0%, #FF8A2D 44%, #F96B1D 100%);
-  border-color: rgba(242, 112, 27, 0.55);
-  box-shadow: inset 0 2px 5px rgba(140,50,0,0.35), inset 0 -1px 1px rgba(255,255,255,0.3);
+  background: linear-gradient(180deg, #FF8A3D 0%, #FC6C26 100%); 
+  box-shadow:
+    inset 0 1px 2px rgba(140, 50, 0, 0.25),
+    0 0 0 4px rgba(252, 108, 38, 0.12);
 }
 .glass-switch-thumb::after {
   content: "";
