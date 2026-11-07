@@ -92,8 +92,12 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
     if (!el) return;
     const update = () => {
       const w = el.clientWidth;
-      setBaseRadius(Math.max(78, Math.min(135, w * 0.22)));
-      setExtraReach(Math.max(40, Math.min(240, w * 0.32)));
+      // Spacing between adjacent cards is ~radius * sin(STEP). Tuned at 8 dishes
+      // (45° apart); this keeps that same spacing however many dishes there are.
+      const spacingCompensation =
+        Math.sin((45 * Math.PI) / 180) / Math.sin((STEP * Math.PI) / 180);
+      setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation);
+      setExtraReach(Math.max(40, Math.min(240, w * 0.32)) * spacingCompensation);
     };
     update();
     const observer = new ResizeObserver(update);
