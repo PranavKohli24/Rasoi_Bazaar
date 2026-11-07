@@ -17,6 +17,8 @@ const DISHES: WheelDish[] = [
   { id: "cake", label: "Cake", recipes: ["Chocolate Cake", "Vanilla Sponge Cake", "Eggless Cake"] },
   { id: "pasta", label: "Pasta", recipes: ["Red Sauce Pasta", "White Sauce Pasta", "Pasta Arrabbiata"] },
   { id: "dosa", label: "Dosa", recipes: ["Plain Dosa", "Masala Dosa", "Rava Dosa"] },
+  {id: "sabzi", label: "Sabzi", recipes: ["Aloo gobi", "bhindi", "lauki"]},
+  {id : "paratha", label: "Paratha", recipes: ["Aloo", "gobhi", "paneer", "mooli"]}
 ];
 
 // Category thumbnails live at /public/wheels/<id>.png
