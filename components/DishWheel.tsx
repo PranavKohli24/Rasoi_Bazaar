@@ -276,8 +276,8 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
       // so push the radius out proportionally more to keep a consistent gap
       // between neighboring cards instead of crowding them.
       const spacingCompensation = (45 / STEP) * 1.12;
-      setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation);
-      setExtraReach(Math.max(40, Math.min(190, w * 0.25)) * spacingCompensation);
+      setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation); // unchanged — this is what controls the gap between neighboring items
+      setExtraReach(Math.max(20, Math.min(90, w * 0.12)) * spacingCompensation); // pulled back a lot — this is what controls how far the outer edge cards reach, i.e. the wheel's overall width
     };
     update();
     const observer = new ResizeObserver(update);
