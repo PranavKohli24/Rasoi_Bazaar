@@ -410,7 +410,10 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
         {activeDish && (
           <div
             className="dish-panel-rise absolute inset-0 flex flex-col overflow-hidden rounded-[28px] bg-stone-900"
-            style={{ transformOrigin: `${originPct.x}% ${originPct.y}%` }}
+            style={{
+              transformOrigin: `${originPct.x}% ${originPct.y}%`,
+              boxShadow: "0 20px 40px -24px rgba(0,0,0,0.55)",
+            }}
           >
             {/* Back button stays fixed in place while everything beneath it scrolls */}
             <button
@@ -454,9 +457,9 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     className="dish-row-in group flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 active:scale-[0.98]"
                     style={{ animationDelay: `${120 + i * 55}ms` }}
                   >
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-800">
+                    <span className="h-14 w-14 shrink-0 overflow-hidden rounded-xl">
                       {recipeImage && (
-                        <FadeImage src={recipeImage} alt="" className="h-full w-full object-contain" />
+                        <FadeImage src={recipeImage} alt="" className="h-full w-full object-cover" />
                       )}
                     </span>
                     <span className="flex-1 text-sm font-semibold text-stone-100 group-hover:text-orange-200">
