@@ -277,7 +277,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
       // between neighboring cards instead of crowding them.
       const spacingCompensation = (45 / STEP) * 1.12;
       setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation);
-      setExtraReach(Math.max(40, Math.min(240, w * 0.32)) * spacingCompensation);
+      setExtraReach(Math.max(40, Math.min(190, w * 0.25)) * spacingCompensation);
     };
     update();
     const observer = new ResizeObserver(update);
