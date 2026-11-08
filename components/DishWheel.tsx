@@ -451,7 +451,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     key={recipe}
                     type="button"
                     onClick={() => onSelect(recipe)}
-                    className="dish-row-in group flex items-center gap-3 rounded-2xl bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 active:scale-[0.98]"
+                    className="dish-row-in group flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 active:scale-[0.98]"
                     style={{ animationDelay: `${120 + i * 55}ms` }}
                   >
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-800">
