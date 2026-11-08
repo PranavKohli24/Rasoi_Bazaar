@@ -409,48 +409,49 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
         {activeDish && (
           <div
-            className="dish-panel-rise absolute inset-0 flex flex-col overflow-hidden rounded-[28px] border border-stone-700/60 bg-stone-900 shadow-2xl shadow-black/40"
+            className="dish-panel-rise absolute inset-0 flex flex-col overflow-hidden rounded-[28px] bg-stone-900"
             style={{ transformOrigin: `${originPct.x}% ${originPct.y}%` }}
           >
-            {/* Hero banner */}
-            <div className="relative h-44 w-full shrink-0 sm:h-52">
-              <FadeImage
-                src={dishImage(activeDish.id)}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/55 to-stone-900/5" />
-              <div className="absolute inset-0 bg-gradient-to-b from-stone-900/50 via-transparent to-transparent" />
+            {/* Back button stays fixed in place while everything beneath it scrolls */}
+            <button
+              type="button"
+              onClick={() => setActiveId(null)}
+              aria-label="Back to the wheel"
+              className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/60 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
+            >
+              ←
+            </button>
 
-              <button
-                type="button"
-                onClick={() => setActiveId(null)}
-                aria-label="Back to the wheel"
-                className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/60 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
-              >
-                ←
-              </button>
+            {/* Hero banner + recipe list now scroll together as one unit */}
+            <div className="flex flex-1 flex-col overflow-y-auto">
+              <div className="relative h-44 w-full shrink-0 sm:h-52">
+                <FadeImage
+                  src={dishImage(activeDish.id)}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/55 to-stone-900/5" />
+                <div className="absolute inset-0 bg-gradient-to-b from-stone-900/50 via-transparent to-transparent" />
 
-              <div className="absolute inset-x-4 bottom-4">
-                <h3 className="font-serif text-2xl font-black leading-tight text-orange-50 sm:text-3xl">
-                  {activeDish.label}
-                </h3>
-                <p className="mt-0.5 text-xs font-semibold uppercase tracking-wider text-orange-200/80">
-                  {activeDish.recipes.length} recipes to try
-                </p>
+                <div className="absolute inset-x-4 bottom-4">
+                  <h3 className="font-serif text-2xl font-black leading-tight text-orange-50 sm:text-3xl">
+                    {activeDish.label}
+                  </h3>
+                  <p className="mt-0.5 text-xs font-semibold uppercase tracking-wider text-orange-200/80">
+                    {activeDish.recipes.length} recipes to try
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Recipe list */}
-            <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-3 sm:p-4">
-              {activeDish.recipes.map((recipe, i) => {
+              <div className="flex flex-col gap-2 p-3 sm:p-4">
+                {activeDish.recipes.map((recipe, i) => {
                 const recipeImage = findPredefinedRecipe(recipe)?.image;
                 return (
                   <button
                     key={recipe}
                     type="button"
                     onClick={() => onSelect(recipe)}
-                    className="dish-row-in group flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 active:scale-[0.98]"
+                    className="dish-row-in group flex items-center gap-3 rounded-2xl bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 active:scale-[0.98]"
                     style={{ animationDelay: `${120 + i * 55}ms` }}
                   >
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-800">
@@ -465,6 +466,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                   </button>
                 );
               })}
+              </div>
             </div>
           </div>
         )}
