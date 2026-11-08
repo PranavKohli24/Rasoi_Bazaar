@@ -9,16 +9,150 @@ interface WheelDish {
 }
 
 const DISHES: WheelDish[] = [
-  { id: "dal", label: "Dal", recipes: ["Dal Tadka", "Dal Makhani", "Moong Dal Cheela"] },
-  { id: "burger", label: "Burger", recipes: ["Veg Burger", "Paneer Burger", "Chicken Burger"] },
-  { id: "sandwich", label: "Sandwich", recipes: ["Veg Sandwich", "Grilled Cheese Sandwich", "Club Sandwich"] },
-  { id: "rolls", label: "Rolls", recipes: ["Chicken Kathi Roll", "Paneer Frankie", "Egg Roll"] },
-  { id: "biryani", label: "Biryani", recipes: ["Chicken Biryani", "Veg Biryani", "Mutton Biryani"] },
-  { id: "cake", label: "Cake", recipes: ["Chocolate Cake", "Vanilla Sponge Cake", "Eggless Cake"] },
-  { id: "pasta", label: "Pasta", recipes: ["Red Sauce Pasta", "White Sauce Pasta", "Pasta Arrabbiata"] },
-  { id: "dosa", label: "Dosa", recipes: ["Plain Dosa", "Masala Dosa", "Rava Dosa"] },
-  {id: "sabzi", label: "Sabzi", recipes: ["Aloo gobi", "bhindi", "lauki"]},
-  {id : "paratha", label: "Paratha", recipes: ["Aloo", "gobhi", "paneer", "mooli"]}
+  {
+    id: "dal",
+    label: "Dal",
+    recipes: [
+      "Dal Tadka",
+      "Dal Makhani",
+      "Dal Fry",
+      "Chana Dal (Chana Dal Tadka)",
+      "Dal Palak",
+      "Moong Dal",
+    ],
+  },
+  {
+    id: "burger",
+    label: "Burger",
+    recipes: [
+      "Burger",
+    ],
+  },
+  {
+    id: "sandwich",
+    label: "Sandwich",
+    recipes: [
+      "Veg Sandwich",
+      "Paneer Sandwich",
+      "Cheese Sandwich",
+      "Club Sandwich",
+    ],
+  },
+  {
+    id: "rolls",
+    label: "Rolls",
+    recipes: [
+      "Veg Kathi Roll",
+      "Paneer Roll",
+      "Chicken Kathi Roll",
+      "Egg Roll",
+      "Veggie Roll",
+      "Achari Paneer Roll",
+      "Chicken Tikka Roll",
+      "Chicken Seekh Roll",
+      "Mutton Seekh Roll",
+      "Paneer Tikka Roll",
+    ],
+  },
+  {
+    id: "biryani",
+    label: "Biryani",
+    recipes: [
+      "Chicken Biryani",
+      "Veg Biryani",
+      "Mutton Biryani",
+      "Prawn Biryani",
+      "Hyderabadi Chicken Biryani",
+      "Egg Biryani",
+      "Dum Chicken Biryani",
+      "Dum Mutton Biryani",
+      "Kolkata Biryani",
+      "Awadhi Biryani",
+      "Thalassery Biryani",
+      "Island Seafood Biryani",
+    ],
+  },
+  {
+    id: "cake",
+    label: "Cake",
+    recipes: [
+      "Cake (Simple Eggless Vanilla Cake)",
+      "Chocolate Cake",
+      "Strawberry Cake",
+      "Pineapple Cake",
+    ],
+  },
+  {
+    id: "pasta",
+    label: "Pasta",
+    recipes: [
+      "Pasta (Indian Masala Pasta)",
+      "White Sauce Pasta",
+      "Red Sauce Pasta",
+      "Macaroni (Masala Macaroni)",
+    ],
+  },
+  {
+    id: "dosa",
+    label: "Dosa",
+    recipes: [
+      "Plain Dosa",
+      "Masala Dosa",
+      "Rava Dosa",
+      "Benne Dosa",
+      "Set Dosa",
+      "Neer Dosa",
+      "Mysore Masala Dosa",
+      "Onion Dosa",
+      "Podi Dosa",
+      "Paper Dosa",
+      "Kal Dosa",
+      "Paneer Dosa",
+      "Egg Dosa",
+      "Ragi Dosa",
+    ],
+  },
+  {
+    id: "sabzi",
+    label: "Sabzi",
+    recipes: [
+      "Aloo Gobi",
+      "Bhindi Masala",
+      "Tinda Sabzi",
+      "Gajar Matar",
+      "Aloo Tamatar Sabzi",
+      "Aloo Matar",
+      "Aloo Methi",
+      "French Beans Sabzi (Beans ki Sabzi)",
+      "Gobi Masala",
+      "Lauki Sabzi",
+      "Mooli Ki Sabzi",
+      "Tori Sabzi",
+      "Patta Gobhi Sabzi",
+      "Karela Sabzi",
+      "Mixed Veg Sabzi",
+      "Baingan Bharta",
+    ],
+  },
+  {
+    id: "paratha",
+    label: "Paratha",
+    recipes: [
+      "Aloo Paratha",
+      "Laccha Paratha",
+      "Gobhi Paratha",
+      "Mooli Paratha",
+      "Palak Paratha",
+      "Methi Paratha",
+      "Paneer Paratha",
+      "Matar Paratha",
+      "Sattu Paratha",
+      "Cheese Paratha",
+      "Onion Paratha (Pyaz Paratha)",
+      "Anda Paratha",
+      "Mughlai Paratha",
+    ],
+  },
 ];
 
 // Category thumbnails live at /public/wheels/<id>.png
@@ -101,7 +235,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
       // Tuned at 8 dishes (45° apart). As more dishes are added, STEP shrinks,
       // so push the radius out proportionally more than before to keep a
       // consistent visual gap between neighboring cards instead of crowding them.
-      const spacingCompensation = 45 / STEP;
+      const spacingCompensation = (45 / STEP) * 1.12;
       setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation);
       setExtraReach(Math.max(40, Math.min(240, w * 0.32)) * spacingCompensation);
     };
