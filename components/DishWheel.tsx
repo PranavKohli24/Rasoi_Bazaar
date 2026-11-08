@@ -198,12 +198,20 @@ const normalize180 = (deg: number) => ((deg % 360) + 540) % 360 - 180;
 
 const WHEEL_ANIMATION_CSS = `
 @keyframes dish-panel-rise {
-  from { opacity: 0; transform: translateY(16px) rotateX(-10deg) scale(0.93); }
-  to { opacity: 1; transform: translateY(0) rotateX(0deg) scale(1); }
+  0% { opacity: 0; transform: scale(0.32) translateY(10px); }
+  55% { opacity: 1; transform: scale(1.035) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
-.dish-panel-rise { animation: dish-panel-rise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; transform-origin: bottom center; }
+.dish-panel-rise { animation: dish-panel-rise 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+@keyframes dish-row-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.dish-row-in { animation: dish-row-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
 @media (prefers-reduced-motion: reduce) {
-  .dish-panel-rise { animation: none; }
+  .dish-panel-rise, .dish-row-in { animation: none; }
 }
 `;
 
@@ -222,6 +230,12 @@ const FadeImage: React.FC<{ src: string; alt: string; className?: string }> = ({
   );
 };
 
+const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
 interface DishWheelProps {
   onSelect: (dish: string) => void;
 }
@@ -239,10 +253,13 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
   const dragInfo = useRef({ startX: 0, startAngle: 0, moved: false });
 
   const [activeId, setActiveId] = useState<string | null>(null);
+  // Where the tapped card sat, as a % of the scene box — the opening panel
+  // scales up from this point, so it reads as "born from" the card you tapped.
+  const [originPct, setOriginPct] = useState({ x: 50, y: 50 });
   const rafRef = useRef<number | undefined>(undefined);
 
-  // Only 8-10 small images — warm the browser cache once on mount so none
-  // of them pop in blank as the ring rotates to them or the panel opens.
+  // Only a handful of small images — warm the browser cache once on mount so
+  // none of them pop in blank as the ring rotates to them or the panel opens.
   useEffect(() => {
     DISHES.forEach((dish) => {
       const img = new Image();
@@ -256,8 +273,8 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
     const update = () => {
       const w = el.clientWidth;
       // Tuned at 8 dishes (45° apart). As more dishes are added, STEP shrinks,
-      // so push the radius out proportionally more than before to keep a
-      // consistent visual gap between neighboring cards instead of crowding them.
+      // so push the radius out proportionally more to keep a consistent gap
+      // between neighboring cards instead of crowding them.
       const spacingCompensation = (45 / STEP) * 1.12;
       setBaseRadius(Math.max(78, Math.min(135, w * 0.22)) * spacingCompensation);
       setExtraReach(Math.max(40, Math.min(240, w * 0.32)) * spacingCompensation);
@@ -304,9 +321,22 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
   const handlePointerUp = () => setIsDragging(false);
 
-  // All 8 are always in the DOM; the ones outside the front ~5-wide window
-  // simply fade to opacity 0 as they rotate out, instead of being filtered
-  // out of the list (which caused the sudden pop).
+  const openDish = (dishId: string, cardEl: HTMLElement) => {
+    if (dragInfo.current.moved) return;
+    const sceneRect = sceneRef.current?.getBoundingClientRect();
+    const cardRect = cardEl.getBoundingClientRect();
+    if (sceneRect) {
+      setOriginPct({
+        x: ((cardRect.left + cardRect.width / 2 - sceneRect.left) / sceneRect.width) * 100,
+        y: ((cardRect.top + cardRect.height / 2 - sceneRect.top) / sceneRect.height) * 100,
+      });
+    }
+    setActiveId(dishId);
+  };
+
+  // All dishes are always in the DOM; the ones outside the front ~5-wide
+  // window simply fade to opacity 0 as they rotate out, instead of being
+  // filtered out of the list (which caused a sudden pop).
   const withOffsets = DISHES.map((dish, i) => ({
     dish,
     offset: normalize180(i * STEP + angle),
@@ -324,7 +354,9 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
 
       <div
         ref={sceneRef}
-        className="relative mt-3 h-32 w-full touch-pan-y select-none sm:h-40"
+        className={`relative mt-3 w-full touch-pan-y select-none transition-[height] duration-300 ease-out ${
+          activeDish ? "h-[27rem] sm:h-[29rem]" : "h-32 sm:h-40"
+        }`}
         style={{ perspective: "1300px" }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
@@ -336,7 +368,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
             {withOffsets.map(({ dish, offset }) => {
               const absOffset = Math.abs(offset);
               const scale = CARD_SCALE * (1 - Math.min(absOffset / 180, 1) * 0.42);
-              const baseOpacity = 1 - Math.min(absOffset / 140, 1) * 0.6; // normal depth dimming, same as before
+              const baseOpacity = 1 - Math.min(absOffset / 140, 1) * 0.6; // normal depth dimming
               const FADE_START = 95; // just past the usual ~90° edge of the 5-item window
               const FADE_END = 125; // fully gone by here
               const fadeProgress = Math.min(1, Math.max(0, (absOffset - FADE_START) / (FADE_END - FADE_START)));
@@ -349,10 +381,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                 <button
                   key={dish.id}
                   type="button"
-                  onClick={() => {
-                    if (dragInfo.current.moved) return;
-                    setActiveId(dish.id);
-                  }}
+                  onClick={(e) => openDish(dish.id, e.currentTarget)}
                   className="absolute left-1/2 top-1/2 flex h-24 w-24 flex-col items-center justify-center gap-1 sm:h-32 sm:w-32 sm:gap-1.5"
                   style={{
                     opacity,
@@ -379,35 +408,60 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
         )}
 
         {activeDish && (
-          <div className="dish-panel-rise absolute inset-0 flex flex-col rounded-2xl border border-stone-700/70 bg-stone-900 p-3">
-            <div className="mb-2 flex items-center gap-2">
+          <div
+            className="dish-panel-rise absolute inset-0 flex flex-col overflow-hidden rounded-[28px] border border-stone-700/60 bg-stone-900 shadow-2xl shadow-black/40"
+            style={{ transformOrigin: `${originPct.x}% ${originPct.y}%` }}
+          >
+            {/* Hero banner */}
+            <div className="relative h-44 w-full shrink-0 sm:h-52">
+              <FadeImage
+                src={dishImage(activeDish.id)}
+                alt=""
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/55 to-stone-900/5" />
+              <div className="absolute inset-0 bg-gradient-to-b from-stone-900/50 via-transparent to-transparent" />
+
               <button
                 type="button"
                 onClick={() => setActiveId(null)}
                 aria-label="Back to the wheel"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-800 hover:text-stone-100"
+                className="absolute left-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/60 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
               >
                 ←
               </button>
-              <span className="text-sm font-semibold text-stone-100">{activeDish.label}</span>
+
+              <div className="absolute inset-x-4 bottom-4">
+                <h3 className="font-serif text-2xl font-black leading-tight text-orange-50 sm:text-3xl">
+                  {activeDish.label}
+                </h3>
+                <p className="mt-0.5 text-xs font-semibold uppercase tracking-wider text-orange-200/80">
+                  {activeDish.recipes.length} recipes to try
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-1 flex-col gap-2 overflow-y-auto">
-              {activeDish.recipes.map((recipe) => {
+            {/* Recipe list */}
+            <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-3 sm:p-4">
+              {activeDish.recipes.map((recipe, i) => {
                 const recipeImage = findPredefinedRecipe(recipe)?.image;
                 return (
                   <button
                     key={recipe}
                     type="button"
                     onClick={() => onSelect(recipe)}
-                    className="flex items-center gap-3 rounded-xl border border-stone-700 bg-stone-950/40 px-3 py-2 text-left text-sm text-stone-200 transition-colors hover:border-orange-400/60 hover:text-orange-200"
+                    className="dish-row-in group flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 active:scale-[0.98]"
+                    style={{ animationDelay: `${120 + i * 55}ms` }}
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-stone-800">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-stone-800">
                       {recipeImage && (
                         <FadeImage src={recipeImage} alt="" className="h-full w-full object-contain" />
                       )}
                     </span>
-                    {recipe}
+                    <span className="flex-1 text-sm font-semibold text-stone-100 group-hover:text-orange-200">
+                      {recipe}
+                    </span>
+                    <ChevronRightIcon className="h-4 w-4 shrink-0 text-stone-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-orange-300" />
                   </button>
                 );
               })}
