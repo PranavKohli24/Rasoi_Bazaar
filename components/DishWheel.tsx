@@ -421,7 +421,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
               type="button"
               onClick={() => setActiveId(null)}
               aria-label="Back to the wheel"
-              className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/40 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
+              className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/30 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
             >
               ←
             </button>
@@ -455,11 +455,11 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                     key={recipe}
                     type="button"
                     onClick={() => onSelect(recipe)}
-                    className="dish-row-in group flex items-center gap-3 rounded-2xl border border-stone-700/70 bg-stone-950/40 px-3 py-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 active:scale-[0.98]"
+                    className="dish-row-in group flex items-center gap-4 rounded-2xl border border-stone-700/70 bg-stone-950/40 p-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 hover:bg-stone-950/60 active:scale-[0.98]"
                     style={{ animationDelay: `${120 + i * 55}ms`, perspective: "500px" }}
                   >
                     <span
-                      className="h-14 w-14 shrink-0 overflow-hidden rounded-xl transition-transform duration-200 ease-out group-hover:shadow-xl group-hover:shadow-black/40"
+                      className="h-20 w-20 shrink-0 overflow-hidden rounded-xl transition-transform duration-200 ease-out group-hover:shadow-xl group-hover:shadow-black/40"
                       style={{ transformStyle: "preserve-3d" }}
                     >
                       {recipeImage && (
@@ -470,8 +470,10 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                         />
                       )}
                     </span>
-                    <span className="flex-1 text-sm font-semibold text-stone-100 group-hover:text-orange-200">
-                      {recipe}
+                    <span className="flex-1 min-w-0">
+                      <span className="block text-sm font-semibold leading-snug text-stone-100 group-hover:text-orange-200 sm:text-base">
+                        {recipe}
+                      </span>
                     </span>
                     <ChevronRightIcon className="h-4 w-4 shrink-0 text-stone-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-orange-300" />
                   </button>
