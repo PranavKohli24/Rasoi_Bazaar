@@ -22,10 +22,23 @@ const DISHES: WheelDish[] = [
     ],
   },
   {
-    id: "burger",
-    label: "Burger",
+    id: "rice",
+    label: "Rice",
     recipes: [
-      "Burger",
+      "Plain Rice",
+      "Jeera Rice",
+      "Quick Vegetable Pulao",
+      "Matar Pulao",
+      "Lemon Rice (Chitranna)",
+      "Curd Rice (Thayir Sadam)",
+      "Veg Fried Rice",
+      "Khichdi",
+      "Rasam Rice",
+      "Sambar Chawal",
+      "Rajma Chawal",
+      "Chole Chawal",
+      "Kadhi Chawal",
+      "Pongal (Ven Pongal)",
     ],
   },
   {
@@ -70,6 +83,16 @@ const DISHES: WheelDish[] = [
       "Awadhi Biryani",
       "Thalassery Biryani",
       "Island Seafood Biryani",
+    ],
+  },
+  {
+    id: "shakes",
+    label: "Shakes",
+    recipes: [
+      "Vanilla Milkshake",
+      "Chocolate Milkshake",
+      "Strawberry Milkshake",
+      "Oreo Milkshake",
     ],
   },
   {
