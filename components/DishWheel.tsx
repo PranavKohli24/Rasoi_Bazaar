@@ -412,7 +412,8 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
             className="dish-panel-rise absolute inset-0 flex flex-col overflow-hidden rounded-[28px] bg-stone-900"
             style={{
               transformOrigin: `${originPct.x}% ${originPct.y}%`,
-              boxShadow: "0 20px 40px -24px rgba(0,0,0,0.55)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.07), inset 0 -26px 36px -30px rgba(0,0,0,0.6)",
             }}
           >
             {/* Back button stays fixed in place while everything beneath it scrolls */}
