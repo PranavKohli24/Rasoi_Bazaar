@@ -693,6 +693,7 @@ const MANUAL_ALIASES: Record<string, string> = {
   "dal chawal": "dal chawal",
   "dal rice": "dal chawal",
   "aloo sabzi": "aloo sabzi",
+  "aloo" : "aloo sabzi",
   "aloo ki sabzi": "aloo sabzi",
   "aloo samosa" : "samosa",
   "bread butter": "bread butter",

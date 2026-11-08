@@ -27,6 +27,12 @@ const dishImage = (id: string) => `/wheels/${id}.png`;
 const COUNT = DISHES.length;
 const STEP = 360 / COUNT;
 
+// Cards get proportionally smaller as more dishes are added (tuned so 8
+// dishes = full size, matching how it looked before). This is what actually
+// prevents touching/overlap — radius alone can't fix it once there are more
+// dishes sharing the same circle.
+const CARD_SCALE = Math.min(1, 45 / STEP);
+
 const AUTO_SPEED_DEG_PER_SEC = 6;
 const DRAG_SENSITIVITY = 0.35;
 const TAP_MOVE_THRESHOLD = 6;
@@ -172,7 +178,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
           <div className="relative h-full w-full" style={{ transformStyle: "preserve-3d" }}>
             {withOffsets.map(({ dish, offset }) => {
               const absOffset = Math.abs(offset);
-              const scale = 1 - Math.min(absOffset / 180, 1) * 0.42;
+              const scale = CARD_SCALE * (1 - Math.min(absOffset / 180, 1) * 0.42);
               const baseOpacity = 1 - Math.min(absOffset / 140, 1) * 0.6; // normal depth dimming, same as before
               const FADE_START = 95; // just past the usual ~90° edge of the 5-item window
               const FADE_END = 125; // fully gone by here
