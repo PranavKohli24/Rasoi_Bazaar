@@ -421,7 +421,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
               type="button"
               onClick={() => setActiveId(null)}
               aria-label="Back to the wheel"
-              className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/60 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
+              className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/40 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
             >
               ←
             </button>
