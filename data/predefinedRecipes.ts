@@ -21033,7 +21033,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "gobhi paratha": {
     "dishName": "Gobhi Paratha",
-    "image": "/dishes/aloo-paratha.webp",
+    "image": "/dishes/gobhi-paratha.webp",
     "description": "Whole-wheat flatbread stuffed with spiced grated cauliflower and cooked on a tawa.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -21149,7 +21149,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "mooli paratha": {
     "dishName": "Mooli Paratha",
-    "image": "/dishes/aloo-paratha.webp",
+    "image": "/dishes/mooli-paratha.webp",
     "description": "Whole-wheat flatbread stuffed with spiced grated radish and cooked on a tawa.",
     "prepTime": "Approx. 40 minutes",
     "equipment": [
@@ -26156,7 +26156,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "paneer paratha": {
   "dishName": "Paneer Paratha",
-  "image": "/dishes/aloo-paratha.webp",
+  "image": "/dishes/paneer-paratha.webp",
   "description": "Stuffed whole-wheat paratha filled with seasoned crumbled paneer and herbs.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [
@@ -26262,7 +26262,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "matar paratha": {
   "dishName": "Matar Paratha",
-  "image": "/dishes/aloo-paratha.webp",
+  "image": "/dishes/matar-paratha.webp",
   "description": "Stuffed wheat paratha filled with spiced green peas, ginger and coriander.",
   "prepTime": "Approx. 40 minutes",
   "equipment": [

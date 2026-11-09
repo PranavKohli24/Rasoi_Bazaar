@@ -172,8 +172,7 @@ const DISHES: WheelDish[] = [
       "Sattu Paratha",
       "Cheese Paratha",
       "Onion Paratha (Pyaz Paratha)",
-      "Anda Paratha",
-      "Mughlai Paratha",
+      "Anda Paratha"
     ],
   },
 ];
