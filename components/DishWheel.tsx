@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { findPredefinedRecipe } from "../utils/findPredefinedRecipe";
+import { getDishTint, DEFAULT_TINT } from "../utils/dishTint";
+import { Recipe } from "../types";
 import SectionDivider from "./SectionDivider";
 
 interface WheelDish {
@@ -264,14 +266,18 @@ const FadeImage: React.FC<{ src: string; alt: string; className?: string }> = ({
 // Same as FadeImage, but with a tinted shimmer placeholder underneath while
 // the image is loading — used for recipe/dish photos (hero + recipe rows),
 // not the spinning wheel cards.
-const ShimmerImage: React.FC<{ src: string; alt: string; className?: string }> = ({
+const ShimmerImage: React.FC<{ src: string; alt: string; className?: string; tint?: string }> = ({
   src,
   alt,
   className,
+  tint,
 }) => {
   const [loaded, setLoaded] = useState(false);
   return (
-    <span className="relative block h-full w-full overflow-hidden">
+    <span
+      className="relative block h-full w-full overflow-hidden"
+      style={tint ? ({ "--bg-tint": tint } as React.CSSProperties) : undefined}
+    >
       <span
         aria-hidden="true"
         className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-500 ${
@@ -300,6 +306,70 @@ const ChevronRightIcon: React.FC<{ className?: string }> = ({ className }) => (
     <path d="m9 18 6-6-6-6" />
   </svg>
 );
+
+// Resolves a recipe's own background tint for use as its shimmer-
+// placeholder color. Local to this component — unlike useDishTint, it
+// does NOT set the global --bg-tint on <html>, since many of these
+// thumbnails can be on screen at once, each needing its own color.
+const useLocalDishTint = (recipe: Recipe | null | undefined): string => {
+  const [tint, setTint] = useState(DEFAULT_TINT);
+  useEffect(() => {
+    if (!recipe) {
+      setTint(DEFAULT_TINT);
+      return;
+    }
+    let cancelled = false;
+    getDishTint(recipe).then((resolved) => {
+      if (!cancelled) setTint(resolved);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [recipe]);
+  return tint;
+};
+
+// One recipe row, as its own component so each row can resolve and hold
+// its own tint color independently (hooks can't be called per-iteration
+// inside .map() directly).
+const RecipeRow: React.FC<{ recipe: string; index: number; onSelect: (dish: string) => void }> = ({
+  recipe,
+  index,
+  onSelect,
+}) => {
+  const predefined = findPredefinedRecipe(recipe);
+  const recipeImage = predefined?.image;
+  const tint = useLocalDishTint(predefined ?? null);
+
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(recipe)}
+      className="dish-row-in group flex items-center gap-4 rounded-2xl border border-stone-700/70 bg-stone-950/40 p-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 hover:bg-stone-950/60 active:scale-[0.98]"
+      style={{ animationDelay: `${120 + index * 55}ms`, perspective: "500px" }}
+    >
+      <span
+        className="h-20 w-20 shrink-0 overflow-hidden rounded-xl transition-transform duration-200 ease-out group-hover:shadow-xl group-hover:shadow-black/40"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {recipeImage && (
+          <ShimmerImage
+            src={recipeImage}
+            alt=""
+            tint={tint}
+            className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-110"
+          />
+        )}
+      </span>
+      <span className="flex-1 min-w-0">
+        <span className="block text-sm font-semibold leading-snug text-stone-100 group-hover:text-orange-200 sm:text-base">
+          {recipe}
+        </span>
+      </span>
+      <ChevronRightIcon className="h-4 w-4 shrink-0 text-stone-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-orange-300" />
+    </button>
+  );
+};
 
 interface DishWheelProps {
   onSelect: (dish: string) => void;
@@ -530,37 +600,9 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
               </div>
 
               <div className="flex flex-col gap-2 p-3 sm:p-4">
-                {activeDish.recipes.map((recipe, i) => {
-                const recipeImage = findPredefinedRecipe(recipe)?.image;
-                return (
-                  <button
-                    key={recipe}
-                    type="button"
-                    onClick={() => onSelect(recipe)}
-                    className="dish-row-in group flex items-center gap-4 rounded-2xl border border-stone-700/70 bg-stone-950/40 p-2.5 text-left transition-colors duration-200 hover:border-orange-400/60 hover:bg-stone-950/60 active:scale-[0.98]"
-                    style={{ animationDelay: `${120 + i * 55}ms`, perspective: "500px" }}
-                  >
-                    <span
-                      className="h-20 w-20 shrink-0 overflow-hidden rounded-xl transition-transform duration-200 ease-out group-hover:shadow-xl group-hover:shadow-black/40"
-                      style={{ transformStyle: "preserve-3d" }}
-                    >
-                      {recipeImage && (
-                        <ShimmerImage
-                          src={recipeImage}
-                          alt=""
-                          className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-110"
-                        />
-                      )}
-                    </span>
-                    <span className="flex-1 min-w-0">
-                      <span className="block text-sm font-semibold leading-snug text-stone-100 group-hover:text-orange-200 sm:text-base">
-                        {recipe}
-                      </span>
-                    </span>
-                    <ChevronRightIcon className="h-4 w-4 shrink-0 text-stone-500 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-orange-300" />
-                  </button>
-                );
-              })}
+                {activeDish.recipes.map((recipe, i) => (
+                  <RecipeRow key={recipe} recipe={recipe} index={i} onSelect={onSelect} />
+                ))}
               </div>
             </div>
           </div>
