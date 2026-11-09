@@ -219,6 +219,31 @@ const WHEEL_ANIMATION_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .dish-panel-rise, .dish-row-in { animation: none; }
 }
+
+.dish-image-shimmer {
+  background: var(--bg-tint, #FFF8F1);
+  transition: opacity 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dish-image-shimmer__glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 25%,
+    rgba(255, 254, 250, 0.15) 35%,
+    rgba(255, 254, 250, 0.75) 48%,
+    rgba(255, 254, 250, 0.15) 61%,
+    transparent 72%
+  );
+  transform: translateX(-100%);
+  animation: dish-shimmer-sweep 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes dish-shimmer-sweep {
+  to { transform: translateX(100%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dish-image-shimmer__glow { animation: none; opacity: 0.35; }
+}
 `;
 
 const FadeImage: React.FC<{ src: string; alt: string; className?: string }> = ({ src, alt, className }) => {
@@ -233,6 +258,40 @@ const FadeImage: React.FC<{ src: string; alt: string; className?: string }> = ({
       onLoad={() => setLoaded(true)}
       className={`${className ?? ""} transition-opacity duration-500 ease-out ${loaded ? "opacity-100" : "opacity-0"}`}
     />
+  );
+};
+
+// Same as FadeImage, but with a tinted shimmer placeholder underneath while
+// the image is loading — used for recipe/dish photos (hero + recipe rows),
+// not the spinning wheel cards.
+const ShimmerImage: React.FC<{ src: string; alt: string; className?: string }> = ({
+  src,
+  alt,
+  className,
+}) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <span className="relative block h-full w-full overflow-hidden">
+      <span
+        aria-hidden="true"
+        className={`dish-image-shimmer absolute inset-0 overflow-hidden transition-opacity duration-500 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <span className="dish-image-shimmer__glow" />
+      </span>
+      <img
+        src={src}
+        alt={alt}
+        loading="eager"
+        decoding="async"
+        draggable={false}
+        onLoad={() => setLoaded(true)}
+        className={`${className ?? ""} transition-opacity duration-500 ease-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </span>
   );
 };
 
@@ -452,7 +511,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
             {/* Hero banner + recipe list now scroll together as one unit */}
             <div className="flex flex-1 flex-col overflow-y-auto">
               <div className="relative h-44 w-full shrink-0 sm:h-52">
-                <FadeImage
+                <ShimmerImage
                   src={dishImage(activeDish.id)}
                   alt=""
                   className="h-full w-full object-cover"
@@ -486,7 +545,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
                       style={{ transformStyle: "preserve-3d" }}
                     >
                       {recipeImage && (
-                        <FadeImage
+                        <ShimmerImage
                           src={recipeImage}
                           alt=""
                           className="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-110"
