@@ -16071,6 +16071,450 @@ export const predefinedRecipes: Record<string, Recipe> = {
       "fat": 8
     }
   },
+  "shahi chaap": {
+    "dishName": "Shahi Chaap",
+    "image": "/dishes/shahi-chaap.webp",
+    "description": "Soya chaap cooked in a smooth, creamy cashew and onion-tomato gravy with mild Indian spices.",
+    "prepTime": "Approx. 40 minutes",
+    "equipment": [
+      {
+        "item": "grinder",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Soya Chaap",
+        "englishName": "soya chaap, prepared and cut into bite-sized pieces"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, roughly chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, roughly chopped"
+      },
+      {
+        "amount": "12",
+        "commonName": "Kaju",
+        "englishName": "cashews, soaked in warm water for 10 minutes"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kashmiri Lal Mirch Powder",
+        "englishName": "Kashmiri red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Fresh Cream",
+        "englishName": "fresh cream"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kasuri Methi",
+        "englishName": "dried fenugreek leaves"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Paani",
+        "englishName": "water, plus extra if needed"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Prepare the soya chaap according to the package instructions. Remove any wooden sticks, rinse and drain well. Cut into bite-sized pieces."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat 1 tablespoon oil in a kadai. Add the chaap pieces and shallow-fry for 4 to 5 minutes, turning occasionally, until lightly golden. Remove and keep aside."
+      },
+      {
+        "step": 3,
+        "instruction": "In the same kadai, add the chopped onion, tomato and a splash of water. Cook for 6 to 8 minutes until both become soft. Turn off the heat and let them cool slightly."
+      },
+      {
+        "step": 4,
+        "instruction": "Transfer the cooked onion and tomato to a grinder. Add the soaked cashews and a little water. Grind into a smooth paste."
+      },
+      {
+        "step": 5,
+        "instruction": "Heat the remaining oil in the kadai. Add cumin seeds and let them sizzle. Add ginger-garlic paste and cook for 30 seconds."
+      },
+      {
+        "step": 6,
+        "instruction": "Add the ground paste, turmeric, coriander powder, Kashmiri chilli powder and salt. Mix well and cook for 4 to 5 minutes, stirring regularly."
+      },
+      {
+        "step": 7,
+        "instruction": "Add water and bring the gravy to a gentle boil. Add the fried chaap, cover and cook on low heat for 5 to 7 minutes."
+      },
+      {
+        "step": 8,
+        "instruction": "Lower the heat. Add fresh cream, garam masala and crushed kasuri methi. Mix gently and cook for another 1 to 2 minutes."
+      },
+      {
+        "step": 9,
+        "instruction": "Garnish with chopped coriander and serve hot with naan, roti or rice.",
+        "tip": {
+          "title": "Keep it creamy",
+          "content": "After adding the cream, keep the heat low and avoid boiling the gravy rapidly."
+        }
+      }
+    ],
+    "notes": [
+      "Adjust the amount of water depending on how thick you want the gravy.",
+      "For a richer taste, add a little extra cream before serving.",
+      "Follow the cooking instructions on the soya chaap package, as preparation can differ between brands."
+    ]
+  },
+
+  "kadai chaap": {
+    "dishName": "Kadai Chaap",
+    "image": "/dishes/kadai-chaap.webp",
+    "description": "Soya chaap cooked in a spicy onion-tomato masala with capsicum and chunky onions, finished with aromatic Indian spices.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Soya Chaap",
+        "englishName": "soya chaap, prepared and cut into bite-sized pieces"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, finely chopped"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Pyaaz",
+        "englishName": "onion, cut into square pieces"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Shimla Mirch",
+        "englishName": "green capsicum, cut into square pieces"
+      },
+      {
+        "amount": "2 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomatoes, finely chopped"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "cumin powder"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kashmiri Lal Mirch Powder",
+        "englishName": "Kashmiri red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Kasuri Methi",
+        "englishName": "dried fenugreek leaves"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Paani",
+        "englishName": "water, plus extra if needed"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Prepare the soya chaap according to the package instructions. Remove any wooden sticks, rinse and drain well. Cut into bite-sized pieces."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat 1 tablespoon oil in a kadai. Add the chaap and shallow-fry for 4 to 5 minutes, turning occasionally, until lightly golden. Remove and keep aside."
+      },
+      {
+        "step": 3,
+        "instruction": "In the same kadai, add the onion squares and capsicum. Cook on medium-high heat for 2 to 3 minutes until slightly soft but still crunchy. Remove and keep aside."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the remaining oil and cumin seeds to the kadai. Once they sizzle, add the finely chopped onion and cook until light golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic paste and cook for 30 seconds. Add the chopped tomatoes, turmeric, coriander powder, cumin powder, Kashmiri chilli powder and salt."
+      },
+      {
+        "step": 6,
+        "instruction": "Cook for 5 to 6 minutes, stirring regularly, until the tomatoes become soft and the masala thickens."
+      },
+      {
+        "step": 7,
+        "instruction": "Add water and the fried chaap. Mix well, cover and cook on low heat for 5 to 6 minutes."
+      },
+      {
+        "step": 8,
+        "instruction": "Add the cooked onion squares and capsicum. Mix gently and cook uncovered for another 2 to 3 minutes."
+      },
+      {
+        "step": 9,
+        "instruction": "Add garam masala and crushed kasuri methi. Mix well, garnish with coriander and serve hot with roti, naan or paratha.",
+        "tip": {
+          "title": "Keep the capsicum crunchy",
+          "content": "Cook the capsicum and onion squares separately and add them near the end. This gives kadai chaap its classic chunky texture."
+        }
+      }
+    ],
+    "notes": [
+      "Do not overcook the capsicum. It should remain slightly crunchy.",
+      "Adjust the water to get a thick or slightly gravy-like consistency.",
+      "Follow the cooking instructions on the soya chaap package, as preparation can differ between brands."
+    ]
+  },
+
+  "chaap do pyaza": {
+    "dishName": "Chaap Do Pyaza",
+    "image": "/dishes/chaap-do-pyaza.webp",
+    "description": "Tender soya chaap cooked in a flavourful onion-tomato gravy with golden onion petals and Indian spices.",
+    "prepTime": "Approx. 35 minutes",
+    "equipment": [
+      {
+        "item": "kadai",
+        "isSpecialized": false,
+        "alternative": null
+      },
+      {
+        "item": "stove",
+        "isSpecialized": false,
+        "alternative": null
+      }
+    ],
+    "ingredients": [
+      {
+        "amount": "400 g",
+        "commonName": "Soya Chaap",
+        "englishName": "soya chaap, prepared and cut into bite-sized pieces"
+      },
+      {
+        "amount": "2 large",
+        "commonName": "Pyaaz",
+        "englishName": "onions, one finely chopped and one cut into petals"
+      },
+      {
+        "amount": "1 medium",
+        "commonName": "Tamatar",
+        "englishName": "tomato, finely chopped"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Tel",
+        "englishName": "cooking oil"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera",
+        "englishName": "cumin seeds"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Adrak-Lehsun Paste",
+        "englishName": "ginger-garlic paste"
+      },
+      {
+        "amount": "1/4 tsp",
+        "commonName": "Haldi",
+        "englishName": "turmeric powder"
+      },
+      {
+        "amount": "1 tsp",
+        "commonName": "Dhaniya Powder",
+        "englishName": "coriander powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Jeera Powder",
+        "englishName": "cumin powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Lal Mirch Powder",
+        "englishName": "red chilli powder"
+      },
+      {
+        "amount": "1/2 tsp",
+        "commonName": "Garam Masala",
+        "englishName": "garam masala"
+      },
+      {
+        "amount": "1/2 cup",
+        "commonName": "Paani",
+        "englishName": "water, plus extra if needed"
+      },
+      {
+        "amount": "to taste",
+        "commonName": "Namak",
+        "englishName": "salt"
+      },
+      {
+        "amount": "2 tbsp",
+        "commonName": "Hara Dhaniya",
+        "englishName": "chopped coriander leaves"
+      }
+    ],
+    "method": [
+      {
+        "step": 1,
+        "instruction": "Prepare the soya chaap according to the package instructions. Remove any wooden sticks, rinse and drain well. Cut into bite-sized pieces."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat 1 tablespoon oil in a kadai. Add the chaap pieces and shallow-fry for 4 to 5 minutes, turning occasionally, until lightly golden. Remove and keep aside."
+      },
+      {
+        "step": 3,
+        "instruction": "Add the remaining oil to the same kadai. Add the onion petals and cook for 2 to 3 minutes until their edges turn lightly golden. Remove and keep aside."
+      },
+      {
+        "step": 4,
+        "instruction": "Add cumin seeds to the kadai. Once they sizzle, add the finely chopped onion and cook for 5 to 6 minutes until golden."
+      },
+      {
+        "step": 5,
+        "instruction": "Add ginger-garlic paste and cook for 30 seconds. Add chopped tomato, turmeric, coriander powder, cumin powder, red chilli powder and salt."
+      },
+      {
+        "step": 6,
+        "instruction": "Cook for 4 to 5 minutes until the tomato becomes soft and the masala thickens."
+      },
+      {
+        "step": 7,
+        "instruction": "Add the fried chaap and water. Mix well, cover and cook on low heat for 6 to 8 minutes until the chaap absorbs the gravy."
+      },
+      {
+        "step": 8,
+        "instruction": "Add the fried onion petals and garam masala. Mix gently and cook uncovered for another 2 minutes."
+      },
+      {
+        "step": 9,
+        "instruction": "Garnish with chopped coriander and serve hot with roti, naan or paratha.",
+        "tip": {
+          "title": "The do pyaza touch",
+          "content": "Add the onion petals towards the end instead of cooking them into the gravy. This gives the dish its signature sweet onion pieces and texture."
+        }
+      }
+    ],
+    "notes": [
+      "Do pyaza uses onions in two ways: finely chopped onions for the gravy and onion petals for the final dish.",
+      "Do not overcook the onion petals. They should retain their shape.",
+      "Follow the cooking instructions on the soya chaap package, as preparation can differ between brands."
+    ]
+  },
+
   "papdi chaat": {
     "dishName": "Papdi Chaat",
     "image": "/dishes/papdi-chaat.webp",

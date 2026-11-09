@@ -442,6 +442,27 @@ const MANUAL_ALIASES: Record<string, string> = {
   "soya chaap": "soya chaap",
   "soya chaap masala": "soya chaap",
   "soy chaap": "soya chaap",
+  "chaap curry": "soya chaap",
+  "chaap sabzi": "soya chaap",
+  "soya chaap curry": "soya chaap",
+  "soya chaap sabzi": "soya chaap",
+
+  // Shahi Chaap
+  "shahi soya chaap": "shahi chaap",
+  "soya shahi chaap": "shahi chaap",
+  "shahi chaap masala": "shahi chaap",
+
+  // Kadai Chaap
+  "kadhai chaap": "kadai chaap",
+  "karahi chaap": "kadai chaap",
+  "kadai soya chaap": "kadai chaap",
+
+  // Chaap Do Pyaza
+  "do pyaza chaap": "chaap do pyaza",
+  "soya chaap do pyaza": "chaap do pyaza",
+  "chaap do piaza": "chaap do pyaza",
+  "chaap dupyaza": "chaap do pyaza",
+
   "papdi chaat": "papdi chaat",
   "papri chaat": "papdi chaat",
   "papdi chat": "papdi chaat",
