@@ -21,14 +21,14 @@ interface EquipmentItem {
 }
 
 const equipmentItems: EquipmentItem[] = [
-  { id: 'microwave', name: 'Microwave', label: 'Microwave', src: '/kitchen/microwave.webp', left: 0, top: 13, width: 20, zIndex: 20, naturalWidth: 600, naturalHeight: 400 },
-  { id: 'air-fryer', name: 'Air Fryer', label: 'Air Fryer', src: '/kitchen/air_fryer.webp', left: 63, top: 17, width: 11, zIndex: 20, naturalWidth: 600, naturalHeight: 500 },
-  { id: 'grinder', name: 'Mixer / Grinder', label: 'Mixer / Grinder', src: '/kitchen/grinder.webp', left: 78, top: 12, width: 15, zIndex: 20, naturalWidth: 600, naturalHeight: 500 },
-  { id: 'stove', name: 'Gas Stove', label: 'Gas Stove', src: '/kitchen/stove.webp', left: 37, top: 27, width: 23, zIndex: 15, naturalWidth: 600, naturalHeight: 400 },
-  { id: 'kadai', name: 'Kadai', label: 'Kadai', src: '/kitchen/kadai.webp', left: 4, top: 34, width: 12, zIndex: 30, naturalWidth: 600, naturalHeight: 400 },
-  { id: 'tawa', name: 'Tawa', label: 'Tawa', src: '/kitchen/tawa.webp', left: 63, top: 38, width: 15, zIndex: 30, naturalWidth: 600, naturalHeight: 200 },
-  { id: 'oven', name: 'Oven', label: 'Oven', src: '/kitchen/oven.webp', left: 70, top: 45, width: 18, zIndex: 12, naturalWidth: 600, naturalHeight: 500 },
-  { id: 'pressure-cooker', name: 'Cooker', label: 'Cooker', src: '/kitchen/cooker.webp', left: 22, top: 34, width: 12, zIndex: 25, naturalWidth: 600, naturalHeight: 400 },
+  { id: 'microwave', name: 'Microwave', label: 'Microwave', src: '/kitchen/microwave.webp', left: 17, top: 23, width: 18, zIndex: 20, naturalWidth: 600, naturalHeight: 400 },
+  { id: 'air-fryer', name: 'Air Fryer', label: 'Air Fryer', src: '/kitchen/air_fryer.webp', left: 63, top: 27, width: 10, zIndex: 20, naturalWidth: 600, naturalHeight: 500 },
+  { id: 'grinder', name: 'Mixer / Grinder', label: 'Mixer / Grinder', src: '/kitchen/grinder.webp', left: 78, top: 21, width: 14, zIndex: 20, naturalWidth: 600, naturalHeight: 500 },
+  { id: 'stove', name: 'Gas Stove', label: 'Gas Stove', src: '/kitchen/stove.webp', left: 39, top: 48, width: 22, zIndex: 15, naturalWidth: 600, naturalHeight: 400 },
+  { id: 'kadai', name: 'Kadai', label: 'Kadai', src: '/kitchen/kadai.webp', left: 4, top: 62, width: 12, zIndex: 30, naturalWidth: 600, naturalHeight: 400 },
+  { id: 'tawa', name: 'Tawa', label: 'Tawa', src: '/kitchen/tawa.webp', left: 66, top: 59, width: 15, zIndex: 30, naturalWidth: 600, naturalHeight: 200 },
+  { id: 'oven', name: 'Oven', label: 'Oven', src: '/kitchen/oven.webp', left: 76, top: 68, width: 20, zIndex: 12, naturalWidth: 600, naturalHeight: 500 },
+  { id: 'pressure-cooker', name: 'Cooker', label: 'Cooker', src: '/kitchen/cooker.webp', left: 22, top: 54, width: 12, zIndex: 25, naturalWidth: 600, naturalHeight: 400 },
 ];
 
 export const EQUIPMENT_NAMES = equipmentItems.map((item) => item.name);
@@ -68,7 +68,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
         <div className="relative aspect-[3/2] w-full origin-center scale-[1.12]">
           <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700 bg-stone-800 shadow-lg">
             <img
-              src="/kitchen/kitchen.webp"
+              src="/kitchen/kitchen.png"
               alt="Kitchen"
               loading="eager"
               decoding="async"
