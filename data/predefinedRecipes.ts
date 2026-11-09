@@ -6665,7 +6665,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "pasta (indian masala pasta)": {
     "dishName": "Pasta (Indian Masala Pasta)",
-    "image": "/dishes/red-sauce-pasta.webp",
+    "image": "/dishes/indian-pasta.webp",
     "description": "Desi-style red sauce pasta with onion, capsicum and a little garam masala.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [
@@ -10179,7 +10179,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "cheese sandwich": {
     "dishName": "Cheese Sandwich",
-    "image": "/dishes/veg-sandwich.webp",
+    "image": "/dishes/cheese-sandwich.webp",
     "description": "A simple toasted sandwich filled with melted cheese, onion, capsicum and mild seasoning.",
     "prepTime": "Approx. 15 minutes",
     "equipment": [
@@ -14270,7 +14270,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "matar pulao": {
     "dishName": "Matar Pulao",
-    "image": "/dishes/veg-pulao.webp",
+    "image": "/dishes/matar-pulao.webp",
     "description": "A fragrant one-pot basmati rice dish with green peas and whole spices, easy.",
     "prepTime": "Approx. 35 minutes (plus 15 minutes soaking)",
     "equipment": [
@@ -53487,7 +53487,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
 
   "club sandwich": {
     "dishName": "Club Sandwich",
-    "image": "/dishes/veg-sandwich.webp",
+    "image": "/dishes/club-sandwich.webp",
     "description": "A hearty, layered grilled sandwich with vegetables, cheese and a tangy mint-mayo spread, tawa-grilled.",
     "prepTime": "Approx. 20 minutes",
     "equipment": [
