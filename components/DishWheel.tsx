@@ -273,6 +273,15 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
     });
   }, []);
 
+  // Browser/hardware back closes the open card instead of leaving the page.
+  useEffect(() => {
+    const onPopState = () => {
+      setActiveId(null);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
   useEffect(() => {
     const el = sceneRef.current;
     if (!el) return;
@@ -337,9 +346,17 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
         y: ((cardRect.top + cardRect.height / 2 - sceneRect.top) / sceneRect.height) * 100,
       });
     }
+    // Push a dummy history entry so a browser/hardware back press closes
+    // the card (via the popstate listener above) instead of navigating away.
+    window.history.pushState({ dishPanel: true }, "");
     setActiveId(dishId);
   };
 
+  const closeDish = () => {
+    // Pops the entry pushed in openDish; this fires popstate, which sets
+    // activeId back to null for us, so this and the browser back stay in sync.
+    window.history.back();
+  };
   // All dishes are always in the DOM; the ones outside the front ~5-wide
   // window simply fade to opacity 0 as they rotate out, instead of being
   // filtered out of the list (which caused a sudden pop).
@@ -425,7 +442,7 @@ const DishWheel: React.FC<DishWheelProps> = ({ onSelect }) => {
             {/* Back button stays fixed in place while everything beneath it scrolls */}
             <button
               type="button"
-              onClick={() => setActiveId(null)}
+              onClick={closeDish}
               aria-label="Back to the wheel"
               className="absolute left-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-900/30 text-stone-100 backdrop-blur transition-colors hover:bg-stone-900/85 active:scale-95"
             >
