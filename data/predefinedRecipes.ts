@@ -3795,7 +3795,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "masala dosa": {
     "dishName": "Masala Dosa",
-    "image": "/dishes/plain-dosa.webp",
+    "image": "/dishes/masala-dosa.webp",
     "description": "A crisp, golden fermented rice-and-lentil crepe, filled with a lightly spiced potato masala.",
     "prepTime": "Approx. 45 minutes (plus 8–12 hours fermentation)",
     "equipment": [
@@ -13613,7 +13613,7 @@ export const predefinedRecipes: Record<string, Recipe> = {
   },
   "moong dal": {
     "dishName": "Moong Dal",
-    "image": "/dishes/toor-dal.webp",
+    "image": "/dishes/moong-dal.webp",
     "description": "A quick yellow moong dal with a simple cumin-garlic tadka, perfect for rice or roti.",
     "prepTime": "Approx. 25 minutes",
     "equipment": [

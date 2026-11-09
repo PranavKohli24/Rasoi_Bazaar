@@ -15,10 +15,13 @@ const DISHES: WheelDish[] = [
     recipes: [
       "Dal Tadka",
       "Dal Makhani",
-      "Dal Fry",
+      "Toor Dal",
+      "Chole masala",
       "Chana Dal (Chana Dal Tadka)",
       "Dal Palak",
       "Moong Dal",
+      "Masoor Dal",
+      "Lauki Chana Dal"
     ],
   },
   {
