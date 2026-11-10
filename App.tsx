@@ -41,6 +41,11 @@ const ScrollToTop: React.FC = () => {
 const App: React.FC = () => {
   return (
     <div className="flex min-h-screen flex-col font-sans text-stone-200 selection:bg-orange-500/25">
+
+      <div className="splash-screen" aria-hidden="true">
+        <span className="splash-wordmark">Rasoi Bazaar</span>
+      </div>
+
       <ScrollToTop />
       <FoodBackground />
 
