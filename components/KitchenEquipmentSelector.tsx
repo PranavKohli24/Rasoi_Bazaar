@@ -108,10 +108,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
               >
                 {/* Selection ring — only once this item's own icon has loaded */}
                 <span
-                  className={`pointer-events-none absolute inset-[-6%] rounded-2xl border-2 transition-all duration-300 ${
+                  className={`pointer-events-none absolute inset-[-6%] rounded-2xl transition-all duration-200 ${
                     selected
-                      ? 'border-orange-400 bg-orange-400/15 shadow-[0_0_24px_rgba(252,108,38,0.6)]'
-                      : 'border-transparent'
+                      ? 'ring-4 ring-orange-400 bg-orange-400/15'
+                      : 'ring-0'
                   }`}
                 />
 
@@ -186,7 +186,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   }}
                   className={`relative flex h-full w-full select-none items-center gap-2 rounded-xl border px-2.5 py-2.5 text-left text-[13px] font-medium leading-tight transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/70 sm:gap-2.5 sm:px-3 sm:text-sm ${
                     selected
-                      ? 'border-orange-400 bg-orange-400/10 text-stone-100'
+                      ? 'border-transparent ring-4 ring-orange-400 bg-orange-400/10 text-stone-100'
                       : 'border-stone-700 bg-stone-900 text-stone-300 hover:border-orange-300/70 hover:text-stone-100'
                   }`}
                 >
