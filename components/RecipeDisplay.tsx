@@ -592,9 +592,9 @@ const STEP_ANIMATION_CSS = `
   pointer-events: none;
 }
 .glass-switch-track.is-off {
-  background: #E9E5DC; 
-  border-color: rgba(43, 26, 12, 0.1);
-  box-shadow: inset 0 1.5px 3px rgba(43, 26, 12, 0.18);
+  background: #BDB8AD;
+  border-color: rgba(43, 26, 12, 0.16);
+  box-shadow: inset 0 1.5px 3px rgba(43, 26, 12, 0.22);
 }
 .glass-switch-track.is-on {
   background: linear-gradient(180deg, #FF8A3D 0%, #FC6C26 100%); 
