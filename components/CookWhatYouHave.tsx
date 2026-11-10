@@ -731,6 +731,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const pantryHeadingRef = useRef<HTMLHeadingElement>(null);
   const equipmentHeadingRef = useRef<HTMLDivElement>(null);
+const dishesHeadingRef = useRef<HTMLHeadingElement>(null);
   const equipmentScrollRef = useRef<HTMLDivElement>(null);
   const [equipmentCanScrollRight, setEquipmentCanScrollRight] = useState(false);
 
@@ -811,7 +812,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
       return;
     }
 
-    if (step === 2) return; // handled by the "Next: ingredients" button's own scroll
+    if (step === 2 || step === 3) return; // both handled by their own trigger's scroll
 
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -985,6 +986,9 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
     setResultSource("predefined");
     setIsLoading(true);
     setStep(3);
+    window.setTimeout(() => {
+      dishesHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
 
     try {
       const response = await findRecipesFromIngredients(
@@ -1455,7 +1459,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
               <div className="flex items-center gap-4">
                 <SteamingPot />
                 <div>
-                  <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                  <h3 ref={dishesHeadingRef} className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
                     Finding dishes you can make…
                   </h3>
                   <p className="mt-1 text-sm text-stone-400">
@@ -1480,7 +1484,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                 role="alert"
                 className="rounded-2xl border border-orange-400/30 bg-[#FFE3C2]/60 p-5 sm:p-6"
               >
-                <h3 className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                <h3 ref={dishesHeadingRef} className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
                   Couldn&apos;t find dishes this time
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
@@ -1508,7 +1512,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
               <div>
-                <h3 className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+                <h3 ref={dishesHeadingRef} className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
                   You can make {results.length === 1 ? "this" : "these"}
                 </h3>
                 <p className="mt-1.5 text-sm text-stone-400">
