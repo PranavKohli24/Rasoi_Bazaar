@@ -187,7 +187,7 @@ const DISHES: WheelDish[] = [
 ];
 
 // Category thumbnails live at /public/wheels/<id>.png
-const dishImage = (id: string) => `/wheels/${id}.png`;
+const dishImage = (id: string) => `/wheels/${id}.webp`;
 
 const COUNT = DISHES.length;
 const STEP = 360 / COUNT;
