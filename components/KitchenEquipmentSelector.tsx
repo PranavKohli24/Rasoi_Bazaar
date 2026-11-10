@@ -28,7 +28,7 @@ const equipmentItems: EquipmentItem[] = [
   { id: 'kadai', name: 'Kadai', label: 'Kadai', src: '/kitchen/kadai.webp', left: 4, top: 62, width: 12, zIndex: 30, naturalWidth: 600, naturalHeight: 400 },
   { id: 'tawa', name: 'Tawa', label: 'Tawa', src: '/kitchen/tawa.webp', left: 66, top: 59, width: 15, zIndex: 30, naturalWidth: 600, naturalHeight: 200 },
   { id: 'oven', name: 'Oven', label: 'Oven', src: '/kitchen/oven.webp', left: 76, top: 68, width: 20, zIndex: 12, naturalWidth: 600, naturalHeight: 500 },
-  { id: 'pressure-cooker', name: 'Cooker', label: 'Cooker', src: '/kitchen/cooker.webp', left: 22, top: 54, width: 12, zIndex: 25, naturalWidth: 600, naturalHeight: 400 },
+  { id: 'pressure-cooker', name: 'Cooker', label: 'Cooker', src: '/kitchen/cooker.webp', left: 21, top: 52, width: 14, zIndex: 25, naturalWidth: 600, naturalHeight: 400 },
 ];
 
 export const EQUIPMENT_NAMES = equipmentItems.map((item) => item.name);
