@@ -68,7 +68,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
         <div className="relative aspect-[3/2] w-full origin-center scale-[1.12]">
           <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700 bg-stone-800 shadow-lg">
             <img
-              src="/kitchen/kitchen.png"
+              src="/kitchen/kitchen.webp"
               alt="Kitchen"
               loading="eager"
               decoding="async"
