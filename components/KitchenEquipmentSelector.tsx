@@ -74,8 +74,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
               decoding="async"
               {...{ fetchpriority: "high" }}
               onLoad={() => setKitchenLoaded(true)}
-              className="absolute inset-0 h-full w-full object-cover"
+              onContextMenu={(e) => e.preventDefault()}
+              className="absolute inset-0 h-full w-full select-none object-cover"
               draggable={false}
+              style={{ WebkitTouchCallout: "none", WebkitUserSelect: "none" }}
             />
           </div>
 
