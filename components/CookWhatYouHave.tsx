@@ -1578,7 +1578,7 @@ const CookWhatYouHave: React.FC<CookWhatYouHaveProps> = ({
                         onClick={() => onSelectDish(recipe.dishName)}
                         className={`${footerButton} mt-4 w-full sm:w-auto`}
                       >
-                        Get the recipe
+                        Let's Cook
                       </button>
                     </article>
                   );
