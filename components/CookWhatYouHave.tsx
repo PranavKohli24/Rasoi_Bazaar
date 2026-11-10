@@ -1459,7 +1459,7 @@ const dishesHeadingRef = useRef<HTMLHeadingElement>(null);
               <div className="flex items-center gap-4">
                 <SteamingPot />
                 <div>
-                  <h3 ref={dishesHeadingRef} className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                  <h3 ref={dishesHeadingRef} className="scroll-mt-4 font-serif text-xl font-black text-orange-50 sm:scroll-mt-10 sm:text-2xl">
                     Finding dishes you can make…
                   </h3>
                   <p className="mt-1 text-sm text-stone-400">
@@ -1484,7 +1484,7 @@ const dishesHeadingRef = useRef<HTMLHeadingElement>(null);
                 role="alert"
                 className="rounded-2xl border border-orange-400/30 bg-[#FFE3C2]/60 p-5 sm:p-6"
               >
-                <h3 ref={dishesHeadingRef} className="font-serif text-xl font-black text-orange-50 sm:text-2xl">
+                <h3 ref={dishesHeadingRef} className="scroll-mt-4 font-serif text-xl font-black text-orange-50 sm:scroll-mt-10 sm:text-2xl">
                   Couldn&apos;t find dishes this time
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-stone-300 sm:text-base">
@@ -1512,7 +1512,7 @@ const dishesHeadingRef = useRef<HTMLHeadingElement>(null);
           <div className="px-5 pb-8 pt-8 sm:px-12 sm:pb-12 sm:pt-10">
             <div className="mx-auto max-w-3xl">
               <div>
-                <h3 ref={dishesHeadingRef} className="font-serif text-2xl font-black text-orange-50 sm:text-3xl">
+                <h3 ref={dishesHeadingRef} className="scroll-mt-4 font-serif text-2xl font-black text-orange-50 sm:scroll-mt-10 sm:text-3xl">
                   You can make {results.length === 1 ? "this" : "these"}
                 </h3>
                 <p className="mt-1.5 text-sm text-stone-400">
