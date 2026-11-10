@@ -1093,87 +1093,85 @@ const dishesHeadingRef = useRef<HTMLHeadingElement>(null);
 
         <div className="border-t border-stone-700" />
 
-        {step === 1 && (
-          <>
-            <div ref={equipmentHeadingRef} className="scroll-mt-4 px-5 pb-8 pt-8 sm:scroll-mt-10 sm:px-12 sm:pb-10 sm:pt-10">
-              {savedKitchen && equipment.length === 0 && !hasEditedEquipmentThisSession && (
-                <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-orange-50">
-                      Use your saved kitchen?
-                    </p>
-                    <p className="mt-0.5 text-xs text-stone-400 sm:text-sm">
-                      {savedKitchen.join(", ")}
-                    </p>
-                  </div>
-
-                  <div className="flex shrink-0 items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={applySavedKitchen}
-                      className={`${footerButton} whitespace-nowrap`}
-                    >
-                      Use my kitchen
-                    </button>
-                    <button
-                      type="button"
-                      onClick={forgetSavedKitchen}
-                      className={ghostButton}
-                    >
-                      Forget
-                    </button>
-                  </div>
+        <div className={step === 1 ? "" : "hidden"}>
+          <div ref={equipmentHeadingRef} className="scroll-mt-4 px-5 pb-8 pt-8 sm:scroll-mt-10 sm:px-12 sm:pb-10 sm:pt-10">
+            {savedKitchen && equipment.length === 0 && !hasEditedEquipmentThisSession && (
+              <div className="mb-8 flex flex-col gap-3 rounded-2xl border border-orange-400/30 bg-orange-400/10 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-orange-50">
+                    Use your saved kitchen?
+                  </p>
+                  <p className="mt-0.5 text-xs text-stone-400 sm:text-sm">
+                    {savedKitchen.join(", ")}
+                  </p>
                 </div>
+
+                <div className="flex shrink-0 items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={applySavedKitchen}
+                    className={`${footerButton} whitespace-nowrap`}
+                  >
+                    Use my kitchen
+                  </button>
+                  <button
+                    type="button"
+                    onClick={forgetSavedKitchen}
+                    className={ghostButton}
+                  >
+                    Forget
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <KitchenEquipmentSelector
+              selectedEquipment={equipment}
+              onChange={(next) => {
+                setHasEditedEquipmentThisSession(true);
+                setEquipment(next);
+              }}
+            />
+          </div>
+
+          <div className={footerBar}>
+            <p className="min-w-0 flex-1 text-sm leading-tight text-stone-400">
+              {equipment.length === 0 ? (
+                "Select at least one"
+              ) : (
+                <>
+                  <span className="font-semibold text-orange-200">
+                    {equipment.length}
+                  </span>{" "}
+                  selected
+                </>
               )}
+            </p>
 
-              <KitchenEquipmentSelector
-                selectedEquipment={equipment}
-                onChange={(next) => {
-                  setHasEditedEquipmentThisSession(true);
-                  setEquipment(next);
-                }}
-              />
-            </div>
-
-            <div className={footerBar}>
-              <p className="min-w-0 flex-1 text-sm leading-tight text-stone-400">
-                {equipment.length === 0 ? (
-                  "Select at least one"
-                ) : (
-                  <>
-                    <span className="font-semibold text-orange-200">
-                      {equipment.length}
-                    </span>{" "}
-                    selected
-                  </>
-                )}
-              </p>
-
-              <button
-                type="button"
-                disabled={!equipment.length}
-                onClick={() => {
-                  saveKitchen(equipment);
-                  setSavedKitchen(equipment);
-                  setError(null);
-                  setStep(2);
-                  window.setTimeout(() => {
-                    pantryHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }, 50);
-                }}
-                className={`${footerButton} select-none shrink-0 whitespace-nowrap`}
+            <button
+              type="button"
+              disabled={!equipment.length}
+              onClick={() => {
+                saveKitchen(equipment);
+                setSavedKitchen(equipment);
+                setError(null);
+                setStep(2);
+                window.setTimeout(() => {
+                  pantryHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }, 50);
+              }}
+              className={`${footerButton} select-none shrink-0 whitespace-nowrap`}
+            >
+              Next: ingredients
+              <span
+                aria-hidden="true"
+                className="hidden sm:inline"
               >
-                Next: ingredients
-                <span
-                  aria-hidden="true"
-                  className="hidden sm:inline"
-                >
-                  →
-                </span>
-              </button>
-            </div>
-          </>
-        )}
+                →
+              </span>
+            </button>
+          </div>
+        </div>
 
         {step === 2 && (
           <>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 interface KitchenEquipmentSelectorProps {
   selectedEquipment: string[];
@@ -45,12 +45,20 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
         : [...selectedEquipment, name]
     );
 
-  const allSelected = selectedEquipment.length === equipmentItems.length;
-  const [kitchenLoaded, setKitchenLoaded] = useState(false);
-  const [loadedIcons, setLoadedIcons] = useState<Set<string>>(new Set());
+const allSelected = selectedEquipment.length === equipmentItems.length;
+const kitchenImgRef = useRef<HTMLImageElement>(null);
+const [kitchenLoaded, setKitchenLoaded] = useState(false);
+const [loadedIcons, setLoadedIcons] = useState<Set<string>>(new Set());
 
-  const markIconLoaded = (id: string) =>
-    setLoadedIcons((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));    
+const markIconLoaded = (id: string) =>
+  setLoadedIcons((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+
+// If the image is served from cache, the browser may never fire onLoad
+// again (or fires it before React attaches the handler). Check .complete
+// on mount so a cached image doesn't get stuck behind a fade-in.
+useLayoutEffect(() => {
+  if (kitchenImgRef.current?.complete) setKitchenLoaded(true);
+}, []);  
 
   return (
     <div className="w-full overflow-visible">
@@ -68,6 +76,7 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
         <div className="relative aspect-[3/2] w-full origin-center scale-[1.12]">
           <div className="absolute inset-0 overflow-hidden rounded-3xl border border-stone-700 bg-stone-800 shadow-lg">
             <img
+              ref={kitchenImgRef}
               src="/kitchen/kitchen.webp"
               alt="Kitchen"
               loading="eager"
@@ -122,6 +131,10 @@ const KitchenEquipmentSelector: React.FC<KitchenEquipmentSelectorProps> = ({
                   height={item.naturalHeight}
                   decoding="async"
                   draggable={false}
+                  onLoad={() => markIconLoaded(item.id)}
+                  ref={(el) => {
+                    if (el?.complete) markIconLoaded(item.id);
+                  }}
                   className={`pointer-events-none relative block h-auto w-full select-none transition-all duration-300 ${
                     selected ? 'scale-105 brightness-110 drop-shadow-[0_0_14px_rgba(252,108,38,0.7)]' : ''
                   }`}
